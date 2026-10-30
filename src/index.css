@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-violet: #581c87;
+  --color-charcoal: #09090b;
+  --color-surface: #ffffff;
+  --color-bone: #f8fafc;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #09090b;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #e02868 !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background-color: #e02868 !important;
+  color: #ffffff !important;
+}
+
+/* Continuous Marquee Animation */
+@keyframes continuousScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-continuous {
+  display: flex;
+  width: max-content;
+  animation: continuousScroll 32s linear infinite;
+}
+
+.animate-marquee-continuous:hover {
+  animation-play-state: paused;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-mono {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  letter-spacing: 0.05em;
+}
+
+/* Luxury Light Spotlight Card */
+.spotlight-card {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.02);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spotlight-card:hover {
+  border-color: rgba(88, 28, 135, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(88, 28, 135, 0.15);
+}
+
+/* Jet Black Luxury Shimmer Button (Apple / Stripe High-End Style) */
+.btn-shimmer, .btn-luxury-dark {
+  background: #09090b;
+  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px -5px rgba(9, 9, 11, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after, .btn-luxury-dark::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  transition: 0.75s;
+}
+
+.btn-shimmer:hover::after, .btn-luxury-dark:hover::after {
+  left: 200%;
+}
+
+.btn-shimmer:hover, .btn-luxury-dark:hover {
+  background: #18181b;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -6px rgba(9, 9, 11, 0.35);
+}
+
+.btn-shimmer:active, .btn-luxury-dark:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Ghost Glass / Crisp Outline Button */
+.btn-ghost-glass, .btn-luxury-outline {
+  background: #ffffff;
+  color: #09090b;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-ghost-glass:hover, .btn-luxury-outline:hover {
+  background: #f8fafc;
+  border-color: #09090b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+/* High-Contrast Titanium Heading Gradient */
+.text-gradient-luxury {
+  background: linear-gradient(135deg, #09090b 20%, #475569 70%, #581c87 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-violet {
+  background: linear-gradient(135deg, #09090b 30%, #581c87 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Ethereal Ambient Light Background (Zero Harsh Pink) */
+.bg-ambient-light {
+  background-image: radial-gradient(circle at 50% 0%, rgba(88, 28, 135, 0.05) 0%, transparent 60%),
+                    radial-gradient(circle at 100% 40%, rgba(5, 150, 105, 0.04) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, rgba(67, 56, 202, 0.04) 0%, transparent 50%);
+}
+
+/* Smooth Route Transitions */
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pulse animation for meridian nodes */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.6;
+  }
+}
+
+.pulse-node {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* 3D Cut-out Object & Floating Perspectives (21st.dev / Award-Winning Style) */
+.perspective-container {
+  perspective: 1200px;
+}
+
+@keyframes float3D {
+  0%, 100% {
+    transform: translateY(0px) rotateY(-8deg) rotateX(4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateY(-4deg) rotateX(1deg);
+  }
+}
+
+.animate-float-3d {
+  animation: float3D 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.card-3d-cutout {
+  transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+}
+
+.card-3d-cutout:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-6px);
+  box-shadow: 0 25px 50px -12px rgba(224, 40, 104, 0.18), 0 0 0 1px rgba(224, 40, 104, 0.3);
+}
+
+/* Interactive Specialty Card with Scroll/Hover Depth */
+.specialty-card-3d {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.specialty-card-3d:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: #e02868;
+  box-shadow: 0 20px 40px -10px rgba(224, 40, 104, 0.12), 0 0 0 1px #e02868;
+}
+
+/* Scroll Fade & Reveal */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

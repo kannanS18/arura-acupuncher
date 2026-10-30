@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" width="100%" height="100%" fill="none">
+  <!-- Top Macron over first letter 'a' -->
+  <line x1="56" y1="24" x2="108" y2="24" stroke="#e02868" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Brand Title: ārura -->
+  <!-- First 'a' in medical pink #e02868 -->
+  <text x="54" y="74" font-family="'Outfit', 'Didot', 'Bodoni MT', 'Cinzel', serif" font-size="62" font-weight="800" fill="#e02868" letter-spacing="-1">a</text>
+  
+  <!-- 'r' in warm coral #f95738 -->
+  <text x="110" y="74" font-family="'Outfit', 'Didot', 'Bodoni MT', 'Cinzel', serif" font-size="62" font-weight="800" fill="#f95738" letter-spacing="-1">r</text>
+  
+  <!-- 'u' in medical pink #e02868 -->
+  <text x="156" y="74" font-family="'Outfit', 'Didot', 'Bodoni MT', 'Cinzel', serif" font-size="62" font-weight="800" fill="#e02868" letter-spacing="-1">u</text>
+  
+  <!-- second 'r' in medical pink #e02868 -->
+  <text x="218" y="74" font-family="'Outfit', 'Didot', 'Bodoni MT', 'Cinzel', serif" font-size="62" font-weight="800" fill="#e02868" letter-spacing="-1">r</text>
+  
+  <!-- final 'a' in warm coral #f95738 -->
+  <text x="264" y="74" font-family="'Outfit', 'Didot', 'Bodoni MT', 'Cinzel', serif" font-size="62" font-weight="800" fill="#f95738" letter-spacing="-1">a</text>
+
+  <!-- Subtitle: WELLNESS STUDIO -->
+  <text x="56" y="104" font-family="'Plus Jakarta Sans', sans-serif" font-size="14.5" font-weight="800" fill="#09090b" letter-spacing="5.5">WELLNESS STUDIO</text>
+</svg>

@@ -1,0 +1,132 @@
+/* Arura Wellness Studio — Bespoke Luxury Healing Design Tokens */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+
+:root {
+  --brand-purple: #66478d;
+  --brand-purple-dark: #4b2f6b;
+  --brand-purple-light: #7e5ea6;
+  --brand-magenta: #ed3373;
+  --brand-magenta-dark: #c91e5c;
+  --brand-coral: #ed3b61;
+  --brand-gradient: linear-gradient(135deg, #66478d 0%, #ed3373 100%);
+  --brand-gradient-horizontal: linear-gradient(90deg, #66478d 0%, #a43a85 50%, #ed3373 100%);
+  --brand-gradient-subtle: linear-gradient(135deg, rgba(102, 71, 141, 0.08) 0%, rgba(237, 51, 115, 0.08) 100%);
+  --brand-gradient-glow: radial-gradient(circle, rgba(237, 51, 115, 0.15) 0%, rgba(102, 71, 141, 0.05) 50%, transparent 70%);
+  --bg-page: #faf8fb;
+  --text-main: #1f232e;
+  --text-muted: #647087;
+  --card-border: rgba(102, 71, 141, 0.12);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif-luxury {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Gradient Utilities */
+.bg-arura-gradient {
+  background: var(--brand-gradient);
+}
+
+.bg-arura-gradient-h {
+  background: var(--brand-gradient-horizontal);
+}
+
+.text-arura-gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Surfaces */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px -10px rgba(102, 71, 141, 0.08);
+}
+
+.glass-panel-elevated {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(237, 51, 115, 0.15);
+  box-shadow: 0 20px 40px -15px rgba(102, 71, 141, 0.15);
+}
+
+/* Subtle Aurora Ambient Orb */
+.aurora-glow-1 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(237, 51, 115, 0.12) 0%, rgba(102, 71, 141, 0.05) 50%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aurora-glow-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 71, 141, 0.12) 0%, rgba(237, 51, 115, 0.04) 50%, transparent 70%);
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Magnetic Button Hover State (Brother 2 Motion) */
+.btn-magnetic {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.btn-magnetic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(237, 51, 115, 0.35);
+}
+
+.btn-magnetic:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1ecf5;
+}
+::-webkit-scrollbar-thumb {
+  background: #c3b4d4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-purple);
+}
+
+/* Tab active indicators */
+.tab-active {
+  background: var(--brand-gradient);
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(237, 51, 115, 0.3);
+}
+
+/* Pulse animation for live badge */
+@keyframes softPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.animate-soft-pulse {
+  animation: softPulse 3s infinite ease-in-out;
+}

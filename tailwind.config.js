@@ -1,0 +1,64 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        luxury: {
+          bg: '#ffffff',
+          surface: '#f8fafc',
+          card: '#ffffff',
+          cardHover: '#f1f5f9',
+          border: 'rgba(0, 0, 0, 0.08)',
+          borderHover: 'rgba(88, 28, 135, 0.3)'
+        },
+        arura: {
+          dark: '#09090b',
+          charcoal: '#18181b',
+          muted: '#64748b',
+          violet: '#581c87',
+          amethyst: '#6b21a8',
+          indigo: '#4338ca',
+          emerald: '#059669',
+          teal: '#0d9488',
+          bone: '#f8fafc'
+        }
+      },
+      // Strictly 2 Complementary Font Families:
+      // 1. Outfit (Luxury Display Headings, Titles, Hero Typography)
+      // 2. Plus Jakarta Sans (Body, Navigation, Badges, Labels, Metadata)
+      fontFamily: {
+        display: ['"Outfit"', 'system-ui', 'sans-serif'],
+        heading: ['"Outfit"', 'system-ui', 'sans-serif'],
+        serif: ['"Outfit"', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        body: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+      },
+      animation: {
+        'shimmer': 'shimmer 3s linear infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'marquee': 'marquee 25s linear infinite',
+        'float': 'float 6s ease-in-out infinite'
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' }
+        }
+      }
+    },
+  },
+  plugins: [],
+}
