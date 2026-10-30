@@ -2,6 +2,7 @@ import React from 'react';
 import { Instagram, MessageCircle, Phone, ArrowUp, Sparkles, MapPin, Clock, CalendarCheck } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -23,7 +24,7 @@ export default function Footer() {
           <div className="lg:col-span-5 space-y-6">
             <Link to="/" className="flex items-center space-x-3">
               <div className="p-2 rounded-xl bg-white shadow-sm inline-block">
-                <img src="/logo.png" alt="Arura Wellness Studio" className="h-10 w-auto object-contain" />
+                <img src={getAssetUrl('logo.png')} alt="Arura Wellness Studio" className="h-10 w-auto object-contain" />
               </div>
             </Link>
             

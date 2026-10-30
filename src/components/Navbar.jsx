@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PhoneCall, MessageCircle, MapPin, Menu, X, CalendarCheck, ArrowRight } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link, NavLink } from 'react-router-dom';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function Navbar({ onOpenBooking }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -118,7 +119,7 @@ export default function Navbar({ onOpenBooking }) {
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0 group">
             <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-[#e02868] transition-colors shadow-xs">
               <img 
-                src="/logo.png" 
+                src={getAssetUrl('logo.png')} 
                 alt="Arura Wellness Studio" 
                 className="h-10 sm:h-11 w-auto object-contain" 
               />

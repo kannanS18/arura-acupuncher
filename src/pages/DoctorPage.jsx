@@ -2,6 +2,7 @@ import React from 'react';
 import { Award, GraduationCap, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, UserCheck, Stethoscope, HeartPulse, FileText, QrCode } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function DoctorPage({ onOpenBooking }) {
   const credentials = [
@@ -172,7 +173,7 @@ export default function DoctorPage({ onOpenBooking }) {
                     {/* Doctor Portrait Photo */}
                     <div className="w-28 h-32 rounded-2xl overflow-hidden border-2 border-[#e02868] flex-shrink-0 shadow-md bg-gray-100 relative">
                       <img 
-                        src="/doctor_nivedha_portrait.jpg" 
+                        src={getAssetUrl('doctor_nivedha_portrait.jpg')} 
                         alt="Dr. Nivedha Priyadharshini"
                         className="w-full h-full object-cover object-top"
                       />

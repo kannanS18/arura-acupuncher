@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, HeartPulse, CheckCircle2, ArrowRight, Clock, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function BentoGridSection({ onOpenBooking }) {
   return (
@@ -32,7 +33,7 @@ export default function BentoGridSection({ onOpenBooking }) {
             {/* Left: Authentic Needles Imagery */}
             <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-200 p-6 flex flex-col items-center justify-center shadow-xs">
               <img 
-                src="/authentic_acupuncture_needles.jpg" 
+                src={getAssetUrl('authentic_acupuncture_needles.jpg')} 
                 alt="Authentic 0.18mm Hair-Thin Sterile Surgical Acupuncture Needles" 
                 className="w-full h-auto max-h-64 object-contain rounded-xl"
               />
@@ -108,7 +109,7 @@ export default function BentoGridSection({ onOpenBooking }) {
             {/* Right: Peaceful Acoustic Suite Photo */}
             <div className="lg:col-span-5 order-1 lg:order-2 rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-xs h-64">
               <img 
-                src="/zen_treatment.jpg" 
+                src={getAssetUrl('zen_treatment.jpg')} 
                 alt="Arura Private Acoustic Suite" 
                 className="w-full h-full object-cover"
               />

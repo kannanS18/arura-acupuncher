@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CalendarCheck, MessageCircle, ArrowRight, ShieldCheck, Sparkles, HeartPulse, Award, Clock, CheckCircle2, Activity, Play } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function HeroSection({ onOpenBooking }) {
   const [selectedFocus, setSelectedFocus] = useState('Spine & Cervical');
@@ -97,7 +98,7 @@ export default function HeroSection({ onOpenBooking }) {
               {/* Clinical Photography Showcase */}
               <div className="relative h-64 sm:h-72 overflow-hidden bg-gray-100">
                 <img 
-                  src="/acupuncture_session.jpg" 
+                  src={getAssetUrl('acupuncture_session.jpg')} 
                   alt="Clinical Acupuncture Session at Arura Studio Chennai" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />

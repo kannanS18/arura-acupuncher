@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShieldCheck, Compass, CheckCircle2, ArrowRight, Sparkles, HeartPulse, Brain, Award, Clock, Activity, Zap, Sun, Disc, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CLINIC_INFO, ACUPUNCTURE_TECHNIQUES, COUNSELLING_METHODS } from '../data/websiteContent';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function AboutPage({ onOpenBooking }) {
   const [selectedTech, setSelectedTech] = useState(0);
@@ -96,7 +97,7 @@ export default function AboutPage({ onOpenBooking }) {
                 <div className="flex items-center justify-between border-b border-gray-100 pb-5">
                   <div className="flex items-center space-x-3">
                     <img 
-                      src="/logo.png" 
+                      src={getAssetUrl('logo.png')} 
                       alt="Arura Wellness Studio Official Logo" 
                       className="h-10 w-auto object-contain"
                     />
@@ -111,7 +112,7 @@ export default function AboutPage({ onOpenBooking }) {
                 <div className="py-6 flex flex-col items-center justify-center relative">
                   <div className="relative w-full max-w-[340px] flex items-center justify-center">
                     <img 
-                      src="/needles_cutout_3d.png" 
+                      src={getAssetUrl('needles_cutout_3d.png')} 
                       alt="0.18mm Hair-Thin Surgical Acupuncture Needles 3D Cutout" 
                       className="w-full h-auto max-h-56 object-contain filter drop-shadow-[0_15px_20px_rgba(0,0,0,0.15)] group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
