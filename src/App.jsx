@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import MobileStickyBar from './components/MobileStickyBar';
@@ -44,7 +44,7 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ScrollToTop />
       {/* Pink (#e02868) text selection highlight as strictly requested */}
       <div className="min-h-screen bg-white text-[#09090b] flex flex-col font-sans selection:bg-[#e02868] selection:text-white relative">
@@ -94,6 +94,6 @@ export default function App() {
         />
 
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
