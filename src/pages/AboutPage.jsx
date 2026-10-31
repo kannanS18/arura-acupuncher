@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, CheckCircle2, ArrowRight, Sparkles, Activity, Brain, Zap, Sun } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, ArrowRight, Activity, Brain, Zap, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
@@ -79,11 +79,6 @@ export default function AboutPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-brand" />
-                <span>The Arura Studio Origin and Ethos</span>
-              </div>
-
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
                 A quiet sanctuary for <br />
                 <span className="text-brand">evidence-based healing.</span>
@@ -93,13 +88,13 @@ export default function AboutPage({ onOpenBooking }) {
                 Established in Virugambakkam, Chennai by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Arura was founded on a singular conviction: chronic human suffering cannot be solved in five-minute visits with chemical palliatives.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-neutral-700">
-                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-neutral-200 shadow-xs">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <div className="pt-2 flex flex-wrap items-center gap-6 text-xs font-medium text-neutral-600">
+                <div className="flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                   <span>100% Single-Use Sterile Needles</span>
                 </div>
-                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-neutral-200 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-brand" />
+                <div className="flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand" />
                   <span>Cambridge Certified Psychotherapy</span>
                 </div>
               </div>
@@ -301,66 +296,46 @@ export default function AboutPage({ onOpenBooking }) {
               </div>
             </motion.div>
 
-            {/* Right Column: Architectural Editorial Ledger Rows */}
-            <div className="lg:col-span-7 space-y-6">
+            {/* Right Column: Architectural Ledger Table (Zero Card Slop) */}
+            <div className="lg:col-span-7 divide-y divide-neutral-200 border-t border-b border-neutral-200">
               {clinicalTechniques.map((tech, idx) => (
                 <motion.div
                   key={tech.num}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="group p-8 sm:p-10 rounded-3xl bg-white border border-neutral-200 hover:border-brand/60 hover:shadow-xl transition-colors duration-200 space-y-6 relative overflow-hidden"
+                  transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="py-8 space-y-4 group"
                 >
-                  {/* Subtle top indicator bar on hover */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  {/* Header Row: Number, category, and spec */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 pb-5">
-                    <div className="flex items-center space-x-3">
-                      <span className="font-display text-xl font-bold text-brand">
+                  <div className="flex flex-wrap items-baseline justify-between gap-4">
+                    <div className="flex items-baseline space-x-3">
+                      <span className="font-display text-2xl font-bold text-ink tabular-nums group-hover:text-brand transition-colors">
                         {tech.num}
                       </span>
-                      <span className="h-4 w-px bg-neutral-200" />
-                      <span className="text-xs text-neutral-500 font-medium">
-                        {tech.category}
-                      </span>
+                      <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors">
+                        {tech.title}
+                      </h3>
                     </div>
-
-                    <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2.5 py-0.5 rounded-md border border-neutral-200">
-                      {tech.spec}
+                    <span className="text-xs text-neutral-500 font-medium">
+                      {tech.category}
                     </span>
                   </div>
 
-                  {/* Title & Description */}
-                  <div className="space-y-3">
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
-                      {tech.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-                      {tech.desc}
-                    </p>
-                  </div>
+                  <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
+                    {tech.desc}
+                  </p>
 
-                  {/* Therapeutic Indication & Benefit (Editorial callout, NO green alert box!) */}
-                  <div className="pl-5 border-l-2 border-brand/50 py-1 space-y-1">
-                    <span className="text-xs font-semibold text-brand block">
-                      Targeted Clinical Outcome:
-                    </span>
-                    <p className="text-xs sm:text-sm text-neutral-800 font-medium leading-relaxed">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pt-2 text-xs">
+                    <p className="text-neutral-800 font-medium">
+                      <strong className="text-brand font-semibold">Outcome: </strong>
                       {tech.benefit}
                     </p>
-                  </div>
-
-                  {/* Action Link */}
-                  <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
-                    <span className="text-xs text-neutral-500 font-medium">100% sterile single-use guarantee</span>
                     <Link
                       to="/booking"
-                      className="text-xs font-semibold text-ink group-hover:text-brand inline-flex items-center space-x-1.5 transition-colors"
+                      className="text-xs font-semibold text-ink group-hover:text-brand inline-flex items-center space-x-1.5 transition-colors whitespace-nowrap"
                     >
-                      <span>Book this modality</span>
-                      <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
+                      <span>Book modality</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </motion.div>

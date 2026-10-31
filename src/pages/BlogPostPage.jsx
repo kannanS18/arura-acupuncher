@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, CheckCircle2, ShieldCheck, ArrowRight, Share2, Sparkles, BookOpen } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, CheckCircle2, ShieldCheck, ArrowRight, Share2, BookOpen } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogData';
 import { CLINIC_INFO } from '../data/websiteContent';
 
@@ -52,18 +52,16 @@ export default function BlogPostPage({ onOpenBooking }) {
             <span>Back to all clinical guides</span>
           </Link>
 
-          {/* Metadata Badges */}
-          <div className="flex flex-wrap items-center gap-3 text-xs pt-2">
-            <span className="px-3 py-1 rounded-full bg-pink-50 text-brand border border-pink-200 font-semibold text-xs">
-              {post.category}
-            </span>
-            <span className="text-gray-400">•</span>
-            <span className="text-gray-500 flex items-center space-x-1">
+          {/* Metadata */}
+          <div className="flex flex-wrap items-center gap-4 text-xs pt-2 font-medium text-neutral-500">
+            <span className="text-brand font-semibold">{post.category}</span>
+            <span>/</span>
+            <span className="flex items-center space-x-1">
               <Calendar className="w-3.5 h-3.5" />
               <span>{post.date}</span>
             </span>
-            <span className="text-gray-400">•</span>
-            <span className="text-gray-500 flex items-center space-x-1">
+            <span>/</span>
+            <span className="flex items-center space-x-1">
               <Clock className="w-3.5 h-3.5" />
               <span>{post.readTime}</span>
             </span>

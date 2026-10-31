@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneCall, MessageCircle, Calendar, MapPin, Sparkles } from 'lucide-react';
+import { PhoneCall, MessageCircle, Calendar, MapPin, Activity } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ export default function MobileStickyBar() {
           }`}
           title="Clinical Modalities & Fees"
         >
-          <Sparkles className="w-4 h-4 text-brand mb-0.5" />
+          <Activity className="w-4 h-4 text-brand mb-0.5" />
           <span className="text-[11px] font-semibold">Clinic</span>
         </Link>
 

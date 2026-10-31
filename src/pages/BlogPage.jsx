@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Clock, BookOpen, Search, Calendar, User, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Clock, BookOpen, Search, Calendar, User, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../data/blogData';
 import MeridianPulseWave from '../components/MeridianPulseWave';
@@ -32,15 +32,14 @@ export default function BlogPage() {
       {/* Blog Hero: Clean, Centered Editorial Journal Header with Scroll Reveal */}
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <motion.div 
+          <motion.p 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 text-xs text-brand font-semibold"
+            className="text-xs text-brand font-semibold tracking-normal"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>The Arura Clinical Journal & Patient Guides</span>
-          </motion.div>
+            The Arura Clinical Journal & Patient Guides
+          </motion.p>
 
           <motion.h1 
             initial={{ opacity: 0, y: 18 }}
@@ -134,7 +133,7 @@ export default function BlogPage() {
                   <div className="space-y-4">
                     {/* Category & Read Time */}
                     <div className="flex items-center justify-between text-xs">
-                      <span className="px-3 py-1 rounded-full font-medium text-xs bg-pink-50 text-brand border border-pink-200">
+                      <span className="text-xs font-semibold text-brand tracking-normal">
                         {post.category}
                       </span>
                       <span className="text-gray-400 flex items-center space-x-1 font-medium">

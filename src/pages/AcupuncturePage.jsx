@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
-import { Flame, Disc, Leaf, Zap, Sun, Activity, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
+import { Flame, Disc, Leaf, Zap, Sun, Activity, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const MODALITIES = [
@@ -95,10 +95,9 @@ export default function AcupuncturePage({ onOpenBooking }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Classical meridian science</span>
-            </div>
+            <p className="text-xs text-brand font-semibold tracking-normal">
+              Classical Meridian Science
+            </p>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
               Precision Acupuncture and Targeted Meridian Medicine
             </h1>

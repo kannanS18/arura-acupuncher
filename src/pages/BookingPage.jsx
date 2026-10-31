@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Calendar, Clock, PhoneCall, MessageCircle, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, PhoneCall, MessageCircle, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import MeridianPulseWave from '../components/MeridianPulseWave';
 
@@ -54,10 +54,9 @@ export default function BookingPage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl space-y-6"
           >
-            <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Sanctuary Concierge & Scheduling</span>
-            </div>
+            <p className="text-xs text-brand font-semibold tracking-normal">
+              Sanctuary Concierge, Virugambakkam
+            </p>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
               Schedule Your Private <br />

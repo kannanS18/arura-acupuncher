@@ -11,7 +11,6 @@ export default function TherapistPage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#581c87] text-xs uppercase tracking-wider font-bold">
-              <Sparkles className="w-3.5 h-3.5" />
               <span>The Lead Clinical Director</span>
             </div>
             

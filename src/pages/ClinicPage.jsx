@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, MapPin, PhoneCall, HeartPulse, Stethoscope, Droplets, Smile } from 'lucide-react';
+import { Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, MapPin, PhoneCall, HeartPulse, Stethoscope, Droplets, Smile } from 'lucide-react';
 import { CLINIC_INFO, DOS_DONTS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
@@ -84,15 +84,14 @@ export default function ClinicPage({ onOpenBooking }) {
       {/* 1. Dignified Medical Header Banner */}
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <motion.div 
+          <motion.p 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs text-brand font-semibold"
+            className="text-xs text-brand font-semibold tracking-normal"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Arura Wellness Sanctuary • Virugambakkam, Chennai</span>
-          </motion.div>
+            Arura Wellness Sanctuary, Virugambakkam
+          </motion.p>
 
           <div className="max-w-3xl space-y-4">
             <motion.h1 
@@ -156,13 +155,6 @@ export default function ClinicPage({ onOpenBooking }) {
                     loading={idx === 0 ? "eager" : "lazy"}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent lg:hidden" />
-                  
-                  {/* Visual Status Tag on Image */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-ink text-white border border-white/20 shadow-md">
-                      {treatment.badge}
-                    </span>
-                  </div>
 
                   <div className="absolute bottom-4 left-4 lg:hidden text-white">
                     <span className="text-xs font-bold text-pink-300 block">{treatment.code}</span>
@@ -201,12 +193,12 @@ export default function ClinicPage({ onOpenBooking }) {
                       {treatment.summary}
                     </p>
 
-                    {/* Features checklist */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    {/* Features checklist (clean editorial typography) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
                       {treatment.features.map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 bg-white border border-gray-200 px-3 py-2 rounded-xl">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span className="font-medium truncate">{feature}</span>
+                        <div key={fIdx} className="flex items-center space-x-2 text-xs sm:text-sm text-neutral-700 py-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-brand shrink-0" />
+                          <span className="font-medium">{feature}</span>
                         </div>
                       ))}
                     </div>
