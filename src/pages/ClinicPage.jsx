@@ -79,16 +79,16 @@ export default function ClinicPage({ onOpenBooking }) {
   ];
 
   return (
-    <div className="bg-white text-[#09090b] min-h-screen">
+    <div className="bg-white text-ink min-h-screen">
       
       {/* 1. Dignified Medical Header Banner */}
-      <section className="pt-20 pb-16 bg-[#f8fafc] border-b border-gray-200/80 relative overflow-hidden">
+      <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs uppercase tracking-wider text-[#e02868] font-bold"
+            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs text-brand font-semibold"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Arura Wellness Sanctuary • Virugambakkam, Chennai</span>
@@ -99,10 +99,10 @@ export default function ClinicPage({ onOpenBooking }) {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.15]"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.15]"
             >
               Clinical Modalities <br />
-              <span className="text-[#e02868]">& Consultation Tariff</span>
+              <span className="text-brand">& Consultation Tariff</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 18 }}
@@ -127,10 +127,7 @@ export default function ClinicPage({ onOpenBooking }) {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
             <div className="space-y-1">
-              <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold">
-                Transparent Fee Schedule
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b]">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink">
                 Treatment Modalities & Procedures
               </h2>
             </div>
@@ -148,27 +145,27 @@ export default function ClinicPage({ onOpenBooking }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-[#f8fafc] rounded-3xl border border-gray-200 hover:border-[#e02868]/40 hover:shadow-xl transition-all overflow-hidden flex flex-col lg:flex-row group"
+                className="bg-surface-subtle rounded-3xl border border-gray-200 hover:border-brand/40 hover:shadow-xl transition-colors duration-200 overflow-hidden flex flex-col lg:flex-row group"
               >
                 {/* Treatment Authentic Photo */}
                 <div className="lg:w-5/12 relative min-h-[260px] sm:min-h-[300px] overflow-hidden bg-gray-100">
                   <img
                     src={getAssetUrl(treatment.image)}
                     alt={treatment.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                    loading={idx === 0 ? "eager" : "lazy"}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent lg:hidden" />
                   
                   {/* Visual Status Tag on Image */}
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#09090b]/80 backdrop-blur-md text-white border border-white/20 shadow-md">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-ink text-white border border-white/20 shadow-md">
                       {treatment.badge}
                     </span>
                   </div>
 
                   <div className="absolute bottom-4 left-4 lg:hidden text-white">
-                    <span className="text-xs font-bold text-pink-300 uppercase tracking-wider block">{treatment.code}</span>
+                    <span className="text-xs font-bold text-pink-300 block">{treatment.code}</span>
                     <span className="text-sm font-semibold">{treatment.duration}</span>
                   </div>
                 </div>
@@ -178,7 +175,7 @@ export default function ClinicPage({ onOpenBooking }) {
                   <div className="space-y-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-[#e02868] bg-pink-50 border border-pink-200 px-2.5 py-0.5 rounded-md">
+                        <span className="text-xs font-bold text-brand bg-pink-50 border border-pink-200 px-2.5 py-0.5 rounded-md">
                           {treatment.code}
                         </span>
                         <span className="hidden lg:inline-flex items-center space-x-1 text-xs text-gray-500 font-medium">
@@ -189,14 +186,14 @@ export default function ClinicPage({ onOpenBooking }) {
 
                       {/* Fee Highlight */}
                       <div className="text-right">
-                        <span className="font-display text-3xl font-bold text-[#09090b] group-hover:text-[#e02868] transition-colors">
+                        <span className="font-display text-3xl font-bold text-ink group-hover:text-brand transition-colors">
                           {treatment.fee}
                         </span>
-                        <span className="text-[11px] text-gray-500 block">per session</span>
+                        <span className="text-xs text-gray-500 block">per session</span>
                       </div>
                     </div>
 
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#09090b] group-hover:text-[#e02868] transition-colors">
+                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors">
                       {treatment.title}
                     </h3>
 
@@ -223,7 +220,7 @@ export default function ClinicPage({ onOpenBooking }) {
 
                     <button
                       onClick={() => onOpenBooking ? onOpenBooking(treatment.title, treatment.feeNum) : window.location.href = '#/booking'}
-                      className="btn-luxury-dark group-hover:bg-[#e02868] group-hover:border-[#e02868] px-6 py-3 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center justify-center space-x-2 transition-all shadow-xs"
+                      className="btn-luxury-dark group-hover:bg-brand group-hover:border-brand px-6 py-3 rounded-xl text-xs font-semibold inline-flex items-center justify-center space-x-2 transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:scale-95 disabled:opacity-50"
                     >
                       <span>Book This Modality</span>
                       <ArrowRight className="w-4 h-4" />
@@ -237,8 +234,8 @@ export default function ClinicPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* 3. Patient Guidelines: DOs and DON'Ts (Clean, Spacious, Uncluttered) */}
-      <section className="py-20 lg:py-24 bg-[#f8fafc] border-b border-gray-200/80">
+      {/* 3. Patient Guidelines: DOs and DON'Ts */}
+      <section className="py-20 lg:py-24 bg-surface-subtle border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <motion.div 
@@ -248,10 +245,7 @@ export default function ClinicPage({ onOpenBooking }) {
             transition={{ duration: 0.5 }}
             className="max-w-2xl space-y-2"
           >
-            <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold">
-              Treatment Protocol
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b]">
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink">
               Preparation & Home Care Guidelines
             </h2>
             <p className="text-sm sm:text-base text-gray-600 font-normal">
@@ -292,7 +286,7 @@ export default function ClinicPage({ onOpenBooking }) {
             >
               <div className="flex items-center space-x-3 text-amber-900 border-b border-amber-100 pb-4">
                 <AlertCircle className="w-6 h-6 text-amber-600" />
-                <h3 className="font-display text-xl sm:text-2xl font-bold">Clinical DON'Ts</h3>
+                <h3 className="font-display text-xl sm:text-2xl font-bold">Clinical DON’Ts</h3>
               </div>
               <div className="space-y-4">
                 {DOS_DONTS.donts.map((d, idx) => (
@@ -316,12 +310,9 @@ export default function ClinicPage({ onOpenBooking }) {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-[#09090b] text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl"
+            className="bg-ink text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl"
           >
             <div className="space-y-3 text-center md:text-left">
-              <span className="text-xs uppercase tracking-wider text-pink-300 font-bold block">
-                Sanctuary Address
-              </span>
               <h3 className="font-display text-2xl sm:text-3xl font-bold">
                 {CLINIC_INFO.address}
               </h3>
@@ -332,7 +323,7 @@ export default function ClinicPage({ onOpenBooking }) {
 
             <Link
               to="/booking"
-              className="btn-shimmer px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] whitespace-nowrap shadow-xl"
+              className="btn-shimmer px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl"
             >
               Book In-Clinic Session (₹600)
             </Link>

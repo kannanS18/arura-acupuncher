@@ -27,16 +27,16 @@ export default function BlogPage() {
   });
 
   return (
-    <div className="bg-white text-[#09090b] min-h-screen">
+    <div className="bg-white text-ink min-h-screen">
       
       {/* Blog Hero: Clean, Centered Editorial Journal Header with Scroll Reveal */}
-      <section className="pt-20 pb-16 bg-[#f8fafc] border-b border-gray-200 relative overflow-hidden">
+      <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs uppercase tracking-wider text-[#e02868] font-bold"
+            className="inline-flex items-center space-x-2 text-xs text-brand font-semibold"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>The Arura Clinical Journal & Patient Guides</span>
@@ -46,10 +46,10 @@ export default function BlogPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]"
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]"
           >
             Evidence-Based Guides for <br />
-            <span className="text-[#e02868]">Holistic Root Healing</span>
+            <span className="text-brand">Holistic Root Healing</span>
           </motion.h1>
 
           <motion.p 
@@ -74,7 +74,7 @@ export default function BlogPage() {
               placeholder="Search guides (e.g. neck pain, first visit, moxa, migraines)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-[#e02868] focus:ring-2 focus:ring-[#e02868]/20 shadow-sm transition-all"
+              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 shadow-sm transition-colors"
             />
           </motion.div>
         </div>
@@ -93,10 +93,10 @@ export default function BlogPage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
+                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:scale-95 disabled:opacity-50 ${
                   selectedCategory === cat
-                    ? 'bg-[#e02868] text-white border-[#e02868] shadow-sm'
-                    : 'bg-[#f8fafc] text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                    ? 'bg-brand text-white border-brand shadow-sm'
+                    : 'bg-surface-subtle text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
                 }`}
               >
                 {cat}
@@ -106,13 +106,13 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Blog Cards Grid: With Staggered Scroll-Reveal Animations */}
+      {/* Blog Cards Grid */}
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
           <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-            <span className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-              Showing {filteredPosts.length} Clinical Guides
+            <span className="text-xs text-gray-500 font-medium">
+              Showing {filteredPosts.length} clinical guides
             </span>
             <span className="text-xs text-gray-400">Click any card to read full article</span>
           </div>
@@ -129,12 +129,12 @@ export default function BlogPage() {
               >
                 <Link
                   to={`/blog/${post.id}`}
-                  className="group p-8 rounded-3xl bg-[#f8fafc] border border-gray-200/90 hover:border-[#e02868] hover:bg-white hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 h-full"
+                  className="group p-8 rounded-3xl bg-surface-subtle border border-gray-200/90 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 h-full"
                 >
                   <div className="space-y-4">
                     {/* Category & Read Time */}
                     <div className="flex items-center justify-between text-xs">
-                      <span className="px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] bg-pink-50 text-[#e02868] border border-pink-200">
+                      <span className="px-3 py-1 rounded-full font-medium text-xs bg-pink-50 text-brand border border-pink-200">
                         {post.category}
                       </span>
                       <span className="text-gray-400 flex items-center space-x-1 font-medium">
@@ -144,7 +144,7 @@ export default function BlogPage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-[#e02868] transition-colors leading-snug">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-brand transition-colors leading-snug">
                       {post.title}
                     </h3>
 
@@ -154,9 +154,9 @@ export default function BlogPage() {
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-200/80 flex items-center justify-between text-xs text-gray-500 group-hover:text-[#e02868] transition-colors font-semibold">
-                    <span>Read Clinical Guide</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  <div className="pt-4 border-t border-gray-200/80 flex items-center justify-between text-xs text-gray-500 group-hover:text-brand transition-colors font-semibold">
+                    <span>Read clinical guide</span>
+                    <ArrowRight className="w-4 h-4 transform motion-safe:group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
               </motion.div>

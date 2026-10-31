@@ -8,15 +8,11 @@ import AnimatedCounter from './AnimatedCounter';
 
 export default function HeroSection({ onOpenBooking }) {
   return (
-    <section className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 bg-white text-[#09090b] overflow-hidden border-b border-gray-100">
+    <section className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 bg-white text-ink overflow-hidden border-b border-gray-100">
       
-      {/* Subtle Parasympathetic Breathing Aura (8s Gentle Cycle) */}
-      <div className="absolute top-1/4 right-1/4 w-[450px] h-[450px] bg-[#e02868]/10 rounded-full blur-[140px] pointer-events-none animate-breathe" />
-      <div className="absolute -bottom-20 left-10 w-[350px] h-[350px] bg-slate-900/5 rounded-full blur-[120px] pointer-events-none" />
-
       {/* Gentle Meridian Pulse Wave (Medical Frequency Flow) */}
-      <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-20 pointer-events-none overflow-hidden">
-        <svg viewBox="0 0 1200 120" className="w-full h-20 text-[#e02868]" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-20 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg viewBox="0 0 1200 120" className="w-full h-20 text-brand" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path 
             className="animate-meridian-wave" 
             d="M0,60 L300,60 L330,60 L345,20 L360,100 L375,45 L390,75 L405,60 L700,60 L730,60 L745,20 L760,100 L775,45 L790,75 L805,60 L1200,60" 
@@ -38,27 +34,27 @@ export default function HeroSection({ onOpenBooking }) {
             
             {/* Status Pill */}
             <motion.div 
-              className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs text-[#e02868] font-bold"
+              className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs text-brand font-semibold"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
-              <span>Classical Acupuncture & Psychotherapy • Chennai</span>
+              <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+              <span>Classical acupuncture and psychotherapy in Chennai</span>
             </motion.div>
 
-            {/* Punchy Headline (Few Words) */}
+            {/* Punchy Headline */}
             <motion.h1 
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.7 }}
             >
               Heal the root cause, <br />
-              <span className="text-[#e02868]">not just the symptom.</span>
+              <span className="text-brand">not just the symptom.</span>
             </motion.h1>
 
-            {/* Concise Medical Summary (2 Short Sentences Only) */}
+            {/* Concise Medical Summary */}
             <motion.p 
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-lg"
               initial={{ opacity: 0, y: 20 }}
@@ -77,21 +73,21 @@ export default function HeroSection({ onOpenBooking }) {
             >
               <Link
                 to="/booking"
-                className="px-7 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-lg shadow-pink-500/20 flex items-center justify-center space-x-2 transition-all active:scale-95 group"
+                className="px-7 py-3.5 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark flex items-center justify-center space-x-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:scale-95 group shadow-sm"
               >
                 <CalendarCheck className="w-4 h-4 text-white" />
-                <span>Book Evaluation (₹600)</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <span>Book evaluation (₹600)</span>
+                <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
               </Link>
 
               <a
                 href={CLINIC_INFO.whatsappLink}
                 target="_blank"
                 rel="noreferrer"
-                className="px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold bg-white text-gray-800 border border-gray-200 hover:border-emerald-600 hover:text-emerald-700 shadow-xs flex items-center justify-center space-x-2 transition-all active:scale-95"
+                className="px-6 py-3.5 rounded-xl text-xs font-semibold bg-white text-gray-800 border border-gray-200 hover:border-emerald-600 hover:text-emerald-700 flex items-center justify-center space-x-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:scale-95 shadow-xs"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-600" />
-                <span>WhatsApp Desk</span>
+                <span>WhatsApp desk</span>
               </a>
             </motion.div>
 
@@ -107,7 +103,7 @@ export default function HeroSection({ onOpenBooking }) {
                 <span><AnimatedCounter end={100} suffix="%" /> Single-Use Needles</span>
               </div>
               <div className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#e02868] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-brand flex-shrink-0" />
                 <span><AnimatedCounter end={8} suffix="+ Yrs" /> • <AnimatedCounter end={1100} suffix="+ Recoveries" /></span>
               </div>
               <div className="flex items-center space-x-1.5">
@@ -125,35 +121,32 @@ export default function HeroSection({ onOpenBooking }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-xl bg-white group animate-serene-float">
+            <div className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-md bg-white group motion-safe:animate-serene-float">
               
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
                 <img 
                   src={getAssetUrl('hero_acupuncture_sanctuary.jpg')} 
                   alt="Authentic Gentle Acupuncture Treatment Session at Arura Wellness Sanctuary" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
                 {/* Floating Hospital-Grade Aseptic Badge */}
                 <div className="absolute top-4 left-4 inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 text-xs font-semibold text-gray-900 shadow-sm">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Aseptic Surgical Protocol</span>
+                  <span>Aseptic surgical protocol</span>
                 </div>
 
                 {/* Bottom Overlay Label */}
                 <div className="absolute bottom-4 left-4 right-4 text-white flex items-end justify-between">
                   <div className="space-y-0.5">
-                    <span className="text-[10px] font-mono tracking-widest text-pink-200 uppercase font-bold block">
-                      CLINICAL PROCEDURE
-                    </span>
                     <h3 className="font-display text-base sm:text-lg font-bold text-white">
                       Gentle 14-Meridian Needling
                     </h3>
                     <p className="text-[11px] text-white/80">0.18mm Hair-Thin Needles • Painless Insertion</p>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/50 text-emerald-300 text-[11px] font-bold">
-                    ● Daily 10 AM – 8 PM
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/50 text-emerald-300 text-[11px] font-semibold">
+                    ● Daily 10 AM to 8 PM
                   </span>
                 </div>
               </div>

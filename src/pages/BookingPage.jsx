@@ -43,10 +43,10 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="bg-white text-[#09090b] min-h-screen">
+    <div className="bg-white text-ink min-h-screen">
       
       {/* Header with Scroll Reveal */}
-      <section className="pt-24 pb-20 bg-ambient-light border-b border-gray-200/80 relative overflow-hidden">
+      <section className="pt-24 pb-20 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -54,14 +54,14 @@ export default function BookingPage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl space-y-6"
           >
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs uppercase tracking-wider text-[#e02868] font-bold">
+            <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Sanctuary Concierge & Scheduling</span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
               Schedule Your Private <br />
-              <span className="text-[#e02868]">Clinical Consultation</span>
+              <span className="text-brand">Clinical Consultation</span>
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
@@ -76,7 +76,7 @@ export default function BookingPage() {
         </div>
       </section>
 
-      {/* Main Booking Interface — Clean, Minimalist, Clutter-Free with Scroll Reveals */}
+      {/* Main Booking Interface */}
       <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -90,11 +90,8 @@ export default function BookingPage() {
               transition={{ duration: 0.6 }}
               className="space-y-4"
             >
-              <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold block">
-                Step 01 • Select Treatment Modality
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#09090b]">
-                Clinical Tariff Options
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+                Select Clinical Modality
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -106,21 +103,21 @@ export default function BookingPage() {
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
                       onClick={() => setSelectedService(srv)}
-                      className={`p-6 rounded-2xl cursor-pointer border transition-all flex flex-col justify-between space-y-3 ${
+                      className={`p-6 rounded-2xl cursor-pointer border transition-colors duration-200 flex flex-col justify-between space-y-3 ${
                         isSelected
-                          ? 'border-[#e02868] bg-pink-50/20 shadow-md ring-2 ring-[#e02868]'
-                          : 'border-gray-200 bg-[#f8fafc] hover:border-gray-400 hover:bg-white'
+                          ? 'border-brand bg-pink-50/20 shadow-md ring-1 ring-brand'
+                          : 'border-gray-200 bg-surface-subtle hover:border-gray-400 hover:bg-white'
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <div>
-                          <h3 className={`font-display text-lg font-bold ${isSelected ? 'text-[#e02868]' : 'text-gray-900'}`}>
+                          <h3 className={`font-display text-lg font-bold ${isSelected ? 'text-brand' : 'text-gray-900'}`}>
                             {srv.title}
                           </h3>
                           <span className="text-xs text-gray-500 font-medium">{srv.duration}</span>
                         </div>
                         <div className="text-right">
-                          <span className="text-xl font-bold text-[#09090b]">₹{srv.fee}</span>
+                          <span className="text-xl font-bold text-ink">₹{srv.fee}</span>
                         </div>
                       </div>
 
@@ -128,9 +125,9 @@ export default function BookingPage() {
                         {srv.desc}
                       </p>
 
-                      <div className="pt-2 text-xs font-bold uppercase tracking-wider">
-                        <span className={isSelected ? 'text-[#e02868]' : 'text-gray-400'}>
-                          {isSelected ? '✓ Selected' : 'Click to Select'}
+                      <div className="pt-2 text-xs font-semibold">
+                        <span className={isSelected ? 'text-brand' : 'text-gray-400'}>
+                          {isSelected ? '✓ Selected' : 'Click to select'}
                         </span>
                       </div>
                     </motion.div>
@@ -148,17 +145,14 @@ export default function BookingPage() {
               className="space-y-6 pt-6 border-t border-gray-200"
             >
               <div className="space-y-1">
-                <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold block">
-                  Step 02 • Patient Details & Preferred Time
-                </span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#09090b]">
-                  Appointment Details
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+                  Patient & Appointment Details
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
                     Patient Full Name *
                   </label>
                   <input
@@ -167,12 +161,12 @@ export default function BookingPage() {
                     placeholder="Enter your full name"
                     value={patientName}
                     onChange={(e) => setPatientName(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
                     Contact Phone Number (WhatsApp Enabled)
                   </label>
                   <input
@@ -180,40 +174,40 @@ export default function BookingPage() {
                     placeholder="+91 98765 43210"
                     value={patientPhone}
                     onChange={(e) => setPatientPhone(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
                     Preferred Date
                   </label>
                   <input
                     type="date"
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
                     Preferred Time Window
                   </label>
                   <select
                     value={preferredSlot}
                     onChange={(e) => setPreferredSlot(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868] bg-white"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white"
                   >
-                    <option>Morning (10:00 AM – 1:00 PM)</option>
-                    <option>Afternoon (1:00 PM – 4:00 PM)</option>
-                    <option>Evening (4:00 PM – 8:00 PM)</option>
+                    <option>Morning (10:00 AM to 1:00 PM)</option>
+                    <option>Afternoon (1:00 PM to 4:00 PM)</option>
+                    <option>Evening (4:00 PM to 8:00 PM)</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                <label className="text-xs font-medium text-gray-700 block mb-1.5">
                   Primary Health Distress / Chief Complaint
                 </label>
                 <textarea
@@ -221,7 +215,7 @@ export default function BookingPage() {
                   placeholder="Describe your health concern (e.g. cervical spondylosis, migraine frequency, sleep trouble, sciatica)..."
                   value={healthConcern}
                   onChange={(e) => setHealthConcern(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
             </motion.div>
@@ -245,7 +239,7 @@ export default function BookingPage() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-lg flex items-center justify-center space-x-2 transition-all active:scale-95"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Confirm & Send via WhatsApp Desk</span>

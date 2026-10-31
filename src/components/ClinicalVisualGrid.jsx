@@ -1,6 +1,5 @@
 import React from 'react';
-import { ShieldCheck, HeartPulse, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 
@@ -8,32 +7,32 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
   const pillars = [
     {
       title: "100% Single-Use Needles",
-      subtitle: "Zero Pain • Surgical Grade",
+      subtitle: "Zero pain • surgical grade",
       desc: "Pre-sterilized 0.18mm hair-thin needles opened in your presence and discarded into biohazard sharps containers.",
       img: "authentic_acupuncture_needles.jpg",
-      badge: "Aseptic Guarantee"
+      badge: "Aseptic guarantee"
     },
     {
       title: "Private Acoustic Suites",
-      subtitle: "Unhurried Sanctuary Care",
+      subtitle: "Unhurried sanctuary care",
       desc: "Soundproof treatment rooms with gentle infrared warmth, soft linens, and dedicated one-on-one doctor attention.",
       img: "zen_treatment.jpg",
-      badge: "Virugambakkam Suite"
+      badge: "Virugambakkam suite"
     },
     {
       title: "14-Meridian Precision",
-      subtitle: "Root-Cause Bio-Energetics",
+      subtitle: "Root-cause bio-energetics",
       desc: "Targeted nerve stimulation along classical meridians to dissolve deep muscle tension and reset autonomic rhythm.",
       img: "acu_treatment1.jpg",
-      badge: "Classical Acupuncture"
+      badge: "Classical acupuncture"
     }
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#f8fafc] border-b border-gray-200/80 overflow-hidden">
+    <section className="py-20 lg:py-28 bg-surface-subtle border-b border-gray-200/80 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         
-        {/* Section Header: Concise & Punchy */}
+        {/* Section Header */}
         <motion.div 
           className="text-center max-w-xl mx-auto space-y-3"
           initial={{ opacity: 0, y: 30 }}
@@ -41,14 +40,11 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold font-mono">
-            [ CLINICAL STANDARDS ]
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b] tracking-tight">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
             Medicine crafted for real recovery.
           </h2>
-          <p className="text-sm sm:text-base text-gray-600">
-            Hospital-grade sterile techniques and peaceful private suites.
+          <p className="text-sm sm:text-base text-gray-600 font-normal">
+            Hospital-grade sterile techniques and peaceful private suites in Chennai.
           </p>
         </motion.div>
 
@@ -59,7 +55,7 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
               key={idx}
               whileHover={{ y: -6, transition: { duration: 0.25 } }}
               whileTap={{ scale: 0.98 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#e02868] transition-all flex flex-col justify-between cursor-pointer"
+              className="group bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg hover:border-brand transition-colors duration-200 flex flex-col justify-between cursor-pointer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -70,18 +66,18 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
                 <img 
                   src={getAssetUrl(item.img)} 
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                 
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-bold text-gray-900 border border-gray-200 shadow-xs">
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-semibold text-gray-900 border border-gray-200 shadow-xs">
                   {item.badge}
                 </span>
 
                 <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-pink-200 block">
+                  <p className="text-xs text-pink-200 font-medium">
                     {item.subtitle}
-                  </span>
+                  </p>
                   <h3 className="font-display text-lg font-bold">
                     {item.title}
                   </h3>
@@ -94,9 +90,9 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
                   {item.desc}
                 </p>
 
-                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-[#e02868] group-hover:text-black transition-colors">
-                  <span>Verified Standard</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-brand group-hover:text-ink transition-colors">
+                  <span>Verified standard</span>
+                  <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </motion.div>

@@ -15,7 +15,7 @@ export default function AboutPage({ onOpenBooking }) {
       spec: "Millimeter Pulse Accuracy",
       desc: "Millimeter-accurate needle insertion along traditional acupuncture pathways. Stimulates sensory nerve fibers, dilates micro-vasculature, dissipates lactic stagnation, and triggers natural endorphin release.",
       benefit: "Sustained relief for chronic migraines, frozen shoulder, lumbar strain, and cervical spondylosis.",
-      icon: <Activity className="w-5 h-5 text-[#e02868]" />
+      icon: <Activity className="w-5 h-5 text-brand" />
     },
     {
       title: "Cambridge Psychotherapy & CBT",
@@ -47,7 +47,7 @@ export default function AboutPage({ onOpenBooking }) {
     {
       num: "01",
       title: "Pulse & Somatic Diagnostic Intake",
-      desc: "We spend 15–20 minutes evaluating 14 radial pulse positions, lifestyle stressors, and tongue topography to locate exact meridian blockages."
+      desc: "We spend 15 to 20 minutes evaluating 14 radial pulse positions, lifestyle stressors, and tongue topography to locate exact meridian blockages."
     },
     {
       num: "02",
@@ -62,16 +62,13 @@ export default function AboutPage({ onOpenBooking }) {
   ];
 
   return (
-    <div className="bg-white text-[#09090b] min-h-screen">
+    <div className="bg-white text-ink min-h-screen">
       
       {/* =========================================================================
           HERO BANNER (SCROLL REVEALS & 3D NEEDLE SHOWCASE)
          ========================================================================= */}
-      <section className="pt-20 pb-20 bg-ambient-light border-b border-gray-200/80 relative overflow-hidden">
+      <section className="pt-20 pb-20 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         
-        {/* Soft breathing aura in background */}
-        <div className="absolute top-10 right-1/4 w-96 h-96 bg-[#e02868]/10 rounded-full blur-[120px] pointer-events-none animate-breathe" />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -82,14 +79,14 @@ export default function AboutPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs uppercase tracking-wider text-[#e02868] font-bold">
-                <Sparkles className="w-3.5 h-3.5 text-[#e02868]" />
+              <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-brand" />
                 <span>The Arura Studio Origin & Ethos</span>
               </div>
 
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
                 A quiet sanctuary for <br />
-                <span className="text-[#e02868]">evidence-based holistic healing.</span>
+                <span className="text-brand">evidence-based holistic healing.</span>
               </h1>
 
               <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
@@ -102,23 +99,21 @@ export default function AboutPage({ onOpenBooking }) {
                   <span>100% Single-Use Sterile Needles</span>
                 </div>
                 <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-xs">
-                  <CheckCircle2 className="w-4 h-4 text-[#e02868]" />
+                  <CheckCircle2 className="w-4 h-4 text-brand" />
                   <span>Cambridge Certified Psychotherapy</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Column (5 cols): Calm Clinical Showcase (ZERO Tilt, Smooth Levitation) */}
+            {/* Right Column (5 cols): Calm Clinical Showcase */}
             <motion.div 
               className="lg:col-span-5"
               initial={{ opacity: 0, scale: 0.95, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="clinical-sanctuary-card rounded-3xl bg-white/95 backdrop-blur-xl border border-gray-200/90 p-8 shadow-xl relative overflow-hidden group animate-pure-float">
+              <div className="clinical-sanctuary-card rounded-3xl bg-white border border-gray-200/90 p-8 shadow-sm relative overflow-hidden group motion-safe:animate-pure-float">
                 
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#e02868]/10 rounded-full blur-3xl pointer-events-none" />
-
                 <div className="flex items-center justify-between border-b border-gray-100 pb-5">
                   <div className="flex items-center space-x-3">
                     <img 
@@ -127,8 +122,8 @@ export default function AboutPage({ onOpenBooking }) {
                       className="h-10 w-auto object-contain"
                     />
                   </div>
-                  <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                  <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     <span>Clinical Standard</span>
                   </span>
                 </div>
@@ -138,19 +133,19 @@ export default function AboutPage({ onOpenBooking }) {
                     <img 
                       src={getAssetUrl('needles_cutout_3d.png')} 
                       alt="0.18mm Hair-Thin Surgical Acupuncture Needles" 
-                      className="w-full h-auto max-h-56 object-contain filter drop-shadow-[0_15px_20px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className="w-full h-auto max-h-56 object-contain filter drop-shadow-md"
                     />
                   </div>
 
-                  <div className="mt-4 inline-flex items-center space-x-2 text-xs text-gray-800 font-semibold bg-gray-50/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-gray-200 shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-[#e02868]" />
+                  <div className="mt-4 inline-flex items-center space-x-2 text-xs text-gray-800 font-semibold bg-gray-50 px-4 py-1.5 rounded-full border border-gray-200 shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-brand" />
                     <span>0.18mm Hair-Thin Surgical 316L Needles</span>
                   </div>
                 </div>
 
                 <div className="border-t border-gray-100 pt-4 flex items-center justify-between text-xs text-gray-500">
                   <span>Ethylene Oxide Pre-Sterilized</span>
-                  <span className="font-semibold text-[#e02868]">Zero Reuse Guaranteed</span>
+                  <span className="font-semibold text-brand">Zero Reuse Guaranteed</span>
                 </div>
 
               </div>
@@ -166,13 +161,13 @@ export default function AboutPage({ onOpenBooking }) {
       </section>
 
       {/* =========================================================================
-          NARRATIVE MANIFESTO SECTION (BIGGER PARAGRAPHS & SCROLL REVEAL ANIMATIONS)
+          NARRATIVE MANIFESTO SECTION
          ========================================================================= */}
       <section className="py-20 lg:py-28 border-b border-gray-200/80 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
-            {/* Left Column: Big Editorial Manifesto Typography with Scroll Reveal */}
+            {/* Left Column: Big Editorial Manifesto Typography */}
             <motion.div 
               className="lg:col-span-6 space-y-6"
               initial={{ opacity: 0, x: -35 }}
@@ -180,36 +175,31 @@ export default function AboutPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="inline-flex items-center space-x-2 text-xs uppercase tracking-wider text-[#e02868] font-bold font-mono">
-                <span>[ WHY ARURA EXISTS ]</span>
-              </div>
-              
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#09090b] leading-[1.15] tracking-tight">
-                "The needle clears what the mind holds."
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink leading-[1.15] tracking-tight">
+                “The needle clears what the mind holds.”
               </h2>
               
-              {/* BIGGER, COMMANDING MANIFESTO PARAGRAPH (Per User Request) */}
               <div className="space-y-6 pt-2">
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-900 font-medium leading-relaxed tracking-tight border-l-4 border-[#e02868] pl-5">
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-900 font-medium leading-relaxed tracking-tight border-l-4 border-brand pl-5">
                   Modern medicine excels at acute surgical emergencies, but often fails patients with chronic, recurring health distress. When you struggle with chronic migraines, cervical pain, or IBS, you are often prescribed painkillers, muscle relaxants, and antacids that mask symptoms without resolving the source.
                 </p>
 
                 <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed pl-5">
-                  At Arura, we observe the human body as an integrated neurological, biological, and psychological organism. By combining classical 14–meridian acupuncture with Cambridge clinical counselling, we address physical nerve inflammation and emotional stress simultaneously.
+                  At Arura, we observe the human body as an integrated neurological, biological, and psychological organism. By combining classical 14-meridian acupuncture with Cambridge clinical counselling, we address physical nerve inflammation and emotional stress simultaneously.
                 </p>
               </div>
 
-              {/* 3 Metric Anchors with Animated Counter Numbers */}
+              {/* 3 Metric Anchors */}
               <div className="pt-4 flex items-center space-x-6 sm:space-x-8 text-xs border-t border-gray-100">
                 <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-[#09090b] font-display block">
+                  <span className="text-2xl sm:text-3xl font-bold text-ink font-display block">
                     <AnimatedCounter end={100} suffix="%" />
                   </span>
                   <span className="text-gray-500 font-medium">Single-Use Needles</span>
                 </div>
                 <div className="h-10 w-px bg-gray-200" />
                 <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-[#e02868] font-display block">1-on-1</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-brand font-display block">1-on-1</span>
                   <span className="text-gray-500 font-medium">Unhurried Care</span>
                 </div>
                 <div className="h-10 w-px bg-gray-200" />
@@ -222,7 +212,7 @@ export default function AboutPage({ onOpenBooking }) {
               </div>
             </motion.div>
 
-            {/* Right Column: Visual 3-Stage Timeline with Staggered Scroll Reveal */}
+            {/* Right Column: Visual 3-Stage Timeline */}
             <motion.div 
               className="lg:col-span-6 space-y-4"
               initial={{ opacity: 0, x: 35 }}
@@ -230,24 +220,24 @@ export default function AboutPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="text-xs text-gray-500 uppercase tracking-wider block font-bold font-mono">
-                [ THE 3 STAGES OF EVERY PATIENT SESSION ]
-              </span>
+              <p className="text-xs text-gray-500 font-semibold block">
+                Three-Stage Clinical Intake
+              </p>
 
               {stages.map((st, i) => (
                 <motion.div 
                   key={st.num}
-                  className="p-6 sm:p-7 rounded-2xl bg-[#f8fafc] border border-gray-200 hover:border-[#e02868] hover:bg-white hover:shadow-lg transition-all space-y-2 group"
+                  className="p-6 sm:p-7 rounded-2xl bg-surface-subtle border border-gray-200 hover:border-brand hover:bg-white hover:shadow-lg transition-colors duration-200 space-y-2 group"
                   initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 text-[#e02868] font-bold text-xs flex items-center justify-center font-mono group-hover:bg-[#e02868] group-hover:text-white transition-colors">
+                    <span className="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 text-brand font-bold text-xs flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
                       {st.num}
                     </span>
-                    <h4 className="font-display text-lg font-bold text-[#09090b]">
+                    <h4 className="font-display text-lg font-bold text-ink">
                       {st.title}
                     </h4>
                   </div>
@@ -263,9 +253,9 @@ export default function AboutPage({ onOpenBooking }) {
       </section>
 
       {/* =========================================================================
-          CLINICAL MODALITIES (INTERACTIVE TABS WITH SCROLL REVEAL)
+          CLINICAL MODALITIES (DIRECT CARDS)
          ========================================================================= */}
-      <section className="py-20 lg:py-28 bg-[#f8fafc] border-b border-gray-200/80">
+      <section className="py-20 lg:py-28 bg-surface-subtle border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <motion.div 
@@ -275,10 +265,7 @@ export default function AboutPage({ onOpenBooking }) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold font-mono">
-              [ EVIDENCE-BASED MODALITIES ]
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#09090b]">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
               Techniques Deployed at Arura Studio
             </h2>
             <p className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed">
@@ -286,7 +273,7 @@ export default function AboutPage({ onOpenBooking }) {
             </p>
           </motion.div>
 
-          {/* Direct Self-Contained Modality Cards Grid (No Confusing Tabs, 100% Readable As You Scroll) */}
+          {/* Direct Self-Contained Modality Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {clinicalTechniques.map((tech, idx) => (
               <motion.div
@@ -297,19 +284,19 @@ export default function AboutPage({ onOpenBooking }) {
                 transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.98 }}
-                className="group bg-white rounded-3xl border border-gray-200/90 hover:border-[#e02868] hover:shadow-xl transition-all duration-300 p-7 sm:p-9 flex flex-col justify-between space-y-6"
+                className="group bg-white rounded-3xl border border-gray-200/90 hover:border-brand hover:shadow-xl transition-colors duration-200 p-7 sm:p-9 flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
                   <div className="flex items-start justify-between gap-3 border-b border-gray-100 pb-5">
                     <div className="flex items-center space-x-3">
-                      <div className="p-3 rounded-2xl bg-pink-50 border border-pink-200 text-[#e02868] group-hover:bg-[#e02868] group-hover:text-white transition-colors">
+                      <div className="p-3 rounded-2xl bg-pink-50 border border-pink-200 text-brand group-hover:bg-brand group-hover:text-white transition-colors">
                         {tech.icon}
                       </div>
                       <div>
-                        <span className="text-[11px] uppercase tracking-wider text-[#e02868] font-bold block">
+                        <span className="text-xs text-brand font-semibold block">
                           {tech.category}
                         </span>
-                        <h3 className="font-display text-xl sm:text-2xl font-bold text-[#09090b] group-hover:text-[#e02868] transition-colors">
+                        <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors">
                           {tech.title}
                         </h3>
                       </div>
@@ -325,8 +312,8 @@ export default function AboutPage({ onOpenBooking }) {
                   </p>
 
                   <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
-                    <span className="text-[11px] uppercase tracking-wider text-emerald-800 font-bold block">
-                      Documented Therapeutic Benefit:
+                    <span className="text-xs text-emerald-800 font-semibold block">
+                      Documented therapeutic benefit:
                     </span>
                     <p className="text-xs sm:text-sm text-emerald-950 font-semibold leading-relaxed">
                       {tech.benefit}
@@ -338,7 +325,7 @@ export default function AboutPage({ onOpenBooking }) {
                   <span className="text-xs text-gray-500 font-medium">Strict single-use guarantee</span>
                   <Link
                     to="/booking"
-                    className="btn-luxury-dark group-hover:bg-[#e02868] group-hover:border-[#e02868] px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2 transition-all active:scale-95 shadow-xs"
+                    className="btn-luxury-dark group-hover:bg-brand group-hover:border-brand px-5 py-2.5 rounded-xl text-xs font-semibold inline-flex items-center space-x-2 transition-colors active:scale-95 shadow-xs"
                   >
                     <span>Book Session (₹600)</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -352,23 +339,18 @@ export default function AboutPage({ onOpenBooking }) {
       </section>
 
       {/* =========================================================================
-          SANCTUARY LOCATION STRIP (SCROLL REVEAL)
+          SANCTUARY LOCATION STRIP
          ========================================================================= */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="bg-[#09090b] text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
+            className="bg-ink text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
           >
-            <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#e02868]/15 rounded-full blur-[90px] pointer-events-none" />
-
             <div className="space-y-3 text-center md:text-left relative z-10">
-              <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold font-mono block">
-                [ CLINICAL SANCTUARY ]
-              </span>
               <h3 className="font-display text-2xl sm:text-3xl font-bold">
                 Chinmaya Nagar, Virugambakkam, Chennai
               </h3>
@@ -379,7 +361,7 @@ export default function AboutPage({ onOpenBooking }) {
 
             <Link
               to="/booking"
-              className="px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] whitespace-nowrap shadow-xl relative z-10 transition-all"
+              className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl relative z-10 transition-colors"
             >
               Book Private Consultation (₹600)
             </Link>

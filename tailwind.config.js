@@ -7,6 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        brand: {
+          DEFAULT: '#e02868',
+          dark: '#c21e54',
+          muted: 'rgba(224, 40, 104, 0.1)',
+        },
+        ink: {
+          DEFAULT: '#09090b',
+          muted: '#64748b',
+          faint: '#71717a'
+        },
+        surface: {
+          DEFAULT: '#ffffff',
+          subtle: '#f8fafc',
+          card: '#ffffff'
+        },
         luxury: {
           bg: '#ffffff',
           surface: '#f8fafc',

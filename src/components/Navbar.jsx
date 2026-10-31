@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PhoneCall, MessageCircle, MapPin, Menu, X, CalendarCheck, ArrowRight } from 'lucide-react';
+import { PhoneCall, MessageCircle, MapPin, Menu, X } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link, NavLink } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
@@ -17,20 +17,20 @@ export default function Navbar({ onOpenBooking }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-xs transition-all">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-xs transition-colors duration-200">
       {/* Top Utility Strip — Minimalist & Direct */}
-      <div className="bg-[#f8fafc] text-gray-700 text-xs py-2 px-4 sm:px-8 border-b border-gray-200/80">
+      <div className="bg-surface-subtle text-gray-700 text-xs py-2 px-4 sm:px-8 border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto">
           
-          {/* Mobile Icon Bar (Clean, Uncluttered, Zero Stuffed Text) */}
+          {/* Mobile Icon Bar */}
           <div className="flex sm:hidden items-center justify-between text-xs">
             <div className="flex items-center space-x-2">
               <a 
                 href={`tel:${CLINIC_INFO.phone}`}
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-[#e02868] shadow-xs active:scale-95 transition-transform"
+                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-brand shadow-xs motion-safe:active:scale-95 transition-colors"
                 title="Call Clinic"
               >
-                <PhoneCall className="w-3.5 h-3.5 text-[#e02868]" />
+                <PhoneCall className="w-3.5 h-3.5 text-brand" />
                 <span className="font-semibold text-gray-800 text-[11px]">Call</span>
               </a>
 
@@ -38,7 +38,7 @@ export default function Navbar({ onOpenBooking }) {
                 href={CLINIC_INFO.whatsappLink} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-emerald-600 shadow-xs active:scale-95 transition-transform"
+                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-emerald-600 shadow-xs motion-safe:active:scale-95 transition-colors"
                 title="WhatsApp Concierge"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
@@ -54,28 +54,28 @@ export default function Navbar({ onOpenBooking }) {
                 className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 shadow-xs"
                 title="Virugambakkam Clinic Location"
               >
-                <MapPin className="w-3.5 h-3.5 text-[#e02868]" />
+                <MapPin className="w-3.5 h-3.5 text-brand" />
                 <span className="font-semibold text-gray-800 text-[11px]">Location</span>
               </a>
 
               <Link
                 to="/booking"
-                className="px-3 py-1.5 rounded-lg bg-[#e02868] text-white font-bold text-[11px] shadow-xs hover:bg-[#c21e54] transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-brand text-white font-semibold text-[11px] shadow-xs hover:bg-brand-dark transition-colors"
               >
                 Book ₹600
               </Link>
             </div>
           </div>
 
-          {/* Desktop Utility Strip (Spacious & Clean) */}
+          {/* Desktop Utility Strip */}
           <div className="hidden sm:flex justify-between items-center gap-2">
             <div className="flex items-center space-x-4">
               <span className="flex items-center space-x-2 text-gray-900 font-semibold">
-                <PhoneCall className="w-3.5 h-3.5 text-[#e02868]" />
-                <a href={`tel:${CLINIC_INFO.phone}`} className="hover:text-[#e02868] transition-colors">
+                <PhoneCall className="w-3.5 h-3.5 text-brand" />
+                <a href={`tel:${CLINIC_INFO.phone}`} className="hover:text-brand transition-colors">
                   {CLINIC_INFO.phone}
                 </a>
-                <span className="text-gray-500 font-normal text-xs hidden md:inline">(10:00 AM – 8:00 PM)</span>
+                <span className="text-gray-500 font-normal text-xs hidden md:inline">(10:00 AM to 8:00 PM)</span>
               </span>
 
               <span className="text-gray-300 hidden sm:inline">|</span>
@@ -87,13 +87,13 @@ export default function Navbar({ onOpenBooking }) {
                 className="hidden sm:flex items-center space-x-1.5 text-emerald-700 hover:text-emerald-800 font-semibold transition-colors"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span>WhatsApp Concierge</span>
+                <span>WhatsApp concierge</span>
               </a>
             </div>
 
             <div className="flex items-center space-x-4 text-gray-600 text-xs">
               <span className="flex items-center space-x-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#e02868]" />
+                <MapPin className="w-3.5 h-3.5 text-brand" />
                 <span>Chinmaya Nagar, Virugambakkam, Chennai</span>
               </span>
 
@@ -101,9 +101,9 @@ export default function Navbar({ onOpenBooking }) {
 
               <Link
                 to="/booking"
-                className="text-[#e02868] hover:text-[#b01c4e] font-bold transition-colors"
+                className="text-brand hover:text-brand-dark font-semibold transition-colors"
               >
-                Book Priority Consultation →
+                Book priority consultation
               </Link>
             </div>
           </div>
@@ -111,13 +111,13 @@ export default function Navbar({ onOpenBooking }) {
         </div>
       </div>
 
-      {/* Main Navigation Bar — Clean, Uncluttered, Minimalist */}
+      {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-8">
           
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0 group">
-            <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-[#e02868] transition-colors shadow-xs">
+            <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-brand transition-colors shadow-xs">
               <img 
                 src={getAssetUrl('logo.png')} 
                 alt="Arura Wellness Studio" 
@@ -126,14 +126,14 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links — Pink Active Highlight (#e02868) */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
             <NavLink
               to="/"
-              className={({ isActive }) => `py-2 transition-all relative ${
+              className={({ isActive }) => `py-2 transition-colors relative ${
                 isActive 
-                  ? 'text-[#e02868] font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e02868]' 
-                  : 'hover:text-[#e02868]'
+                  ? 'text-brand font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand' 
+                  : 'hover:text-brand'
               }`}
             >
               Home
@@ -143,10 +143,10 @@ export default function Navbar({ onOpenBooking }) {
               <NavLink
                 key={link.path}
                 to={link.path}
-                className={({ isActive }) => `py-2 transition-all relative whitespace-nowrap ${
+                className={({ isActive }) => `py-2 transition-colors relative whitespace-nowrap ${
                   isActive 
-                    ? 'text-[#e02868] font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e02868]' 
-                    : 'hover:text-[#e02868]'
+                    ? 'text-brand font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand' 
+                    : 'hover:text-brand'
                 }`}
               >
                 {link.name}
@@ -154,11 +154,11 @@ export default function Navbar({ onOpenBooking }) {
             ))}
           </nav>
 
-          {/* Action Button — Distinct Pink Accent on Hover */}
+          {/* Action Button */}
           <div className="flex items-center space-x-3 flex-shrink-0">
             <Link
               to="/booking"
-              className="hidden sm:inline-flex btn-luxury-dark px-6 py-3 rounded-xl text-xs uppercase tracking-wider font-bold whitespace-nowrap shadow-sm hover:border-[#e02868] hover:bg-[#e02868] transition-colors"
+              className="hidden sm:inline-flex px-5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-ink text-white hover:bg-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 shadow-sm"
             >
               Consultation (₹600)
             </Link>
@@ -166,10 +166,10 @@ export default function Navbar({ onOpenBooking }) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
               aria-label="Toggle Navigation"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6 text-[#e02868]" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-6 h-6 text-brand" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
 
@@ -179,14 +179,14 @@ export default function Navbar({ onOpenBooking }) {
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-200 px-6 py-6 space-y-4 shadow-xl">
-          <div className="text-xs uppercase tracking-wider text-[#e02868] font-bold mb-2">
-            Navigation Menu
-          </div>
+          <p className="text-xs text-brand font-semibold mb-2">
+            Navigation menu
+          </p>
           <div className="flex flex-col space-y-3 text-base font-semibold text-gray-800">
             <NavLink
               to="/"
               onClick={() => setMobileMenuOpen(false)}
-              className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-[#e02868] font-bold' : 'hover:text-[#e02868]'}`}
+              className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-brand font-bold' : 'hover:text-brand'}`}
             >
               Home
             </NavLink>
@@ -195,7 +195,7 @@ export default function Navbar({ onOpenBooking }) {
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-[#e02868] font-bold' : 'hover:text-[#e02868]'}`}
+                className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-brand font-bold' : 'hover:text-brand'}`}
               >
                 {link.name}
               </NavLink>
@@ -206,18 +206,18 @@ export default function Navbar({ onOpenBooking }) {
             <Link
               to="/booking"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full btn-luxury-dark py-4 rounded-xl text-xs uppercase tracking-wider font-bold text-center block bg-[#e02868] text-white"
+              className="w-full py-3.5 rounded-xl text-xs font-semibold text-center block bg-brand text-white hover:bg-brand-dark transition-colors motion-safe:active:scale-95 shadow-sm"
             >
-              Book Priority Consultation (₹600)
+              Book priority consultation (₹600)
             </Link>
             <a
               href={CLINIC_INFO.whatsappLink}
               target="_blank"
               rel="noreferrer"
-              className="w-full btn-luxury-outline py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center justify-center space-x-2"
+              className="w-full py-3.5 rounded-xl text-xs font-semibold flex items-center justify-center space-x-2 border border-gray-200 text-gray-800 hover:border-emerald-600 hover:text-emerald-700 transition-colors motion-safe:active:scale-95 shadow-xs"
             >
               <MessageCircle className="w-4 h-4 text-emerald-600" />
-              <span>Direct WhatsApp Desk</span>
+              <span>Direct WhatsApp desk</span>
             </a>
           </div>
         </div>
