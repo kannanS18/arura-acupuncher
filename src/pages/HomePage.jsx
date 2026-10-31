@@ -109,7 +109,7 @@ export default function HomePage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink leading-tight tracking-tight">
+              <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-tight tracking-tight">
                 “We treat what the body whispers before it screams.”
               </h2>
               
@@ -161,7 +161,7 @@ export default function HomePage({ onOpenBooking }) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink tracking-tight">
               Verified Patient Transformations
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 font-normal">
@@ -173,7 +173,7 @@ export default function HomePage({ onOpenBooking }) {
             {TESTIMONIALS.slice(0, 3).map((item, idx) => (
               <motion.div 
                 key={idx} 
-                className="p-8 rounded-3xl bg-surface-subtle border border-neutral-200 shadow-xs hover:shadow-lg hover:border-neutral-300 transition-colors duration-200 space-y-6 flex flex-col justify-between"
+                className="p-8 rounded-3xl bg-sanctuary-texture border border-neutral-200 hover:border-neutral-300 transition-colors duration-200 space-y-6 flex flex-col justify-between"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -181,14 +181,14 @@ export default function HomePage({ onOpenBooking }) {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className="space-y-4">
-                  <span className="inline-block px-3 py-1 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200">
+                  <span className="inline-block px-3 py-1 rounded-full bg-white text-brand text-xs font-semibold border border-neutral-200 shadow-xs">
                     {item.tag}
                   </span>
-                  <p className="text-sm sm:text-base text-neutral-700 font-normal leading-relaxed">
+                  <p className="font-serif text-base sm:text-lg text-neutral-800 italic leading-relaxed">
                     “{item.text}”
                   </p>
                 </div>
-                <div className="border-t border-neutral-200 pt-4">
+                <div className="border-t border-neutral-200/80 pt-4">
                   <div className="font-display text-sm font-bold text-ink">{item.name}</div>
                   <div className="text-xs text-neutral-500">{item.location} • Verified Recovery</div>
                 </div>
@@ -209,7 +209,7 @@ export default function HomePage({ onOpenBooking }) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
               Begin your journey to root recovery today.
             </h2>
             <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto font-normal leading-relaxed">

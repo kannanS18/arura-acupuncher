@@ -63,9 +63,21 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
   letter-spacing: -0.02em;
 }
 
+.font-serif, .font-editorial {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
 .font-mono {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   letter-spacing: 0.02em;
+}
+
+/* Subtle architectural paper texture for human-crafted sanctuary feel */
+.bg-sanctuary-texture {
+  background-color: #faf9f6;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Luxury Light Spotlight Card */

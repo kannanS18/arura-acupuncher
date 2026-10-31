@@ -271,8 +271,8 @@ export default function DoctorPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="border-l-4 border-brand pl-6 space-y-4">
-                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-ink leading-tight">
+              <div className="border-l-2 border-brand pl-6 space-y-4">
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink leading-tight">
                   “True physical recovery begins when we address the autonomic nervous system alongside the musculoskeletal injury.”
                 </h2>
                 <p className="text-xs text-neutral-500 font-medium">
@@ -298,26 +298,26 @@ export default function DoctorPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="p-7 rounded-2xl bg-surface-subtle border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
+              <div className="p-7 rounded-2xl bg-white border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
                 <div className="flex items-center space-x-3 text-brand">
                   <Stethoscope className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-display text-lg font-bold text-ink">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink">
                     Pillar I: Classical 14-Meridian Acupuncture
                   </h3>
                 </div>
-                <p className="text-sm text-neutral-600 leading-relaxed pl-8">
+                <p className="text-sm text-neutral-600 leading-relaxed pl-8 font-normal">
                   Precise anatomical micro-needles stimulate localized nerve fibers, dilating micro-vasculature, dissipating lactic acid stagnation, and releasing muscle fascia tension across the cervical, lumbar, and joint pathways.
                 </p>
               </div>
 
-              <div className="p-7 rounded-2xl bg-surface-subtle border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
+              <div className="p-7 rounded-2xl bg-white border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
                 <div className="flex items-center space-x-3 text-brand">
                   <HeartPulse className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-display text-lg font-bold text-ink">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink">
                     Pillar II: Cambridge Evidence-Based Counselling
                   </h3>
                 </div>
-                <p className="text-sm text-neutral-600 leading-relaxed pl-8">
+                <p className="text-sm text-neutral-600 leading-relaxed pl-8 font-normal">
                   Cognitive and behavioral therapy (CBT/REBT) frameworks that identify and resolve psychosomatic stressors, sleep architecture disruptions, and autonomic sympathetic overdrive without pharmaceutical dependence.
                 </p>
               </div>
@@ -325,11 +325,11 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="p-7 rounded-2xl bg-ink text-white space-y-3 border border-neutral-800">
                 <div className="flex items-center space-x-3 text-brand">
                   <ShieldCheck className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-display text-lg font-bold text-white">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
                     The Result: Restorative Root-Cause Recovery
                   </h3>
                 </div>
-                <p className="text-sm text-neutral-300 leading-relaxed pl-8">
+                <p className="text-sm text-neutral-300 leading-relaxed pl-8 font-normal">
                   Patients experience sustained relief from chronic pain and fatigue because both the physiological nerve pathways and the autonomic stress drivers are treated simultaneously.
                 </p>
               </div>

@@ -135,8 +135,8 @@ export default function AcupuncturePage({ onOpenBooking }) {
             </p>
           </motion.div>
 
-          {/* Self-Contained Direct Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {/* Architectural Modality Cards (No nested box clutter) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {MODALITIES.map((m, idx) => (
               <motion.div
                 key={m.id}
@@ -144,63 +144,52 @@ export default function AcupuncturePage({ onOpenBooking }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.98 }}
-                className="group bg-surface-subtle rounded-3xl border border-gray-200 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 p-6 sm:p-7 flex flex-col justify-between space-y-6"
+                className="group p-8 rounded-3xl bg-white border border-neutral-200 hover:border-brand/60 hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 relative overflow-hidden"
               >
+                {/* Top accent indicator */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-gray-200/80 pb-4">
-                    <span className="w-9 h-9 rounded-xl bg-pink-50 border border-pink-200 text-brand text-xs font-bold flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
+                  <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
+                    <span className="font-serif text-2xl font-bold text-brand">
                       {m.id}
                     </span>
-                    <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Safe and non-invasive</span>
+                    <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
+                      Safe and non-invasive
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2.5 rounded-xl bg-white border border-gray-200 shadow-xs">
-                      {m.icon}
-                    </div>
-                    <h3 className="font-display text-xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
-                      {m.title}
-                    </h3>
-                  </div>
+                  <h3 className="font-serif text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                    {m.title}
+                  </h3>
 
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                  <p className="text-sm text-neutral-600 leading-relaxed font-normal">
                     {m.desc}
                   </p>
 
-                  <div className="p-3.5 rounded-xl bg-white border border-gray-200 space-y-1">
-                    <span className="text-xs text-brand font-semibold block">Sensation felt:</span>
-                    <p className="text-xs text-gray-700 leading-relaxed font-normal">
-                      {m.sensation}
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-white border border-gray-200 space-y-1">
-                    <span className="text-xs text-gray-500 font-semibold block">Biological mechanism:</span>
-                    <p className="text-xs text-gray-700 leading-relaxed font-normal">
-                      {m.mechanism}
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-pink-50/60 border border-pink-200/80 space-y-1">
-                    <span className="text-xs text-brand font-semibold block">Primary clinical indications:</span>
-                    <p className="text-xs text-gray-900 font-medium leading-relaxed">
-                      {m.indications}
-                    </p>
+                  <div className="pl-4 border-l-2 border-brand/40 py-1 space-y-2 text-xs">
+                    <div>
+                      <span className="font-semibold text-brand block">Sensation Felt:</span>
+                      <p className="text-neutral-700 font-normal leading-relaxed">{m.sensation}</p>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-neutral-500 block">Biological Mechanism:</span>
+                      <p className="text-neutral-700 font-normal leading-relaxed">{m.mechanism}</p>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-brand block">Clinical Indications:</span>
+                      <p className="text-neutral-900 font-medium leading-relaxed">{m.indications}</p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200/80 flex items-center justify-between">
-                  <span className="text-xs text-gray-500 font-medium">Included in session</span>
+                <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-xs text-neutral-500 font-medium">Standard ₹600 session</span>
                   <Link
                     to="/booking"
-                    className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-ink text-white hover:bg-brand group-hover:bg-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:scale-95 whitespace-nowrap inline-flex items-center space-x-1.5"
+                    className="text-xs font-semibold text-ink group-hover:text-brand inline-flex items-center space-x-1.5 transition-colors"
                   >
-                    <span>Book session (₹600)</span>
+                    <span>Book session</span>
                     <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>

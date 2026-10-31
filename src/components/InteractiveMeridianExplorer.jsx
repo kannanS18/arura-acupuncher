@@ -5,6 +5,7 @@ import { HeartPulse, CheckCircle2 } from 'lucide-react';
 const CLINICAL_ZONES = [
   {
     id: '01',
+    roman: 'I',
     name: 'Cranial & Facial Nervous System',
     points: 'GV20 (Baihui) • Taiyang • Yintang',
     clears: 'Chronic Migraines, Tension Headaches & Severe Insomnia',
@@ -14,6 +15,7 @@ const CLINICAL_ZONES = [
   },
   {
     id: '02',
+    roman: 'II',
     name: 'Cervical Spine, Neck & Shoulders',
     points: 'GB21 (Jianjing) • BL10 • GV14 (Dazhui)',
     clears: 'Cervical Spondylosis, Frozen Shoulder & Tech Neck Spasms',
@@ -23,6 +25,7 @@ const CLINICAL_ZONES = [
   },
   {
     id: '03',
+    roman: 'III',
     name: 'Thoracic, Heart & Stress Regulation',
     points: 'CV17 (Danzhong) • PC6 (Neiguan) • HT7',
     clears: 'Panic Attacks, Somatic Chest Tightness & Autonomic Burnout',
@@ -32,6 +35,7 @@ const CLINICAL_ZONES = [
   },
   {
     id: '04',
+    roman: 'IV',
     name: 'Gastrointestinal & Epigastric Health',
     points: 'CV12 (Zhongwan) • ST36 (Zusanli) • ST25',
     clears: 'Acid Reflux, IBS, Gastritis & Chronic Abdominal Bloating',
@@ -41,6 +45,7 @@ const CLINICAL_ZONES = [
   },
   {
     id: '05',
+    roman: 'V',
     name: 'Pelvic, Reproductive & Hormonal Axis',
     points: 'CV4 (Guanyuan) • SP6 (Sanyinjiao) • Zigong',
     clears: 'PCOS/PCOD, Severe Menstrual Cramps & Hormonal Fatigue',
@@ -50,6 +55,7 @@ const CLINICAL_ZONES = [
   },
   {
     id: '06',
+    roman: 'VI',
     name: 'Lumbar Spine, Sciatic Nerve & Limbs',
     points: 'BL23 (Shenshu) • GB30 (Huantiao) • BL40',
     clears: 'Sciatica, Lumbar Disc Herniation & Radiating Nerve Pain',
@@ -63,7 +69,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
   return (
     <div id="meridian-explorer" className="w-full bg-white text-ink">
       
-      {/* Section Header with Reveal Animation */}
+      {/* Section Header with Editorial Serif Typography */}
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -73,10 +79,10 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
       >
         <div className="space-y-3">
           <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
-            <HeartPulse className="w-4 h-4 text-brand animate-pulse" />
-            <span>Targeted clinical pathways</span>
+            <HeartPulse className="w-4 h-4 text-brand" />
+            <span>Targeted Clinical Pathways</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink tracking-tight">
             Anatomical Treatment Zones
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 font-normal max-w-2xl leading-relaxed">
@@ -90,8 +96,8 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
         </div>
       </motion.div>
 
-      {/* Direct, Self-Contained Card Grid with Viewport Scroll Stagger */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {/* Architectural Ledger Grid (No nested card boxes) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {CLINICAL_ZONES.map((zone, idx) => (
           <motion.div
             key={zone.id}
@@ -99,57 +105,59 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            className="group bg-surface-subtle rounded-3xl border border-neutral-200 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 p-6 sm:p-7 flex flex-col justify-between space-y-6"
+            className="group p-8 rounded-3xl bg-white border border-neutral-200 hover:border-brand/60 hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 relative overflow-hidden"
           >
-            {/* Top: Header, Number, and Pathway */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-neutral-200/80 pb-4">
-                <span className="w-9 h-9 rounded-xl bg-pink-50 border border-pink-200 text-brand text-xs font-bold flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
-                  {zone.id}
+            {/* Top brand accent indicator on hover */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            <div className="space-y-5">
+              {/* Top row: Roman numeral & Relief verification */}
+              <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
+                <span className="font-serif text-2xl font-bold text-brand">
+                  {zone.roman}
                 </span>
                 
-                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{zone.relief}</span>
+                <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
+                  {zone.relief}
                 </span>
               </div>
 
+              {/* Zone title & nerve points */}
               <div>
-                <h3 className="font-display text-xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                <h3 className="font-serif text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                   {zone.name}
                 </h3>
-                <p className="text-xs text-neutral-500 mt-1 font-normal">
+                <p className="text-xs text-neutral-500 mt-1.5 font-medium">
                   {zone.points}
                 </p>
               </div>
 
-              {/* Conditions Cleared */}
-              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 group-hover:border-neutral-300 space-y-1 transition-colors">
-                <span className="text-xs text-neutral-500 font-medium block">
-                  Conditions cleared:
+              {/* Conditions cleared: Clean editorial presentation (No nested box!) */}
+              <div className="pl-4 border-l-2 border-brand/40 py-1 space-y-1">
+                <span className="text-xs font-semibold text-neutral-500 block">
+                  Conditions resolved:
                 </span>
-                <p className="text-xs sm:text-sm font-semibold text-neutral-900 leading-snug">
+                <p className="text-sm font-semibold text-neutral-900 leading-snug">
                   {zone.clears}
                 </p>
               </div>
 
               {/* Clinical Protocol */}
-              <div className="space-y-1">
-                <span className="text-xs text-brand font-semibold block">
+              <div className="space-y-1 pt-1">
+                <span className="text-xs font-semibold text-brand block">
                   Clinical protocol:
                 </span>
-                <p className="text-xs text-neutral-700 font-medium">
+                <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
                   {zone.protocol}
                 </p>
               </div>
 
-              {/* Acupoints */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
+              {/* Acupoints: Refined minimal tags */}
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-neutral-100">
                 {zone.acupoints.map((pt, pIdx) => (
                   <span
                     key={pIdx}
-                    className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-xs font-medium text-neutral-700"
+                    className="px-2.5 py-1 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-medium text-neutral-700"
                   >
                     {pt}
                   </span>
