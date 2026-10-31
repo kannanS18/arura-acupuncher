@@ -57,7 +57,9 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
           {pillars.map((item, idx) => (
             <motion.div
               key={idx}
-              className="group bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#e02868] transition-all flex flex-col justify-between"
+              whileHover={{ y: -6, transition: { duration: 0.25 } }}
+              whileTap={{ scale: 0.98 }}
+              className="group bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#e02868] transition-all flex flex-col justify-between cursor-pointer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}

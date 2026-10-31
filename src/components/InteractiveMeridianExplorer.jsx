@@ -1,286 +1,204 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HeartPulse, ChevronDown, ArrowRight, Activity, CheckCircle2, Sparkles } from 'lucide-react';
+import { HeartPulse, ArrowRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 
-const CLINICAL_MERIDIAN_REGIONS = [
+const ZONES = [
   {
     id: 'cranial',
-    name: 'Cranial & Facial Nervous System',
-    subname: 'Baihui (GV20) • Taiyang • Yintang',
-    meridian: 'Governing Vessel & Cranial Channels',
-    clinicalSystem: 'Neurological & Cranial System',
-    primarySymptom: 'Chronic Migraines, Tension Headaches, Insomnia, Trigeminal Neuralgia',
-    mechanism: 'Stimulates cranial parasympathetic nerve bundles, reduces cerebral vascular spasms, and elevates serotonin and endorphin levels.',
-    reliefStats: '92% of patients report reduction in headache frequency within 4 sessions.',
-    recommendedTechnique: 'Ultra-fine hair needling with optional gentle scalp electro-stimulation.',
-    accompanyingPoints: ['GV20 (Crown Baihui)', 'GB20 (Wind Pool Fengchi)', 'Ex-HN3 (Third Eye Yintang)']
+    label: 'Cranial & Facial',
+    fullName: 'Cranial & Facial Nervous System',
+    points: 'GV20 (Baihui) • Taiyang • Yintang',
+    clears: 'Chronic Migraines, Tension Headaches & Severe Insomnia',
+    relief: '92% Relief in 4 Sessions',
+    method: '0.18mm Hair-Thin Calming Needles',
+    acupoints: ['GV20 Crown', 'GB20 Wind Pool', 'Yintang Third Eye']
   },
   {
     id: 'cervical',
-    name: 'Cervical Spine, Neck & Shoulders',
-    subname: 'Jianjing (GB21) • Tianzhu (BL10) • Dazhui (GV14)',
-    meridian: 'Cervical & Upper Spinal Pathways',
-    clinicalSystem: 'Cervical & Musculoskeletal System',
-    primarySymptom: 'Cervical Spondylosis, Frozen Shoulder, Upper Back Spasms, Tech Neck',
-    mechanism: 'Dissolves deep myofascial trigger knots, restores arterial vertebral microcirculation, and interrupts pain-spasm neuromuscular loops.',
-    reliefStats: 'Rapid mobility restoration; 88% reported pain reduction after 2–3 treatments.',
-    recommendedTechnique: 'Acupuncture combined with localized TDP Mineral Heat therapy.',
-    accompanyingPoints: ['GB21 (Shoulder Well)', 'GV14 (Great Vertebra)', 'SI11 (Celestial Gathering)']
+    label: 'Neck & Shoulders',
+    fullName: 'Cervical Spine, Neck & Shoulders',
+    points: 'GB21 (Jianjing) • BL10 • GV14 (Dazhui)',
+    clears: 'Cervical Spondylosis, Frozen Shoulder & Tech Neck Spasms',
+    relief: '88% Mobility Restored in 3 Sessions',
+    method: 'Acupuncture + Infrared TDP Heat Therapy',
+    acupoints: ['GB21 Shoulder Well', 'GV14 Great Vertebra', 'SI11 Upper Back']
   },
   {
     id: 'thoracic',
-    name: 'Thoracic, Heart & Stress Regulation',
-    subname: 'Danzhong (CV17) • Neiguan (PC6) • Shenmen (HT7)',
-    meridian: 'Autonomic & Pericardium Pathways',
-    clinicalSystem: 'Cardiovascular & Autonomic Nervous System',
-    primarySymptom: 'Panic Attacks, Somatic Chest Tightness, Palpitations, Deep Emotional Burnout',
-    mechanism: 'Regulates the vagus nerve, down-regulates sympathetic adrenal overdrive, and normalizes heart rate variability (HRV).',
-    reliefStats: 'Immediate somatic relaxation and respiratory ease felt during needle retention.',
-    recommendedTechnique: 'Gentle Conception Vessel needling paired with Somatic Breathwork and Counselling.',
-    accompanyingPoints: ['CV17 (Chest Center)', 'PC6 (Inner Gate)', 'HT7 (Spirit Gate)']
+    label: 'Heart & Stress',
+    fullName: 'Thoracic, Heart & Stress Regulation',
+    points: 'CV17 (Danzhong) • PC6 (Neiguan) • HT7',
+    clears: 'Panic Attacks, Somatic Chest Tightness & Autonomic Burnout',
+    relief: 'Immediate Vagus Nerve Relaxation',
+    method: 'Vagal Regulation + Cambridge Counselling',
+    acupoints: ['CV17 Chest Center', 'PC6 Inner Gate', 'HT7 Spirit Gate']
   },
   {
     id: 'digestive',
-    name: 'Gastrointestinal & Epigastric Health',
-    subname: 'Zhongwan (CV12) • Zusanli (ST36) • Tianshu (ST25)',
-    meridian: 'Enteric & Stomach Pathways',
-    clinicalSystem: 'Gastrointestinal & Digestive System',
-    primarySymptom: 'GERD, Acid Reflux, Gastritis, Irritable Bowel Syndrome (IBS), Chronic Bloating',
-    mechanism: 'Modulates enteric nervous system motility, regulates stomach acid secretions, and reduces gut mucosal inflammation.',
-    reliefStats: 'Noticeable digestive ease and appetite normalization within 3–5 sessions.',
-    recommendedTechnique: 'Classical needling with warming herb moxibustion over abdominal points.',
-    accompanyingPoints: ['CV12 (Middle Cavity)', 'ST36 (Leg Three Miles)', 'ST25 (Celestial Pivot)']
+    label: 'Gut & Digestion',
+    fullName: 'Gastrointestinal & Epigastric Health',
+    points: 'CV12 (Zhongwan) • ST36 (Zusanli) • ST25',
+    clears: 'Acid Reflux, IBS, Gastritis & Chronic Abdominal Bloating',
+    relief: 'Noticeable Ease Within 3–5 Sessions',
+    method: 'Meridian Needling + Warming Herb Moxa',
+    acupoints: ['CV12 Middle Cavity', 'ST36 Leg Three Miles', 'ST25 Pivot']
   },
   {
     id: 'pelvic',
-    name: 'Pelvic, Reproductive & Hormonal Axis',
-    subname: 'Guanyuan (CV4) • Sanyinjiao (SP6) • Zigong (EX-CA1)',
-    meridian: 'Pelvic & Endocrine Pathways',
-    clinicalSystem: 'Gynecological & Endocrine Axis',
-    primarySymptom: 'PCOS/PCOD, Dysmenorrhea (Menstrual Cramps), Fertility Support, Menopause',
-    mechanism: 'Improves ovarian and uterine arterial blood flow, down-regulates pelvic prostaglandins, and stabilizes hypothalamic-pituitary-ovarian axis.',
-    reliefStats: 'Proven clinical support in regularizing cycles and relieving debilitating cramps.',
-    recommendedTechnique: 'Targeted pelvic meridian needle placement with gentle warming moxa.',
-    accompanyingPoints: ['CV4 (Gate of Origin)', 'SP6 (Three Yin Intersection)', 'KI3 (Great Ravine)']
+    label: 'Hormonal Axis',
+    fullName: 'Pelvic, Reproductive & Hormonal Axis',
+    points: 'CV4 (Guanyuan) • SP6 (Sanyinjiao) • Zigong',
+    clears: 'PCOS/PCOD, Severe Menstrual Cramps & Hormonal Fatigue',
+    relief: 'Clinically Stabilizes Cycles & Relieves Cramps',
+    method: 'Gentle Pelvic Needling + Thermal Moxibustion',
+    acupoints: ['CV4 Origin Gate', 'SP6 Three Yin', 'KI3 Great Ravine']
   },
   {
     id: 'lumbar',
-    name: 'Lumbar Spine, Sciatic Nerve & Limbs',
-    subname: 'Shenshu (BL23) • Huantiao (GB30) • Weizhong (BL40)',
-    meridian: 'Sciatic & Spinal Nerve Pathways',
-    clinicalSystem: 'Spinal & Neuromuscular System',
-    primarySymptom: 'Sciatica, Lumbar Disc Herniation, Sacroiliac Joint Pain, Piriformis Syndrome',
-    mechanism: 'Relieves sciatic nerve root compression, accelerates intervertebral disc microvascular perfusion, and releases piriformis spasms.',
-    reliefStats: 'Significant reduction in radiating leg pain; avoids unnecessary spinal surgeries.',
-    recommendedTechnique: 'Deep needle acupuncture paired with micro-current electro-stimulation.',
-    accompanyingPoints: ['BL23 (Kidney Shu)', 'GB30 (Jumping Circle)', 'BL40 (Middle of the Crook)']
+    label: 'Sciatica & Spine',
+    fullName: 'Lumbar Spine, Sciatic Nerve & Limbs',
+    points: 'BL23 (Shenshu) • GB30 (Huantiao) • BL40',
+    clears: 'Sciatica, Lumbar Disc Herniation & Radiating Nerve Pain',
+    relief: 'Rapid Pain Decompression (Avoids Surgery)',
+    method: 'Precision Needling + Micro-Current Electro-Stim',
+    acupoints: ['BL23 Kidney Shu', 'GB30 Jumping Circle', 'BL40 Crook']
   }
 ];
 
 export default function InteractiveMeridianExplorer({ onOpenBooking }) {
-  const [openRegionId, setOpenRegionId] = useState(CLINICAL_MERIDIAN_REGIONS[0].id);
-  const cardRefs = useRef({});
-
-  const toggleRegion = (id) => {
-    const nextId = openRegionId === id ? null : id;
-    setOpenRegionId(nextId);
-
-    // Keep expansion perfectly within viewport
-    if (nextId) {
-      setTimeout(() => {
-        const el = cardRefs.current[nextId];
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }, 120);
-    }
-  };
+  const [activeZone, setActiveZone] = useState(ZONES[0]);
 
   return (
-    <div id="meridian-explorer" className="w-full bg-white text-[#09090b] rounded-3xl border border-gray-200 p-6 sm:p-10 shadow-lg overflow-hidden">
+    <div id="meridian-explorer" className="w-full bg-white text-[#09090b] rounded-3xl border border-gray-200 p-5 sm:p-8 shadow-lg">
       
-      {/* Top Header — Clean, Minimalist, Direct */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6 mb-8"
-      >
-        <div className="space-y-2">
+      {/* Header — Short, Punchy */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-gray-200 pb-5 mb-6">
+        <div>
           <div className="inline-flex items-center space-x-2 text-xs uppercase tracking-wider text-[#e02868] font-bold">
             <HeartPulse className="w-4 h-4 text-[#e02868] animate-pulse" />
-            <span>Interactive Clinical Meridian Navigator</span>
+            <span>Targeted Clinical Pathways</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#09090b] tracking-tight">
-            Explore Targeted Treatment Pathways
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#09090b] tracking-tight mt-1">
+            Tap a Zone to Inspect Treatment
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 font-normal max-w-2xl leading-relaxed">
-            Tap any anatomical zone to inspect the exact nerve pathways, primary symptoms cleared, and documented recovery outcomes directly inline.
-          </p>
         </div>
+        <span className="text-xs text-gray-500 font-medium">
+          Select area below • Updates instantly
+        </span>
+      </div>
 
-        <div className="text-left md:text-right text-xs text-gray-500">
-          <span className="text-[#09090b] font-bold text-sm block">6 Anatomical Zones</span>
-          <p className="text-gray-500 font-medium">Curated by Dr. Nivedha (MD Acu)</p>
-        </div>
-      </motion.div>
-
-      {/* Accordion List: Direct Inline Expansion — Always Within Viewport */}
-      <div className="space-y-3.5">
-        {CLINICAL_MERIDIAN_REGIONS.map((region, idx) => {
-          const isOpen = openRegionId === region.id;
-
+      {/* 1. Touch & Hover Interactive Zone Pills (Always in View, Zero Page Shift) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5 mb-6">
+        {ZONES.map((zone) => {
+          const isSelected = activeZone.id === zone.id;
           return (
-            <motion.div
-              key={region.id}
-              ref={(el) => (cardRefs.current[region.id] = el)}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.5, delay: idx * 0.05, ease: [0.22, 1, 0.36, 1] }}
-              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                isOpen 
-                  ? 'border-[#e02868] bg-[#f8fafc] shadow-md ring-1 ring-[#e02868]/20' 
-                  : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50/60'
+            <motion.button
+              key={zone.id}
+              whileHover={{ y: -2, transition: { duration: 0.15 } }}
+              whileTap={{ scale: 0.94, transition: { duration: 0.1 } }}
+              onClick={() => setActiveZone(zone)}
+              className={`p-3 rounded-2xl text-left border transition-colors flex flex-col justify-between select-none relative overflow-hidden ${
+                isSelected
+                  ? 'bg-[#e02868] text-white border-[#e02868] shadow-md shadow-pink-500/20'
+                  : 'bg-[#f8fafc] text-gray-800 border-gray-200 hover:border-gray-300 hover:bg-gray-100/70'
               }`}
             >
-              {/* Accordion Trigger Header */}
-              <button
-                onClick={() => toggleRegion(region.id)}
-                className="w-full p-4 sm:p-5 flex items-center justify-between text-left transition-colors cursor-pointer select-none"
-                aria-expanded={isOpen}
-              >
-                <div className="flex items-center space-x-3.5 sm:space-x-4 pr-3">
-                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 font-mono text-xs font-bold transition-all ${
-                    isOpen 
-                      ? 'bg-[#e02868] text-white shadow-sm' 
-                      : 'bg-gray-100 text-gray-700'
-                  }`}>
-                    0{idx + 1}
-                  </div>
-
-                  <div>
-                    <h3 className={`font-display text-base sm:text-lg font-bold transition-colors ${
-                      isOpen ? 'text-[#e02868]' : 'text-[#09090b]'
-                    }`}>
-                      {region.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-0.5 font-normal">
-                      {region.subname}
-                    </p>
-                  </div>
-                </div>
-
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
-                  isOpen ? 'bg-[#e02868]/10 text-[#e02868] rotate-180' : 'bg-gray-100 text-gray-500'
+              <div className="flex items-center justify-between w-full mb-1">
+                <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
+                  isSelected ? 'text-pink-100' : 'text-gray-600'
                 }`}>
-                  <ChevronDown className="w-4 h-4" />
-                </div>
-              </button>
-
-              {/* Accordion Body: Silky Smooth Expand/Collapse Within Viewport */}
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    key="content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-4 sm:p-6 pt-0 border-t border-gray-200/80 space-y-4 bg-white">
-                      
-                      {/* System & Meridian Scope Pill */}
-                      <div className="pt-4 flex flex-wrap items-center justify-between gap-2 text-xs">
-                        <span className="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-[#e02868] font-bold">
-                          {region.clinicalSystem}
-                        </span>
-                        <span className="text-gray-500 font-medium">
-                          Channel: <strong className="text-gray-800">{region.meridian}</strong>
-                        </span>
-                      </div>
-
-                      {/* Primary Symptoms */}
-                      <div className="space-y-1.5">
-                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
-                          Primary Symptoms Cleared:
-                        </span>
-                        <div className="p-3.5 rounded-xl bg-[#f8fafc] border border-gray-200 text-sm font-semibold text-[#09090b] leading-relaxed">
-                          {region.primarySymptom}
-                        </div>
-                      </div>
-
-                      {/* Mechanism */}
-                      <div className="space-y-1.5">
-                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
-                          Biological & Nerve Mechanism:
-                        </span>
-                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-                          {region.mechanism}
-                        </p>
-                      </div>
-
-                      {/* Recovery Rate & Recommended Modality */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1">
-                          <span className="text-[10px] uppercase tracking-wider text-emerald-800 font-bold block">
-                            Documented Recovery Rate:
-                          </span>
-                          <p className="text-xs text-emerald-950 font-semibold leading-relaxed">
-                            {region.reliefStats}
-                          </p>
-                        </div>
-
-                        <div className="p-3.5 rounded-xl bg-pink-50 border border-pink-200 space-y-1">
-                          <span className="text-[10px] uppercase tracking-wider text-[#e02868] font-bold block">
-                            Recommended Modality:
-                          </span>
-                          <p className="text-xs text-gray-900 font-semibold leading-relaxed">
-                            {region.recommendedTechnique}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Key Acupoint Formulations */}
-                      <div className="space-y-2 pt-1">
-                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
-                          Targeted Acupoints:
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                          {region.accompanyingPoints.map((pt, pIdx) => (
-                            <span
-                              key={pIdx}
-                              className="px-3 py-1 rounded-lg bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-800"
-                            >
-                              {pt}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* One-Tap Action */}
-                      <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <span className="text-xs text-gray-500">
-                          Unhurried 1-on-1 pulse evaluation included.
-                        </span>
-                        <button
-                          onClick={() => onOpenBooking ? onOpenBooking(`Treatment for ${region.name}`, 600) : window.location.href = '#/booking'}
-                          className="btn-luxury-dark hover:bg-[#e02868] hover:border-[#e02868] px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center justify-center space-x-2 transition-all active:scale-95"
-                        >
-                          <span>Consult on {region.name.split(' ')[0]} (₹600)</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-
-                    </div>
-                  </motion.div>
+                  {zone.id.slice(0, 3)}
+                </span>
+                {isSelected && (
+                  <span className="w-2 h-2 rounded-full bg-white animate-ping" />
                 )}
-              </AnimatePresence>
-            </motion.div>
+              </div>
+              <span className="font-display text-xs sm:text-sm font-bold leading-tight line-clamp-1">
+                {zone.label}
+              </span>
+            </motion.button>
           );
         })}
+      </div>
+
+      {/* 2. Unified In-Place Treatment Card (Never Leaves Viewport, Minimal Text) */}
+      <div className="bg-[#f8fafc] rounded-2xl border border-gray-200/90 p-5 sm:p-7 relative overflow-hidden">
+        
+        {/* Soft Accent Aura */}
+        <div className="absolute top-0 right-0 w-48 h-48 bg-[#e02868]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeZone.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="space-y-4 relative z-10"
+          >
+            {/* Top Bar of Active Card */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/80 pb-3">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-[#e02868] uppercase font-bold block">
+                  SELECTED PATHWAY
+                </span>
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-[#09090b]">
+                  {activeZone.fullName}
+                </h3>
+              </div>
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold self-start sm:self-center">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{activeZone.relief}</span>
+              </div>
+            </div>
+
+            {/* Concise Symptoms & Clinical Method */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="p-3.5 rounded-xl bg-white border border-gray-200 space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+                  Conditions Cleared:
+                </span>
+                <p className="text-xs sm:text-sm font-bold text-gray-900 leading-snug">
+                  {activeZone.clears}
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-white border border-gray-200 space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-[#e02868] font-bold block">
+                  Clinical Protocol:
+                </span>
+                <p className="text-xs sm:text-sm font-semibold text-gray-900 leading-snug">
+                  {activeZone.method}
+                </p>
+              </div>
+            </div>
+
+            {/* Targeted Meridian Points Pill Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-[11px] text-gray-500 font-medium mr-1">Points:</span>
+                {activeZone.acupoints.map((pt, i) => (
+                  <span key={i} className="px-2.5 py-1 rounded-lg bg-white border border-gray-200 text-[11px] font-semibold text-gray-700">
+                    {pt}
+                  </span>
+                ))}
+              </div>
+
+              {/* Instant Book Action with Touch & Hover Micro-Animation */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => onOpenBooking ? onOpenBooking(`Treatment for ${activeZone.fullName}`, 600) : window.location.href = '#/booking'}
+                className="btn-luxury-dark hover:bg-[#e02868] hover:border-[#e02868] px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2 transition-all shadow-xs"
+              >
+                <span>Book This Zone (₹600)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </motion.button>
+            </div>
+
+          </motion.div>
+        </AnimatePresence>
+
       </div>
 
     </div>

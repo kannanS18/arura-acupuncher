@@ -6,7 +6,6 @@ import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
 import MeridianPulseWave from '../components/MeridianPulseWave';
-import BreathingGuide from '../components/BreathingGuide';
 
 export default function AboutPage({ onOpenBooking }) {
   const [selectedTech, setSelectedTech] = useState(0);
@@ -379,20 +378,6 @@ export default function AboutPage({ onOpenBooking }) {
 
           </div>
 
-        </div>
-      </section>
-
-      {/* Interactive Parasympathetic Respiration Guide Widget */}
-      <section className="py-12 bg-[#f8fafc] border-b border-gray-200/80">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <BreathingGuide />
-          </motion.div>
         </div>
       </section>
 
