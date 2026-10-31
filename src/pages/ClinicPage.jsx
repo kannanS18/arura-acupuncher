@@ -5,10 +5,12 @@ import { CLINIC_INFO, DOS_DONTS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import MeridianPulseWave from '../components/MeridianPulseWave';
+import StackedCards from '../components/ui/glass-cards';
 
 export default function ClinicPage({ onOpenBooking }) {
   const clinicalTreatments = [
     {
+      id: 1,
       code: "MED-01",
       title: "Initial Diagnostic Consultation & Pulse Mapping",
       subtitle: "First Visit Clinical Assessment",
@@ -18,14 +20,17 @@ export default function ClinicPage({ onOpenBooking }) {
       image: "doctor_nivedha_portrait.jpg",
       badge: "Clinical Intake & Diagnostics",
       summary: "Comprehensive 14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to pinpoint your original root imbalance before any needling begins.",
+      description: "Comprehensive 14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to pinpoint your original root imbalance before any needling begins.",
       features: [
         "14-Channel Radial Pulse Mapping",
         "Tongue Topography Analysis",
         "Autonomic Stress & Sleep Evaluation",
         "Personalized Treatment Roadmap"
-      ]
+      ],
+      color: "rgba(224, 40, 104, 0.8)"
     },
     {
+      id: 2,
       code: "MED-02",
       title: "Targeted Acupuncture Therapy",
       subtitle: "Meridian Pain & Autonomic Regulation",
@@ -35,14 +40,17 @@ export default function ClinicPage({ onOpenBooking }) {
       image: "authentic_acupuncture_needles.jpg",
       badge: "0.18mm Sterile Single-Use",
       summary: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along designated meridian points, paired with soothing localized infrared TDP mineral heat.",
+      description: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along designated meridian points, paired with soothing localized infrared TDP mineral heat.",
       features: [
         "Ethylene-Oxide Pre-Sterilized Needles",
         "Single-Use Only (Opened at Bedside)",
         "TDP Mineral Infrared Heat Therapy",
         "Complimentary Glass Cupping / Moxa"
-      ]
+      ],
+      color: "rgba(5, 150, 105, 0.8)"
     },
     {
+      id: 3,
       code: "MED-03",
       title: "Clinical Psychotherapy Session",
       subtitle: "Cognitive & Emotional Equilibrium",
@@ -52,14 +60,17 @@ export default function ClinicPage({ onOpenBooking }) {
       image: "zen_treatment.jpg",
       badge: "Private Acoustic Suite",
       summary: "Unhurried, strictly confidential psychotherapy in our sound-dampened acoustic room, integrating Cambridge-aligned CBT, REBT, and nervous system regulation.",
+      description: "Unhurried, strictly confidential psychotherapy in our sound-dampened acoustic room, integrating Cambridge-aligned CBT, REBT, and nervous system regulation.",
       features: [
         "Evidence-Based CBT & REBT Protocols",
         "Private Sound-Dampened Acoustic Suite",
         "Somatic Autonomic De-escalation",
         "100% Strict Confidential Medical Ethics"
-      ]
+      ],
+      color: "rgba(88, 28, 135, 0.8)"
     },
     {
+      id: 4,
       code: "MED-04",
       title: "Integrated Mind-Body Dual Session",
       subtitle: "Psychotherapy + Full Precision Needling",
@@ -69,12 +80,14 @@ export default function ClinicPage({ onOpenBooking }) {
       image: "acu_treatment1.jpg",
       badge: "Dual Multi-System Synergy",
       summary: "Our complete holistic treatment combining 40 minutes of cognitive dialogue with immediate full-body meridian acupuncture to dismantle chronic pain-spasm cycles.",
+      description: "Our complete holistic treatment combining 40 minutes of cognitive dialogue with immediate full-body meridian acupuncture to dismantle chronic pain-spasm cycles.",
       features: [
         "40 Min Focused Psychotherapy Dialogue",
         "Full-Body Classical Meridian Needling",
         "Vagus Nerve & Parasympathetic Reset",
         "Personalized At-Home Posture & Diet Guide"
-      ]
+      ],
+      color: "rgba(67, 56, 202, 0.8)"
     }
   ];
 
@@ -120,108 +133,21 @@ export default function ClinicPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* 2. Clinical Treatments with Authentic Photography & Scroll Reveal */}
-      <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      {/* 2. Clinical Treatments: Stacking Electric Glass Cards (GSAP) */}
+      <section className="py-20 lg:py-28 bg-ink text-white border-b border-neutral-800 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
-            <div className="space-y-1">
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink">
-                Treatment Modalities & Procedures
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-500 max-w-md">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              Treatment Modalities & Procedures
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400 max-w-md">
               Hospital-grade sterile single-use needles, infrared heat, and pulse diagnostics are unconditionally included.
             </p>
           </div>
 
-          {/* Treatment Cards Grid with Relevant Medical Photos */}
-          <div className="space-y-12">
-            {clinicalTreatments.map((treatment, idx) => (
-              <motion.div
-                key={treatment.code}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-surface-subtle rounded-3xl border border-gray-200 hover:border-brand/40 hover:shadow-xl transition-colors duration-200 overflow-hidden flex flex-col lg:flex-row group"
-              >
-                {/* Treatment Authentic Photo */}
-                <div className="lg:w-5/12 relative min-h-[260px] sm:min-h-[300px] overflow-hidden bg-gray-100">
-                  <img
-                    src={getAssetUrl(treatment.image)}
-                    alt={treatment.title}
-                    className="w-full h-full object-cover object-center"
-                    loading={idx === 0 ? "eager" : "lazy"}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent lg:hidden" />
-
-                  <div className="absolute bottom-4 left-4 lg:hidden text-white">
-                    <span className="text-xs font-bold text-pink-300 block">{treatment.code}</span>
-                    <span className="text-sm font-semibold">{treatment.duration}</span>
-                  </div>
-                </div>
-
-                {/* Treatment Details & Fee */}
-                <div className="lg:w-7/12 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-brand bg-pink-50 border border-pink-200 px-2.5 py-0.5 rounded-md">
-                          {treatment.code}
-                        </span>
-                        <span className="hidden lg:inline-flex items-center space-x-1 text-xs text-gray-500 font-medium">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>{treatment.duration}</span>
-                        </span>
-                      </div>
-
-                      {/* Fee Highlight */}
-                      <div className="text-right">
-                        <span className="font-display text-3xl font-bold text-ink group-hover:text-brand transition-colors">
-                          {treatment.fee}
-                        </span>
-                        <span className="text-xs text-gray-500 block">per session</span>
-                      </div>
-                    </div>
-
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
-                      {treatment.title}
-                    </h3>
-
-                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-                      {treatment.summary}
-                    </p>
-
-                    {/* Features checklist (clean editorial typography) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                      {treatment.features.map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-center space-x-2 text-xs sm:text-sm text-neutral-700 py-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-brand shrink-0" />
-                          <span className="font-medium">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Booking CTA */}
-                  <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="text-xs text-gray-500">
-                      Standard consultation fee. No hidden medicine markups.
-                    </div>
-
-                    <button
-                      onClick={() => onOpenBooking ? onOpenBooking(treatment.title, treatment.feeNum) : window.location.href = '#/booking'}
-                      className="btn-luxury-dark group-hover:bg-brand group-hover:border-brand px-6 py-3 rounded-xl text-xs font-semibold inline-flex items-center justify-center space-x-2 transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:scale-95 disabled:opacity-50"
-                    >
-                      <span>Book This Modality</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Stacking Electric Glass Cards with GSAP ScrollTrigger */}
+          <StackedCards items={clinicalTreatments} onOpenBooking={onOpenBooking} />
 
         </div>
       </section>
