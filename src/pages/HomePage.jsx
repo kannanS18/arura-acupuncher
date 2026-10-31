@@ -109,7 +109,7 @@ export default function HomePage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-tight tracking-tight">
+              <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-tight tracking-tight">
                 “We treat what the body whispers before it screams.”
               </h2>
               
@@ -161,7 +161,7 @@ export default function HomePage({ onOpenBooking }) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink tracking-tight">
+            <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink tracking-tight">
               Verified Patient Transformations
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 font-normal">
@@ -184,7 +184,7 @@ export default function HomePage({ onOpenBooking }) {
                   <span className="inline-block px-3 py-1 rounded-full bg-white text-brand text-xs font-semibold border border-neutral-200 shadow-xs">
                     {item.tag}
                   </span>
-                  <p className="font-serif text-base sm:text-lg text-neutral-800 italic leading-relaxed">
+                  <p className="font-sans text-base sm:text-lg text-neutral-800 italic leading-relaxed">
                     “{item.text}”
                   </p>
                 </div>
@@ -209,7 +209,7 @@ export default function HomePage({ onOpenBooking }) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
+            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
               Begin your journey to root recovery today.
             </h2>
             <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto font-normal leading-relaxed">

@@ -43,16 +43,16 @@ export default function HeroSection({ onOpenBooking }) {
               <span>Acupuncture and clinical psychotherapy in Chennai</span>
             </motion.div>
 
-            {/* Confident Minimalist Headline with Editorial Serif */}
+            {/* Confident Modern Human-Crafted Headline */}
             <motion.div 
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.7 }}
             >
-              <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
                 Heal the root cause, <br />
-                <span className="italic text-brand font-normal">not just the symptom.</span>
+                <span className="text-brand">not just the symptom.</span>
               </h1>
               <p className="text-base sm:text-xl text-neutral-600 font-normal leading-relaxed max-w-xl">
                 Classical 14-meridian acupuncture and certified psychotherapy by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Restoring chronic nerve pain, severe migraines, and autonomic burnout in Virugambakkam.

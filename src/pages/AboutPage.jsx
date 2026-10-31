@@ -84,9 +84,9 @@ export default function AboutPage({ onOpenBooking }) {
                 <span>The Arura Studio Origin and Ethos</span>
               </div>
 
-              <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
                 A quiet sanctuary for <br />
-                <span className="italic text-brand font-normal">evidence-based healing.</span>
+                <span className="text-brand">evidence-based healing.</span>
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
@@ -173,7 +173,7 @@ export default function AboutPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-[1.12] tracking-tight">
+              <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-[1.12] tracking-tight">
                 “The needle clears what the mind holds.”
               </h2>
               
@@ -268,9 +268,9 @@ export default function AboutPage({ onOpenBooking }) {
                 <span className="text-xs font-semibold text-brand block">
                   Clinical Modalities
                 </span>
-                <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink leading-tight">
+                <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink leading-tight">
                   Four Disciplines. <br />
-                  <span className="italic font-normal text-neutral-700">Zero Chemical Masking.</span>
+                  <span className="text-neutral-700">Zero Chemical Masking.</span>
                 </h2>
                 <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed pt-2">
                   Each session is custom-formulated from Dr. Nivedha’s diagnostic pulse mapping. We activate strategic peripheral nerves to dissipate myofascial tension and calm chronic sympathetic overdrive.
@@ -317,11 +317,11 @@ export default function AboutPage({ onOpenBooking }) {
                   {/* Subtle top indicator bar on hover */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* Header Row: Roman numeral, category, and spec */}
+                  {/* Header Row: Number, category, and spec */}
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 pb-5">
                     <div className="flex items-center space-x-3">
-                      <span className="font-serif text-2xl font-bold text-brand">
-                        {tech.roman}
+                      <span className="font-display text-xl font-bold text-brand">
+                        {tech.num}
                       </span>
                       <span className="h-4 w-px bg-neutral-200" />
                       <span className="text-xs text-neutral-500 font-medium">
@@ -336,7 +336,7 @@ export default function AboutPage({ onOpenBooking }) {
 
                   {/* Title & Description */}
                   <div className="space-y-3">
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                       {tech.title}
                     </h3>
                     <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
@@ -385,7 +385,7 @@ export default function AboutPage({ onOpenBooking }) {
             transition={{ duration: 0.7 }}
           >
             <div className="space-y-3 text-center md:text-left relative z-10">
-              <h3 className="font-serif text-2xl sm:text-4xl font-bold">
+              <h3 className="font-display text-2xl sm:text-4xl font-bold">
                 Chinmaya Nagar, Virugambakkam, Chennai
               </h3>
               <p className="text-sm text-neutral-300 font-normal max-w-lg">

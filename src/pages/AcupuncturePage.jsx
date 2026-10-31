@@ -151,7 +151,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                    <span className="font-serif text-2xl font-bold text-brand">
+                    <span className="font-display text-xl font-bold text-brand">
                       {m.id}
                     </span>
                     <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
@@ -159,7 +159,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                     {m.title}
                   </h3>
 

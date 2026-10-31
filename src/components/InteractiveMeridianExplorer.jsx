@@ -69,7 +69,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
   return (
     <div id="meridian-explorer" className="w-full bg-white text-ink">
       
-      {/* Section Header with Editorial Serif Typography */}
+      {/* Section Header with Crisp Modern Typography */}
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             <HeartPulse className="w-4 h-4 text-brand" />
             <span>Targeted Clinical Pathways</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink tracking-tight">
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink tracking-tight">
             Anatomical Treatment Zones
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 font-normal max-w-2xl leading-relaxed">
@@ -96,7 +96,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
         </div>
       </motion.div>
 
-      {/* Architectural Ledger Grid (No nested card boxes) */}
+      {/* Architectural Ledger Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {CLINICAL_ZONES.map((zone, idx) => (
           <motion.div
@@ -111,10 +111,10 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="space-y-5">
-              {/* Top row: Roman numeral & Relief verification */}
+              {/* Top row: Number & Relief verification */}
               <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                <span className="font-serif text-2xl font-bold text-brand">
-                  {zone.roman}
+                <span className="font-display text-xl font-bold text-brand">
+                  {zone.id}
                 </span>
                 
                 <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
@@ -124,7 +124,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
 
               {/* Zone title & nerve points */}
               <div>
-                <h3 className="font-serif text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                   {zone.name}
                 </h3>
                 <p className="text-xs text-neutral-500 mt-1.5 font-medium">

@@ -58,19 +58,26 @@ body {
   animation-play-state: paused;
 }
 
+* {
+  font-variant-numeric: lining-nums;
+}
+
 h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
-  font-family: 'Outfit', sans-serif;
-  letter-spacing: -0.02em;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.025em;
+  font-variant-numeric: lining-nums;
 }
 
 .font-serif, .font-editorial {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  letter-spacing: -0.01em;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.025em;
+  font-variant-numeric: lining-nums;
 }
 
 .font-mono {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 /* Subtle architectural paper texture for human-crafted sanctuary feel */

@@ -272,7 +272,7 @@ export default function DoctorPage({ onOpenBooking }) {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="border-l-2 border-brand pl-6 space-y-4">
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink leading-tight">
+                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-ink leading-tight">
                   “True physical recovery begins when we address the autonomic nervous system alongside the musculoskeletal injury.”
                 </h2>
                 <p className="text-xs text-neutral-500 font-medium">
@@ -301,7 +301,7 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="p-7 rounded-2xl bg-white border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
                 <div className="flex items-center space-x-3 text-brand">
                   <Stethoscope className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-ink">
                     Pillar I: Classical 14-Meridian Acupuncture
                   </h3>
                 </div>
@@ -313,7 +313,7 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="p-7 rounded-2xl bg-white border border-neutral-200 hover:border-brand transition-colors duration-200 space-y-3">
                 <div className="flex items-center space-x-3 text-brand">
                   <HeartPulse className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-ink">
                     Pillar II: Cambridge Evidence-Based Counselling
                   </h3>
                 </div>
@@ -325,7 +325,7 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="p-7 rounded-2xl bg-ink text-white space-y-3 border border-neutral-800">
                 <div className="flex items-center space-x-3 text-brand">
                   <ShieldCheck className="w-5 h-5 text-brand flex-shrink-0" />
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
                     The Result: Restorative Root-Cause Recovery
                   </h3>
                 </div>

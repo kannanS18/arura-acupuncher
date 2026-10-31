@@ -193,7 +193,7 @@ export default function ClinicPage({ onOpenBooking }) {
                       </div>
                     </div>
 
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
+                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                       {treatment.title}
                     </h3>
 
