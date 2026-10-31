@@ -134,28 +134,7 @@ export default function ClinicPage({ onOpenBooking }) {
       </section>
 
       {/* 2. Clinical Treatments: Stacking Electric Glass Cards (GSAP) */}
-      <section className="py-20 lg:py-28 bg-white text-ink border-b border-gray-200/80 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6">
-            <div>
-              <p className="text-xs text-brand font-semibold tracking-normal">
-                Transparent Sanctuary Tariff
-              </p>
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink mt-2">
-                Treatment Modalities & Procedures
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-neutral-600 max-w-md font-medium">
-              Hospital-grade sterile single-use needles, infrared heat, and pulse diagnostics are unconditionally included.
-            </p>
-          </div>
-
-          {/* Stacking Electric Glass Cards with GSAP ScrollTrigger (White Background) */}
-          <StackedCards items={clinicalTreatments} onOpenBooking={onOpenBooking} />
-
-        </div>
-      </section>
+      <StackedCards items={clinicalTreatments} onOpenBooking={onOpenBooking} />
 
       {/* 3. Patient Guidelines: DOs and DON'Ts */}
       <section className="py-20 lg:py-24 bg-surface-subtle border-b border-gray-200/80">
