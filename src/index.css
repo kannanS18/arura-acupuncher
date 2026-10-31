@@ -239,46 +239,31 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
   animation: pulseGlow 2.5s ease-in-out infinite;
 }
 
-/* 3D Cut-out Object & Floating Perspectives (21st.dev / Award-Winning Style) */
-.perspective-container {
-  perspective: 1200px;
-}
-
-@keyframes float3D {
+/* Clinical Sanctuary Glass Card with Calm Levitation (ZERO Tilt, Pure Serenity) */
+@keyframes pureFloat {
   0%, 100% {
-    transform: translateY(0px) rotateY(-8deg) rotateX(4deg);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px) rotateY(-4deg) rotateX(1deg);
+    transform: translateY(-8px);
   }
 }
 
-.animate-float-3d {
-  animation: float3D 6s ease-in-out infinite;
-  transform-style: preserve-3d;
+.animate-pure-float {
+  animation: pureFloat 5s ease-in-out infinite;
 }
 
-.card-3d-cutout {
-  transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
-}
-
-.card-3d-cutout:hover {
-  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-6px);
-  box-shadow: 0 25px 50px -12px rgba(224, 40, 104, 0.18), 0 0 0 1px rgba(224, 40, 104, 0.3);
-}
-
-/* Interactive Specialty Card with Scroll/Hover Depth */
-.specialty-card-3d {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.clinical-sanctuary-card {
   background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
-.specialty-card-3d:hover {
-  transform: translateY(-6px) scale(1.01);
+.clinical-sanctuary-card:hover {
+  transform: translateY(-4px);
   border-color: #e02868;
-  box-shadow: 0 20px 40px -10px rgba(224, 40, 104, 0.12), 0 0 0 1px #e02868;
+  box-shadow: 0 20px 40px -12px rgba(224, 40, 104, 0.15), 0 0 0 1px #e02868;
 }
 
 /* Scroll Fade & Reveal */

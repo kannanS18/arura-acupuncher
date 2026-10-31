@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { CLINIC_INFO, ACUPUNCTURE_TECHNIQUES, COUNSELLING_METHODS } from '../data/websiteContent';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
+import AnimatedCounter from '../components/AnimatedCounter';
+import MeridianPulseWave from '../components/MeridianPulseWave';
+import BreathingGuide from '../components/BreathingGuide';
 
 export default function AboutPage({ onOpenBooking }) {
   const [selectedTech, setSelectedTech] = useState(0);
@@ -108,14 +111,14 @@ export default function AboutPage({ onOpenBooking }) {
               </div>
             </motion.div>
 
-            {/* Right Column (5 cols): 3D Needle Object Showcase with Float Animation */}
+            {/* Right Column (5 cols): Calm Clinical Showcase (ZERO Tilt, Smooth Levitation) */}
             <motion.div 
-              className="lg:col-span-5 perspective-container"
+              className="lg:col-span-5"
               initial={{ opacity: 0, scale: 0.95, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="card-3d-cutout rounded-3xl bg-white/95 backdrop-blur-xl border border-gray-200/90 p-8 shadow-2xl relative overflow-hidden group animate-serene-float">
+              <div className="clinical-sanctuary-card rounded-3xl bg-white/95 backdrop-blur-xl border border-gray-200/90 p-8 shadow-xl relative overflow-hidden group animate-pure-float">
                 
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#e02868]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -137,8 +140,8 @@ export default function AboutPage({ onOpenBooking }) {
                   <div className="relative w-full max-w-[340px] flex items-center justify-center">
                     <img 
                       src={getAssetUrl('needles_cutout_3d.png')} 
-                      alt="0.18mm Hair-Thin Surgical Acupuncture Needles 3D Cutout" 
-                      className="w-full h-auto max-h-56 object-contain filter drop-shadow-[0_15px_20px_rgba(0,0,0,0.15)] group-hover:scale-105 transition-transform duration-500 ease-out"
+                      alt="0.18mm Hair-Thin Surgical Acupuncture Needles" 
+                      className="w-full h-auto max-h-56 object-contain filter drop-shadow-[0_15px_20px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
                   </div>
 
@@ -157,6 +160,11 @@ export default function AboutPage({ onOpenBooking }) {
             </motion.div>
 
           </div>
+        </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-8">
+          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 
@@ -194,10 +202,12 @@ export default function AboutPage({ onOpenBooking }) {
                 </p>
               </div>
 
-              {/* 3 Metric Anchors */}
+              {/* 3 Metric Anchors with Animated Counter Numbers */}
               <div className="pt-4 flex items-center space-x-6 sm:space-x-8 text-xs border-t border-gray-100">
                 <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-[#09090b] font-display block">100%</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-[#09090b] font-display block">
+                    <AnimatedCounter end={100} suffix="%" />
+                  </span>
                   <span className="text-gray-500 font-medium">Single-Use Needles</span>
                 </div>
                 <div className="h-10 w-px bg-gray-200" />
@@ -207,7 +217,9 @@ export default function AboutPage({ onOpenBooking }) {
                 </div>
                 <div className="h-10 w-px bg-gray-200" />
                 <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-emerald-700 font-display block">8+ Yrs</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-emerald-700 font-display block">
+                    <AnimatedCounter end={8} suffix="+ Yrs" />
+                  </span>
                   <span className="text-gray-500 font-medium">Chennai Experience</span>
                 </div>
               </div>
@@ -367,6 +379,20 @@ export default function AboutPage({ onOpenBooking }) {
 
           </div>
 
+        </div>
+      </section>
+
+      {/* Interactive Parasympathetic Respiration Guide Widget */}
+      <section className="py-12 bg-[#f8fafc] border-b border-gray-200/80">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+          >
+            <BreathingGuide />
+          </motion.div>
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { CLINIC_INFO } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
+import AnimatedCounter from './AnimatedCounter';
 
 export default function HeroSection({ onOpenBooking }) {
   return (
@@ -103,11 +104,11 @@ export default function HeroSection({ onOpenBooking }) {
             >
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>100% Single-Use Needles</span>
+                <span><AnimatedCounter end={100} suffix="%" /> Single-Use Needles</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-[#e02868] flex-shrink-0" />
-                <span>8+ Yrs • 1,100+ Recoveries</span>
+                <span><AnimatedCounter end={8} suffix="+ Yrs" /> • <AnimatedCounter end={1100} suffix="+ Recoveries" /></span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0" />

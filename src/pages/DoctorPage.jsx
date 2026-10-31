@@ -3,6 +3,9 @@ import { Award, GraduationCap, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, 
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
+import { motion } from 'framer-motion';
+import AnimatedCounter from '../components/AnimatedCounter';
+import MeridianPulseWave from '../components/MeridianPulseWave';
 
 export default function DoctorPage({ onOpenBooking }) {
   const credentials = [
@@ -107,21 +110,27 @@ export default function DoctorPage({ onOpenBooking }) {
                 Eight years of dedicated clinical practice integrating classical 14-meridian acupuncture with Cambridge evidence-based psychotherapy. Focused on eliminating chronic musculoskeletal pain and restoring autonomic nervous system equilibrium.
               </p>
 
-              {/* Key Verification Badges in Banner */}
+              {/* Key Verification Badges in Banner with Animated Counters */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10">
                   <span className="text-[11px] uppercase tracking-wider text-white/50 block font-mono">PRACTICE</span>
-                  <span className="text-xl font-bold text-white block mt-0.5">8+ Years</span>
+                  <span className="text-xl font-bold text-white block mt-0.5">
+                    <AnimatedCounter end={8} suffix="+ Years" />
+                  </span>
                   <span className="text-xs text-white/60">Clinical Experience</span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10">
                   <span className="text-[11px] uppercase tracking-wider text-white/50 block font-mono">RECOVERIES</span>
-                  <span className="text-xl font-bold text-[#e02868] block mt-0.5">1,100+</span>
+                  <span className="text-xl font-bold text-[#e02868] block mt-0.5">
+                    <AnimatedCounter end={1100} suffix="+" />
+                  </span>
                   <span className="text-xs text-white/60">Documented Patients</span>
                 </div>
                 <div className="col-span-2 sm:col-span-1 p-3.5 rounded-xl bg-white/5 border border-white/10">
                   <span className="text-[11px] uppercase tracking-wider text-white/50 block font-mono">PROTOCOL</span>
-                  <span className="text-xl font-bold text-white block mt-0.5">100%</span>
+                  <span className="text-xl font-bold text-white block mt-0.5">
+                    <AnimatedCounter end={100} suffix="%" />
+                  </span>
                   <span className="text-xs text-white/60">Single-Use Sterile</span>
                 </div>
               </div>
@@ -130,7 +139,7 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
                   onClick={() => onOpenBooking('Consultation with Dr. Nivedha', 600)}
-                  className="btn-luxury-pink px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-lg flex items-center justify-center space-x-2 transition-all"
+                  className="btn-luxury-pink px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-lg flex items-center justify-center space-x-2 transition-all active:scale-95"
                 >
                   <span>Book Consultation with Dr. Nivedha (₹600)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -145,9 +154,9 @@ export default function DoctorPage({ onOpenBooking }) {
 
             </div>
 
-            {/* Right Column: Authentic Doctor ID Card Badge */}
+            {/* Right Column: Authentic Doctor ID Card Badge with Calm Levitation (ZERO Tilt) */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-md bg-white text-[#09090b] rounded-3xl shadow-2xl border-2 border-white/20 overflow-hidden relative">
+              <div className="w-full max-w-md bg-white text-[#09090b] rounded-3xl shadow-2xl border-2 border-white/20 overflow-hidden relative animate-pure-float">
                 
                 {/* Lanyard Slot Hole at Top */}
                 <div className="bg-[#09090b] pt-3 pb-2 flex justify-center border-b border-gray-800">
@@ -256,6 +265,11 @@ export default function DoctorPage({ onOpenBooking }) {
           </div>
 
         </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-6">
+          <MeridianPulseWave color="#e02868" />
+        </div>
       </section>
 
       {/* =========================================================================
@@ -335,6 +349,11 @@ export default function DoctorPage({ onOpenBooking }) {
           </div>
 
         </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-6">
+          <MeridianPulseWave color="#e02868" />
+        </div>
       </section>
 
       {/* =========================================================================
@@ -394,6 +413,11 @@ export default function DoctorPage({ onOpenBooking }) {
             ))}
           </div>
 
+        </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-6">
+          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 
@@ -459,6 +483,11 @@ export default function DoctorPage({ onOpenBooking }) {
             ))}
           </div>
 
+        </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-6">
+          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { Sparkles, Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, Ma
 import { CLINIC_INFO, DOS_DONTS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
+import MeridianPulseWave from '../components/MeridianPulseWave';
 
 export default function ClinicPage({ onOpenBooking }) {
   const clinicalTreatments = [
@@ -112,6 +113,11 @@ export default function ClinicPage({ onOpenBooking }) {
               Every treatment is conducted in private acoustic suites using 100% single-use sterile needles and unhurried clinical attention. Transparent tariffs with zero hidden charges.
             </motion.p>
           </div>
+        </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-6">
+          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 
