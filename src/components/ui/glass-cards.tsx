@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cardData, TreatmentCardItem } from '../../lib/utils';
-import { getAssetUrl } from '../../utils/assetUrl';
-import { CheckCircle2, Clock, CalendarCheck } from 'lucide-react';
+import { CheckCircle2, Clock } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,8 +35,6 @@ export const Card: React.FC<CardProps> = ({
     duration,
     fee,
     feeNum = 600,
-    image,
-    badge,
     features = [],
     onOpenBooking
 }) => {
@@ -57,8 +54,8 @@ export const Card: React.FC<CardProps> = ({
             transformOrigin: "center top"
         });
 
-        // Create scroll trigger for stacking effect
-        const st = ScrollTrigger.create({
+        // Create scroll trigger for stacking effect (exact user math and movement)
+        ScrollTrigger.create({
             trigger: container,
             start: "top center",
             end: "bottom center",
@@ -75,7 +72,7 @@ export const Card: React.FC<CardProps> = ({
         });
 
         return () => {
-            st.kill();
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, [index, totalCards]);
 
@@ -83,236 +80,250 @@ export const Card: React.FC<CardProps> = ({
         <div
             ref={containerRef}
             style={{
-                minHeight: '80vh',
+                height: '100vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: 'sticky',
-                top: '80px',
-                padding: '1rem 0'
+                top: 0
             }}
         >
             <div
                 ref={cardRef}
                 style={{
                     position: 'relative',
-                    width: '92%',
-                    maxWidth: '1040px',
-                    minHeight: '480px',
-                    borderRadius: '28px',
+                    width: '70%',
+                    height: '450px',
+                    borderRadius: '24px',
                     isolation: 'isolate',
-                    top: `calc(-2vh + ${index * 20}px)`,
+                    top: `calc(-5vh + ${index * 25}px)`,
                     transformOrigin: 'top'
                 }}
-                className="card-content"
+                className="card-content w-[92%] sm:w-[82%] lg:w-[70%]"
             >
                 {/* Electric Border Effect */}
                 <div
                     style={{
                         position: 'absolute',
-                        inset: '-2.5px',
-                        borderRadius: '30px',
-                        padding: '2.5px',
+                        inset: '-3px',
+                        borderRadius: '27px',
+                        padding: '3px',
                         background: `conic-gradient(
                             from 0deg,
                             transparent 0deg,
                             ${color} 60deg,
-                            ${color.replace('0.8', '0.5')} 120deg,
+                            ${color.replace('0.8', '0.6')} 120deg,
                             transparent 180deg,
-                            ${color.replace('0.8', '0.3')} 240deg,
+                            ${color.replace('0.8', '0.4')} 240deg,
                             transparent 360deg
                         )`,
                         zIndex: -1
                     }}
                 />
 
-                {/* Main Glass Card Content */}
-                <div style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    borderRadius: '28px',
-                    background: `
-                        linear-gradient(145deg, 
-                            rgba(18, 18, 22, 0.94), 
-                            rgba(10, 10, 12, 0.97)
-                        )
-                    `,
-                    backdropFilter: 'blur(28px) saturate(180%)',
-                    border: '1px solid rgba(255, 255, 255, 0.14)',
-                    boxShadow: `
-                        0 20px 50px rgba(0, 0, 0, 0.45),
-                        0 4px 12px rgba(0, 0, 0, 0.25),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-                        inset 0 -1px 0 rgba(255, 255, 255, 0.08)
-                    `,
-                    overflow: 'hidden'
-                }}>
-                    {/* Enhanced Glass reflection overlay */}
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        height: '45%',
-                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 60%, transparent 100%)',
-                        pointerEvents: 'none',
-                        borderRadius: '28px 28px 0 0'
-                    }} />
-
-                    {/* Glass shine effect */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '12px',
-                        left: '16px',
-                        right: '16px',
-                        height: '1.5px',
-                        background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
-                        borderRadius: '1px',
-                        pointerEvents: 'none'
-                    }} />
-
-                    {/* Side glass reflection */}
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '2px',
+                {/* Main Card Content (Pristine Light Glass Sanctuary Aesthetic) */}
+                <div 
+                    style={{
+                        position: 'relative',
+                        width: '100%',
                         height: '100%',
-                        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%)',
-                        borderRadius: '28px 0 0 28px',
-                        pointerEvents: 'none'
-                    }} />
-
-                    {/* Frosted glass micro-texture */}
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundImage: `
-                            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 1px, transparent 2px),
-                            radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04) 1px, transparent 2px),
-                            radial-gradient(circle at 40% 80%, rgba(255,255,255,0.03) 1px, transparent 2px)
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        borderRadius: '24px',
+                        background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.88))',
+                        backdropFilter: 'blur(25px) saturate(180%)',
+                        border: '1px solid rgba(15, 23, 42, 0.08)',
+                        boxShadow: `
+                            0 20px 45px -15px rgba(15, 23, 42, 0.09),
+                            0 0 0 1px rgba(15, 23, 42, 0.05),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.95),
+                            inset 0 -1px 0 rgba(0, 0, 0, 0.04)
                         `,
-                        backgroundSize: '30px 30px, 25px 25px, 35px 35px',
-                        pointerEvents: 'none',
-                        borderRadius: '28px',
-                        opacity: 0.6
-                    }} />
-
-                    {/* Content Layer (Grid Layout: Photo + Clinical Details) */}
-                    <div className="relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row gap-6 lg:gap-10 items-stretch justify-between h-full text-white">
-                        
-                        {/* Left: Authentic Photography / Imagery Frame */}
-                        {image && (
-                            <div className="lg:w-5/12 relative rounded-2xl overflow-hidden border border-white/10 min-h-[220px] sm:min-h-[260px] bg-neutral-900 flex-shrink-0 group">
-                                <img 
-                                    src={getAssetUrl(image)} 
-                                    alt={title}
-                                    className="w-full h-full object-cover object-center"
+                        padding: '36px',
+                        overflow: 'hidden'
+                    }}
+                >
+                    <div 
+                        style={{
+                            position: 'relative',
+                            zIndex: 2,
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+                        <div>
+                            {/* Header Tag */}
+                            <div 
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '6px 14px',
+                                    borderRadius: '20px',
+                                    background: 'rgba(15, 23, 42, 0.04)',
+                                    backdropFilter: 'blur(10px)',
+                                    border: '1px solid rgba(15, 23, 42, 0.08)',
+                                    marginBottom: '16px'
+                                }}
+                            >
+                                <span 
+                                    style={{
+                                        width: '7px',
+                                        height: '7px',
+                                        borderRadius: '50%',
+                                        backgroundColor: color.replace('0.8', '1')
+                                    }} 
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                
-                                {badge && (
-                                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[11px] font-semibold text-white/90">
-                                        {badge}
-                                    </div>
-                                )}
-
-                                <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between text-white">
-                                    <span className="text-xs font-bold text-pink-300 font-mono">{code || `MED-0${id}`}</span>
-                                    {duration && (
-                                        <span className="text-[11px] text-white/80 font-medium flex items-center space-x-1">
-                                            <Clock className="w-3 h-3 text-white/60" />
-                                            <span>{duration}</span>
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Right: Clinical Procedure Spec & Booking */}
-                        <div className="flex-1 flex flex-col justify-between space-y-5">
-                            <div className="space-y-4">
-                                
-                                {/* Header Row: Code & Fee */}
-                                <div className="flex items-baseline justify-between border-b border-white/10 pb-3">
-                                    <div className="space-y-0.5">
-                                        <span className="text-xs font-semibold text-pink-400 font-mono block">
-                                            {code || `PROCEDURE 0${id}`}
-                                        </span>
-                                        {subtitle && (
-                                            <span className="text-xs text-neutral-400 font-normal">
-                                                {subtitle}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {fee && (
-                                        <div className="text-right">
-                                            <span className="font-display text-3xl font-bold text-white tracking-tight tabular-nums block">
-                                                {fee}
-                                            </span>
-                                            <span className="text-xs text-neutral-400 font-normal block">
-                                                per session
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Title */}
-                                <h3 className="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">
-                                    {title}
-                                </h3>
-
-                                {/* Clinical Description */}
-                                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal">
-                                    {description}
-                                </p>
-
-                                {/* Features Checklist */}
-                                {features.length > 0 && (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/10">
-                                        {features.map((feat, fIdx) => (
-                                            <div key={fIdx} className="flex items-center space-x-2 text-xs text-neutral-300">
-                                                <CheckCircle2 className="w-3.5 h-3.5 text-pink-400 shrink-0" />
-                                                <span className="truncate">{feat}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                            </div>
-
-                            {/* Booking Action Footer */}
-                            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                                <span className="text-[11px] text-neutral-400 font-normal">
-                                    100% sterile single-use surgical needles included
-                                </span>
-
-                                <button
-                                    onClick={() => {
-                                        if (onOpenBooking) {
-                                            onOpenBooking(title, feeNum);
-                                        } else {
-                                            window.location.hash = '#/booking';
-                                        }
+                                <span 
+                                    style={{
+                                        fontSize: '11px',
+                                        fontWeight: '700',
+                                        color: color.replace('0.8', '1'),
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px'
                                     }}
-                                    className="px-6 py-3 rounded-xl text-xs font-semibold bg-brand hover:bg-brand-dark text-white flex items-center space-x-2 transition-colors duration-200 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95"
                                 >
-                                    <CalendarCheck className="w-3.5 h-3.5" />
-                                    <span>Schedule session ({fee || '₹600'})</span>
-                                </button>
+                                    {code || `Modality 0${index + 1}`} {duration ? `· ${duration}` : ''}
+                                </span>
                             </div>
 
+                            {/* Card Title */}
+                            <h3 
+                                style={{
+                                    fontSize: '26px',
+                                    fontWeight: '800',
+                                    color: '#09090b',
+                                    marginBottom: '8px',
+                                    lineHeight: '1.25',
+                                    letterSpacing: '-0.02em'
+                                }}
+                                className="font-display"
+                            >
+                                {title}
+                            </h3>
+
+                            {subtitle && (
+                                <p 
+                                    style={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        color: '#64748b',
+                                        marginBottom: '12px'
+                                    }}
+                                >
+                                    {subtitle}
+                                </p>
+                            )}
+
+                            {/* Description */}
+                            <p 
+                                style={{
+                                    fontSize: '14px',
+                                    color: '#334155',
+                                    lineHeight: '1.6',
+                                    maxWidth: '92%'
+                                }}
+                            >
+                                {description}
+                            </p>
+
+                            {/* Features List */}
+                            {features.length > 0 && (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-4">
+                                    {features.slice(0, 4).map((feat, fIdx) => (
+                                        <div key={fIdx} className="flex items-center space-x-2 text-xs text-neutral-700">
+                                            <CheckCircle2 
+                                                className="w-3.5 h-3.5 flex-shrink-0" 
+                                                style={{ color: color.replace('0.8', '1') }} 
+                                            />
+                                            <span className="truncate">{feat}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
-                    </div>
+                        {/* Bottom Actions Row */}
+                        <div 
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                paddingTop: '20px',
+                                borderTop: '1px solid rgba(15, 23, 42, 0.08)'
+                            }}
+                        >
+                            <div 
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'baseline',
+                                    gap: '8px'
+                                }}
+                            >
+                                <span 
+                                    style={{
+                                        fontSize: '28px',
+                                        fontWeight: '800',
+                                        color: '#09090b',
+                                        letterSpacing: '-0.03em'
+                                    }}
+                                    className="font-display tabular-nums"
+                                >
+                                    {fee || '₹600'}
+                                </span>
+                                <span 
+                                    style={{
+                                        fontSize: '12px',
+                                        color: '#64748b',
+                                        fontWeight: '500'
+                                    }}
+                                >
+                                    {duration || 'Per Session'}
+                                </span>
+                            </div>
 
+                            <button 
+                                onClick={() => {
+                                    if (onOpenBooking) {
+                                        onOpenBooking(title, feeNum);
+                                    } else {
+                                        window.location.hash = '#/booking';
+                                    }
+                                }}
+                                style={{
+                                    padding: '10px 22px',
+                                    borderRadius: '12px',
+                                    background: '#09090b',
+                                    border: '1px solid rgba(15, 23, 42, 0.2)',
+                                    color: '#ffffff',
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.25s ease',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = '#e02868';
+                                    e.currentTarget.style.borderColor = '#e02868';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = '#09090b';
+                                    e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.2)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
+                            >
+                                <span>Book Session</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -324,49 +335,27 @@ export interface StackedCardsProps {
     onOpenBooking?: (service: string, price: number) => void;
 }
 
-export const StackedCards: React.FC<StackedCardsProps> = ({ 
-    items = cardData, 
-    onOpenBooking 
-}) => {
-    const containerRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        gsap.fromTo(container,
-            { opacity: 0 },
-            {
-                opacity: 1,
-                duration: 1.0,
-                ease: "power2.out"
-            }
-        );
-    }, []);
-
+const StackedCards: React.FC<StackedCardsProps> = ({ items, onOpenBooking }) => {
+    const list = items || cardData;
     return (
-        <section ref={containerRef} className="w-full relative py-12">
-            {items.map((card, index) => (
+        <div 
+            style={{
+                position: 'relative',
+                background: '#ffffff',
+                minHeight: '100vh',
+                padding: '40px 0'
+            }}
+        >
+            {list.map((card, index) => (
                 <Card
                     key={card.id}
-                    id={card.id}
-                    title={card.title}
-                    description={card.description}
+                    {...card}
                     index={index}
-                    totalCards={items.length}
-                    color={card.color}
-                    code={card.code}
-                    subtitle={card.subtitle}
-                    duration={card.duration}
-                    fee={card.fee}
-                    feeNum={card.feeNum}
-                    image={card.image}
-                    badge={card.badge}
-                    features={card.features}
+                    totalCards={list.length}
                     onOpenBooking={onOpenBooking}
                 />
             ))}
-        </section>
+        </div>
     );
 };
 
