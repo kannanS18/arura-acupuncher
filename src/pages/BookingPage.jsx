@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Sparkles, Calendar, Clock, PhoneCall, MessageCircle, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
+import MeridianPulseWave from '../components/MeridianPulseWave';
 
 export default function BookingPage() {
   const [selectedService, setSelectedService] = useState({
@@ -43,10 +45,15 @@ export default function BookingPage() {
   return (
     <div className="bg-white text-[#09090b] min-h-screen">
       
-      {/* Header */}
+      {/* Header with Scroll Reveal */}
       <section className="pt-24 pb-20 bg-ambient-light border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-3xl space-y-6"
+          >
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs uppercase tracking-wider text-[#e02868] font-bold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Sanctuary Concierge & Scheduling</span>
@@ -60,18 +67,29 @@ export default function BookingPage() {
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
               Appointments are held strictly 1-on-1 in sound-dampened acoustic rooms at our Virugambakkam sanctuary. Prior scheduling is required to protect patient confidentiality.
             </p>
-          </div>
+          </motion.div>
+        </div>
+
+        {/* Biological Meridian Pulse Line Divider */}
+        <div className="pt-8">
+          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 
-      {/* Main Booking Interface — Clean, Minimalist, Clutter-Free */}
+      {/* Main Booking Interface — Clean, Minimalist, Clutter-Free with Scroll Reveals */}
       <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <form onSubmit={handleWhatsAppBooking} className="space-y-12">
             
             {/* Step 1: Select Service */}
-            <div className="space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-4"
+            >
               <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold block">
                 Step 01 • Select Treatment Modality
               </span>
@@ -83,8 +101,10 @@ export default function BookingPage() {
                 {services.map((srv, idx) => {
                   const isSelected = selectedService.title === srv.title;
                   return (
-                    <div
+                    <motion.div
                       key={idx}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
                       onClick={() => setSelectedService(srv)}
                       className={`p-6 rounded-2xl cursor-pointer border transition-all flex flex-col justify-between space-y-3 ${
                         isSelected
@@ -113,14 +133,20 @@ export default function BookingPage() {
                           {isSelected ? '✓ Selected' : 'Click to Select'}
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
 
             {/* Step 2: Patient Information */}
-            <div className="space-y-6 pt-6 border-t border-gray-200">
+            <motion.div 
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6 pt-6 border-t border-gray-200"
+            >
               <div className="space-y-1">
                 <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold block">
                   Step 02 • Patient Details & Preferred Time
@@ -131,8 +157,8 @@ export default function BookingPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-gray-700 block">
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
                     Patient Full Name *
                   </label>
                   <input
@@ -145,13 +171,12 @@ export default function BookingPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-gray-700 block">
-                    Phone / WhatsApp Number *
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                    Contact Phone Number (WhatsApp Enabled)
                   </label>
                   <input
                     type="tel"
-                    required
                     placeholder="+91 98765 43210"
                     value={patientPhone}
                     onChange={(e) => setPatientPhone(e.target.value)}
@@ -159,8 +184,8 @@ export default function BookingPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-gray-700 block">
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
                     Preferred Date
                   </label>
                   <input
@@ -171,8 +196,8 @@ export default function BookingPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-bold text-gray-700 block">
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
                     Preferred Time Window
                   </label>
                   <select
@@ -181,52 +206,52 @@ export default function BookingPage() {
                     className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868] bg-white"
                   >
                     <option>Morning (10:00 AM – 1:00 PM)</option>
-                    <option>Afternoon (2:00 PM – 5:00 PM)</option>
-                    <option>Evening (5:00 PM – 8:00 PM)</option>
+                    <option>Afternoon (1:00 PM – 4:00 PM)</option>
+                    <option>Evening (4:00 PM – 8:00 PM)</option>
                   </select>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-bold text-gray-700 block">
-                  Primary Medical Condition / Symptoms (Optional)
+              <div>
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-2">
+                  Primary Health Distress / Chief Complaint
                 </label>
                 <textarea
-                  rows="3"
-                  placeholder="e.g. Chronic cervical spondylosis, migraine headaches, sciatica, emotional anxiety, insomnia..."
+                  rows={3}
+                  placeholder="Describe your health concern (e.g. cervical spondylosis, migraine frequency, sleep trouble, sciatica)..."
                   value={healthConcern}
                   onChange={(e) => setHealthConcern(e.target.value)}
-                  className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#e02868] focus:ring-1 focus:ring-[#e02868]"
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Submission Desk */}
-            <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="text-xs text-gray-500">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 inline mr-1" />
-                <span>Zero registration charges. 100% single-use needle guarantee.</span>
+            {/* Submit Action */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6 }}
+              className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-6"
+            >
+              <div className="space-y-1 text-center sm:text-left">
+                <span className="text-sm font-bold text-gray-900 block">
+                  Total Consultation Fee: ₹{selectedService.fee}
+                </span>
+                <span className="text-xs text-gray-500 block">
+                  No advance payment required. Fee collected after direct clinical session.
+                </span>
               </div>
 
-              <div className="flex items-center space-x-4 w-full sm:w-auto">
-                <a
-                  href={`tel:${CLINIC_INFO.phone}`}
-                  className="btn-luxury-outline px-6 py-4 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2"
-                >
-                  <PhoneCall className="w-4 h-4 text-[#e02868]" />
-                  <span>Call Reception</span>
-                </a>
-
-                <button
-                  type="submit"
-                  className="btn-luxury-dark bg-[#e02868] hover:bg-[#c21e54] text-white px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2 shadow-lg"
-                >
-                  <MessageCircle className="w-4 h-4 text-white" />
-                  <span>Schedule via WhatsApp</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-lg flex items-center justify-center space-x-2 transition-all active:scale-95"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Confirm & Send via WhatsApp Desk</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </motion.div>
 
           </form>
 

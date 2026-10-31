@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HeartPulse, ChevronDown, CheckCircle2, ArrowRight, ShieldCheck, Sparkles, Activity } from 'lucide-react';
+import { HeartPulse, ChevronDown, ArrowRight, Activity, CheckCircle2, Sparkles } from 'lucide-react';
 
 const CLINICAL_MERIDIAN_REGIONS = [
   {
@@ -78,21 +78,38 @@ const CLINICAL_MERIDIAN_REGIONS = [
 ];
 
 export default function InteractiveMeridianExplorer({ onOpenBooking }) {
-  // First item open by default
   const [openRegionId, setOpenRegionId] = useState(CLINICAL_MERIDIAN_REGIONS[0].id);
+  const cardRefs = useRef({});
 
   const toggleRegion = (id) => {
-    setOpenRegionId(openRegionId === id ? null : id);
+    const nextId = openRegionId === id ? null : id;
+    setOpenRegionId(nextId);
+
+    // Keep expansion perfectly within viewport
+    if (nextId) {
+      setTimeout(() => {
+        const el = cardRefs.current[nextId];
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 120);
+    }
   };
 
   return (
     <div id="meridian-explorer" className="w-full bg-white text-[#09090b] rounded-3xl border border-gray-200 p-6 sm:p-10 shadow-lg overflow-hidden">
       
       {/* Top Header — Clean, Minimalist, Direct */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6 mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6 mb-8"
+      >
         <div className="space-y-2">
           <div className="inline-flex items-center space-x-2 text-xs uppercase tracking-wider text-[#e02868] font-bold">
-            <HeartPulse className="w-4 h-4 text-[#e02868]" />
+            <HeartPulse className="w-4 h-4 text-[#e02868] animate-pulse" />
             <span>Interactive Clinical Meridian Navigator</span>
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#09090b] tracking-tight">
@@ -107,9 +124,9 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
           <span className="text-[#09090b] font-bold text-sm block">6 Anatomical Zones</span>
           <p className="text-gray-500 font-medium">Curated by Dr. Nivedha (MD Acu)</p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Accordion List: Direct Inline Expansion — Zero Disjointed Scrolling */}
+      {/* Accordion List: Direct Inline Expansion — Always Within Viewport */}
       <div className="space-y-3.5">
         {CLINICAL_MERIDIAN_REGIONS.map((region, idx) => {
           const isOpen = openRegionId === region.id;
@@ -117,10 +134,11 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
           return (
             <motion.div
               key={region.id}
-              initial={{ opacity: 0, y: 15 }}
+              ref={(el) => (cardRefs.current[region.id] = el)}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: idx * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                 isOpen 
                   ? 'border-[#e02868] bg-[#f8fafc] shadow-md ring-1 ring-[#e02868]/20' 
@@ -161,7 +179,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 </div>
               </button>
 
-              {/* Accordion Body: Unfolds Smoothly Inline Right Below the Header */}
+              {/* Accordion Body: Silky Smooth Expand/Collapse Within Viewport */}
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
@@ -169,10 +187,10 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="p-4 sm:p-6 pt-0 border-t border-gray-200/80 space-y-5 bg-white">
+                    <div className="p-4 sm:p-6 pt-0 border-t border-gray-200/80 space-y-4 bg-white">
                       
                       {/* System & Meridian Scope Pill */}
                       <div className="pt-4 flex flex-wrap items-center justify-between gap-2 text-xs">
