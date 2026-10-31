@@ -1,9 +1,11 @@
 import React from 'react';
-import { PhoneCall, MessageCircle, Calendar, MapPin, Navigation } from 'lucide-react';
+import { PhoneCall, MessageCircle, Calendar, MapPin, Sparkles } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-export default function MobileStickyBar({ onOpenBooking }) {
+export default function MobileStickyBar() {
+  const location = useLocation();
+
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-40 px-2 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
       <div className="max-w-md mx-auto flex items-center justify-between text-gray-800">
@@ -42,28 +44,28 @@ export default function MobileStickyBar({ onOpenBooking }) {
           </Link>
         </div>
 
-        {/* 4. Clinic Location */}
+        {/* 4. Clinic Modalities & Tariff */}
+        <Link 
+          to="/clinic"
+          className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] transition-colors active:scale-95 ${
+            location.pathname === '/clinic' ? 'text-[#e02868] font-bold' : 'text-gray-700 hover:text-[#e02868]'
+          }`}
+          title="Clinical Modalities & Fees"
+        >
+          <Sparkles className="w-4 h-4 text-[#e02868] mb-0.5" />
+          <span className="text-[10px] font-bold tracking-wider uppercase">Clinic</span>
+        </Link>
+
+        {/* 5. Clinic Map & Navigation (Single Google Maps location) */}
         <a 
           href="https://maps.google.com/?q=Arura+Acupuncture+Virugambakkam+Chennai"
           target="_blank"
           rel="noreferrer"
           className="flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] text-gray-700 hover:text-[#e02868] transition-colors active:scale-95"
-          title="Clinic Address"
+          title="Clinic Location on Google Maps"
         >
           <MapPin className="w-4 h-4 text-[#e02868] mb-0.5" />
           <span className="text-[10px] font-bold tracking-wider uppercase">Location</span>
-        </a>
-
-        {/* 5. GPS Navigation / Directions */}
-        <a 
-          href="https://www.google.com/maps/dir/?api=1&destination=Arura+Acupuncture+Virugambakkam+Chennai"
-          target="_blank"
-          rel="noreferrer"
-          className="flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] text-gray-700 hover:text-indigo-600 transition-colors active:scale-95"
-          title="Turn-by-turn Navigation"
-        >
-          <Navigation className="w-4 h-4 text-indigo-600 mb-0.5" />
-          <span className="text-[10px] font-bold tracking-wider uppercase">Directions</span>
         </a>
 
       </div>
