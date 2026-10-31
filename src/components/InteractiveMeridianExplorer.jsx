@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, Activity, ShieldCheck, HeartPulse, CheckCircle2, ArrowRight, Brain, Zap, Compass, Thermometer } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HeartPulse, ChevronDown, CheckCircle2, ArrowRight, ShieldCheck, Sparkles, Activity } from 'lucide-react';
 
 const CLINICAL_MERIDIAN_REGIONS = [
   {
@@ -77,169 +78,191 @@ const CLINICAL_MERIDIAN_REGIONS = [
 ];
 
 export default function InteractiveMeridianExplorer({ onOpenBooking }) {
-  const [selectedRegion, setSelectedRegion] = useState(CLINICAL_MERIDIAN_REGIONS[0]);
+  // First item open by default
+  const [openRegionId, setOpenRegionId] = useState(CLINICAL_MERIDIAN_REGIONS[0].id);
+
+  const toggleRegion = (id) => {
+    setOpenRegionId(openRegionId === id ? null : id);
+  };
 
   return (
-    <div className="w-full bg-white text-[#09090b] rounded-3xl border border-gray-200/80 p-6 sm:p-10 shadow-xl overflow-hidden">
+    <div id="meridian-explorer" className="w-full bg-white text-[#09090b] rounded-3xl border border-gray-200 p-6 sm:p-10 shadow-lg overflow-hidden">
       
-      {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200/80 pb-8 mb-8">
+      {/* Top Header — Clean, Minimalist, Direct */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6 mb-8">
         <div className="space-y-2">
           <div className="inline-flex items-center space-x-2 text-xs uppercase tracking-wider text-[#e02868] font-bold">
-            <HeartPulse className="w-4 h-4" />
+            <HeartPulse className="w-4 h-4 text-[#e02868]" />
             <span>Interactive Clinical Meridian Navigator</span>
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#09090b] tracking-tight">
             Explore Targeted Treatment Pathways
           </h2>
-          <p className="text-base text-gray-600 font-normal max-w-2xl leading-relaxed">
-            Select an anatomical zone to inspect how classical acupuncture stimulates exact nerve networks and reverses root systemic pathologies.
+          <p className="text-sm sm:text-base text-gray-600 font-normal max-w-2xl leading-relaxed">
+            Tap any anatomical zone to inspect the exact nerve pathways, primary symptoms cleared, and documented recovery outcomes directly inline.
           </p>
         </div>
 
-        <div className="text-right hidden md:block text-xs text-gray-500">
-          <span className="text-[#09090b] font-bold text-sm block">{CLINICAL_MERIDIAN_REGIONS.length} Anatomical Zones</span>
+        <div className="text-left md:text-right text-xs text-gray-500">
+          <span className="text-[#09090b] font-bold text-sm block">6 Anatomical Zones</span>
           <p className="text-gray-500 font-medium">Curated by Dr. Nivedha (MD Acu)</p>
         </div>
       </div>
 
-      {/* Main Grid: Region Selector Buttons + Comprehensive Clinical Diagnostic Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* Left Column: Region Navigation Buttons */}
-        <div className="lg:col-span-4 space-y-2.5">
-          <span className="text-xs uppercase tracking-wider text-gray-500 block mb-3 font-bold">
-            Select Anatomical Area:
-          </span>
+      {/* Accordion List: Direct Inline Expansion — Zero Disjointed Scrolling */}
+      <div className="space-y-3.5">
+        {CLINICAL_MERIDIAN_REGIONS.map((region, idx) => {
+          const isOpen = openRegionId === region.id;
 
-          {CLINICAL_MERIDIAN_REGIONS.map((region) => {
-            const isSelected = selectedRegion.id === region.id;
-            return (
+          return (
+            <motion.div
+              key={region.id}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                isOpen 
+                  ? 'border-[#e02868] bg-[#f8fafc] shadow-md ring-1 ring-[#e02868]/20' 
+                  : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50/60'
+              }`}
+            >
+              {/* Accordion Trigger Header */}
               <button
-                key={region.id}
-                onClick={() => setSelectedRegion(region)}
-                className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-center justify-between border ${
-                  isSelected
-                    ? 'bg-[#e02868] text-white border-[#e02868] shadow-lg scale-[1.02]'
-                    : 'bg-[#f8fafc] text-gray-800 border-gray-200/80 hover:bg-gray-100 hover:border-[#e02868]/40'
-                }`}
+                onClick={() => toggleRegion(region.id)}
+                className="w-full p-4 sm:p-5 flex items-center justify-between text-left transition-colors cursor-pointer select-none"
+                aria-expanded={isOpen}
               >
-                <div>
-                  <h4 className="font-display text-lg font-bold">
-                    {region.name}
-                  </h4>
-                  <p className={`text-xs mt-0.5 font-normal ${isSelected ? 'text-pink-100' : 'text-gray-500'}`}>
-                    {region.subname}
-                  </p>
+                <div className="flex items-center space-x-3.5 sm:space-x-4 pr-3">
+                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 font-mono text-xs font-bold transition-all ${
+                    isOpen 
+                      ? 'bg-[#e02868] text-white shadow-sm' 
+                      : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    0{idx + 1}
+                  </div>
+
+                  <div>
+                    <h3 className={`font-display text-base sm:text-lg font-bold transition-colors ${
+                      isOpen ? 'text-[#e02868]' : 'text-[#09090b]'
+                    }`}>
+                      {region.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-0.5 font-normal">
+                      {region.subname}
+                    </p>
+                  </div>
                 </div>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ml-3 transition-colors ${
-                  isSelected ? 'bg-white text-[#e02868]' : 'bg-gray-200 text-gray-600'
+
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
+                  isOpen ? 'bg-[#e02868]/10 text-[#e02868] rotate-180' : 'bg-gray-100 text-gray-500'
                 }`}>
-                  <ArrowRight className="w-4 h-4" />
+                  <ChevronDown className="w-4 h-4" />
                 </div>
               </button>
-            );
-          })}
-        </div>
 
-        {/* Right Column: Deep Clinical Briefing Card */}
-        <div className="lg:col-span-8 bg-[#f8fafc] rounded-3xl border border-gray-200/80 p-6 sm:p-10 space-y-6 shadow-sm">
-          
-          {/* Card Title & Meridian Channel */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200/80 pb-6">
-            <div>
-              <span className="text-xs text-[#e02868] uppercase tracking-wider font-bold">
-                {selectedRegion.clinicalSystem}
-              </span>
-              <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl text-[#09090b] font-bold mt-1">
-                {selectedRegion.name}
-              </h3>
-              <p className="text-sm text-gray-700 mt-1 font-semibold">
-                Anatomical Scope: {selectedRegion.meridian}
-              </p>
-            </div>
+              {/* Accordion Body: Unfolds Smoothly Inline Right Below the Header */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="content"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-4 sm:p-6 pt-0 border-t border-gray-200/80 space-y-5 bg-white">
+                      
+                      {/* System & Meridian Scope Pill */}
+                      <div className="pt-4 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span className="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-[#e02868] font-bold">
+                          {region.clinicalSystem}
+                        </span>
+                        <span className="text-gray-500 font-medium">
+                          Channel: <strong className="text-gray-800">{region.meridian}</strong>
+                        </span>
+                      </div>
 
-            <div className="p-3 bg-white border border-gray-200 rounded-2xl text-center flex-shrink-0 shadow-sm">
-              <span className="text-xs uppercase tracking-wider text-gray-600 block font-bold">Clinical Care</span>
-              <span className="text-sm font-bold text-[#e02868]">Evidence-Based Needling</span>
-            </div>
-          </div>
+                      {/* Primary Symptoms */}
+                      <div className="space-y-1.5">
+                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
+                          Primary Symptoms Cleared:
+                        </span>
+                        <div className="p-3.5 rounded-xl bg-[#f8fafc] border border-gray-200 text-sm font-semibold text-[#09090b] leading-relaxed">
+                          {region.primarySymptom}
+                        </div>
+                      </div>
 
-          {/* Primary Conditions Treated */}
-          <div className="space-y-2">
-            <span className="text-xs uppercase tracking-wider text-gray-700 block font-bold">
-              Primary Disorders & Symptoms Cleared:
-            </span>
-            <div className="p-4 rounded-2xl bg-white border border-gray-200 text-base font-medium text-[#09090b] shadow-sm leading-relaxed">
-              {selectedRegion.primarySymptom}
-            </div>
-          </div>
+                      {/* Mechanism */}
+                      <div className="space-y-1.5">
+                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
+                          Biological & Nerve Mechanism:
+                        </span>
+                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                          {region.mechanism}
+                        </p>
+                      </div>
 
-          {/* Physiological Mechanism */}
-          <div className="space-y-2">
-            <span className="text-xs uppercase tracking-wider text-gray-700 block font-bold">
-              Neuro-Biological & Meridian Mechanism:
-            </span>
-            <p className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed">
-              {selectedRegion.mechanism}
-            </p>
-          </div>
+                      {/* Recovery Rate & Recommended Modality */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1">
+                          <span className="text-[10px] uppercase tracking-wider text-emerald-800 font-bold block">
+                            Documented Recovery Rate:
+                          </span>
+                          <p className="text-xs text-emerald-950 font-semibold leading-relaxed">
+                            {region.reliefStats}
+                          </p>
+                        </div>
 
-          {/* Clinical Outcome & Recommended Method */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
-              <span className="text-xs text-emerald-800 font-bold block uppercase tracking-wider">
-                Documented Recovery Rate:
-              </span>
-              <p className="text-xs text-emerald-950 leading-relaxed font-semibold">
-                {selectedRegion.reliefStats}
-              </p>
-            </div>
+                        <div className="p-3.5 rounded-xl bg-pink-50 border border-pink-200 space-y-1">
+                          <span className="text-[10px] uppercase tracking-wider text-[#e02868] font-bold block">
+                            Recommended Modality:
+                          </span>
+                          <p className="text-xs text-gray-900 font-semibold leading-relaxed">
+                            {region.recommendedTechnique}
+                          </p>
+                        </div>
+                      </div>
 
-            <div className="p-4 rounded-2xl bg-pink-50 border border-pink-200 space-y-1">
-              <span className="text-xs text-[#e02868] font-bold block uppercase tracking-wider">
-                Recommended Modality:
-              </span>
-              <p className="text-xs text-gray-900 leading-relaxed font-semibold">
-                {selectedRegion.recommendedTechnique}
-              </p>
-            </div>
-          </div>
+                      {/* Key Acupoint Formulations */}
+                      <div className="space-y-2 pt-1">
+                        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-bold block">
+                          Targeted Acupoints:
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {region.accompanyingPoints.map((pt, pIdx) => (
+                            <span
+                              key={pIdx}
+                              className="px-3 py-1 rounded-lg bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-800"
+                            >
+                              {pt}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
 
-          {/* Key Acupoints */}
-          <div className="space-y-2 pt-2 border-t border-gray-200/80">
-            <span className="text-xs uppercase tracking-wider text-gray-700 block font-bold">
-              Primary Acupoint Formulations:
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {selectedRegion.accompanyingPoints.map((pt, idx) => (
-                <span
-                  key={idx}
-                  className="px-3.5 py-1.5 rounded-xl bg-white border border-gray-300 text-xs text-gray-800 font-semibold shadow-sm"
-                >
-                  {pt}
-                </span>
-              ))}
-            </div>
-          </div>
+                      {/* One-Tap Action */}
+                      <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <span className="text-xs text-gray-500">
+                          Unhurried 1-on-1 pulse evaluation included.
+                        </span>
+                        <button
+                          onClick={() => onOpenBooking ? onOpenBooking(`Treatment for ${region.name}`, 600) : window.location.href = '#/booking'}
+                          className="btn-luxury-dark hover:bg-[#e02868] hover:border-[#e02868] px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center justify-center space-x-2 transition-all active:scale-95"
+                        >
+                          <span>Consult on {region.name.split(' ')[0]} (₹600)</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
 
-          {/* Direct Consultation Trigger */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-200/80">
-            <div className="text-xs text-gray-500 font-normal">
-              Consultation includes comprehensive pulse diagnosis with Dr. Nivedha.
-            </div>
-
-            <button
-              onClick={() => onOpenBooking(`Treatment for ${selectedRegion.name}`, 600)}
-              className="w-full sm:w-auto btn-luxury-dark hover:bg-[#e02868] hover:border-[#e02868] px-7 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center justify-center space-x-2 transition-all"
-            >
-              <span>Consult on {selectedRegion.name.split(' ')[0]} (₹600)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-        </div>
-
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
       </div>
 
     </div>
