@@ -2,8 +2,8 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import ClinicalVisualGrid from '../components/ClinicalVisualGrid';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
-import { ArrowRight, Sparkles, CheckCircle2, Clock, Award, ShieldCheck, CalendarCheck, PhoneCall } from 'lucide-react';
-import { CLINIC_INFO, TESTIMONIALS } from '../data/websiteContent';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { TESTIMONIALS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
@@ -13,14 +13,14 @@ export default function HomePage({ onOpenBooking }) {
   return (
     <div className="bg-white text-ink">
       
-      {/* 1. Hero Section: Few Words, Authentic Acupuncture Photography & Scroll Reveals */}
+      {/* 1. Aesthetic Minimalist Hero */}
       <HeroSection onOpenBooking={onOpenBooking} />
 
-      {/* 2. Visual Clinical Pillars: High-Def Images & Concise Captions */}
+      {/* 2. Visual Clinical Pillars with Staggered Scroll Reveal */}
       <ClinicalVisualGrid onOpenBooking={onOpenBooking} />
 
-      {/* 3. Interactive Clinical Meridian Navigator */}
-      <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80 relative overflow-hidden">
+      {/* 3. Direct Anatomical Meridian Pathways */}
+      <section className="py-20 lg:py-28 bg-white border-b border-neutral-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -33,13 +33,13 @@ export default function HomePage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* 4. Lead Physician: Authentic Photo & Concise Credentials */}
-      <section className="py-20 lg:py-28 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
+      {/* 4. Lead Practitioner Spotlight: Editorial Layout */}
+      <section className="py-20 lg:py-28 bg-surface-subtle border-b border-neutral-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {/* Left: Authentic Physician Portrait Card with Scroll Reveal */}
+            {/* Left: Authentic Physician Portrait with Scroll Reveal */}
             <motion.div 
               className="lg:col-span-5"
               initial={{ opacity: 0, x: -30 }}
@@ -47,10 +47,10 @@ export default function HomePage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="p-7 sm:p-9 rounded-3xl bg-white border border-gray-200 shadow-sm space-y-6">
+              <div className="p-8 sm:p-10 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
                 
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-24 rounded-2xl overflow-hidden border-2 border-brand flex-shrink-0 shadow-md">
+                <div className="flex items-center space-x-5">
+                  <div className="w-24 h-28 rounded-2xl overflow-hidden border-2 border-brand flex-shrink-0 shadow-md">
                     <img 
                       src={getAssetUrl('doctor_nivedha_portrait.jpg')} 
                       alt="Dr. Nivedha Priyadharshini"
@@ -59,21 +59,21 @@ export default function HomePage({ onOpenBooking }) {
                   </div>
                   <div className="space-y-1">
                     <p className="text-xs text-brand font-semibold">
-                      Lead Practitioner
+                      Lead practitioner
                     </p>
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-ink">
+                    <h3 className="font-display text-2xl font-bold text-ink">
                       Dr. Nivedha Priyadharshini
                     </h3>
-                    <p className="text-xs text-gray-700 font-medium">
+                    <p className="text-xs text-neutral-700 font-medium">
                       MD (Acu), Cambridge Intl Dip.
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-neutral-500">
                       PG Dip. Counselling Therapy
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-3 text-xs text-gray-600 border-t border-gray-100 pt-4">
+                <div className="space-y-3 text-xs text-neutral-600 border-t border-neutral-100 pt-5">
                   <div className="flex items-center space-x-2.5">
                     <CheckCircle2 className="w-4 h-4 text-brand flex-shrink-0" />
                     <span>Classical 14-Channel Pulse Diagnostics</span>
@@ -83,26 +83,27 @@ export default function HomePage({ onOpenBooking }) {
                     <span><AnimatedCounter end={8} suffix="+ Years" /> Clinical Practice • <AnimatedCounter end={1100} suffix="+ Recoveries" /></span>
                   </div>
                   <div className="flex items-center space-x-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-neutral-700 flex-shrink-0" />
                     <span>Unhurried 1-on-1 Sanctuary Consultation</span>
                   </div>
                 </div>
 
-                <div className="pt-1">
+                <div className="pt-2">
                   <Link
                     to="/doctor"
-                    className="w-full py-3.5 rounded-xl text-xs font-semibold bg-ink text-white hover:bg-brand flex items-center justify-center space-x-2 transition-colors shadow-xs"
+                    className="w-full py-4 rounded-xl text-xs font-semibold bg-ink text-white hover:bg-brand flex items-center justify-center space-x-2 transition-colors duration-200 shadow-sm motion-safe:active:scale-[0.99]"
                   >
-                    <span>View Doctor’s Profile & Credentials</span>
+                    <span>View doctor’s profile and credentials</span>
+                    <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
 
               </div>
             </motion.div>
 
-            {/* Right: Concise Philosophy & Transparent Fee Schedule */}
+            {/* Right: Editorial Philosophy & Transparent Tariff */}
             <motion.div 
-              className="lg:col-span-7 space-y-6"
+              className="lg:col-span-7 space-y-8"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -112,32 +113,33 @@ export default function HomePage({ onOpenBooking }) {
                 “We treat what the body whispers before it screams.”
               </h2>
               
-              <p className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed max-w-xl">
+              <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-xl">
                 Every session combines gentle meridian point stimulation with active listening. Chronic pain and emotional tension are resolved at their neuro-biological roots.
               </p>
 
               {/* 3 Transparent Medical Price Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-                <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
-                  <span className="text-xl font-bold text-ink block">₹600</span>
-                  <span className="text-xs text-gray-500 font-medium">Diagnostic Consultation</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
+                  <span className="text-2xl font-bold text-ink block">₹600</span>
+                  <span className="text-xs text-neutral-500 font-medium">Diagnostic Consultation</span>
                 </div>
-                <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
-                  <span className="text-xl font-bold text-brand block">₹600</span>
-                  <span className="text-xs text-gray-500 font-medium">Acupuncture Session</span>
+                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
+                  <span className="text-2xl font-bold text-brand block">₹600</span>
+                  <span className="text-xs text-neutral-500 font-medium">Acupuncture Session</span>
                 </div>
-                <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
-                  <span className="text-xl font-bold text-emerald-700 block">100% Sterile</span>
-                  <span className="text-xs text-gray-500 font-medium">Single-Use Standard</span>
+                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
+                  <span className="text-2xl font-bold text-emerald-700 block">100% Sterile</span>
+                  <span className="text-xs text-neutral-500 font-medium">Single-Use Guarantee</span>
                 </div>
               </div>
 
               <div className="pt-2">
                 <Link
                   to="/clinic"
-                  className="text-xs text-brand hover:text-black font-semibold inline-flex items-center space-x-1.5 transition-colors"
+                  className="text-xs text-brand hover:text-brand-dark font-semibold inline-flex items-center space-x-1.5 transition-colors"
                 >
-                  <span>Explore complete medical tariff & care guidelines</span>
+                  <span>Explore complete clinical tariff and sanctuary guidelines</span>
+                  <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
 
@@ -149,11 +151,11 @@ export default function HomePage({ onOpenBooking }) {
       </section>
 
       {/* 5. Documented Patient Recoveries with Staggered Scroll Reveal */}
-      <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="py-20 lg:py-28 bg-white border-b border-neutral-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           
           <motion.div 
-            className="text-center max-w-xl mx-auto space-y-2"
+            className="text-center max-w-xl mx-auto space-y-3"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -162,32 +164,33 @@ export default function HomePage({ onOpenBooking }) {
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
               Verified Patient Transformations
             </h2>
-            <p className="text-sm text-gray-600">
-              Recoveries across chronic pain, migraine, and insomnia in Chennai.
+            <p className="text-sm sm:text-base text-neutral-600 font-normal">
+              Clinical recoveries across chronic pain, migraine, and insomnia in Chennai.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TESTIMONIALS.slice(0, 3).map((item, idx) => (
               <motion.div 
                 key={idx} 
-                className="p-7 rounded-2xl bg-surface-subtle border border-gray-200 shadow-xs hover:shadow-md transition-shadow duration-200 space-y-4 flex flex-col justify-between"
+                className="p-8 rounded-3xl bg-surface-subtle border border-neutral-200 shadow-xs hover:shadow-lg hover:border-neutral-300 transition-colors duration-200 space-y-6 flex flex-col justify-between"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: idx * 0.12 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
-                <div className="space-y-3">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-pink-50 text-brand text-xs font-medium border border-pink-200">
+                <div className="space-y-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200">
                     {item.tag}
                   </span>
-                  <p className="text-sm text-gray-700 font-normal italic leading-relaxed">
+                  <p className="text-sm sm:text-base text-neutral-700 font-normal leading-relaxed">
                     “{item.text}”
                   </p>
                 </div>
-                <div className="border-t border-gray-200 pt-3">
+                <div className="border-t border-neutral-200 pt-4">
                   <div className="font-display text-sm font-bold text-ink">{item.name}</div>
-                  <div className="text-xs text-gray-500">{item.location} • Verified Recovery</div>
+                  <div className="text-xs text-neutral-500">{item.location} • Verified Recovery</div>
                 </div>
               </motion.div>
             ))}
@@ -197,34 +200,34 @@ export default function HomePage({ onOpenBooking }) {
       </section>
 
       {/* 6. Sanctuary Booking Invitation (Scroll Reveal) */}
-      <section className="py-20 lg:py-24 bg-white">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div 
-            className="bg-ink text-white rounded-3xl p-10 sm:p-14 text-center space-y-6 shadow-2xl relative overflow-hidden"
-            initial={{ opacity: 0, scale: 0.96, y: 30 }}
+            className="bg-ink text-white rounded-3xl p-10 sm:p-16 text-center space-y-8 shadow-2xl relative overflow-hidden"
+            initial={{ opacity: 0, scale: 0.97, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
               Begin your journey to root recovery today.
             </h2>
             <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto font-normal leading-relaxed">
               Consultations and treatments are conducted privately in acoustic suites at our Virugambakkam sanctuary. Open daily 10:00 AM to 8:00 PM.
             </p>
 
-            <div className="pt-3 flex flex-wrap items-center justify-center gap-3.5">
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
               <Link
                 to="/booking"
-                className="px-7 py-3.5 rounded-xl text-xs font-semibold shadow-lg bg-brand text-white hover:bg-brand-dark transition-colors"
+                className="px-8 py-4 rounded-xl text-xs font-semibold shadow-lg bg-brand text-white hover:bg-brand-dark transition-colors duration-200 motion-safe:active:scale-[0.98]"
               >
-                Book Priority Consultation (₹600)
+                Book priority consultation (₹600)
               </Link>
               <Link
                 to="/clinic"
-                className="px-7 py-3.5 rounded-xl text-xs font-semibold bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-colors"
+                className="px-8 py-4 rounded-xl text-xs font-semibold bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-colors duration-200 motion-safe:active:scale-[0.98]"
               >
-                View Clinic Tariff & Modalities
+                View clinic tariff and modalities
               </Link>
             </div>
 

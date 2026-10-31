@@ -239,11 +239,11 @@ export default function BookingPage() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50 whitespace-nowrap"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>Confirm & Send via WhatsApp Desk</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Confirm on WhatsApp desk</span>
+                <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HeartPulse, CheckCircle2, ArrowRight } from 'lucide-react';
+import { HeartPulse, CheckCircle2 } from 'lucide-react';
 
 const CLINICAL_ZONES = [
   {
@@ -35,7 +35,7 @@ const CLINICAL_ZONES = [
     name: 'Gastrointestinal & Epigastric Health',
     points: 'CV12 (Zhongwan) • ST36 (Zusanli) • ST25',
     clears: 'Acid Reflux, IBS, Gastritis & Chronic Abdominal Bloating',
-    relief: 'Noticeable Ease Within 3–5 Sessions',
+    relief: 'Noticeable Ease Within 3 to 5 Sessions',
     protocol: 'Meridian Needling + Warming Herb Moxa',
     acupoints: ['CV12 Middle Cavity', 'ST36 Leg Three Miles', 'ST25 Pivot']
   },
@@ -63,49 +63,48 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
   return (
     <div id="meridian-explorer" className="w-full bg-white text-ink">
       
-      {/* Section Header */}
+      {/* Section Header with Reveal Animation */}
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-6 mb-10"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-200 pb-8 mb-12"
       >
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
             <HeartPulse className="w-4 h-4 text-brand animate-pulse" />
-            <span>Targeted Clinical Pathways</span>
+            <span>Targeted clinical pathways</span>
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink tracking-tight">
             Anatomical Treatment Zones
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 font-normal max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-base text-neutral-600 font-normal max-w-2xl leading-relaxed">
             Every zone is addressed with micro-precision needle placement to release trapped nerve fibers and restore systemic equilibrium.
           </p>
         </div>
 
-        <div className="text-left md:text-right text-xs text-gray-500 font-medium">
+        <div className="text-left md:text-right text-xs text-neutral-500 font-medium">
           <span className="text-ink font-bold text-sm block">6 Dedicated Pathways</span>
           <span>Curated by Dr. Nivedha (MD Acu)</span>
         </div>
       </motion.div>
 
-      {/* Direct, Self-Contained Card Grid */}
+      {/* Direct, Self-Contained Card Grid with Viewport Scroll Stagger */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {CLINICAL_ZONES.map((zone, idx) => (
           <motion.div
             key={zone.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.98 }}
-            className="group bg-surface-subtle rounded-3xl border border-gray-200 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 p-6 sm:p-7 flex flex-col justify-between space-y-6"
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            className="group bg-surface-subtle rounded-3xl border border-neutral-200 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 p-6 sm:p-7 flex flex-col justify-between space-y-6"
           >
             {/* Top: Header, Number, and Pathway */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-gray-200/80 pb-4">
+              <div className="flex items-center justify-between border-b border-neutral-200/80 pb-4">
                 <span className="w-9 h-9 rounded-xl bg-pink-50 border border-pink-200 text-brand text-xs font-bold flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
                   {zone.id}
                 </span>
@@ -120,17 +119,17 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 <h3 className="font-display text-xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
                   {zone.name}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1 font-normal">
+                <p className="text-xs text-neutral-500 mt-1 font-normal">
                   {zone.points}
                 </p>
               </div>
 
               {/* Conditions Cleared */}
-              <div className="p-3.5 rounded-xl bg-white border border-gray-200 group-hover:border-gray-300 space-y-1 transition-colors">
-                <span className="text-xs text-gray-500 font-medium block">
+              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 group-hover:border-neutral-300 space-y-1 transition-colors">
+                <span className="text-xs text-neutral-500 font-medium block">
                   Conditions cleared:
                 </span>
-                <p className="text-xs sm:text-sm font-semibold text-gray-900 leading-snug">
+                <p className="text-xs sm:text-sm font-semibold text-neutral-900 leading-snug">
                   {zone.clears}
                 </p>
               </div>
@@ -140,7 +139,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 <span className="text-xs text-brand font-semibold block">
                   Clinical protocol:
                 </span>
-                <p className="text-xs text-gray-700 font-medium">
+                <p className="text-xs text-neutral-700 font-medium">
                   {zone.protocol}
                 </p>
               </div>
@@ -150,23 +149,12 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 {zone.acupoints.map((pt, pIdx) => (
                   <span
                     key={pIdx}
-                    className="px-2.5 py-1 rounded-lg bg-white border border-gray-200 text-xs font-medium text-gray-700"
+                    className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-xs font-medium text-neutral-700"
                   >
                     {pt}
                   </span>
                 ))}
               </div>
-            </div>
-
-            {/* Direct One-Tap Booking Action */}
-            <div className="pt-4 border-t border-gray-200/80">
-              <button
-                onClick={() => onOpenBooking ? onOpenBooking(`Treatment for ${zone.name}`, 600) : window.location.href = '#/booking'}
-                className="w-full btn-luxury-dark group-hover:bg-brand group-hover:border-brand py-3 px-4 rounded-xl text-xs font-semibold inline-flex items-center justify-center space-x-2 transition-colors active:scale-95 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50"
-              >
-                <span>Book This Zone (₹600)</span>
-                <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
-              </button>
             </div>
           </motion.div>
         ))}

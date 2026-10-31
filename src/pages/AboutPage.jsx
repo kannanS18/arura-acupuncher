@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { ShieldCheck, Compass, CheckCircle2, ArrowRight, Sparkles, HeartPulse, Brain, Award, Clock, Activity, Zap, Sun, Disc, Flame } from 'lucide-react';
+import React from 'react';
+import { ShieldCheck, CheckCircle2, ArrowRight, Sparkles, Activity, Brain, Zap, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CLINIC_INFO, ACUPUNCTURE_TECHNIQUES, COUNSELLING_METHODS } from '../data/websiteContent';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
@@ -64,13 +63,10 @@ export default function AboutPage({ onOpenBooking }) {
   return (
     <div className="bg-white text-ink min-h-screen">
       
-      {/* =========================================================================
-          HERO BANNER (SCROLL REVEALS & 3D NEEDLE SHOWCASE)
-         ========================================================================= */}
-      <section className="pt-20 pb-20 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
-        
+      {/* 1. Minimalist Editorial Header */}
+      <section className="pt-16 pb-20 bg-surface-subtle border-b border-neutral-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             {/* Left Column (7 cols): Editorial Narrative with Scroll Reveal */}
             <motion.div 
@@ -81,7 +77,7 @@ export default function AboutPage({ onOpenBooking }) {
             >
               <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-brand" />
-                <span>The Arura Studio Origin & Ethos</span>
+                <span>The Arura Studio Origin and Ethos</span>
               </div>
 
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
@@ -89,16 +85,16 @@ export default function AboutPage({ onOpenBooking }) {
                 <span className="text-brand">evidence-based holistic healing.</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-                Established in Virugambakkam, Chennai by <strong className="text-gray-900 font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Arura was founded on a singular conviction: chronic human suffering cannot be solved in five-minute visits with chemical palliatives.
+              <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
+                Established in Virugambakkam, Chennai by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Arura was founded on a singular conviction: chronic human suffering cannot be solved in five-minute visits with chemical palliatives.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-gray-700">
-                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-xs">
+              <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-neutral-700">
+                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-neutral-200 shadow-xs">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   <span>100% Single-Use Sterile Needles</span>
                 </div>
-                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-xs">
+                <div className="flex items-center space-x-2 bg-white px-4 py-2.5 rounded-xl border border-neutral-200 shadow-xs">
                   <CheckCircle2 className="w-4 h-4 text-brand" />
                   <span>Cambridge Certified Psychotherapy</span>
                 </div>
@@ -112,9 +108,9 @@ export default function AboutPage({ onOpenBooking }) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="clinical-sanctuary-card rounded-3xl bg-white border border-gray-200/90 p-8 shadow-sm relative overflow-hidden group motion-safe:animate-pure-float">
+              <div className="rounded-3xl bg-white border border-neutral-200/90 p-8 shadow-sm relative overflow-hidden group motion-safe:animate-pure-float">
                 
-                <div className="flex items-center justify-between border-b border-gray-100 pb-5">
+                <div className="flex items-center justify-between border-b border-neutral-100 pb-5">
                   <div className="flex items-center space-x-3">
                     <img 
                       src={getAssetUrl('logo.png')} 
@@ -129,21 +125,21 @@ export default function AboutPage({ onOpenBooking }) {
                 </div>
 
                 <div className="py-6 flex flex-col items-center justify-center relative">
-                  <div className="relative w-full max-w-[340px] flex items-center justify-center">
+                  <div className="relative w-full max-w-[320px] flex items-center justify-center">
                     <img 
                       src={getAssetUrl('needles_cutout_3d.png')} 
                       alt="0.18mm Hair-Thin Surgical Acupuncture Needles" 
-                      className="w-full h-auto max-h-56 object-contain filter drop-shadow-md"
+                      className="w-full h-auto max-h-52 object-contain filter drop-shadow-md"
                     />
                   </div>
 
-                  <div className="mt-4 inline-flex items-center space-x-2 text-xs text-gray-800 font-semibold bg-gray-50 px-4 py-1.5 rounded-full border border-gray-200 shadow-sm">
+                  <div className="mt-4 inline-flex items-center space-x-2 text-xs text-neutral-800 font-semibold bg-neutral-50 px-4 py-1.5 rounded-full border border-neutral-200 shadow-xs">
                     <span className="w-2 h-2 rounded-full bg-brand" />
                     <span>0.18mm Hair-Thin Surgical 316L Needles</span>
                   </div>
                 </div>
 
-                <div className="border-t border-gray-100 pt-4 flex items-center justify-between text-xs text-gray-500">
+                <div className="border-t border-neutral-100 pt-4 flex items-center justify-between text-xs text-neutral-500">
                   <span>Ethylene Oxide Pre-Sterilized</span>
                   <span className="font-semibold text-brand">Zero Reuse Guaranteed</span>
                 </div>
@@ -160,10 +156,8 @@ export default function AboutPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* =========================================================================
-          NARRATIVE MANIFESTO SECTION
-         ========================================================================= */}
-      <section className="py-20 lg:py-28 border-b border-gray-200/80 bg-white overflow-hidden">
+      {/* 2. Narrative Manifesto Section */}
+      <section className="py-20 lg:py-28 border-b border-neutral-200/80 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
@@ -180,34 +174,34 @@ export default function AboutPage({ onOpenBooking }) {
               </h2>
               
               <div className="space-y-6 pt-2">
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-900 font-medium leading-relaxed tracking-tight border-l-4 border-brand pl-5">
+                <p className="text-lg sm:text-xl lg:text-2xl text-neutral-900 font-medium leading-relaxed tracking-tight border-l-4 border-brand pl-5">
                   Modern medicine excels at acute surgical emergencies, but often fails patients with chronic, recurring health distress. When you struggle with chronic migraines, cervical pain, or IBS, you are often prescribed painkillers, muscle relaxants, and antacids that mask symptoms without resolving the source.
                 </p>
 
-                <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed pl-5">
+                <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed pl-5">
                   At Arura, we observe the human body as an integrated neurological, biological, and psychological organism. By combining classical 14-meridian acupuncture with Cambridge clinical counselling, we address physical nerve inflammation and emotional stress simultaneously.
                 </p>
               </div>
 
               {/* 3 Metric Anchors */}
-              <div className="pt-4 flex items-center space-x-6 sm:space-x-8 text-xs border-t border-gray-100">
+              <div className="pt-6 flex items-center space-x-6 sm:space-x-8 text-xs border-t border-neutral-100">
                 <div>
                   <span className="text-2xl sm:text-3xl font-bold text-ink font-display block">
                     <AnimatedCounter end={100} suffix="%" />
                   </span>
-                  <span className="text-gray-500 font-medium">Single-Use Needles</span>
+                  <span className="text-neutral-500 font-medium">Single-Use Needles</span>
                 </div>
-                <div className="h-10 w-px bg-gray-200" />
+                <div className="h-10 w-px bg-neutral-200" />
                 <div>
                   <span className="text-2xl sm:text-3xl font-bold text-brand font-display block">1-on-1</span>
-                  <span className="text-gray-500 font-medium">Unhurried Care</span>
+                  <span className="text-neutral-500 font-medium">Unhurried Care</span>
                 </div>
-                <div className="h-10 w-px bg-gray-200" />
+                <div className="h-10 w-px bg-neutral-200" />
                 <div>
                   <span className="text-2xl sm:text-3xl font-bold text-emerald-700 font-display block">
                     <AnimatedCounter end={8} suffix="+ Yrs" />
                   </span>
-                  <span className="text-gray-500 font-medium">Chennai Experience</span>
+                  <span className="text-neutral-500 font-medium">Chennai Experience</span>
                 </div>
               </div>
             </motion.div>
@@ -220,14 +214,14 @@ export default function AboutPage({ onOpenBooking }) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <p className="text-xs text-gray-500 font-semibold block">
+              <p className="text-xs text-neutral-500 font-semibold block">
                 Three-Stage Clinical Intake
               </p>
 
               {stages.map((st, i) => (
                 <motion.div 
                   key={st.num}
-                  className="p-6 sm:p-7 rounded-2xl bg-surface-subtle border border-gray-200 hover:border-brand hover:bg-white hover:shadow-lg transition-colors duration-200 space-y-2 group"
+                  className="p-6 sm:p-7 rounded-2xl bg-surface-subtle border border-neutral-200 hover:border-brand hover:bg-white hover:shadow-lg transition-colors duration-200 space-y-2 group"
                   initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
@@ -241,7 +235,7 @@ export default function AboutPage({ onOpenBooking }) {
                       {st.title}
                     </h4>
                   </div>
-                  <p className="text-xs sm:text-sm text-gray-600 font-normal leading-relaxed pl-11">
+                  <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pl-11">
                     {st.desc}
                   </p>
                 </motion.div>
@@ -252,10 +246,8 @@ export default function AboutPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* =========================================================================
-          CLINICAL MODALITIES (DIRECT CARDS)
-         ========================================================================= */}
-      <section className="py-20 lg:py-28 bg-surface-subtle border-b border-gray-200/80">
+      {/* 3. Clinical Modalities (Direct Cards) */}
+      <section className="py-20 lg:py-28 bg-surface-subtle border-b border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <motion.div 
@@ -268,7 +260,7 @@ export default function AboutPage({ onOpenBooking }) {
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
               Techniques Deployed at Arura Studio
             </h2>
-            <p className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed">
+            <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed">
               Every technique is practiced strictly under hospital-grade aseptic standards as documented in our clinical framework:
             </p>
           </motion.div>
@@ -282,12 +274,11 @@ export default function AboutPage({ onOpenBooking }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.98 }}
-                className="group bg-white rounded-3xl border border-gray-200/90 hover:border-brand hover:shadow-xl transition-colors duration-200 p-7 sm:p-9 flex flex-col justify-between space-y-6"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="group bg-white rounded-3xl border border-neutral-200 hover:border-brand hover:shadow-xl transition-colors duration-200 p-7 sm:p-9 flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
-                  <div className="flex items-start justify-between gap-3 border-b border-gray-100 pb-5">
+                  <div className="flex items-start justify-between gap-3 border-b border-neutral-100 pb-5">
                     <div className="flex items-center space-x-3">
                       <div className="p-3 rounded-2xl bg-pink-50 border border-pink-200 text-brand group-hover:bg-brand group-hover:text-white transition-colors">
                         {tech.icon}
@@ -302,12 +293,12 @@ export default function AboutPage({ onOpenBooking }) {
                       </div>
                     </div>
 
-                    <span className="px-3 py-1 rounded-full bg-gray-50 text-gray-700 text-xs font-semibold border border-gray-200 shrink-0">
+                    <span className="px-3 py-1 rounded-full bg-neutral-50 text-neutral-700 text-xs font-semibold border border-neutral-200 shrink-0">
                       {tech.spec}
                     </span>
                   </div>
 
-                  <p className="text-sm text-gray-600 leading-relaxed font-normal">
+                  <p className="text-sm text-neutral-600 leading-relaxed font-normal">
                     {tech.desc}
                   </p>
 
@@ -321,14 +312,14 @@ export default function AboutPage({ onOpenBooking }) {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs text-gray-500 font-medium">Strict single-use guarantee</span>
+                <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-xs text-neutral-500 font-medium">Strict single-use guarantee</span>
                   <Link
                     to="/booking"
-                    className="btn-luxury-dark group-hover:bg-brand group-hover:border-brand px-5 py-2.5 rounded-xl text-xs font-semibold inline-flex items-center space-x-2 transition-colors active:scale-95 shadow-xs"
+                    className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-ink text-white hover:bg-brand transition-colors inline-flex items-center space-x-2 motion-safe:active:scale-95 shadow-xs"
                   >
                     <span>Book Session (₹600)</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>
@@ -338,13 +329,11 @@ export default function AboutPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* =========================================================================
-          SANCTUARY LOCATION STRIP
-         ========================================================================= */}
-      <section className="py-20 bg-white">
+      {/* 4. Sanctuary Location Strip */}
+      <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="bg-ink text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
+            className="bg-ink text-white rounded-3xl p-8 sm:p-14 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -354,14 +343,14 @@ export default function AboutPage({ onOpenBooking }) {
               <h3 className="font-display text-2xl sm:text-3xl font-bold">
                 Chinmaya Nagar, Virugambakkam, Chennai
               </h3>
-              <p className="text-sm text-gray-300 font-normal max-w-lg">
+              <p className="text-sm text-neutral-300 font-normal max-w-lg">
                 Daily consultations from 10:00 AM to 8:00 PM. Private acoustic suites to protect patient confidentiality.
               </p>
             </div>
 
             <Link
               to="/booking"
-              className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl relative z-10 transition-colors"
+              className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl relative z-10 transition-colors duration-200 motion-safe:active:scale-[0.98]"
             >
               Book Private Consultation (₹600)
             </Link>
