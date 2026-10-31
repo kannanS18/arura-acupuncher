@@ -8,8 +8,6 @@ import AnimatedCounter from '../components/AnimatedCounter';
 import MeridianPulseWave from '../components/MeridianPulseWave';
 
 export default function AboutPage({ onOpenBooking }) {
-  const [selectedTech, setSelectedTech] = useState(0);
-
   const clinicalTechniques = [
     {
       title: "Classical 14-Meridian Acupuncture",
@@ -288,94 +286,66 @@ export default function AboutPage({ onOpenBooking }) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Modality Selector Tabs */}
-            <motion.div 
-              className="lg:col-span-5 space-y-2.5"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6 }}
-            >
-              {clinicalTechniques.map((tech, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedTech(idx)}
-                  className={`w-full text-left p-4 rounded-2xl transition-all border flex items-center justify-between ${
-                    selectedTech === idx
-                      ? 'bg-[#e02868] text-white border-[#e02868] shadow-lg scale-[1.01]'
-                      : 'bg-white text-gray-800 border-gray-200/80 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-xl ${selectedTech === idx ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                      {tech.icon}
-                    </div>
-                    <div>
-                      <div className="font-display text-base font-bold">{tech.title}</div>
-                      <div className={`text-xs ${selectedTech === idx ? 'text-pink-100' : 'text-gray-500'}`}>
-                        {tech.category}
+          {/* Direct Self-Contained Modality Cards Grid (No Confusing Tabs, 100% Readable As You Scroll) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {clinicalTechniques.map((tech, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.98 }}
+                className="group bg-white rounded-3xl border border-gray-200/90 hover:border-[#e02868] hover:shadow-xl transition-all duration-300 p-7 sm:p-9 flex flex-col justify-between space-y-6"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3 border-b border-gray-100 pb-5">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-3 rounded-2xl bg-pink-50 border border-pink-200 text-[#e02868] group-hover:bg-[#e02868] group-hover:text-white transition-colors">
+                        {tech.icon}
+                      </div>
+                      <div>
+                        <span className="text-[11px] uppercase tracking-wider text-[#e02868] font-bold block">
+                          {tech.category}
+                        </span>
+                        <h3 className="font-display text-xl sm:text-2xl font-bold text-[#09090b] group-hover:text-[#e02868] transition-colors">
+                          {tech.title}
+                        </h3>
                       </div>
                     </div>
+
+                    <span className="px-3 py-1 rounded-full bg-gray-50 text-gray-700 text-xs font-semibold border border-gray-200 shrink-0">
+                      {tech.spec}
+                    </span>
                   </div>
-                  <ArrowRight className="w-4 h-4 flex-shrink-0" />
-                </button>
-              ))}
-            </motion.div>
 
-            {/* Active Modality Clinical Dossier with Animate Presence */}
-            <motion.div 
-              className="lg:col-span-7 bg-white rounded-3xl border border-gray-200/80 p-8 sm:p-10 shadow-sm space-y-6"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="border-b border-gray-100 pb-6 flex items-start justify-between">
-                <div>
-                  <span className="text-xs uppercase tracking-wider text-[#e02868] font-bold block mb-1">
-                    {clinicalTechniques[selectedTech].category}
-                  </span>
-                  <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#09090b]">
-                    {clinicalTechniques[selectedTech].title}
-                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed font-normal">
+                    {tech.desc}
+                  </p>
+
+                  <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
+                    <span className="text-[11px] uppercase tracking-wider text-emerald-800 font-bold block">
+                      Documented Therapeutic Benefit:
+                    </span>
+                    <p className="text-xs sm:text-sm text-emerald-950 font-semibold leading-relaxed">
+                      {tech.benefit}
+                    </p>
+                  </div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-pink-50 text-[#e02868] text-xs font-bold border border-pink-200">
-                  {clinicalTechniques[selectedTech].spec}
-                </span>
-              </div>
 
-              <div className="space-y-2">
-                <span className="text-xs uppercase tracking-wider text-gray-500 font-bold block">
-                  Clinical Method & Mechanism:
-                </span>
-                <p className="text-base text-gray-700 leading-relaxed font-normal">
-                  {clinicalTechniques[selectedTech].desc}
-                </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
-                <span className="text-xs uppercase tracking-wider text-emerald-800 font-bold block">
-                  Documented Therapeutic Benefit:
-                </span>
-                <p className="text-sm text-emerald-950 font-semibold leading-relaxed">
-                  {clinicalTechniques[selectedTech].benefit}
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-xs text-gray-500 font-medium">Strict single-use aseptic guarantee.</span>
-                <Link
-                  to="/booking"
-                  className="px-6 py-3 rounded-xl text-xs uppercase tracking-wider font-bold bg-[#e02868] text-white hover:bg-[#c21e54] shadow-md flex items-center space-x-2 transition-all"
-                >
-                  <span>Book Consultation (₹600)</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </motion.div>
-
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-xs text-gray-500 font-medium">Strict single-use guarantee</span>
+                  <Link
+                    to="/booking"
+                    className="btn-luxury-dark group-hover:bg-[#e02868] group-hover:border-[#e02868] px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2 transition-all active:scale-95 shadow-xs"
+                  >
+                    <span>Book Session (₹600)</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
         </div>
