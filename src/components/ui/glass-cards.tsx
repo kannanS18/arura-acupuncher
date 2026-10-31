@@ -198,11 +198,11 @@ const Card: React.FC<CardProps> = ({
                         opacity: 0.5
                     }} />
 
-                    {/* Content inside the glass — Sharp, dark & highly visible */}
+                    {/* Content inside the glass — Large, clear, dark & easy to read */}
                     <div style={{
                         position: 'relative',
                         zIndex: 2,
-                        padding: '36px 40px',
+                        padding: '34px 44px',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
@@ -214,20 +214,20 @@ const Card: React.FC<CardProps> = ({
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '8px',
-                                padding: '5px 12px',
-                                borderRadius: '16px',
-                                background: 'rgba(15, 23, 42, 0.04)',
-                                border: '1px solid rgba(15, 23, 42, 0.08)',
-                                marginBottom: '14px'
+                                padding: '6px 14px',
+                                borderRadius: '18px',
+                                background: 'rgba(15, 23, 42, 0.05)',
+                                border: '1px solid rgba(15, 23, 42, 0.10)',
+                                marginBottom: '12px'
                             }}>
                                 <span style={{
-                                    width: '7px',
-                                    height: '7px',
+                                    width: '8px',
+                                    height: '8px',
                                     borderRadius: '50%',
                                     backgroundColor: color.replace('0.8', '1')
                                 }} />
                                 <span style={{
-                                    fontSize: '11px',
+                                    fontSize: '13px',
                                     fontWeight: '700',
                                     color: color.replace('0.8', '1'),
                                     textTransform: 'uppercase',
@@ -237,35 +237,36 @@ const Card: React.FC<CardProps> = ({
                                 </span>
                             </div>
 
-                            {/* Title — Crisp high-contrast black */}
+                            {/* Title — Prominent, crisp black */}
                             <h3 style={{
-                                fontSize: '26px',
+                                fontSize: '32px',
                                 fontWeight: '800',
                                 color: '#09090b',
                                 marginBottom: '6px',
-                                lineHeight: '1.25',
-                                letterSpacing: '-0.02em'
+                                lineHeight: '1.2',
+                                letterSpacing: '-0.025em'
                             }} className="font-display">
                                 {title}
                             </h3>
 
                             {subtitle && (
                                 <p style={{
-                                    fontSize: '13px',
+                                    fontSize: '16px',
                                     fontWeight: '600',
-                                    color: '#475569',
-                                    marginBottom: '14px'
+                                    color: '#334155',
+                                    marginBottom: '12px'
                                 }}>
                                     {subtitle}
                                 </p>
                             )}
 
-                            {/* Description — Dark, readable slate */}
+                            {/* Description — Large, crisp slate-900 */}
                             <p style={{
-                                fontSize: '14px',
-                                color: '#334155',
-                                lineHeight: '1.6',
-                                maxWidth: '88%'
+                                fontSize: '17px',
+                                color: '#1e293b',
+                                lineHeight: '1.65',
+                                maxWidth: '92%',
+                                fontWeight: '400'
                             }}>
                                 {description}
                             </p>
@@ -275,7 +276,7 @@ const Card: React.FC<CardProps> = ({
                                 <div style={{
                                     display: 'grid',
                                     gridTemplateColumns: 'repeat(2, 1fr)',
-                                    gap: '6px',
+                                    gap: '8px',
                                     marginTop: '16px'
                                 }}>
                                     {features.slice(0, 4).map((feat, fIdx) => (
@@ -283,13 +284,13 @@ const Card: React.FC<CardProps> = ({
                                             display: 'flex',
                                             alignItems: 'center',
                                             gap: '8px',
-                                            fontSize: '12px',
-                                            color: '#334155',
-                                            fontWeight: '500'
+                                            fontSize: '14px',
+                                            color: '#0f172a',
+                                            fontWeight: '600'
                                         }}>
                                             <span style={{
-                                                width: '5px',
-                                                height: '5px',
+                                                width: '6px',
+                                                height: '6px',
                                                 borderRadius: '50%',
                                                 backgroundColor: color.replace('0.8', '1'),
                                                 flexShrink: 0
@@ -306,19 +307,19 @@ const Card: React.FC<CardProps> = ({
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            paddingTop: '16px',
-                            borderTop: '1px solid rgba(15, 23, 42, 0.08)'
+                            paddingTop: '18px',
+                            borderTop: '1px solid rgba(15, 23, 42, 0.10)'
                         }}>
-                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
                                 <span style={{
-                                    fontSize: '28px',
+                                    fontSize: '34px',
                                     fontWeight: '800',
                                     color: '#09090b',
                                     letterSpacing: '-0.03em'
                                 }} className="font-display tabular-nums">
                                     {fee || '₹600'}
                                 </span>
-                                <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '500' }}>
+                                <span style={{ fontSize: '14px', color: '#475569', fontWeight: '600' }}>
                                     {duration || 'per session'}
                                 </span>
                             </div>
@@ -332,18 +333,18 @@ const Card: React.FC<CardProps> = ({
                                     }
                                 }}
                                 style={{
-                                    padding: '10px 22px',
-                                    borderRadius: '12px',
+                                    padding: '12px 26px',
+                                    borderRadius: '14px',
                                     background: '#09090b',
-                                    border: '1px solid rgba(15, 23, 42, 0.12)',
+                                    border: '1px solid rgba(15, 23, 42, 0.15)',
                                     color: '#ffffff',
-                                    fontSize: '13px',
-                                    fontWeight: '600',
+                                    fontSize: '15px',
+                                    fontWeight: '700',
                                     cursor: 'pointer',
                                     transition: 'all 0.25s ease',
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: '6px',
+                                    gap: '8px',
                                     boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)'
                                 }}
                                 onMouseEnter={(e) => {
@@ -353,7 +354,7 @@ const Card: React.FC<CardProps> = ({
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.background = '#09090b';
-                                    e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.12)';
+                                    e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.15)';
                                     e.currentTarget.style.transform = 'translateY(0)';
                                 }}
                             >
