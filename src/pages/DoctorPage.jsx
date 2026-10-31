@@ -191,10 +191,10 @@ export default function DoctorPage({ onOpenBooking }) {
                         Lead Clinical Acupuncturist
                       </p>
                       <p className="text-xs text-neutral-600 font-medium">
-                        MD (Acu) • Reg # TN-ACU-2016
+                        MD (Acu), Reg # TN-ACU-2016
                       </p>
-                      <div className="pt-1">
-                        <span className="inline-block text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                      <div className="pt-0.5">
+                        <span className="text-xs text-neutral-500 font-medium">
                           Active Clinical Practice
                         </span>
                       </div>

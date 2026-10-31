@@ -32,15 +32,18 @@ export default function HeroSection({ onOpenBooking }) {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             
-            {/* Live Status Badge */}
+            {/* Authentic Clinical Subtitle (No AI pill badge) */}
             <motion.div 
-              className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-surface-subtle border border-neutral-200 text-xs text-ink font-medium"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center space-x-3 text-xs text-neutral-500 font-medium"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
-              <span>Acupuncture and clinical psychotherapy in Chennai</span>
+              <span className="text-brand font-semibold">Arura Studio</span>
+              <span className="text-neutral-300">/</span>
+              <span>Virugambakkam, Chennai</span>
+              <span className="text-neutral-300">/</span>
+              <span className="text-neutral-700">Classical 14-Meridian Medicine</span>
             </motion.div>
 
             {/* Confident Modern Human-Crafted Headline */}
@@ -124,24 +127,24 @@ export default function HeroSection({ onOpenBooking }) {
                   alt="Authentic Gentle Acupuncture Treatment Session at Arura Wellness Sanctuary" 
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              </div>
 
-                {/* Floating Aseptic Protocol Badge */}
-                <div className="absolute top-4 left-4 inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200 text-xs font-semibold text-neutral-900 shadow-sm">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Aseptic surgical protocol</span>
+              {/* Architectural Caption Strip (Human-crafted museum/clinical layout) */}
+              <div className="p-5 bg-white border-t border-neutral-200/80 flex items-center justify-between text-xs">
+                <div>
+                  <h3 className="font-display text-sm font-bold text-ink">
+                    Classical 14-Meridian Needle Insertion
+                  </h3>
+                  <p className="text-neutral-500 text-[11px] mt-0.5 font-normal">
+                    0.18mm hair-thin needles · Aseptic single-use guarantee
+                  </p>
                 </div>
-
-                {/* Bottom Overlay Info */}
-                <div className="absolute bottom-4 left-4 right-4 text-white flex items-end justify-between">
-                  <div className="space-y-0.5">
-                    <h3 className="font-display text-base sm:text-lg font-bold text-white">
-                      Gentle 14-Meridian Needling
-                    </h3>
-                    <p className="text-xs text-white/80">0.18mm Hair-Thin Needles • Painless Insertion</p>
-                  </div>
-                  <span className="px-2.5 py-1 rounded-full bg-black/60 border border-white/20 text-white text-xs font-medium">
-                    Daily 10 AM to 8 PM
+                <div className="text-right">
+                  <span className="text-brand font-semibold text-[11px] block">
+                    Virugambakkam Suite
+                  </span>
+                  <span className="text-neutral-500 text-[11px] tabular-nums font-medium">
+                    Daily 10:00 AM to 8:00 PM
                   </span>
                 </div>
               </div>

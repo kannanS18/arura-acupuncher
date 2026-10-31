@@ -122,9 +122,8 @@ export default function AboutPage({ onOpenBooking }) {
                       className="h-10 w-auto object-contain"
                     />
                   </div>
-                  <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span>Clinical Standard</span>
+                  <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/80">
+                    Clinical Standard
                   </span>
                 </div>
 
@@ -137,8 +136,7 @@ export default function AboutPage({ onOpenBooking }) {
                     />
                   </div>
 
-                  <div className="mt-4 inline-flex items-center space-x-2 text-xs text-neutral-800 font-semibold bg-neutral-50 px-4 py-1.5 rounded-full border border-neutral-200 shadow-xs">
-                    <span className="w-2 h-2 rounded-full bg-brand" />
+                  <div className="mt-4 text-xs text-neutral-600 font-medium">
                     <span>0.18mm Hair-Thin Surgical 316L Needles</span>
                   </div>
                 </div>
@@ -329,7 +327,7 @@ export default function AboutPage({ onOpenBooking }) {
                       </span>
                     </div>
 
-                    <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200">
+                    <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2.5 py-0.5 rounded-md border border-neutral-200">
                       {tech.spec}
                     </span>
                   </div>

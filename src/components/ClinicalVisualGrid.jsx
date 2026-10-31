@@ -68,17 +68,13 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
                   alt={item.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-semibold text-gray-900 border border-gray-200 shadow-xs">
-                  {item.badge}
-                </span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-                <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <p className="text-xs text-pink-200 font-medium">
+                <div className="absolute bottom-3 left-5 right-5 text-white">
+                  <span className="text-[11px] text-pink-200/90 font-medium block">
                     {item.subtitle}
-                  </p>
-                  <h3 className="font-display text-lg font-bold">
+                  </span>
+                  <h3 className="font-display text-lg font-bold text-white">
                     {item.title}
                   </h3>
                 </div>
@@ -90,9 +86,12 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
                   {item.desc}
                 </p>
 
-                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-brand group-hover:text-ink transition-colors">
-                  <span>Verified standard</span>
-                  <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
+                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="text-neutral-500 font-medium">{item.badge}</span>
+                  <span className="font-semibold text-brand group-hover:text-ink inline-flex items-center space-x-1 transition-colors">
+                    <span>Clinical protocol</span>
+                    <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </div>
               </div>
             </motion.div>

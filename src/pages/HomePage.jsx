@@ -2,7 +2,8 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import ClinicalVisualGrid from '../components/ClinicalVisualGrid';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import MeridianPulseWave from '../components/MeridianPulseWave';
+import { ArrowRight, CheckCircle2, Activity } from 'lucide-react';
 import { TESTIMONIALS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
@@ -16,7 +17,10 @@ export default function HomePage({ onOpenBooking }) {
       {/* 1. Aesthetic Minimalist Hero */}
       <HeroSection onOpenBooking={onOpenBooking} />
 
-      {/* 2. Visual Clinical Pillars with Staggered Scroll Reveal */}
+      {/* 2. Living 14-Meridian Medical Pulse Diagnostic Ribbon */}
+      <MeridianPulseWave withTelemetry={true} color="#e02868" className="border-b border-neutral-200/80 bg-white" />
+
+      {/* 3. Visual Clinical Pillars with Staggered Scroll Reveal */}
       <ClinicalVisualGrid onOpenBooking={onOpenBooking} />
 
       {/* 3. Direct Anatomical Meridian Pathways */}
@@ -75,12 +79,12 @@ export default function HomePage({ onOpenBooking }) {
 
                 <div className="space-y-3 text-xs text-neutral-600 border-t border-neutral-100 pt-5">
                   <div className="flex items-center space-x-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-brand flex-shrink-0" />
-                    <span>Classical 14-Channel Pulse Diagnostics</span>
+                    <Activity className="w-4 h-4 text-brand flex-shrink-0 animate-pulse" />
+                    <span className="font-semibold text-ink">Classical 14-Channel Pulse Diagnostics</span>
                   </div>
                   <div className="flex items-center space-x-2.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span><AnimatedCounter end={8} suffix="+ Years" /> Clinical Practice • <AnimatedCounter end={1100} suffix="+ Recoveries" /></span>
+                    <span><AnimatedCounter end={8} suffix="+ Years" /> Clinical Practice, <AnimatedCounter end={1100} suffix="+ Recoveries" /></span>
                   </div>
                   <div className="flex items-center space-x-2.5">
                     <CheckCircle2 className="w-4 h-4 text-neutral-700 flex-shrink-0" />
@@ -117,29 +121,40 @@ export default function HomePage({ onOpenBooking }) {
                 Every session combines gentle meridian point stimulation with active listening. Chronic pain and emotional tension are resolved at their neuro-biological roots.
               </p>
 
-              {/* 3 Transparent Medical Price Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
-                  <span className="text-2xl font-bold text-ink block">₹600</span>
-                  <span className="text-xs text-neutral-500 font-medium">Diagnostic Consultation</span>
+              {/* Architectural Clinical Tariff Ledger (Replaces generic 3-card stack) */}
+              <div className="border-t border-b border-neutral-200 divide-y divide-neutral-100 my-4">
+                <div className="py-3.5 flex items-baseline justify-between gap-4">
+                  <div>
+                    <span className="text-sm font-semibold text-ink block">Diagnostic Evaluation</span>
+                    <span className="text-xs text-neutral-500 font-normal">Unhurried 14-meridian pulse diagnosis & medical history</span>
+                  </div>
+                  <span className="font-display text-lg font-bold text-ink tabular-nums">₹600</span>
                 </div>
-                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
-                  <span className="text-2xl font-bold text-brand block">₹600</span>
-                  <span className="text-xs text-neutral-500 font-medium">Acupuncture Session</span>
+                <div className="py-3.5 flex items-baseline justify-between gap-4">
+                  <div>
+                    <span className="text-sm font-semibold text-ink block">Classical Acupuncture Session</span>
+                    <span className="text-xs text-neutral-500 font-normal">Precision nerve stimulation & localized thermal moxibustion</span>
+                  </div>
+                  <span className="font-display text-lg font-bold text-brand tabular-nums">₹600</span>
                 </div>
-                <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-1">
-                  <span className="text-2xl font-bold text-emerald-700 block">100% Sterile</span>
-                  <span className="text-xs text-neutral-500 font-medium">Single-Use Guarantee</span>
+                <div className="py-3.5 flex items-baseline justify-between gap-4">
+                  <div>
+                    <span className="text-sm font-semibold text-ink block">Aseptic Sterility Guarantee</span>
+                    <span className="text-xs text-neutral-500 font-normal">0.18mm surgical steel opened fresh in your presence</span>
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-800 bg-neutral-100 px-2.5 py-1 rounded-md border border-neutral-200">
+                    100% Single-use
+                  </span>
                 </div>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-1">
                 <Link
                   to="/clinic"
-                  className="text-xs text-brand hover:text-brand-dark font-semibold inline-flex items-center space-x-1.5 transition-colors"
+                  className="text-xs text-ink hover:text-brand font-semibold inline-flex items-center space-x-2 transition-colors group"
                 >
-                  <span>Explore complete clinical tariff and sanctuary guidelines</span>
-                  <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
+                  <span>View comprehensive clinic tariff and sanctuary guidelines</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
 
@@ -181,16 +196,16 @@ export default function HomePage({ onOpenBooking }) {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className="space-y-4">
-                  <span className="inline-block px-3 py-1 rounded-full bg-white text-brand text-xs font-semibold border border-neutral-200 shadow-xs">
+                  <div className="text-xs font-semibold text-brand tracking-normal">
                     {item.tag}
-                  </span>
+                  </div>
                   <p className="font-sans text-base sm:text-lg text-neutral-800 italic leading-relaxed">
                     “{item.text}”
                   </p>
                 </div>
                 <div className="border-t border-neutral-200/80 pt-4">
                   <div className="font-display text-sm font-bold text-ink">{item.name}</div>
-                  <div className="text-xs text-neutral-500">{item.location} • Verified Recovery</div>
+                  <div className="text-xs text-neutral-500">{item.location}, Verified Patient Recovery</div>
                 </div>
               </motion.div>
             ))}

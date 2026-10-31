@@ -78,10 +78,9 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
         className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-200 pb-8 mb-12"
       >
         <div className="space-y-3">
-          <div className="inline-flex items-center space-x-2 text-xs text-brand font-semibold">
-            <HeartPulse className="w-4 h-4 text-brand" />
-            <span>Targeted Clinical Pathways</span>
-          </div>
+          <p className="text-xs font-semibold text-brand tracking-normal">
+            Targeted Clinical Pathways
+          </p>
           <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink tracking-tight">
             Anatomical Treatment Zones
           </h2>
@@ -111,13 +110,12 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="space-y-5">
-              {/* Top row: Number & Relief verification */}
-              <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                <span className="font-display text-xl font-bold text-brand">
-                  {zone.id}
+              {/* Top row: Pathway Number & Clinical Timeline */}
+              <div className="flex items-baseline justify-between border-b border-neutral-100 pb-3">
+                <span className="font-display text-base font-bold text-ink/90 tabular-nums">
+                  Pathway {zone.id}
                 </span>
-                
-                <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
+                <span className="text-xs text-neutral-500 font-medium">
                   {zone.relief}
                 </span>
               </div>

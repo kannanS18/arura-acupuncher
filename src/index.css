@@ -198,10 +198,10 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
   animation: medicalPulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Gentle Medical Wave Flow */
+/* Rhythmic Medical Meridian Pulse Wave Flow */
 @keyframes waveFlow {
   0% {
-    stroke-dashoffset: 400;
+    stroke-dashoffset: 460;
   }
   100% {
     stroke-dashoffset: 0;
@@ -209,8 +209,8 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
 }
 
 .animate-meridian-wave {
-  stroke-dasharray: 200;
-  animation: waveFlow 6s linear infinite;
+  stroke-dasharray: 160 300;
+  animation: waveFlow 4.5s linear infinite;
 }
 
 /* Silky Float for Imagery */

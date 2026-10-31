@@ -150,12 +150,12 @@ export default function AcupuncturePage({ onOpenBooking }) {
                 <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-                    <span className="font-display text-xl font-bold text-brand">
-                      {m.id}
+                  <div className="flex items-baseline justify-between border-b border-neutral-100 pb-3">
+                    <span className="font-display text-base font-bold text-ink/90 tabular-nums">
+                      Modality {m.id}
                     </span>
-                    <span className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 px-3 py-1 rounded-full border border-emerald-200/80">
-                      Safe and non-invasive
+                    <span className="text-xs text-neutral-500 font-medium">
+                      Safe & non-invasive
                     </span>
                   </div>
 
