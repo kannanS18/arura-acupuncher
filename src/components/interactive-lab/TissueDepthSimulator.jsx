@@ -11,7 +11,8 @@ import {
   VolumeX, 
   Maximize2, 
   Minimize2,
-  Sparkles
+  Sparkles,
+  RotateCcw
 } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetUrl';
 
@@ -63,6 +64,86 @@ function playClinicalSound(type, isMuted) {
       osc.stop(now + 0.03);
     }
   } catch (_) {}
+}
+
+// Procedural realistic living skin texture with pores and dermal tone
+function createRealisticSkinTexture() {
+  if (typeof document === 'undefined') return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+
+  // Rich warm natural skin tone gradient (Fitzpatrick scale III-IV)
+  const grad = ctx.createLinearGradient(0, 0, 1024, 1024);
+  grad.addColorStop(0, '#bd7d65');
+  grad.addColorStop(0.5, '#ab6f58');
+  grad.addColorStop(1, '#b5745d');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1024, 1024);
+
+  // Micro-dermal capillary mottling
+  for (let i = 0; i < 6000; i++) {
+    const x = Math.random() * 1024;
+    const y = Math.random() * 1024;
+    const r = Math.random() * 3 + 1;
+    ctx.fillStyle = Math.random() > 0.5 
+      ? 'rgba(215, 120, 100, 0.14)' 
+      : 'rgba(155, 65, 50, 0.12)';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Dermatoglyphics: Micro-furrows / fine epidermal skin crease net
+  ctx.strokeStyle = 'rgba(110, 45, 35, 0.15)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 400; i++) {
+    ctx.beginPath();
+    const sx = Math.random() * 1024;
+    const sy = Math.random() * 1024;
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(sx + (Math.random() - 0.5) * 50, sy + (Math.random() - 0.5) * 50);
+    ctx.stroke();
+  }
+
+  // Follicular / micro-pore dimples
+  for (let i = 0; i < 3500; i++) {
+    const x = Math.random() * 1024;
+    const y = Math.random() * 1024;
+    ctx.fillStyle = 'rgba(75, 25, 18, 0.28)';
+    ctx.fillRect(x, y, 1.5, 1.5);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(2, 2);
+  return texture;
+}
+
+// Procedural coiled wire texture for authentic acupuncture handle
+function createCopperCoilTexture() {
+  if (typeof document === 'undefined') return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  
+  for (let y = 0; y < 512; y += 8) {
+    const grad = ctx.createLinearGradient(0, y, 0, y + 8);
+    grad.addColorStop(0, '#78350f');
+    grad.addColorStop(0.3, '#d97706');
+    grad.addColorStop(0.7, '#fbbf24');
+    grad.addColorStop(1, '#92400e');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, y, 128, 8);
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(1, 4);
+  return tex;
 }
 
 const CLINICAL_SCENARIOS = [
@@ -156,23 +237,23 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   }, [isElectroActive, depthMm, isMuted]);
 
   // -----------------------------------------------------------------
-  // TRUE WEBGL THREE.JS SCENE WITH REAL-TIME TEXTURE MAPPING
+  // TRUE WEBGL THREE.JS SCENE COVERED REALISTICALLY ON ALL SIDES
   // -----------------------------------------------------------------
   useEffect(() => {
     if (!canvasContainerRef.current) return;
 
     const container = canvasContainerRef.current;
     const width = container.clientWidth || 800;
-    const height = container.clientHeight || 450;
+    const height = container.clientHeight || 700;
 
     // 1. Scene
     const scene = new THREE.Scene();
     sceneRef.current = scene;
     scene.background = new THREE.Color(0x090b10);
 
-    // 2. Camera
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
-    camera.position.set(2.4, 1.8, 3.4);
+    // 2. Camera: Framed with generous vertical headroom to keep full needle in view
+    const camera = new THREE.PerspectiveCamera(46, width / height, 0.1, 50);
+    camera.position.set(0, 1.8, 6.8);
     cameraRef.current = camera;
 
     // 3. Renderer
@@ -182,7 +263,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.12;
     rendererRef.current = renderer;
 
     while (container.firstChild) {
@@ -190,65 +271,74 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
     container.appendChild(renderer.domElement);
 
-    // 4. OrbitControls with smooth damping and anatomical viewing bounds
+    // 4. OrbitControls: Full 360° rotation enabled on all sides
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2; // Don't look underneath
-    controls.minPolarAngle = Math.PI / 8; // Don't look straight top down
-    controls.minAzimuthAngle = -Math.PI * 0.45; // Keep focus on cutaway faces
-    controls.maxAzimuthAngle = Math.PI * 0.45;
-    controls.minDistance = 1.8;
-    controls.maxDistance = 6.0;
-    controls.target.set(0, 0, 0);
+    controls.maxPolarAngle = Math.PI / 2 + 0.05; // Don't look from straight underneath
+    controls.minDistance = 2.5;
+    controls.maxDistance = 9.0;
+    controls.target.set(0, 1.2, 0); // Focus on mid-level so entire needle and tissue block are visible
     controlsRef.current = controls;
 
-    // 5. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    // 5. Realistic Medical Studio 4-Point Lighting (Illuminates all 360° sides)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    dirLight.position.set(3, 5, 4);
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
-    scene.add(dirLight);
+    // Front-Right Key Light
+    const frontKeyLight = new THREE.DirectionalLight(0xfffaed, 1.2);
+    frontKeyLight.position.set(3.5, 5, 4);
+    frontKeyLight.castShadow = true;
+    frontKeyLight.shadow.mapSize.width = 1024;
+    frontKeyLight.shadow.mapSize.height = 1024;
+    scene.add(frontKeyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xf472b6, 0.9);
-    fillLight.position.set(-3, -1, -2);
-    scene.add(fillLight);
+    // Back-Left Key Light (Ensures rear & opposite faces are brightly textured)
+    const backKeyLight = new THREE.DirectionalLight(0xfffaed, 1.1);
+    backKeyLight.position.set(-3.5, 4.5, -4);
+    scene.add(backKeyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.8);
-    rimLight.position.set(0, 3, -3);
-    scene.add(rimLight);
+    // Dermal Subsurface Warm Fill
+    const warmFillLight = new THREE.DirectionalLight(0xf472b6, 0.5);
+    warmFillLight.position.set(-4, 2, 2);
+    scene.add(warmFillLight);
+
+    // Surgical Specular Rim Light
+    const chromeRimLight = new THREE.DirectionalLight(0x38bdf8, 0.55);
+    chromeRimLight.position.set(4, 2, -3);
+    scene.add(chromeRimLight);
 
     // -----------------------------------------------------------------
-    // REALISTIC 3D ANATOMICAL TISSUE BLOCK WITH HIGH-RES TEXTURES
+    // 3D ANATOMICAL TISSUE BLOCK WITH FULL TEXTURE COVERAGE ON ALL SIDES
     // -----------------------------------------------------------------
     const blockGroup = new THREE.Group();
     scene.add(blockGroup);
 
     const textureLoader = new THREE.TextureLoader();
 
-    // Load living tissue cross-section texture
+    // High-resolution living cross-section texture
     const crossSectionTex = textureLoader.load(getAssetUrl('tissue_cross_section_clean.jpg'), (t) => {
       t.colorSpace = THREE.SRGBColorSpace;
       t.wrapS = THREE.ClampToEdgeWrapping;
       t.wrapT = THREE.ClampToEdgeWrapping;
     });
 
+    // Procedural living skin texture for the top plane
+    const skinTex = createRealisticSkinTexture();
+
     const blockWidth = 2.4;
     const blockHeight = 1.4;
     const blockDepth = 2.0;
 
-    // Multi-material 3D box with texture on visible cutaway faces
+    // Multi-material 3D box: ALL vertical sides covered in living anatomical texture!
+    // [right, left, top (skin), bottom, front, back]
     const materials = [
-      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.5 }), // right face (textured)
-      new THREE.MeshStandardMaterial({ color: 0x881337, roughness: 0.6 }), // left
-      new THREE.MeshStandardMaterial({ color: 0xdf9982, roughness: 0.65 }), // top (skin)
-      new THREE.MeshStandardMaterial({ color: 0x4c0519, roughness: 0.8 }), // bottom
-      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.45 }), // front cutaway (textured)
-      new THREE.MeshStandardMaterial({ color: 0x881337, roughness: 0.6 }) // back
+      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.45 }), // right face (textured)
+      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.45 }), // left face (textured)
+      new THREE.MeshStandardMaterial({ map: skinTex || crossSectionTex, roughness: 0.85, metalness: 0.02 }), // top (realistic skin)
+      new THREE.MeshStandardMaterial({ color: 0x220409, roughness: 0.8 }), // bottom (deep fascia bed)
+      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.45 }), // front face (textured)
+      new THREE.MeshStandardMaterial({ map: crossSectionTex, roughness: 0.45 })  // back face (textured)
     ];
 
     const blockGeo = new THREE.BoxGeometry(blockWidth, blockHeight, blockDepth);
@@ -262,10 +352,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const edgeLine = new THREE.LineSegments(edgeGeo, edgeMat);
     blockGroup.add(edgeLine);
 
+    // Acupoint sterile boundary ring on skin surface
+    const ringGeo = new THREE.RingGeometry(0.045, 0.07, 32);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
+    const entryRing = new THREE.Mesh(ringGeo, ringMat);
+    entryRing.rotation.x = -Math.PI / 2;
+    entryRing.position.set(0.15, 0.702, blockDepth / 2 - 0.05);
+    blockGroup.add(entryRing);
+
     // -----------------------------------------------------------------
-    // 3D TRIGGER POINT KNOT (In deep muscle, right face of block)
+    // 3D HYPER-CONTRACTED TRIGGER POINT KNOT
     // -----------------------------------------------------------------
-    const knotGeo = new THREE.SphereGeometry(0.16, 32, 32);
+    const knotGeo = new THREE.SphereGeometry(0.18, 32, 32);
     const knotMat = new THREE.MeshStandardMaterial({
       color: 0x4c0519,
       roughness: 0.35,
@@ -274,59 +372,60 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       emissiveIntensity: 0.5
     });
     const knotMesh = new THREE.Mesh(knotGeo, knotMat);
-    // Positioned near front-center in deep muscle zone
     knotMesh.position.set(0.15, -0.32, blockDepth / 2 + 0.02);
     blockGroup.add(knotMesh);
     knotMeshRef.current = knotMesh;
 
     // -----------------------------------------------------------------
-    // 3D SURGICAL ACUPUNCTURE NEEDLE MESH
+    // 3D SURGICAL ACUPUNCTURE NEEDLE MESH (Fully Visible from Handle to Tip)
     // -----------------------------------------------------------------
     const needleGroup = new THREE.Group();
     scene.add(needleGroup);
     needleGroupRef.current = needleGroup;
 
-    // Coiled Wire Copper Handle
-    const handleGeo = new THREE.CylinderGeometry(0.028, 0.028, 0.65, 32);
+    // Coiled Wire Copper Handle (Authentic acupuncture wound copper wire)
+    const handleTex = createCopperCoilTexture();
+    const handleGeo = new THREE.CylinderGeometry(0.048, 0.048, 0.75, 32);
     const handleMat = new THREE.MeshStandardMaterial({
-      color: 0xd97706,
-      roughness: 0.2,
-      metalness: 0.9
+      map: handleTex,
+      color: 0xdf8a28,
+      roughness: 0.25,
+      metalness: 0.85
     });
     const handleMesh = new THREE.Mesh(handleGeo, handleMat);
-    handleMesh.position.y = 1.15;
+    handleMesh.position.y = 1.86 + 0.375; // y = 2.235
     handleMesh.castShadow = true;
     needleGroup.add(handleMesh);
 
     // Top Ring Finial
-    const torusGeo = new THREE.TorusGeometry(0.038, 0.01, 16, 32);
+    const torusGeo = new THREE.TorusGeometry(0.065, 0.016, 16, 32);
     const torusMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.2, metalness: 0.95 });
     const torusMesh = new THREE.Mesh(torusGeo, torusMat);
-    torusMesh.position.y = 1.48;
+    torusMesh.position.y = 2.66;
     torusMesh.rotation.x = Math.PI / 2;
     needleGroup.add(torusMesh);
 
-    // Surgical Stainless Steel Shaft
-    const shaftGeo = new THREE.CylinderGeometry(0.007, 0.007, 1.0, 16);
+    // Surgical Stainless Steel Shaft (Polished chrome 316L, 1.8 units tall)
+    const shaftGeo = new THREE.CylinderGeometry(0.015, 0.015, 1.8, 24);
     const shaftMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      roughness: 0.05,
+      color: 0xf8fafc,
+      roughness: 0.08,
       metalness: 0.98
     });
     const shaftMesh = new THREE.Mesh(shaftGeo, shaftMat);
-    shaftMesh.position.y = 0.5;
+    shaftMesh.position.y = 0.06 + 0.9; // y = 0.96
     shaftMesh.castShadow = true;
     needleGroup.add(shaftMesh);
 
-    // Sharp Trocar Tip
-    const tipGeo = new THREE.ConeGeometry(0.007, 0.05, 16);
+    // Sharp Pine-Needle Trocar Tip (Apex at y = 0.0)
+    const tipGeo = new THREE.ConeGeometry(0.015, 0.06, 24);
     const tipMesh = new THREE.Mesh(tipGeo, shaftMat);
-    tipMesh.position.y = -0.025;
+    tipMesh.position.y = 0.03;
     tipMesh.rotation.x = Math.PI;
     needleGroup.add(tipMesh);
 
-    // Initial position: aligned above knot
-    needleGroup.position.set(0.15, 0.75, blockDepth / 2 + 0.02);
+    // Initial position: Needle tip resting right at skin surface (y = 0.70)
+    needleGroup.position.set(0.15, 0.70, blockDepth / 2 + 0.02);
 
     // Render Loop
     const animate = () => {
@@ -362,9 +461,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (!needleGroupRef.current) return;
     
     // Y-Position Mapping:
-    // depthMm = 0.0  -> Needle tip is at skin surface: y = 0.72
+    // depthMm = 0.0  -> Needle tip is at skin surface: y = 0.70
     // depthMm = 12.0 -> Needle tip is at knot center: y = -0.32
-    const startY = 0.72;
+    const startY = 0.70;
     const targetY = -0.32;
     const progress = Math.min(1.2, depthMm / 12.0);
     const newY = startY - progress * (startY - targetY);
@@ -441,8 +540,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
   const handleRecenterCamera = () => {
     if (cameraRef.current && controlsRef.current) {
-      cameraRef.current.position.set(2.4, 1.8, 3.4);
-      controlsRef.current.target.set(0, 0, 0);
+      cameraRef.current.position.set(0, 1.8, 6.8);
+      controlsRef.current.target.set(0, 1.2, 0);
       controlsRef.current.update();
     }
   };
@@ -452,7 +551,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setIsKnotReleased(false);
     setIsElectroActive(false);
     setIsMoxaActive(false);
-    if (needleGroupRef.current) needleGroupRef.current.position.y = 0.72;
+    if (needleGroupRef.current) needleGroupRef.current.position.y = 0.70;
     handleRecenterCamera();
   };
 
@@ -481,7 +580,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   };
 
   return (
-    <div className={`transition-all duration-300 ${
+    <div className={`transition-all duration-300 font-sans ${
       isFullscreen 
         ? 'fixed inset-0 z-50 w-screen h-screen bg-[#090b10] p-4 sm:p-8 flex flex-col justify-between overflow-y-auto select-none' 
         : 'relative bg-[#090b10] text-neutral-100 rounded-3xl border border-neutral-800 p-6 sm:p-10 shadow-2xl space-y-8 select-none overflow-hidden'
@@ -504,7 +603,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </h3>
 
           <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal">
-            A genuine WebGL 3D simulation. Drag your finger or mouse to rotate 360° around the tissue block. Tap to enter painlessly, navigate through living strata, and decompress the deep trigger knot.
+            A genuine WebGL 3D simulation covered realistically on all sides. Drag your finger or mouse to rotate 360° around the tissue block. Tap to enter painlessly, navigate through living strata, and decompress the deep trigger knot.
           </p>
         </div>
 
@@ -514,7 +613,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           {/* Fullscreen Button */}
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className={`px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center space-x-1.5 cursor-pointer ${
               isFullscreen 
                 ? 'bg-amber-400 text-black hover:bg-amber-300' 
                 : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700'
@@ -579,15 +678,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 </button>
               )}
 
-              {/* Mute Audio Toggle */}
-              <button
-                onClick={() => setIsMuted(!isMuted)}
-                className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs transition-colors flex items-center cursor-pointer border border-neutral-700"
-                title={isMuted ? 'Unmute sound' : 'Mute sound'}
-              >
-                {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-brand" />}
-              </button>
-
               {/* Re-center 3D Camera */}
               <button
                 onClick={handleRecenterCamera}
@@ -595,6 +685,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 title="Reset 3D camera to optimal angle"
               >
                 Re-center 3D
+              </button>
+
+              {/* Mute Audio Toggle */}
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs transition-colors flex items-center cursor-pointer border border-neutral-700"
+                title={isMuted ? 'Unmute sound' : 'Mute sound'}
+              >
+                {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-brand" />}
               </button>
 
               <button
@@ -606,11 +705,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </div>
           </div>
 
-          {/* THE GENUINE 3D THREE.JS WEBGL VIEWPORT */}
+          {/* THE EXPANSIVE, GRAND 3D THREE.JS WEBGL VIEWPORT */}
           <div 
             ref={canvasContainerRef}
-            className={`relative w-full rounded-xl overflow-hidden border border-neutral-800 shadow-2xl bg-[#090b10] touch-none select-none ${
-              isFullscreen ? 'min-h-[520px] h-[55vh]' : 'aspect-[16/9] min-h-[360px] max-h-[500px]'
+            className={`relative w-full rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl bg-[#090b10] touch-none select-none ${
+              isFullscreen ? 'h-[85vh]' : 'h-[620px] sm:h-[720px] lg:h-[780px]'
             }`}
           >
             {/* Real WebGL canvas rendered here */}
