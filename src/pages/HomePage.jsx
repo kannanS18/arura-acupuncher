@@ -1,5 +1,6 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
+import PlaceTheNeedleInteractive from '../components/PlaceTheNeedleInteractive';
 import ClinicalVisualGrid from '../components/ClinicalVisualGrid';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
 import MeridianPulseWave from '../components/MeridianPulseWave';
@@ -20,7 +21,10 @@ export default function HomePage({ onOpenBooking }) {
       {/* 2. Living 14-Meridian Medical Pulse Diagnostic Ribbon */}
       <MeridianPulseWave withTelemetry={true} color="#e02868" className="border-b border-neutral-200/80 bg-white" />
 
-      {/* 3. Visual Clinical Pillars with Staggered Scroll Reveal */}
+      {/* 3. "Place the Needle" Bespoke Tactile Interactive + "How Thin?" True-Scale Comparison */}
+      <PlaceTheNeedleInteractive onOpenBooking={onOpenBooking} />
+
+      {/* 4. Visual Clinical Pillars with Staggered Scroll Reveal */}
       <ClinicalVisualGrid onOpenBooking={onOpenBooking} />
 
       {/* 3. Direct Anatomical Meridian Pathways */}
