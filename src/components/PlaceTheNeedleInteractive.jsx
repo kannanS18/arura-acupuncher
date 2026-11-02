@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RotateCcw, ArrowRight, ShieldCheck, Info } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetUrl';
 
-// Authentic Clinical Acupoints on Hand & Forearm (Safe, Classic, Recognizable)
+// 4 Authentically Mapped Dorsal Points on Real Hand & Forearm Anatomy
 const ACUPOINTS = [
   {
     id: 'li4',
@@ -11,127 +12,122 @@ const ACUPOINTS = [
     hanzi: '合谷',
     english: 'Joining Valley',
     channel: 'Large Intestine Meridian',
-    x: 232, // SVG coordinate on hand
-    y: 228,
-    angle: -15, // insertion angle in degrees
-    depth: '10–15mm',
-    location: 'In the fleshy webbing between the thumb and index finger, at the highest point of the muscle when thumb and index are brought together.',
-    indications: 'Traditionally indicated for acute headaches, frontal migraines, facial and jaw tension, toothache, sinus congestion, and systemic pain modulation.',
-    sensation: 'Most patients feel a momentary feather-light tap as it passes the epidermal layer, followed by a warm, spreading dull ache or heaviness (the authentic “De-Qi” sensation). It is deeply calming, never sharp.',
-    doctorTip: '“LI4 is one of the four legendary command points in classical acupuncture. It acts like a neurological circuit breaker for tension stored above the neck.” — Dr. Nivedha'
+    // Normalized percentage coordinates on anatomical photograph (1200 x 896)
+    pctX: 35.8,
+    pctY: 55.8,
+    angle: -8, // slight natural perpendicular angle
+    depth: '10–15 mm',
+    location: 'In the fleshy mound between the 1st and 2nd metacarpal bones, at the highest point of the muscle when thumb and index finger are brought together.',
+    indications: 'Traditionally indicated for frontal headaches, chronic migraines, tension in the face, teeth, and jaw, sinus congestion, and systemic autonomic down-regulation.',
+    sensation: 'A momentary feather-light sensation as it passes the epidermal layer, followed by a warm, radiating dull ache or pleasant heaviness (the authentic “De-Qi” response). It feels deeply grounding, never sharp.',
+    doctorTip: '“LI4 is classical medicine’s premier command point for all discomfort above the neck. It triggers rapid central endorphin release and interrupts chronic pain loops.” — Dr. Nivedha'
   },
   {
-    id: 'pc6',
-    code: 'PC6',
-    name: 'Neiguan',
-    hanzi: '内关',
-    english: 'Inner Pass',
-    channel: 'Pericardium Meridian',
-    x: 320,
-    y: 420,
+    id: 'li5',
+    code: 'LI5',
+    name: 'Yangxi',
+    hanzi: '阳溪',
+    english: 'Yang Stream',
+    channel: 'Large Intestine Meridian',
+    pctX: 45.4,
+    pctY: 55.2,
+    angle: -4,
+    depth: '8–12 mm',
+    location: 'On the radial border of the wrist, in the anatomical snuffbox depression formed between the extensor pollicis longus and brevis tendons when the thumb is extended.',
+    indications: 'Traditionally indicated for wrist pain, repetitive strain injuries (RSI), tendonitis, thumb mobility restrictions, and clearing cranial sensory heat.',
+    sensation: 'A clear, focused sensation of pressure that dissolves localized tendon tension and immediately opens wrist joint flexibility.',
+    doctorTip: '“For IT professionals and patients with mouse-wrist strain, LI5 relieves inflammation directly at the radial nerve boundary.” — Dr. Nivedha'
+  },
+  {
+    id: 'sj4',
+    code: 'SJ4',
+    name: 'Yangchi',
+    hanzi: '阳池',
+    english: 'Yang Pool',
+    channel: 'San Jiao Meridian (Triple Energizer)',
+    pctX: 47.9,
+    pctY: 46.9,
     angle: 0,
-    depth: '12–18mm',
-    location: 'On the inner forearm, exactly two thumb-widths (2 cun) above the transverse wrist crease, nestled between the two palpable tendons (palmaris longus and flexor carpi radialis).',
-    indications: 'Traditionally indicated for motion sickness, nausea, epigastric tightness, racing heart rate, palpitations, chest constriction, and autonomic anxiety loops.',
-    sensation: 'A gentle tingling sensation that frequently travels down toward the middle finger or up into the chest, accompanied by an immediate sensation of deeper, unforced diaphragmatic breathing.',
-    doctorTip: '“When executive patients arrive with tight chests and shallow breathing from chronic sympathetic burnout, PC6 is the first point I palpate to stimulate vagal calming.” — Dr. Nivedha'
+    depth: '6–10 mm',
+    location: 'On the transverse crease of the back of the wrist, in the soft depression between the extensor digitorum and extensor digiti minimi tendons.',
+    indications: 'Traditionally indicated for chronic wrist weakness, localized arthritis, diabetes support, cold extremities, and autonomic temperature regulation.',
+    sensation: 'A deep, warming sensation that radiates through the wrist joint and frequently brings a feeling of gentle warmth to previously cold fingers.',
+    doctorTip: '“SJ4 is the Yuan-Source point of the Triple Energizer. It activates the body’s innate metabolic warmth and tonifies systemic autonomic balance.” — Dr. Nivedha'
   },
   {
-    id: 'lu9',
-    code: 'LU9',
-    name: 'Taiyuan',
-    hanzi: '太渊',
-    english: 'Great Abyss',
-    channel: 'Lung Meridian',
-    x: 268,
-    y: 358,
-    angle: -8,
-    depth: '8–12mm',
-    location: 'At the radial end of the transverse wrist crease, in the anatomical depression just lateral to the radial pulse artery at the base of the thumb.',
-    indications: 'Traditionally indicated for chronic cough, asthmatic wheezing, vascular circulation weakness, wrist joint stiffness, and depleted vital energy.',
-    sensation: 'A faint, rhythmic throbbing sensation synchronized with the radial arterial pulse, followed by open warmth expanding along the thumb and palm.',
-    doctorTip: '“LU9 is the gathering point of all vascular channels in the body. Palpating here gives me immediate diagnostic feedback on vascular tone and systemic circulation.” — Dr. Nivedha'
-  },
-  {
-    id: 'ht7',
-    code: 'HT7',
-    name: 'Shenmen',
-    hanzi: '神门',
-    english: 'Spirit Gate',
-    channel: 'Heart Meridian',
-    x: 372,
-    y: 362,
-    angle: 12,
-    depth: '8–12mm',
-    location: 'At the ulnar end of the wrist crease, in the small soft depression on the radial border of the flexor carpi ulnaris tendon, directly aligned with the little finger.',
-    indications: 'Traditionally indicated for stubborn insomnia, nocturnal racing thoughts, emotional agitation, grief, exam anxiety, and restless sleep patterns.',
-    sensation: 'A soothing, tranquil heaviness that feels like a weighted blanket settling over your nervous system. Many patients drift into a micro-nap within minutes of placement.',
-    doctorTip: '“In classical Chinese medical texts, Shenmen is translated as the Gate of the Spirit. It is our primary anchor when restoring disrupted sleep architecture.” — Dr. Nivedha'
+    id: 'sj5',
+    code: 'SJ5',
+    name: 'Waiguan',
+    hanzi: '外关',
+    english: 'Outer Pass',
+    channel: 'San Jiao Meridian (Triple Energizer)',
+    pctX: 61.7,
+    pctY: 49.1,
+    angle: 6,
+    depth: '12–18 mm',
+    location: 'On the back of the forearm, exactly two finger-widths (2 cun) above the dorsal wrist crease, situated in the groove between the radius and ulna bones.',
+    indications: 'Traditionally indicated for cervical stiffness, upper shoulder tension, migraine aura, ear ringing (tinnitus), febrile colds, and forearm myofascial pain.',
+    sensation: 'A tingling or spreading warmth that frequently travels up the arm into the shoulder and neck, dissipating tight muscular knots within seconds.',
+    doctorTip: '“Waiguan opens the Yang Link vessel. It is one of my most effective points for patients whose neck pain locks up their entire upper back.” — Dr. Nivedha'
   }
 ];
 
 export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
-  // Interactive State
-  const [activePoint, setActivePoint] = useState(null); // point where needle is currently placed
-  const [hoveredPoint, setHoveredPoint] = useState(null); // point being hovered
+  const [activePoint, setActivePoint] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [needlePos, setNeedlePos] = useState({ x: 50, y: 180 }); // relative coords in container
+  const [needlePos, setNeedlePos] = useState({ x: 36, y: 80 }); // relative coords in stage container
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [insertionStage, setInsertionStage] = useState('resting'); // 'resting', 'dragging', 'snapped', 'inserted'
-  const [tiltAngle, setTiltAngle] = useState(25); // visual 3D tilt of needle
-  const [ripplePoint, setRipplePoint] = useState(null); // coords for CSS skin ripple
+  const [tiltAngle, setTiltAngle] = useState(20);
+  const [ripplePoint, setRipplePoint] = useState(null);
 
-  // Companion Slider: "How Thin?" Magnification & Gauge Comparison
-  const [zoomLevel, setZoomLevel] = useState(12); // 1x to 25x magnification
+  // Companion Slider: "How Thin?" Microscope Zoom
+  const [zoomLevel, setZoomLevel] = useState(12);
 
   const containerRef = useRef(null);
-  const svgRef = useRef(null);
+  const boardRef = useRef(null);
 
   // Default Resting Tray Position
-  const RESTING_POS = { x: 54, y: 160 };
+  const RESTING_POS = { x: 36, y: 70 };
 
-  // Handle Drag Start
+  // Pointer Down (Mouse or Touch)
   const handlePointerDown = (e) => {
-    if (insertionStage === 'inserted') return; // Must click remove first
+    if (insertionStage === 'inserted') return;
     e.preventDefault();
-    const container = containerRef.current.getBoundingClientRect();
+    const board = boardRef.current.getBoundingClientRect();
     setIsDragging(true);
     setInsertionStage('dragging');
-    setTiltAngle(28);
+    setTiltAngle(24);
 
     setDragOffset({
-      x: e.clientX - container.left - needlePos.x,
-      y: e.clientY - container.top - needlePos.y
+      x: e.clientX - board.left - needlePos.x,
+      y: e.clientY - board.top - needlePos.y
     });
 
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
-  // Handle Pointer Movement (Desktop Mouse & Touch)
+  // Pointer Move (Mouse drag or touch move)
   const handlePointerMove = (e) => {
     if (!isDragging) return;
-    const container = containerRef.current.getBoundingClientRect();
-    const currentX = e.clientX - container.left - dragOffset.x;
-    const currentY = e.clientY - container.top - dragOffset.y;
+    const board = boardRef.current.getBoundingClientRect();
+    const currentX = e.clientX - board.left - dragOffset.x;
+    const currentY = e.clientY - board.top - dragOffset.y;
 
     setNeedlePos({ x: currentX, y: currentY });
 
-    // Calculate needle tip in SVG coordinate space
-    const svgEl = svgRef.current;
-    if (!svgEl) return;
-    const svgRect = svgEl.getBoundingClientRect();
+    // Calculate tip position in board percentages (tip is at bottom center of needle element)
+    const tipX = currentX + 16;
+    const tipY = currentY + 115;
+    const pctX = (tipX / board.width) * 100;
+    const pctY = (tipY / board.height) * 100;
 
-    // Map container pixel coords to SVG viewBox (0,0 to 600,600)
-    const scaleX = 600 / svgRect.width;
-    const scaleY = 600 / svgRect.height;
-    const needleTipX = (e.clientX - svgRect.left) * scaleX;
-    const needleTipY = (e.clientY - svgRect.top + 30) * scaleY; // tip is at bottom of needle element
-
-    // Check proximity to any acupoint (snap distance threshold: 38 SVG units)
+    // Check proximity to any acupoint (snap radius: ~6.5% of board)
     let matched = null;
     for (const pt of ACUPOINTS) {
-      const dist = Math.hypot(pt.x - needleTipX, pt.y - needleTipY);
-      if (dist < 38) {
+      const dist = Math.hypot(pt.pctX - pctX, pt.pctY - pctY);
+      if (dist < 6.8) {
         matched = pt;
         break;
       }
@@ -139,7 +135,7 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
     setHoveredPoint(matched);
   };
 
-  // Handle Pointer Up / Drop
+  // Pointer Up (Drop needle)
   const handlePointerUp = (e) => {
     if (!isDragging) return;
     setIsDragging(false);
@@ -148,13 +144,12 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch (_) {}
 
-    // Check if dropped near a point
     if (hoveredPoint) {
       insertIntoPoint(hoveredPoint);
     } else {
       // Return smoothly to tray
       setNeedlePos(RESTING_POS);
-      setTiltAngle(25);
+      setTiltAngle(20);
       setInsertionStage('resting');
     }
   };
@@ -166,25 +161,22 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
     setInsertionStage('snapped');
     setTiltAngle(point.angle);
 
-    // Position needle directly on point
-    const svgEl = svgRef.current;
-    const container = containerRef.current;
-    if (svgEl && container) {
-      const svgRect = svgEl.getBoundingClientRect();
-      const contRect = container.getBoundingClientRect();
-      const pixelX = (point.x / 600) * svgRect.width + (svgRect.left - contRect.left);
-      const pixelY = (point.y / 600) * svgRect.height + (svgRect.top - contRect.top) - 62;
-      setNeedlePos({ x: pixelX, y: pixelY });
+    const board = boardRef.current;
+    if (board) {
+      const rect = board.getBoundingClientRect();
+      const targetPixelX = (point.pctX / 100) * rect.width - 16;
+      const targetPixelY = (point.pctY / 100) * rect.height - 98; // align needle tip to point
+      setNeedlePos({ x: targetPixelX, y: targetPixelY });
     }
 
-    // Trigger physical skin ripple & sink animation
+    // Trigger physical skin ripple and insertion sink
     setTimeout(() => {
       setInsertionStage('inserted');
-      setRipplePoint({ x: point.x, y: point.y });
+      setRipplePoint({ x: point.pctX, y: point.pctY });
 
       // Clear ripple after 1.4s
       setTimeout(() => setRipplePoint(null), 1400);
-    }, 280);
+    }, 250);
   };
 
   // Remove needle and reset
@@ -192,14 +184,14 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
     setInsertionStage('snapped');
     setTimeout(() => {
       setNeedlePos(RESTING_POS);
-      setTiltAngle(25);
+      setTiltAngle(20);
       setActivePoint(null);
       setInsertionStage('resting');
       setRipplePoint(null);
     }, 220);
   };
 
-  // Direct click on a point shortcut for accessibility/quick try
+  // Direct Click on Point Shortcut
   const handlePointClick = (point) => {
     if (activePoint?.id === point.id) return;
     insertIntoPoint(point);
@@ -223,25 +215,25 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
           </h2>
 
           <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed">
-            First-time patients often carry a natural fear of injection needles. Classical acupuncture uses solid, hair-thin filaments (0.18mm) that slide between tissue fibers rather than cutting them. Pick up the needle below and test an authentic point on the hand.
+            First-time patients often carry a natural fear of injection needles. Classical acupuncture uses solid, hair-thin filaments (0.18mm) that slide between tissue fibers rather than cutting them. Pick up the real single-use needle below and test an authentic point on the hand.
           </p>
         </div>
 
-        {/* MAIN INTERACTIVE BOARD: "Place the Needle" */}
+        {/* MAIN INTERACTIVE BOARD: "Place the Needle" on Real Hand Photography */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
-          {/* Left Column (7 cols): The 3D Perspective Hand & Needle Board */}
-          <div className="lg:col-span-7 bg-[#fbfbfa] rounded-3xl border border-neutral-200 p-6 sm:p-10 shadow-xs relative overflow-hidden select-none">
+          {/* Left Column (7 cols): Anatomical Hand Canvas & Interactive Needle */}
+          <div className="lg:col-span-7 bg-[#fbfbfa] rounded-3xl border border-neutral-200 p-6 sm:p-8 shadow-xs relative overflow-hidden select-none">
             
-            {/* Top Bar / Instructions */}
-            <div className="flex items-center justify-between border-b border-neutral-200/70 pb-4 mb-6 text-xs text-neutral-500 font-medium">
+            {/* Top Bar / Status */}
+            <div className="flex items-center justify-between border-b border-neutral-200/70 pb-4 mb-5 text-xs text-neutral-500 font-medium">
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
                 <span className="font-semibold text-ink">
                   {insertionStage === 'inserted' 
                     ? `Needle Placed at ${activePoint.code} (${activePoint.name})` 
                     : isDragging 
-                    ? 'Release near any pulsating point to place' 
+                    ? 'Release over any highlighted point to place' 
                     : 'Drag the needle onto any point on the hand'}
                 </span>
               </div>
@@ -249,7 +241,7 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
               {insertionStage === 'inserted' && (
                 <button
                   onClick={handleRemoveNeedle}
-                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-brand text-white text-xs font-semibold transition-colors shadow-xs motion-safe:active:scale-95"
+                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-brand text-white text-xs font-semibold transition-colors shadow-xs motion-safe:active:scale-95 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Remove needle</span>
@@ -257,277 +249,158 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
               )}
             </div>
 
-            {/* Interactive Canvas Stage with 3D Perspective Tilt */}
+            {/* Stage: Photographic Canvas with Perspective Tilt */}
             <div 
-              ref={containerRef}
-              className="relative w-full aspect-[4/3] sm:aspect-[16/11] max-w-[560px] mx-auto rounded-2xl bg-[#f4f2ee] border border-neutral-200/60 overflow-hidden cursor-crosshair"
-              style={{
-                perspective: '1200px',
-                touchAction: 'none'
-              }}
+              ref={boardRef}
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200/90 shadow-inner bg-neutral-100 cursor-crosshair"
+              style={{ touchAction: 'none' }}
             >
-              {/* Subtle Linen/Treatment Table Texture */}
-              <div 
-                className="absolute inset-0 opacity-40 pointer-events-none" 
-                style={{
-                  backgroundImage: `radial-gradient(#d1cfc7 1px, transparent 1px)`,
-                  backgroundSize: '24px 24px'
-                }}
+              {/* High-Resolution Anatomical Photograph of Bare Hand & Forearm on Linen */}
+              <img 
+                src={getAssetUrl('anatomical_hand_resting.jpg')} 
+                alt="Authentic relaxed human hand and wrist resting on clean clinic treatment linen" 
+                className="w-full h-full object-cover select-none pointer-events-none"
+                draggable={false}
               />
 
-              {/* Wooden Rest Tray for Needle */}
-              <div className="absolute top-6 left-6 w-20 h-44 rounded-xl bg-[#e5e0d8] border border-[#d6cfc3] shadow-inner p-2 pointer-events-none flex flex-col justify-between">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-500 block text-center">
+              {/* Wooden / Slate Sterile Resting Tray for the Needle */}
+              <div className="absolute top-4 left-4 w-20 h-40 rounded-xl bg-white/85 backdrop-blur-md border border-neutral-300 shadow-sm p-2 pointer-events-none flex flex-col justify-between z-10">
+                <span className="text-[9.5px] uppercase font-bold tracking-wider text-neutral-600 block text-center">
                   Sterile Tray
                 </span>
-                <div className="w-full h-px bg-neutral-300" />
-                <span className="text-[9px] text-neutral-400 block text-center">
-                  0.18mm Single-Use
+                <div className="w-full h-px bg-neutral-200" />
+                <span className="text-[9px] text-neutral-500 block text-center leading-tight">
+                  0.18mm × 30mm Surgical Steel
                 </span>
               </div>
 
-              {/* Calm Anatomical Vector Illustration of Right Hand & Wrist */}
-              <svg 
-                ref={svgRef}
-                viewBox="0 0 600 600" 
-                className="w-full h-full transform transition-transform duration-500"
-                style={{
-                  transform: 'rotateX(14deg) rotateZ(-3deg) scale(0.96)',
-                  transformOrigin: '50% 60%'
-                }}
-              >
-                <defs>
-                  {/* Natural Skin Tones with Soft Shading */}
-                  <linearGradient id="handSkinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#f3ded0" />
-                    <stop offset="60%" stopColor="#ebd2c3" />
-                    <stop offset="100%" stopColor="#dfc3b2" />
-                  </linearGradient>
+              {/* Concentric Skin Ripple when Needle is Placed (Physical CSS Wave) */}
+              {ripplePoint && (
+                <div 
+                  className="absolute pointer-events-none z-15 transform -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    left: `${ripplePoint.x}%`,
+                    top: `${ripplePoint.y}%`
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-full border border-brand/50 animate-ping" />
+                  <div className="absolute inset-0 w-12 h-12 -translate-x-2 -translate-y-2 rounded-full border border-neutral-800/20" />
+                </div>
+              )}
 
-                  <linearGradient id="tendonShade" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#e2c8b8" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#cfaea0" stopOpacity="0.1" />
-                  </linearGradient>
+              {/* 4 Anatomical Acupoints Overlaid on Real Anatomy */}
+              {ACUPOINTS.map((pt) => {
+                const isHovered = hoveredPoint?.id === pt.id;
+                const isPlaced = activePoint?.id === pt.id;
 
-                  <filter id="softHandShadow" x="-10%" y="-10%" width="130%" height="130%">
-                    <feDropShadow dx="0" dy="16" stdDeviation="14" floodColor="#26211c" floodOpacity="0.12" />
-                  </filter>
-                </defs>
-
-                {/* Hand Soft Ambient Cast Shadow */}
-                <path 
-                  d="M 230 540 L 230 380 Q 180 320 160 250 Q 140 190 170 140 Q 200 110 230 160 Q 260 210 270 240 Q 290 120 310 70 Q 330 40 350 70 Q 360 110 350 210 Q 380 90 400 60 Q 420 40 440 70 Q 440 120 420 220 Q 460 110 480 100 Q 500 100 500 130 Q 480 200 470 260 Q 490 280 500 320 Q 490 380 430 410 L 430 540 Z"
-                  fill="#000000"
-                  opacity="0.08"
-                  filter="blur(16px)"
-                  transform="translate(8, 18)"
-                />
-
-                {/* Hand & Forearm Silhouette */}
-                <g filter="url(#softHandShadow)">
-                  {/* Main Skin Contour */}
-                  <path 
-                    d="M 240 550 
-                       L 240 380 
-                       Q 200 340 175 270 
-                       Q 155 210 175 160 
-                       Q 195 130 225 165 
-                       Q 250 205 265 245 
-                       Q 285 140 305 80 
-                       Q 325 50 345 80 
-                       Q 355 120 348 215 
-                       Q 375 100 395 70 
-                       Q 415 50 435 80 
-                       Q 435 130 418 225 
-                       Q 455 120 475 110 
-                       Q 495 110 495 140 
-                       Q 478 205 465 265 
-                       Q 490 290 495 330 
-                       Q 485 385 425 415 
-                       L 425 550 
-                       Z"
-                    fill="url(#handSkinGrad)"
-                    stroke="#ceb09e"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-
-                  {/* Anatomical Contours & Flexor Tendons */}
-                  {/* Thumb web curve */}
-                  <path d="M 235 245 Q 260 270 280 275" fill="none" stroke="#cfb2a2" strokeWidth="1.5" />
-                  
-                  {/* Transverse wrist creases */}
-                  <path d="M 255 365 Q 330 380 410 365" fill="none" stroke="#c8ab9b" strokeWidth="1.2" strokeDasharray="3 2" />
-                  <path d="M 260 378 Q 335 392 415 378" fill="none" stroke="#d5b9aa" strokeWidth="1" />
-
-                  {/* Flexor carpi radialis & Palmaris longus tendons (The channel where PC6 sits) */}
-                  <path d="M 310 380 L 310 520" fill="none" stroke="url(#tendonShade)" strokeWidth="6" strokeLinecap="round" />
-                  <path d="M 335 380 L 335 520" fill="none" stroke="url(#tendonShade)" strokeWidth="6" strokeLinecap="round" />
-
-                  {/* Anatomical Snuffbox / Radial Artery Groove (LU9 area) */}
-                  <path d="M 258 350 Q 252 375 250 400" fill="none" stroke="#d1b5a5" strokeWidth="1.5" />
-
-                  {/* Classical Meridian Energy Flow Lines (Subtle, non-glow, faint dotted) */}
-                  <path d="M 232 170 Q 235 230 250 370" fill="none" stroke="#e02868" strokeWidth="0.8" strokeDasharray="3 4" strokeOpacity="0.4" />
-                  <path d="M 320 220 L 320 540" fill="none" stroke="#e02868" strokeWidth="0.8" strokeDasharray="3 4" strokeOpacity="0.4" />
-                  <path d="M 372 260 L 372 540" fill="none" stroke="#e02868" strokeWidth="0.8" strokeDasharray="3 4" strokeOpacity="0.4" />
-                </g>
-
-                {/* Faint Physical Skin Ripple when Needle Enters (CSS border wave, zero neon glow) */}
-                {ripplePoint && (
-                  <g>
-                    <circle cx={ripplePoint.x} cy={ripplePoint.y} r="10" fill="none" stroke="#b08b76" strokeWidth="1.5" className="animate-ping" opacity="0.6" />
-                    <circle cx={ripplePoint.x} cy={ripplePoint.y} r="22" fill="none" stroke="#c9a794" strokeWidth="1" opacity="0.4" />
-                    <circle cx={ripplePoint.x} cy={ripplePoint.y} r="4" fill="#a47a66" opacity="0.8" />
-                  </g>
-                )}
-
-                {/* 4 Clinical Acupoint Markers */}
-                {ACUPOINTS.map((pt) => {
-                  const isHovered = hoveredPoint?.id === pt.id;
-                  const isPlaced = activePoint?.id === pt.id;
-
-                  return (
-                    <g 
-                      key={pt.id} 
-                      className="cursor-pointer"
-                      onClick={() => handlePointClick(pt)}
-                    >
-                      {/* Interaction Target Buffer Zone */}
-                      <circle cx={pt.x} cy={pt.y} r="30" fill="transparent" />
-
-                      {/* Calm Organic Marker Dot */}
-                      <circle 
-                        cx={pt.x} 
-                        cy={pt.y} 
-                        r={isHovered ? "9" : isPlaced ? "6" : "5"} 
-                        fill={isPlaced ? "#e02868" : isHovered ? "#09090b" : "#ffffff"} 
-                        stroke={isPlaced ? "#ffffff" : isHovered ? "#ffffff" : "#e02868"} 
-                        strokeWidth={isHovered ? "2.5" : "2"}
-                        className="transition-all duration-300"
-                      />
-
-                      {/* Gentle Non-Glow Pulse Ring when awaiting placement */}
-                      {!activePoint && (
-                        <circle 
-                          cx={pt.x} 
-                          cy={pt.y} 
-                          r="12" 
-                          fill="none" 
-                          stroke="#e02868" 
-                          strokeWidth="1" 
-                          strokeOpacity="0.4"
-                          className="animate-pulse"
-                        />
-                      )}
-
-                      {/* Acupoint Code Label */}
-                      <text 
-                        x={pt.x} 
-                        y={pt.y - 14} 
-                        textAnchor="middle" 
-                        fill="#09090b" 
-                        fontSize="11" 
-                        fontWeight="700" 
-                        fontFamily="Outfit, sans-serif"
-                        className="select-none pointer-events-none tracking-tight"
-                      >
-                        {pt.code}
-                      </text>
+                return (
+                  <div
+                    key={pt.id}
+                    onClick={() => handlePointClick(pt)}
+                    className="absolute z-20 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 group"
+                    style={{
+                      left: `${pt.pctX}%`,
+                      top: `${pt.pctY}%`
+                    }}
+                  >
+                    {/* Generous Click/Drop Target */}
+                    <div className="w-12 h-12 -ml-3 -mt-3 flex items-center justify-center">
                       
-                      <text 
-                        x={pt.x} 
-                        y={pt.y + 22} 
-                        textAnchor="middle" 
-                        fill="#52525b" 
-                        fontSize="9.5" 
-                        fontWeight="600" 
-                        fontFamily="Plus Jakarta Sans, sans-serif"
-                        className="select-none pointer-events-none"
+                      {/* Outer Ring */}
+                      <div 
+                        className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                          isPlaced 
+                            ? 'bg-brand/20 ring-2 ring-brand' 
+                            : isHovered 
+                            ? 'bg-neutral-900/20 ring-2 ring-neutral-900 scale-125' 
+                            : 'bg-white/80 ring-1 ring-neutral-400/80 shadow-xs'
+                        }`}
                       >
-                        {pt.name}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
+                        {/* Center Dot */}
+                        <div 
+                          className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                            isPlaced ? 'bg-brand' : isHovered ? 'bg-neutral-900' : 'bg-brand'
+                          }`}
+                        />
+                      </div>
 
-              {/* THE TACTILE NEEDLE (Draggable HTML Element with Physics) */}
+                    </div>
+
+                    {/* Point Tag Callout */}
+                    <div className="absolute top-7 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-white/95 text-neutral-800 border border-neutral-300 shadow-xs block text-center">
+                        {pt.code} · {pt.name}
+                      </span>
+                    </div>
+
+                  </div>
+                );
+              })}
+
+              {/* THE REAL PHOTOGRAPHIC NEEDLE (Draggable with True Proportions) */}
               <div
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 className={`absolute z-30 transition-transform ${
-                  isDragging ? 'cursor-grabbing scale-105' : insertionStage === 'inserted' ? 'cursor-pointer' : 'cursor-grab hover:scale-105'
+                  isDragging 
+                    ? 'cursor-grabbing scale-105' 
+                    : insertionStage === 'inserted' 
+                    ? 'cursor-pointer' 
+                    : 'cursor-grab hover:scale-105'
                 }`}
                 style={{
                   left: `${needlePos.x}px`,
                   top: `${needlePos.y}px`,
-                  transform: `rotate(${tiltAngle}deg) ${insertionStage === 'inserted' ? 'translateY(28px)' : ''}`,
-                  transformOrigin: '50% 100%',
-                  transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s ease, top 0.35s ease'
+                  transform: `rotate(${tiltAngle}deg) ${insertionStage === 'inserted' ? 'translateY(22px)' : ''}`,
+                  transformOrigin: '50% 90%',
+                  transition: isDragging ? 'none' : 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.3s ease, top 0.3s ease'
                 }}
               >
-                {/* Needle Visual Structure: Coiled Wire Handle + Micro Steel Shaft */}
+                {/* Authentic Scaled Needle Image from Clinical Supplier */}
                 <div className="relative flex flex-col items-center">
-                  
-                  {/* Coiled Spiral Handle (Traditional Korean/Japanese copper/silver coil) */}
-                  <div className="w-[6px] h-14 rounded-t-sm bg-gradient-to-r from-neutral-300 via-neutral-100 to-neutral-400 shadow-md border-x border-neutral-400/80 flex flex-col justify-between py-0.5">
-                    {/* Ring loops */}
-                    <div className="w-full h-1 bg-neutral-400/60 rounded-full" />
-                    <div className="w-full h-1 bg-neutral-400/60 rounded-full" />
-                    <div className="w-full h-1 bg-neutral-400/60 rounded-full" />
-                    <div className="w-full h-1 bg-neutral-400/60 rounded-full" />
-                    <div className="w-full h-1 bg-neutral-400/60 rounded-full" />
-                  </div>
-
-                  {/* Shaft Ring Collar */}
-                  <div className="w-2 h-1 bg-neutral-500 rounded-sm shadow-xs" />
-
-                  {/* 0.18mm Hair-Thin Surgical Stainless Steel Shaft */}
-                  <div 
-                    className="w-[1.8px] bg-gradient-to-r from-neutral-200 via-white to-neutral-300 shadow-xs transition-all duration-500"
+                  <img 
+                    src={getAssetUrl('single_needle_authentic.png')} 
+                    alt="Authentic 0.18mm acupuncture needle with coiled handle"
+                    className="select-none pointer-events-none drop-shadow-md transition-all duration-500"
                     style={{
-                      height: insertionStage === 'inserted' ? '28px' : '65px' // Shaft shortens as it enters tissue
+                      height: insertionStage === 'inserted' ? '92px' : '124px', // Sinks in as it enters tissue
+                      width: 'auto'
                     }}
+                    draggable={false}
                   />
 
-                  {/* Micro Needle Tip */}
-                  <div className="w-0 h-0 border-x-[0.9px] border-x-transparent border-t-[3px] border-t-neutral-300" />
-
-                  {/* Subtle Needle Cast Shadow on Table / Skin */}
+                  {/* Faint Contact Cast Shadow */}
                   <div 
-                    className="absolute -bottom-1 w-8 h-1 bg-black/20 rounded-full filter blur-[1px] transform -translate-x-1" 
-                    style={{
-                      opacity: insertionStage === 'inserted' ? 0.3 : isDragging ? 0.15 : 0.4
-                    }}
+                    className="w-4 h-1 bg-neutral-900/30 rounded-full filter blur-[1px] transform -translate-y-1"
+                    style={{ opacity: insertionStage === 'inserted' ? 0.4 : 0.2 }}
                   />
                 </div>
               </div>
 
-              {/* Mobile / Direct Touch Hint */}
+              {/* Helper prompt banner when resting */}
               {!activePoint && !isDragging && (
-                <div className="absolute bottom-4 left-6 right-6 text-center sm:text-left pointer-events-none">
-                  <span className="text-[11px] text-neutral-500 bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-full border border-neutral-200/80 shadow-xs inline-block">
-                    Tip: Drag the needle or tap any labeled point to insert
+                <div className="absolute bottom-3 left-4 right-4 pointer-events-none flex justify-center">
+                  <span className="text-[11px] text-neutral-600 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-neutral-200/80 shadow-xs">
+                    Drag the coiled needle or tap any highlighted point to place
                   </span>
                 </div>
               )}
 
             </div>
 
-            {/* Bottom Status Ticker */}
-            <div className="mt-4 flex flex-wrap items-center justify-between text-xs text-neutral-500 pt-2">
+            {/* Bottom Technical Specifications Ledger */}
+            <div className="mt-4 flex flex-wrap items-center justify-between text-xs text-neutral-500 pt-2 border-t border-neutral-200/60">
               <div className="flex items-center space-x-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>Needle Spec: 0.18mm × 30mm Surgical Steel 316L (Single-use)</span>
               </div>
-              <span className="tabular-nums font-medium text-neutral-700">Sterility: EO Gas 100%</span>
+              <span className="tabular-nums font-medium text-neutral-700">Sterilization: EO Gas 100%</span>
             </div>
 
           </div>
 
-          {/* Right Column (5 cols): Dr. Nivedha's Clinical Note Card (Fades & Slides In) */}
+          {/* Right Column (5 cols): Dr. Nivedha's Clinical Note Card */}
           <div className="lg:col-span-5 space-y-6">
             
             <AnimatePresence mode="wait">
@@ -597,13 +470,13 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
                   <div className="pt-2 flex items-center space-x-4">
                     <button
                       onClick={handleRemoveNeedle}
-                      className="flex-1 py-3 px-4 rounded-xl text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-ink transition-colors"
+                      className="flex-1 py-3 px-4 rounded-xl text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-ink transition-colors cursor-pointer"
                     >
                       Try another point
                     </button>
                     <button
                       onClick={() => onOpenBooking(`Consultation (${activePoint.code} protocol)`, 600)}
-                      className="flex-1 py-3 px-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark transition-colors flex items-center justify-center space-x-1.5 shadow-sm"
+                      className="flex-1 py-3 px-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark transition-colors flex items-center justify-center space-x-1.5 shadow-sm cursor-pointer"
                     >
                       <span>Book session (₹600)</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -616,12 +489,12 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
                   <div className="flex items-center space-x-3 text-brand">
                     <Info className="w-5 h-5 flex-shrink-0" />
                     <h3 className="font-display text-xl font-bold text-ink">
-                      Select Any Point to Inspect
+                      Select Any Point on the Hand
                     </h3>
                   </div>
 
                   <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                    Drag the coiled-handle needle from the sterile tray and drop it onto any of the 4 classic hand points (<strong>LI4, PC6, LU9, HT7</strong>), or simply tap any marker on the hand.
+                    Drag the coiled-handle needle from the sterile tray and drop it onto any of the 4 classic hand points (<strong>LI4, LI5, SJ4, SJ5</strong>), or simply tap any marker on the hand.
                   </p>
 
                   <div className="space-y-3 pt-2">
@@ -702,7 +575,6 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
                   </p>
                 </div>
 
-                {/* Scaled Cross-Section Gauge Visual */}
                 <div className="py-6 bg-neutral-50 rounded-xl flex items-center justify-center relative h-28 overflow-hidden">
                   <div 
                     className="bg-amber-900/80 rounded-full shadow-xs"
@@ -740,7 +612,6 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
                   </p>
                 </div>
 
-                {/* Scaled Cross-Section Gauge Visual */}
                 <div className="py-6 bg-neutral-50 rounded-xl flex items-center justify-center relative h-28 overflow-hidden border border-brand/20">
                   <div 
                     className="bg-neutral-800 rounded-full border border-neutral-400 shadow-sm"
@@ -772,7 +643,6 @@ export default function PlaceTheNeedleInteractive({ onOpenBooking }) {
                   </p>
                 </div>
 
-                {/* Scaled Cross-Section Gauge Visual */}
                 <div className="py-6 bg-neutral-50 rounded-xl flex items-center justify-center relative h-28 overflow-hidden">
                   <div 
                     className="rounded-full border-[5px] border-neutral-600 bg-transparent shadow-sm flex items-center justify-center"
