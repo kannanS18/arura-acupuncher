@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   RotateCw, 
@@ -10,14 +10,15 @@ import {
   Volume2, 
   VolumeX, 
   Target, 
-  CheckCircle2, 
-  RotateCcw,
+  Eye,
+  Box,
+  Layers,
   Sparkles,
   Info
 } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetUrl';
 
-// Web Audio API Synthesizer for organic, low-frequency clinical acoustic bio-feedback
+// Web Audio API Synthesizer for organic clinical acoustic bio-feedback
 function playClinicalSound(type, isMuted) {
   if (isMuted || typeof window === 'undefined') return;
   try {
@@ -35,37 +36,33 @@ function playClinicalSound(type, isMuted) {
     const now = ctx.currentTime;
 
     if (type === 'entry') {
-      // Very soft, high-frequency feather contact (0.02N)
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(1200, now);
-      osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
-      gain.gain.setValueAtTime(0.04, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      osc.frequency.setValueAtTime(1400, now);
+      osc.frequency.exponentialRampToValueAtTime(500, now + 0.05);
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
       osc.start(now);
-      osc.stop(now + 0.04);
+      osc.stop(now + 0.05);
     } else if (type === 'deqi') {
-      // Warm, resonant singing-bowl harmonic chime (De-Qi achieved)
       osc.type = 'sine';
       osc.frequency.setValueAtTime(261.63, now); // C4
       osc.frequency.exponentialRampToValueAtTime(392.00, now + 0.4); // G4
-      gain.gain.setValueAtTime(0.09, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
       osc.start(now);
-      osc.stop(now + 0.8);
+      osc.stop(now + 0.85);
     } else if (type === 'twirl') {
-      // Subtle sliding friction tone (collagen winding)
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(320, now);
-      osc.frequency.exponentialRampToValueAtTime(480, now + 0.15);
-      gain.gain.setValueAtTime(0.03, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(520, now + 0.16);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
       osc.start(now);
-      osc.stop(now + 0.15);
+      osc.stop(now + 0.16);
     } else if (type === 'electro') {
-      // Gentle micro-current tick
       osc.type = 'square';
-      osc.frequency.setValueAtTime(140, now);
-      gain.gain.setValueAtTime(0.02, now);
+      osc.frequency.setValueAtTime(130, now);
+      gain.gain.setValueAtTime(0.03, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
       osc.start(now);
       osc.stop(now + 0.03);
@@ -114,6 +111,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [depthMm, setDepthMm] = useState(0); // 0.0 to 15.0 mm
   const [isDragging, setIsDragging] = useState(false);
   
+  // Perspective View Mode: '3d_cube' (Grand Volumetric Cube) or 'micro_section' (Frontal Cross-Section)
+  const [viewMode, setViewMode] = useState('3d_cube');
+  const [showLoupe, setShowLoupe] = useState(true);
+
   // Needle Manipulation States
   const [twirlAngleY, setTwirlAngleY] = useState(0); // 3D Y-axis rotation (left-to-right)
   const [isTwirling, setIsTwirling] = useState(false);
@@ -139,7 +140,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const target = activeScenario.targetDepthMm;
     const isAtTargetZone = depthMm >= target - 0.8 && depthMm <= target + 1.2;
 
-    // Sound cue on skin entry
     if (depthMm > 0.3 && !lastEntrySoundPlayed.current) {
       playClinicalSound('entry', isMuted);
       lastEntrySoundPlayed.current = true;
@@ -148,7 +148,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
 
     if (isAtTargetZone && !isKnotReleased) {
-      // Trigger local twitch response (fasciculation)
       setTwitchAnimation(true);
       playClinicalSound('deqi', isMuted);
       const timer = setTimeout(() => {
@@ -157,7 +156,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       }, 700);
       return () => clearTimeout(timer);
     } else if (depthMm < 2.5) {
-      // Reset if pulled back near surface
       setIsKnotReleased(false);
       setTwitchAnimation(false);
     }
@@ -186,7 +184,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const handleNeedlePointerMove = (e) => {
     if (!isDragging) return;
     
-    // Vertical Drag -> Plunge into tissue
     const deltaY = e.clientY - dragStartY.current;
     const newDepth = Math.max(0, Math.min(15.0, startDepth.current + deltaY / 14));
     setDepthMm(newDepth);
@@ -212,11 +209,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const handleTwirl = () => {
     setIsTwirling(true);
     playClinicalSound('twirl', isMuted);
-    // Smooth 360-degree axial spin left-to-right
     setTwirlAngleY((prev) => prev + 360);
     setTimeout(() => setIsTwirling(false), 600);
 
-    // If near target, twirling triggers immediate fascial grasp and release
     if (depthMm >= activeScenario.targetDepthMm - 2.0) {
       setTwitchAnimation(true);
       playClinicalSound('deqi', isMuted);
@@ -230,13 +225,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // Classical Lifting & Thrusting Technique (Ti Ch'a - Micro-pecking)
   const handleThrust = () => {
     if (depthMm < 4.0) {
-      // Auto-advance to knot first
       setDepthMm(activeScenario.targetDepthMm);
     }
     setIsThrusting(true);
     playClinicalSound('entry', isMuted);
 
-    // Micro-peck oscillation
     setTimeout(() => {
       setDepthMm((prev) => Math.max(0, prev - 1.2));
       setTimeout(() => {
@@ -252,7 +245,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }, 150);
   };
 
-  // Reset to Surface
   const handleReset = () => {
     setDepthMm(0);
     setIsKnotReleased(false);
@@ -262,7 +254,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setIsMoxaActive(false);
   };
 
-  // Change Scenario
   const handleSelectScenario = (scen) => {
     setActiveScenario(scen);
     setDepthMm(0);
@@ -275,99 +266,165 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
   // Physiological Telemetry Calculations
   const penetrationForce = depthMm === 0 ? '0.00 N' : depthMm < 2.0 ? '0.02 N (Pain-free)' : depthMm < 8.0 ? '0.04 N (Fascial glide)' : isKnotReleased ? '0.03 N (Decompressed)' : '0.14 N (Taut knot)';
-  const muscleSpasmPct = isKnotReleased ? 12 : Math.max(18, Math.min(95, Math.round(88 - (depthMm * 1.5))));
+  const muscleSpasmPct = isKnotReleased ? 10 : Math.max(16, Math.min(95, Math.round(88 - (depthMm * 1.5))));
   const microBloodFlow = isKnotReleased ? (isMoxaActive ? 420 : 340) : Math.min(100, Math.round(depthMm * 14));
   const vagusTone = isKnotReleased ? 'Parasympathetic Recovery (96%)' : depthMm > 6.0 ? 'Vagal Activation (62%)' : 'Resting Baseline (32%)';
 
-  // Real-time Patient Sensation Description
   const getPatientSensation = () => {
     if (depthMm === 0) return 'Sterile skin boundary. Zero sensation.';
-    if (depthMm < 2.5) return 'Feather-light dermal entry (0.02 N). 25× lower force than a vaccine shot. 92% of patients feel nothing.';
-    if (depthMm < 8.0) return 'Smooth gliding through collagen fascia and interstitial fluid. No pain receptors engaged.';
+    if (depthMm < 2.5) return 'Feather-light dermal entry (0.02 N). 25× lower force than a hospital needle. Patient feels practically nothing.';
+    if (depthMm < 8.0) return 'Smooth gliding through collagen fascia and interstitial matrix. No sharp cutting receptors engaged.';
     if (depthMm >= activeScenario.targetDepthMm - 1.0 && depthMm <= activeScenario.targetDepthMm + 1.2) {
       if (isKnotReleased) {
-        return 'DE-QI (得气)! A warm, soothing dull heaviness. The vice-like tension dissolves and micro-circulation surges.';
+        return 'DE-QI (得气)! A deeply soothing, warm heaviness spreading behind the neck and temples. Spastic knot dissolves.';
       }
-      return 'Engaging taut myofascial knot. Gentle pressure felt as needle contacts the active trigger endplate.';
+      return 'Engaging hyper-contracted motor endplate. Gentle radiating pressure felt as needle contacts the active trigger zone.';
     }
-    return 'Deep muscular bed. Sensation of gentle relaxation and localized release.';
+    return 'Deep muscular bed. Sensation of profound relaxation and systemic tension release.';
   };
 
-  // Mathematical Mapping: Needle tip anchored exactly to tissue layers
-  // At depthMm = 0 -> Tip is at 14% top (skin surface)
-  // At depthMm = 12 -> Tip is at 79% top (bullseye in dark purple knot)
-  // At depthMm = 15 -> Tip is at 93% top (deep muscle floor)
-  const tipPercent = 14 + (depthMm / 15.0) * 79;
-  
-  // Distance to target knot
+  // GEOMETRIC MAPPING FOR 3D CUBE vs MICROSCOPIC SECTION
+  // In '3d_cube':
+  // Knot is at x: 62.5%, y: 64.5%
+  // Top skin entrance is at x: 62.5%, y: 35.0%
+  // In 'micro_section':
+  // Knot is at x: 50.0%, y: 79.0%
+  // Top skin entrance is at x: 50.0%, y: 14.0%
+  const is3D = viewMode === '3d_cube';
+  const needleXPercent = is3D ? 62.5 : 50.0;
+  const surfaceYPercent = is3D ? 35.0 : 14.0;
+  const knotYPercent = is3D ? 64.5 : 79.0;
+  const tipYPercent = surfaceYPercent + (depthMm / 15.0) * (knotYPercent + (is3D ? 7 : 14) - surfaceYPercent);
+
+  // Target Lock state
   const distanceToTarget = depthMm - activeScenario.targetDepthMm;
   const isTargetLocked = Math.abs(distanceToTarget) <= 1.0;
   const isApproaching = depthMm >= 8.0 && !isTargetLocked;
 
   return (
-    <div className="bg-[#fcfbf9] rounded-3xl border border-neutral-200/90 p-6 sm:p-10 shadow-xs space-y-10 select-none">
+    <div className="bg-[#0b0f17] text-white rounded-3xl border border-neutral-800 p-6 sm:p-10 shadow-2xl space-y-10 select-none overflow-hidden relative">
       
-      {/* Top Clinical Case Selector */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-neutral-200 pb-6">
+      {/* Background Ambient Glow */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-brand/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Top Header & Clinical Scenario Selector */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-neutral-800/80 pb-6 relative z-10">
         <div className="space-y-2 max-w-xl">
           <div className="flex items-center space-x-2 text-xs font-semibold text-brand tracking-normal">
-            <span>Living Microscopic Cross-Section</span>
-            <span className="text-neutral-300">/</span>
-            <span>Interactive Clinical Session</span>
+            <span className="flex items-center space-x-1.5 text-pink-400">
+              <Box className="w-3.5 h-3.5" />
+              <span>3D Volumetric Anatomy</span>
+            </span>
+            <span className="text-neutral-600">/</span>
+            <span className="text-neutral-400">Interactive Clinical Theatre</span>
           </div>
 
-          <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-ink leading-[1.12]">
-            What happens inside your body <br />
-            <span className="text-brand">when the needle enters?</span>
+          <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-white leading-[1.14]">
+            Inside your body in 3D: <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-pink-400 to-rose-300">
+              Where does the needle go?
+            </span>
           </h3>
 
-          <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
-            Take the doctor’s seat. Drag the 0.18mm surgical needle downward to navigate living skin, collagen fascia, and deep muscle. Roll it left-to-right, activate electro-acupuncture, and unlock the contracted knot.
+          <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal">
+            A grand volumetric 3D simulation of living human anatomy. Drag the ultra-fine 0.18mm needle through living skin, golden collagen fascia, and deep striated muscle. Watch the knot unlock in real time.
           </p>
         </div>
 
-        {/* Clinical Scenario Selector */}
-        <div className="flex flex-wrap gap-2">
-          {CLINICAL_SCENARIOS.map((scen) => (
+        {/* View Switcher & Clinical Cases */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          
+          {/* 3D vs 2D Perspective Toggle */}
+          <div className="bg-neutral-900/90 border border-neutral-700/80 p-1 rounded-xl flex items-center space-x-1">
             <button
-              key={scen.id}
-              onClick={() => handleSelectScenario(scen)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                activeScenario.id === scen.id
-                  ? 'bg-neutral-900 text-white shadow-xs'
-                  : 'bg-white text-neutral-700 border border-neutral-200 hover:border-brand'
+              onClick={() => setViewMode('3d_cube')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+                is3D 
+                  ? 'bg-brand text-white shadow-md shadow-brand/30' 
+                  : 'text-neutral-400 hover:text-white'
               }`}
             >
-              {scen.name.split('&')[0]}
+              <Box className="w-3.5 h-3.5" />
+              <span>3D Cube Cutaway</span>
             </button>
-          ))}
+            <button
+              onClick={() => setViewMode('micro_section')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+                !is3D 
+                  ? 'bg-brand text-white shadow-md shadow-brand/30' 
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Micro Cross-Section</span>
+            </button>
+          </div>
+
+          {/* Clinical Cases Selector */}
+          <div className="flex flex-wrap gap-1.5">
+            {CLINICAL_SCENARIOS.map((scen) => (
+              <button
+                key={scen.id}
+                onClick={() => handleSelectScenario(scen)}
+                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeScenario.id === scen.id
+                    ? 'bg-white text-black font-bold shadow-md'
+                    : 'bg-neutral-900 text-neutral-400 border border-neutral-800 hover:border-neutral-700'
+                }`}
+              >
+                {scen.name.split('&')[0]}
+              </button>
+            ))}
+          </div>
+
         </div>
       </div>
 
-      {/* MAIN INTERACTIVE CLINICAL SIMULATION STAGE */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* MAIN CINEMATIC SIMULATION STAGE */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
-        {/* Left Column (8 cols): The Realistic Living Tissue Cross-Section Viewport & Session Tools */}
-        <div className="lg:col-span-8 bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm space-y-5">
+        {/* Left Column (8 cols): The Grand 3D Volumetric Theatre Viewport */}
+        <div className="lg:col-span-8 bg-neutral-900/80 rounded-3xl border border-neutral-800 p-6 shadow-2xl space-y-5 backdrop-blur-md">
           
           {/* Top Status & Audio Bar */}
-          <div className="flex flex-wrap items-center justify-between text-xs text-neutral-600 font-medium pb-3 border-b border-neutral-100 gap-3">
-            <div className="flex items-center space-x-2">
-              <span className={`w-2.5 h-2.5 rounded-full ${isKnotReleased ? 'bg-emerald-500 animate-pulse' : 'bg-brand'}`} />
-              <span className="text-neutral-800 font-semibold text-xs sm:text-sm">
-                {isKnotReleased 
-                  ? '🎯 De-Qi Achieved — Trigger Knot Decompressed' 
+          <div className="flex flex-wrap items-center justify-between text-xs text-neutral-400 font-medium pb-3 border-b border-neutral-800 gap-3">
+            <div className="flex items-center space-x-2.5">
+              <span className={`w-3 h-3 rounded-full ${
+                isKnotReleased 
+                  ? 'bg-emerald-400 shadow-[0_0_12px_#34d399] animate-pulse' 
                   : isDragging 
-                  ? `Plunging: ${depthMm.toFixed(1)} mm depth` 
-                  : 'Drag needle handle downward to plunge'}
+                  ? 'bg-cyan-400 shadow-[0_0_10px_#22d3ee]' 
+                  : 'bg-brand'
+              }`} />
+              <span className="text-white font-bold text-xs sm:text-sm">
+                {isKnotReleased 
+                  ? '🎯 DE-QI UNLOCKED — Spastic Endplate Decompressed' 
+                  : isDragging 
+                  ? `Plunging Needle: ${depthMm.toFixed(1)} mm depth` 
+                  : 'Drag the needle handle downward to plunge'}
               </span>
             </div>
 
             <div className="flex items-center space-x-3">
-              {/* Mute/Unmute Audio Toggle */}
+              {/* Loupe Toggle */}
+              <button
+                onClick={() => setShowLoupe(!showLoupe)}
+                className={`px-2.5 py-1.5 rounded-lg border text-xs transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                  showLoupe 
+                    ? 'bg-brand/20 border-brand/50 text-pink-300' 
+                    : 'bg-neutral-800 border-neutral-700 text-neutral-400'
+                }`}
+                title="Toggle 10x Macro Inspection Loupe"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>10× Loupe</span>
+              </button>
+
+              {/* Mute Toggle */}
               <button
                 onClick={() => setIsMuted(!isMuted)}
-                className="p-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs transition-colors flex items-center space-x-1 cursor-pointer"
+                className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs transition-colors flex items-center space-x-1 cursor-pointer border border-neutral-700"
                 title={isMuted ? 'Unmute clinical audio' : 'Mute clinical audio'}
               >
                 {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-brand" />}
@@ -376,85 +433,87 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
               <button
                 onClick={handleReset}
-                className="text-[11px] text-neutral-500 hover:text-brand transition-colors cursor-pointer"
+                className="text-[11px] text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
                 Reset to surface
               </button>
             </div>
           </div>
 
-          {/* THE MICROSCOPIC TISSUE VIEWPORT */}
+          {/* THE GRAND 3D VOLUMETRIC TISSUE VIEWPORT */}
           <div 
             ref={viewportRef}
-            className="relative w-full aspect-[16/9] max-h-[460px] rounded-xl overflow-hidden border border-neutral-200 shadow-inner bg-neutral-900 cursor-ns-resize select-none"
+            className="relative w-full aspect-[16/9] min-h-[380px] max-h-[520px] rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl bg-gradient-to-b from-neutral-950 to-neutral-900 cursor-ns-resize select-none"
           >
-            {/* High-Resolution Scientific Living Tissue Micro-Cross Section */}
+            {/* 3D Anatomical Render Asset */}
             <img 
-              src={getAssetUrl('tissue_cross_section_clean.jpg')} 
-              alt="Scientific cross-section of living skin, fascia, and muscle tissue" 
-              className="w-full h-full object-cover select-none pointer-events-none"
+              src={getAssetUrl(is3D ? 'tissue_3d_cube_cutaway.jpg' : 'tissue_cross_section_clean.jpg')} 
+              alt="Grand 3D anatomical model of human tissue layers" 
+              className="w-full h-full object-cover select-none pointer-events-none transition-all duration-700"
               draggable={false}
             />
 
-            {/* Subsurface Tissue Layer Labels (Right side) */}
-            <div className="absolute top-0 right-3 bottom-0 pointer-events-none flex flex-col justify-between py-3 text-right text-[9.5px] font-bold text-white/90 drop-shadow-sm tabular-nums z-10">
-              <div className="bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
-                <span>Epidermis & Dermis (0–3mm)</span>
-              </div>
-              <div className="bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
-                <span>Subcutaneous Fascia (4–8mm)</span>
-              </div>
-              <div className="bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-brand/50">
-                <span className="text-pink-200 font-bold">Motor Endplate ({activeScenario.targetDepthMm}mm)</span>
-              </div>
-              <div className="bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
-                <span>Deep Skeletal Muscle (12–15mm)</span>
-              </div>
-            </div>
-
-            {/* SKIN SURFACE BOUNDARY LINE (14% from top) */}
+            {/* Subtle Surgical Spotlight Beam Following the Needle */}
             <div 
-              className="absolute left-0 right-0 border-t border-dashed border-white/40 pointer-events-none z-10"
-              style={{ top: '14%' }}
-            >
-              <span className="absolute left-3 -top-3 text-[9px] text-white/80 font-semibold bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded">
-                Skin Surface (0.0 mm)
-              </span>
-            </div>
-
-            {/* TARGET MOTOR KNOT & DYNAMIC MARKING RETICLE */}
-            {/* Positioned accurately over the real anatomical dark nodule at top: 79%, left: 50% */}
-            <div 
-              className="absolute pointer-events-none z-20"
+              className="absolute pointer-events-none mix-blend-screen opacity-35 transition-all duration-300"
               style={{
-                left: '50%',
-                top: '79%',
+                left: `${needleXPercent}%`,
+                top: 0,
+                bottom: 0,
+                width: '180px',
+                transform: 'translateX(-50%)',
+                background: 'radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.45) 0%, transparent 70%)'
+              }}
+            />
+
+            {/* 3D Surface Entrance Marker */}
+            <div 
+              className="absolute pointer-events-none z-10 flex items-center space-x-2"
+              style={{
+                left: `${needleXPercent}%`,
+                top: `${surfaceYPercent}%`,
                 transform: 'translate(-50%, -50%)'
               }}
             >
-              {/* Outer Dynamic Target Lock Brackets */}
+              <div className="w-8 h-3 rounded-full border border-pink-400/70 bg-pink-500/10 shadow-[0_0_12px_rgba(244,114,182,0.5)] flex items-center justify-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
+              </div>
+              <span className="text-[9px] font-bold text-pink-300 bg-black/70 px-2 py-0.5 rounded backdrop-blur-xs border border-pink-500/30">
+                Skin Boundary (0.0mm)
+              </span>
+            </div>
+
+            {/* TARGET MOTOR KNOT & DYNAMIC RETICLE */}
+            <div 
+              className="absolute pointer-events-none z-20"
+              style={{
+                left: `${needleXPercent}%`,
+                top: `${knotYPercent}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            >
               <div className={`relative flex items-center justify-center transition-all duration-300 ${
-                isTargetLocked ? 'w-32 h-20' : isApproaching ? 'w-28 h-18' : 'w-24 h-16'
+                isTargetLocked ? 'w-36 h-24' : isApproaching ? 'w-30 h-20' : 'w-26 h-18'
               }`}>
                 {/* 4 Precision Corner Crosshair Brackets */}
-                <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 transition-colors duration-300 ${
+                <div className={`absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 transition-colors duration-300 ${
                   isTargetLocked ? 'border-emerald-400' : isApproaching ? 'border-amber-400' : 'border-red-400/90'
                 }`} />
-                <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 transition-colors duration-300 ${
+                <div className={`absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 transition-colors duration-300 ${
                   isTargetLocked ? 'border-emerald-400' : isApproaching ? 'border-amber-400' : 'border-red-400/90'
                 }`} />
-                <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 transition-colors duration-300 ${
+                <div className={`absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 transition-colors duration-300 ${
                   isTargetLocked ? 'border-emerald-400' : isApproaching ? 'border-amber-400' : 'border-red-400/90'
                 }`} />
-                <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 transition-colors duration-300 ${
+                <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 transition-colors duration-300 ${
                   isTargetLocked ? 'border-emerald-400' : isApproaching ? 'border-amber-400' : 'border-red-400/90'
                 }`} />
 
                 {/* Center Marking Ring */}
                 <motion.div
                   animate={{
-                    scale: twitchAnimation ? [1, 1.4, 0.85, 1.15, 1] : isTargetLocked ? [1, 1.06, 1] : 1,
-                    filter: isKnotReleased ? 'brightness(1.25)' : 'none'
+                    scale: twitchAnimation ? [1, 1.45, 0.8, 1.2, 1] : isTargetLocked ? [1, 1.08, 1] : 1,
+                    filter: isKnotReleased ? 'brightness(1.3)' : 'none'
                   }}
                   transition={{ 
                     duration: twitchAnimation ? 0.5 : 2, 
@@ -462,23 +521,23 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   }}
                   className={`w-full h-full rounded-2xl border-2 transition-all duration-300 ${
                     isTargetLocked 
-                      ? 'border-emerald-400 bg-emerald-500/15 shadow-[0_0_35px_rgba(52,211,153,0.7)]' 
+                      ? 'border-emerald-400 bg-emerald-500/20 shadow-[0_0_40px_rgba(52,211,153,0.8)]' 
                       : isApproaching
-                      ? 'border-amber-400 bg-amber-500/10 shadow-[0_0_20px_rgba(251,191,36,0.5)]'
-                      : 'border-red-400/80 bg-red-950/20 shadow-[0_0_20px_rgba(239,68,68,0.35)]'
+                      ? 'border-amber-400 bg-amber-500/15 shadow-[0_0_25px_rgba(251,191,36,0.6)]'
+                      : 'border-red-400/80 bg-red-950/30 shadow-[0_0_20px_rgba(239,68,68,0.4)]'
                   }`}
                 />
 
                 {/* Target Marker Label Pill */}
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border shadow-sm backdrop-blur-md flex items-center space-x-1 ${
+                <div className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  <span className={`text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-full border shadow-lg backdrop-blur-md flex items-center space-x-1.5 ${
                     isTargetLocked
-                      ? 'bg-emerald-950/90 text-emerald-300 border-emerald-400/80 animate-pulse'
+                      ? 'bg-emerald-950 text-emerald-300 border-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.6)] animate-pulse'
                       : isApproaching
-                      ? 'bg-amber-950/90 text-amber-300 border-amber-400/80'
-                      : 'bg-black/80 text-red-300 border-red-500/50'
+                      ? 'bg-amber-950 text-amber-300 border-amber-400'
+                      : 'bg-neutral-950/90 text-red-300 border-red-500/60'
                   }`}>
-                    <Target className="w-2.5 h-2.5" />
+                    <Target className="w-3 h-3" />
                     <span>
                       {isTargetLocked 
                         ? 'TARGET LOCKED: DE-QI ACTIVE' 
@@ -493,9 +552,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 {isKnotReleased && (
                   <motion.div 
                     initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: [1, 2.6], opacity: [0.8, 0] }}
+                    animate={{ scale: [1, 2.8], opacity: [0.9, 0] }}
                     transition={{ duration: 1.8, repeat: Infinity }}
-                    className="absolute inset-0 rounded-2xl border-2 border-emerald-300"
+                    className="absolute inset-0 rounded-2xl border-2 border-emerald-300 pointer-events-none"
                   />
                 )}
               </div>
@@ -506,14 +565,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               <div 
                 className="absolute inset-0 pointer-events-none z-15"
                 style={{
-                  background: 'radial-gradient(ellipse at 50% 79%, rgba(14, 165, 233, 0.25) 0%, transparent 60%)'
+                  background: 'radial-gradient(ellipse at 63% 65%, rgba(14, 165, 233, 0.35) 0%, transparent 65%)'
                 }}
               >
-                {/* Horizontal Electrical Micro-Pulses along muscle striations */}
                 <motion.div
-                  animate={{ opacity: [0.2, 0.9, 0.2], scaleX: [0.8, 1.1, 0.8] }}
+                  animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.8, 1.2, 0.8] }}
                   transition={{ duration: electroFreq === 2 ? 0.5 : 0.08, repeat: Infinity }}
-                  className="absolute left-1/4 right-1/4 h-1 top-[79%] bg-cyan-400 rounded-full blur-[2px] shadow-[0_0_15px_#38bdf8]"
+                  className="absolute left-[40%] right-[10%] h-1.5 top-[65%] bg-cyan-400 rounded-full blur-[2px] shadow-[0_0_20px_#38bdf8]"
                 />
               </div>
             )}
@@ -523,98 +581,147 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               <div 
                 className="absolute inset-0 pointer-events-none z-15"
                 style={{
-                  background: 'radial-gradient(circle at 50% 60%, rgba(249, 115, 22, 0.28) 0%, transparent 55%)'
+                  background: 'radial-gradient(circle at 63% 55%, rgba(249, 115, 22, 0.35) 0%, transparent 60%)'
                 }}
               >
                 <motion.div
-                  animate={{ opacity: [0.4, 0.85, 0.4] }}
+                  animate={{ opacity: [0.4, 0.9, 0.4] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute left-1/3 right-1/3 h-16 top-[65%] rounded-full bg-amber-500/30 blur-xl"
+                  className="absolute left-[45%] right-[15%] h-20 top-[55%] rounded-full bg-amber-500/30 blur-2xl"
                 />
               </div>
             )}
 
-            {/* THE DIRECTLY DRAGGABLE 0.18mm SURGICAL NEEDLE */}
-            {/* Positioned with bottom tip anchored at tipPercent */}
+            {/* THE GRAND HIGH-DEFINITION SURGICAL NEEDLE */}
+            {/* Bold, prominent, crystal-clear 3D needle with copper coiled wire and polished chrome shaft */}
             <div 
               onPointerDown={handleNeedlePointerDown}
               onPointerMove={handleNeedlePointerMove}
               onPointerUp={handleNeedlePointerUp}
-              className={`absolute left-1/2 z-30 transition-shadow ${
+              className={`absolute z-30 transition-shadow ${
                 isDragging ? 'cursor-grabbing scale-102' : 'cursor-grab hover:scale-102'
               }`}
               style={{
-                top: `${tipPercent}%`,
-                transform: 'translate(-50%, -100%)', // Anchor bottom tip
+                left: `${needleXPercent}%`,
+                top: `${tipYPercent}%`,
+                transform: 'translate(-50%, -100%)', // Anchor exact bottom sharp tip
                 touchAction: 'none'
               }}
             >
-              {/* Floating Real-Time Depth Badge with distance arrow */}
-              <div className="absolute -left-28 top-28 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-lg border border-neutral-300 shadow-md text-[11px] font-bold tabular-nums text-ink whitespace-nowrap pointer-events-none z-40">
-                <span className="text-brand mr-1">▼</span>
-                <span>{depthMm.toFixed(1)} mm</span>
+              {/* Floating Real-Time Depth Badge with Glowing Readout */}
+              <div className="absolute -left-32 top-24 bg-neutral-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-neutral-700 shadow-2xl text-[11px] font-bold tabular-nums text-white whitespace-nowrap pointer-events-none z-40 flex items-center space-x-1.5">
+                <span className="text-brand">▼</span>
+                <span className="text-white font-mono">{depthMm.toFixed(1)} mm</span>
                 {isTargetLocked && (
-                  <span className="ml-1 text-emerald-600 font-extrabold">✓ Locked</span>
+                  <span className="text-emerald-400 font-extrabold ml-1 animate-pulse">✓ Locked</span>
                 )}
               </div>
 
-              {/* Electro Lead Alligator Clip Overlay (When Electro active) */}
+              {/* Electro Lead Alligator Clip */}
               {isElectroActive && (
-                <div className="absolute top-2 -right-12 bg-cyan-600/95 text-white text-[9px] font-bold px-2 py-0.5 rounded-md shadow-md flex items-center space-x-1 animate-pulse z-40 border border-cyan-400">
-                  <Zap className="w-2.5 h-2.5" />
+                <div className="absolute top-2 -right-14 bg-cyan-600 text-white text-[9.5px] font-extrabold px-2 py-0.5 rounded-md shadow-lg flex items-center space-x-1 animate-pulse z-40 border border-cyan-300">
+                  <Zap className="w-3 h-3 text-cyan-200" />
                   <span>{electroFreq}Hz</span>
                 </div>
               )}
 
-              {/* Moxa Smoldering Cone Overlay (When Moxa active) */}
+              {/* Moxa Smoldering Cone */}
               {isMoxaActive && (
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-40">
-                  <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-t from-orange-600 to-amber-300 animate-pulse shadow-[0_0_14px_#f97316]" />
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-40">
+                  <span className="w-4 h-4 rounded-full bg-gradient-to-t from-orange-600 via-amber-400 to-yellow-200 animate-pulse shadow-[0_0_18px_#f97316]" />
                   <span className="text-[8.5px] font-extrabold text-amber-300 drop-shadow-md tracking-wider uppercase mt-0.5">Moxa</span>
                 </div>
               )}
 
-              {/* Authentic Photographic Acupuncture Needle with 3D Y-Axis Rolling */}
+              {/* 10× DOCTOR'S MACRO INSPECTION LOUPE (High-Tech Circular Zoom Lens) */}
+              {showLoupe && (
+                <div className="absolute -right-36 top-16 w-28 h-28 rounded-full border-2 border-cyan-400/80 bg-neutral-950/90 shadow-[0_0_25px_rgba(34,211,238,0.4)] backdrop-blur-md pointer-events-none flex flex-col items-center justify-between p-2 z-40 overflow-hidden">
+                  <div className="flex items-center justify-between w-full px-1 text-[8.5px] font-bold text-cyan-300">
+                    <span>10× LOUPE</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                  </div>
+
+                  {/* Magnified needle tip simulation inside the lens */}
+                  <div className="relative w-full h-12 flex items-center justify-center">
+                    {/* Background magnified collagen fibers */}
+                    <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:6px_6px]" />
+                    {/* The 0.18mm pin point magnified */}
+                    <div className="w-1 h-12 bg-gradient-to-b from-white via-neutral-300 to-amber-200 rounded-b-full shadow-[0_0_8px_#fff]" />
+                    {/* Horizontal laser reticle */}
+                    <div className="absolute w-full h-[1px] bg-cyan-400/60" />
+                  </div>
+
+                  <div className="text-[8px] font-mono text-neutral-300 text-center w-full bg-black/60 rounded py-0.5">
+                    0.18mm Solid 316L
+                  </div>
+                </div>
+              )}
+
+              {/* HIGH-DEFINITION BOLD 3D NEEDLE COMPONENT */}
               <div 
                 className="relative flex flex-col items-center"
                 style={{
-                  perspective: '800px',
+                  perspective: '900px',
                   transformStyle: 'preserve-3d'
                 }}
               >
-                {/* 3D Axial Roll along Y-axis (Left-to-Right Spin, NOT a fan blade!) */}
+                {/* 3D Axial Roll along Y-axis (True left-to-right spin) */}
                 <div
                   style={{
                     transform: `rotateY(${twirlAngleY}deg)`,
                     transformOrigin: 'center center',
                     transition: isTwirling ? 'transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1)' : 'none'
                   }}
-                  className="relative"
+                  className="relative flex flex-col items-center"
                 >
-                  <img 
-                    src={getAssetUrl('single_needle_authentic.png')} 
-                    alt="Authentic 0.18mm acupuncture needle"
-                    className="select-none pointer-events-none drop-shadow-xl"
-                    style={{
-                      height: '240px',
-                      width: 'auto'
-                    }}
-                    draggable={false}
-                  />
+                  
+                  {/* Classical Surgical Needle Top Ring Finial */}
+                  <div className="w-6 h-6 rounded-full border-[3px] border-amber-300/90 bg-gradient-to-tr from-amber-600 via-amber-200 to-yellow-100 shadow-[0_0_10px_rgba(251,191,36,0.6)] flex items-center justify-center relative">
+                    <div className="w-2.5 h-2.5 rounded-full bg-neutral-900 border border-amber-400" />
+                  </div>
 
-                  {/* Dynamic Specular Sheen during Twirl */}
-                  <div 
-                    className="absolute inset-0 pointer-events-none opacity-40 mix-blend-overlay transition-opacity"
-                    style={{
-                      background: `linear-gradient(${twirlAngleY % 360}deg, transparent 40%, rgba(255,255,255,0.9) 50%, transparent 60%)`
-                    }}
-                  />
+                  {/* Coiled Wire Handle (30px wide, 80px tall, distinct copper wire loops) */}
+                  <div className="w-6 h-20 rounded-md relative overflow-hidden bg-gradient-to-r from-amber-700 via-amber-400 to-amber-600 border border-amber-300 shadow-xl flex flex-col justify-between py-1 my-0.5">
+                    {/* Realistic individual coiled wire grooves */}
+                    {Array.from({ length: 14 }).map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="w-full h-[2px] bg-amber-950/60 shadow-[0_1px_0_rgba(255,255,255,0.4)]"
+                      />
+                    ))}
+                    {/* Specular Glint running along coil during rotation */}
+                    <div 
+                      className="absolute inset-0 pointer-events-none opacity-60 mix-blend-overlay"
+                      style={{
+                        background: `linear-gradient(${twirlAngleY % 360}deg, transparent 35%, rgba(255,255,255,0.95) 50%, transparent 65%)`
+                      }}
+                    />
+                  </div>
+
+                  {/* Polished Stainless Steel Needle Shaft (High-contrast 4px width with chrome shine) */}
+                  <div className="relative flex flex-col items-center">
+                    <div 
+                      className="w-1.5 h-44 bg-gradient-to-r from-neutral-400 via-white to-neutral-400 shadow-[0_0_8px_rgba(255,255,255,0.8)] relative"
+                      style={{
+                        boxShadow: '0 0 10px rgba(255,255,255,0.7), 0 0 2px rgba(0,0,0,0.8)'
+                      }}
+                    >
+                      {/* Chrome centerline reflection */}
+                      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-white" />
+                    </div>
+
+                    {/* Sharp Tapered Trocar Tip (Pointed end) */}
+                    <div 
+                      className="w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-t-[8px] border-t-white shadow-[0_0_8px_#ffffff]"
+                    />
+                  </div>
+
                 </div>
 
-                {/* Subtle Dermal Contact Indentation & Shadow at Skin Surface */}
+                {/* Dermal Contact Indentation & Shadow at Skin Surface */}
                 <div 
-                  className="w-5 h-1.5 bg-black/50 rounded-full filter blur-[1px] transform -translate-y-1 pointer-events-none"
-                  style={{ opacity: depthMm > 0 ? 0.7 : 0.2 }}
+                  className="w-6 h-2 bg-pink-500/50 rounded-full filter blur-[2px] transform -translate-y-1 pointer-events-none"
+                  style={{ opacity: depthMm > 0 ? 0.8 : 0.2 }}
                 />
               </div>
 
@@ -622,19 +729,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
             {/* Prompt Hint when at Surface */}
             {depthMm === 0 && !isDragging && (
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-neutral-200 shadow-xs pointer-events-none text-[11px] text-neutral-700 font-medium z-10 flex items-center space-x-1.5">
-                <span className="w-2 h-2 rounded-full bg-brand animate-ping" />
-                <span>Drag the coiled needle handle downward to plunge</span>
+              <div className="absolute top-4 left-4 bg-neutral-900/90 backdrop-blur-md px-3.5 py-2 rounded-full border border-neutral-700 shadow-xl pointer-events-none text-xs text-white font-medium z-10 flex items-center space-x-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-brand animate-ping" />
+                <span>Grab the coiled golden needle handle and drag downward</span>
               </div>
             )}
 
           </div>
 
           {/* Precision Micrometer Depth Slider */}
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-2">
+          <div className="p-4 rounded-2xl bg-neutral-900/90 border border-neutral-800 space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="text-neutral-700">Needle Insertion Depth (Precision Dial)</span>
-              <span className="text-brand font-bold text-sm tabular-nums">{depthMm.toFixed(1)} mm</span>
+              <span className="text-neutral-300">Needle Insertion Depth (Precision Dial)</span>
+              <span className="text-brand font-bold text-sm tabular-nums font-mono">{depthMm.toFixed(1)} mm</span>
             </div>
             <input 
               type="range"
@@ -643,9 +750,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               step="0.1"
               value={depthMm}
               onChange={(e) => setDepthMm(parseFloat(e.target.value))}
-              className="w-full h-2 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-brand"
+              className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-brand"
             />
-            <div className="flex justify-between text-[10px] text-neutral-500 font-medium">
+            <div className="flex justify-between text-[10px] text-neutral-400 font-medium">
               <span>Epidermis (0mm)</span>
               <span>Dermis (3mm)</span>
               <span>Fascia (6mm)</span>
@@ -654,10 +761,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </div>
           </div>
 
-          {/* INTERACTIVE CLINICAL TECHNIQUE TOOLBAR (The Hands-On Session Controls) */}
-          <div className="space-y-2 pt-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block">
-              Clinical Manipulation Techniques (Try Each in Real Time)
+          {/* CLINICAL MANIPULATION TECHNIQUES TOOLBAR */}
+          <div className="space-y-2.5 pt-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block">
+              Clinical Manipulation Toolkit (Interactive Actions)
             </span>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -665,41 +772,41 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               {/* 1. Classical Left-to-Right 3D Twirl */}
               <button
                 onClick={handleTwirl}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isTwirling 
-                    ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm' 
-                    : 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-200'
+                    ? 'bg-brand text-white border-brand shadow-lg shadow-brand/30' 
+                    : 'bg-neutral-900/80 hover:bg-neutral-800 text-white border-neutral-800'
                 }`}
-                title="Roll handle left-to-right between thumb and index finger"
+                title="Roll handle left-to-right between fingers"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <RotateCw className={`w-4 h-4 ${isTwirling ? 'text-brand animate-spin' : 'text-neutral-600'}`} />
-                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-neutral-100 text-neutral-600">
+                  <RotateCw className={`w-4 h-4 ${isTwirling ? 'text-white animate-spin' : 'text-neutral-400'}`} />
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/50 text-neutral-300">
                     Nien Chuan
                   </span>
                 </div>
                 <div className="text-xs font-bold">3D Twirl (Roll L→R)</div>
-                <div className="text-[10px] text-neutral-500 mt-0.5">Winds collagen fascia</div>
+                <div className="text-[10px] text-neutral-400 mt-0.5">Winds collagen fascia</div>
               </button>
 
               {/* 2. Classical Lift & Thrust (Ti Ch'a) */}
               <button
                 onClick={handleThrust}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isThrusting 
-                    ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm' 
-                    : 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-200'
+                    ? 'bg-brand text-white border-brand shadow-lg shadow-brand/30' 
+                    : 'bg-neutral-900/80 hover:bg-neutral-800 text-white border-neutral-800'
                 }`}
                 title="Micro-pecking pecks knot to elicit twitch response"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <MoveVertical className={`w-4 h-4 ${isThrusting ? 'text-brand animate-bounce' : 'text-neutral-600'}`} />
-                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-neutral-100 text-neutral-600">
+                  <MoveVertical className={`w-4 h-4 ${isThrusting ? 'text-white animate-bounce' : 'text-neutral-400'}`} />
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/50 text-neutral-300">
                     Ti Ch’a
                   </span>
                 </div>
                 <div className="text-xs font-bold">Thrust & Lift</div>
-                <div className="text-[10px] text-neutral-500 mt-0.5">Elicits local twitch</div>
+                <div className="text-[10px] text-neutral-400 mt-0.5">Elicits local twitch</div>
               </button>
 
               {/* 3. Electro-Acupuncture Mode */}
@@ -708,17 +815,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   if (!isElectroActive && depthMm < 4.0) setDepthMm(activeScenario.targetDepthMm);
                   setIsElectroActive(!isElectroActive);
                 }}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isElectroActive 
-                    ? 'bg-cyan-950 text-cyan-200 border-cyan-500 shadow-sm' 
-                    : 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-200'
+                    ? 'bg-cyan-950 text-cyan-200 border-cyan-400 shadow-lg shadow-cyan-500/20' 
+                    : 'bg-neutral-900/80 hover:bg-neutral-800 text-white border-neutral-800'
                 }`}
                 title="Micro-current pulses gate pain and release endorphins"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <Zap className={`w-4 h-4 ${isElectroActive ? 'text-cyan-400 animate-pulse' : 'text-neutral-600'}`} />
-                  <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                    isElectroActive ? 'bg-cyan-800 text-cyan-100' : 'bg-neutral-100 text-neutral-600'
+                  <Zap className={`w-4 h-4 ${isElectroActive ? 'text-cyan-400 animate-pulse' : 'text-neutral-400'}`} />
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                    isElectroActive ? 'bg-cyan-800 text-cyan-100' : 'bg-black/50 text-neutral-300'
                   }`}>
                     {isElectroActive ? `${electroFreq} Hz` : 'Dian Zhen'}
                   </span>
@@ -726,7 +833,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 <div className="text-xs font-bold">
                   {isElectroActive ? 'Electro: Active' : 'Electro-Acu'}
                 </div>
-                <div className="text-[10px] text-neutral-500 mt-0.5">Endorphin frequency</div>
+                <div className="text-[10px] text-neutral-400 mt-0.5">Endorphin frequency</div>
               </button>
 
               {/* 4. Warm Needle Moxibustion */}
@@ -735,17 +842,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   if (!isMoxaActive && depthMm < 3.0) setDepthMm(activeScenario.targetDepthMm);
                   setIsMoxaActive(!isMoxaActive);
                 }}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isMoxaActive 
-                    ? 'bg-amber-950 text-amber-200 border-amber-500 shadow-sm' 
-                    : 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-200'
+                    ? 'bg-amber-950 text-amber-200 border-amber-400 shadow-lg shadow-amber-500/20' 
+                    : 'bg-neutral-900/80 hover:bg-neutral-800 text-white border-neutral-800'
                 }`}
                 title="Thermal infrared warmth radiates down the shaft"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <Flame className={`w-4 h-4 ${isMoxaActive ? 'text-amber-400 animate-pulse' : 'text-neutral-600'}`} />
-                  <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                    isMoxaActive ? 'bg-amber-800 text-amber-100' : 'bg-neutral-100 text-neutral-600'
+                  <Flame className={`w-4 h-4 ${isMoxaActive ? 'text-amber-400 animate-pulse' : 'text-neutral-400'}`} />
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                    isMoxaActive ? 'bg-amber-800 text-amber-100' : 'bg-black/50 text-neutral-300'
                   }`}>
                     Wen Zhen
                   </span>
@@ -753,17 +860,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 <div className="text-xs font-bold">
                   {isMoxaActive ? 'Warm Moxa: On' : 'Warm Needle'}
                 </div>
-                <div className="text-[10px] text-neutral-500 mt-0.5">Infrared heat wave</div>
+                <div className="text-[10px] text-neutral-400 mt-0.5">Infrared heat wave</div>
               </button>
 
             </div>
           </div>
 
-          {/* REAL-TIME PATIENT SENSATION CARD */}
-          <div className="p-4 rounded-xl bg-neutral-900 text-white space-y-1.5 border border-neutral-800">
+          {/* REAL-TIME PATIENT SENSATION HUD */}
+          <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800/80 space-y-1.5 shadow-inner">
             <div className="flex items-center justify-between text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
               <span>Patient Sensation Monitor (Real Time)</span>
-              <span className="text-brand font-bold">{depthMm.toFixed(1)} mm</span>
+              <span className="text-brand font-bold font-mono">{depthMm.toFixed(1)} mm</span>
             </div>
             <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-normal">
               {getPatientSensation()}
@@ -776,35 +883,35 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         <div className="lg:col-span-4 space-y-6">
           
           {/* Live Bio-Telemetry Dashboard */}
-          <div className="p-6 rounded-2xl bg-white border border-neutral-200 shadow-xs space-y-5">
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+          <div className="p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 shadow-2xl space-y-5 backdrop-blur-md">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
                 Live Biomechanical Telemetry
               </span>
-              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
                 Active Sensors
               </span>
             </div>
 
             <div className="space-y-4 text-xs">
               <div>
-                <span className="text-neutral-500 block">Dermal Penetration Force</span>
-                <span className="font-display font-bold text-ink text-lg tabular-nums mt-0.5 block">
+                <span className="text-neutral-400 block">Dermal Penetration Force</span>
+                <span className="font-display font-bold text-white text-lg tabular-nums mt-0.5 block font-mono">
                   {penetrationForce}
                 </span>
-                <span className="text-[10px] text-neutral-400">Human pain threshold is 0.50 N (acupuncture is 25× lower)</span>
+                <span className="text-[10px] text-neutral-500">Human pain threshold is 0.50 N (acupuncture is 25× lower)</span>
               </div>
 
               <div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500 font-medium">Myofascial Spasm Level</span>
-                  <span className={`font-bold tabular-nums ${isKnotReleased ? 'text-emerald-700' : 'text-red-700'}`}>
+                  <span className="text-neutral-400 font-medium">Myofascial Spasm Level</span>
+                  <span className={`font-bold tabular-nums font-mono ${isKnotReleased ? 'text-emerald-400' : 'text-red-400'}`}>
                     {muscleSpasmPct}%
                   </span>
                 </div>
-                <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden mt-1.5">
+                <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden mt-1.5">
                   <div 
-                    className={`h-full transition-all duration-300 ${isKnotReleased ? 'bg-emerald-500' : 'bg-red-500'}`} 
+                    className={`h-full transition-all duration-300 ${isKnotReleased ? 'bg-emerald-400' : 'bg-red-500'}`} 
                     style={{ width: `${muscleSpasmPct}%` }}
                   />
                 </div>
@@ -812,10 +919,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
               <div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500 font-medium">Local Micro-Perfusion (Blood Flow)</span>
-                  <span className="font-bold text-brand tabular-nums">+{microBloodFlow}%</span>
+                  <span className="text-neutral-400 font-medium">Local Micro-Perfusion (Blood Flow)</span>
+                  <span className="font-bold text-brand tabular-nums font-mono">+{microBloodFlow}%</span>
                 </div>
-                <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden mt-1.5">
+                <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden mt-1.5">
                   <div 
                     className="h-full bg-brand transition-all duration-300" 
                     style={{ width: `${Math.min(100, (microBloodFlow / 420) * 100)}%` }}
@@ -824,34 +931,34 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               </div>
 
               <div>
-                <span className="text-neutral-500 block">Autonomic Vagus Response</span>
-                <span className="font-semibold text-neutral-900 text-xs block mt-0.5">{vagusTone}</span>
+                <span className="text-neutral-400 block">Autonomic Vagus Response</span>
+                <span className="font-semibold text-neutral-200 text-xs block mt-0.5">{vagusTone}</span>
               </div>
             </div>
           </div>
 
           {/* Clinical Finding Dossier Card */}
-          <div className="p-6 rounded-2xl bg-[#fdfcfa] border border-neutral-200 space-y-4">
+          <div className="p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 space-y-4 backdrop-blur-md">
             <div>
               <span className="text-xs text-brand font-semibold block">{activeScenario.location}</span>
-              <h4 className="font-display text-lg font-bold text-ink mt-0.5">
+              <h4 className="font-display text-lg font-bold text-white mt-0.5">
                 {activeScenario.name}
               </h4>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-950/90 leading-relaxed space-y-1">
-              <strong className="block text-amber-900 font-semibold">The De-Qi Sensation:</strong>
+            <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-800/60 text-xs text-amber-200 leading-relaxed space-y-1">
+              <strong className="block text-amber-300 font-semibold">The De-Qi Sensation:</strong>
               <p className="font-normal">{activeScenario.deQiResponse}</p>
             </div>
 
-            <p className="text-xs italic text-neutral-600 leading-relaxed border-t border-neutral-100 pt-3">
+            <p className="text-xs italic text-neutral-400 leading-relaxed border-t border-neutral-800 pt-3">
               {activeScenario.doctorQuote}
             </p>
 
             <div className="pt-2">
               <button
                 onClick={() => onOpenBooking(`Consultation (${activeScenario.name})`, 600)}
-                className="w-full py-3.5 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark transition-colors flex items-center justify-center space-x-1.5 shadow-sm cursor-pointer"
+                className="w-full py-3.5 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark transition-all flex items-center justify-center space-x-1.5 shadow-lg shadow-brand/30 cursor-pointer"
               >
                 <span>Book Priority Consultation (₹600)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -864,27 +971,27 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* COMPANION SCALE COMPARISON: "How Thin is 0.18mm?" (Directly below) */}
-      <div className="pt-10 border-t border-neutral-200">
-        <div className="bg-white rounded-3xl border border-neutral-200 p-8 sm:p-12 space-y-8">
+      <div className="pt-10 border-t border-neutral-800">
+        <div className="bg-neutral-900/80 rounded-3xl border border-neutral-800 p-8 sm:p-12 space-y-8 backdrop-blur-md">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2 max-w-xl">
               <span className="text-xs uppercase tracking-wider text-brand font-bold block">
                 True Relative Scale
               </span>
-              <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+              <h3 className="font-display text-2xl sm:text-3xl font-bold text-white">
                 How thin is 0.18 millimeters?
               </h3>
-              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal">
                 Overlaying three physical objects at exact relative proportion. Notice why an acupuncture needle feels completely different from a standard hospital injection syringe.
               </p>
             </div>
 
             {/* Magnification Slider Control */}
-            <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 shadow-xs space-y-2 min-w-[240px]">
+            <div className="bg-neutral-950 p-4 rounded-2xl border border-neutral-800 shadow-inner space-y-2 min-w-[240px]">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-neutral-700">Microscope Zoom</span>
-                <span className="font-bold text-brand tabular-nums">{zoomLevel}× Scale</span>
+                <span className="font-semibold text-neutral-300">Microscope Zoom</span>
+                <span className="font-bold text-brand tabular-nums font-mono">{zoomLevel}× Scale</span>
               </div>
               <input 
                 type="range"
@@ -893,7 +1000,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 step="1"
                 value={zoomLevel}
                 onChange={(e) => setZoomLevel(Number(e.target.value))}
-                className="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-brand"
+                className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-brand"
               />
             </div>
           </div>
@@ -902,21 +1009,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 items-stretch">
             
             {/* 1. Human Hair */}
-            <div className="p-6 rounded-2xl bg-neutral-50/50 border border-neutral-200 space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-neutral-950/70 border border-neutral-800 space-y-4 flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Reference</span>
-                  <span className="text-xs font-bold text-neutral-800 tabular-nums">~0.08 mm</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Reference</span>
+                  <span className="text-xs font-bold text-neutral-200 tabular-nums font-mono">~0.08 mm</span>
                 </div>
-                <h4 className="font-display text-lg font-bold text-ink">Human Scalp Hair</h4>
-                <p className="text-xs text-neutral-600 leading-relaxed font-normal">
+                <h4 className="font-display text-lg font-bold text-white">Human Scalp Hair</h4>
+                <p className="text-xs text-neutral-400 leading-relaxed font-normal">
                   Average human hair shaft diameter (80 microns). Flexible biological keratin fiber.
                 </p>
               </div>
 
-              <div className="py-6 bg-white rounded-xl border border-neutral-200/80 flex items-center justify-center relative h-28 overflow-hidden">
+              <div className="py-6 bg-neutral-900 rounded-xl border border-neutral-800 flex items-center justify-center relative h-28 overflow-hidden">
                 <div 
-                  className="bg-amber-900/80 rounded-full shadow-xs"
+                  className="bg-amber-600 rounded-full shadow-lg"
                   style={{
                     width: `${0.08 * zoomLevel * 14}px`,
                     height: `${0.08 * zoomLevel * 14}px`,
@@ -924,80 +1031,80 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                     minHeight: '4px'
                   }}
                 />
-                <span className="absolute bottom-2 text-[10px] text-neutral-400 font-medium">
+                <span className="absolute bottom-2 text-[10px] text-neutral-500 font-medium">
                   Actual Cross-Section at {zoomLevel}×
                 </span>
               </div>
 
-              <div className="text-[11px] text-neutral-500 pt-1 border-t border-neutral-200/60">
+              <div className="text-[11px] text-neutral-400 pt-1 border-t border-neutral-800">
                 Solid organic filament
               </div>
             </div>
 
             {/* 2. Arura Acupuncture Needle (Hero) */}
-            <div className="p-6 rounded-2xl bg-white border-2 border-brand shadow-sm space-y-4 flex flex-col justify-between relative">
-              <div className="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full bg-brand text-white text-[10px] font-bold uppercase tracking-wider">
+            <div className="p-6 rounded-2xl bg-neutral-950/90 border-2 border-brand shadow-lg shadow-brand/20 space-y-4 flex flex-col justify-between relative">
+              <div className="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full bg-brand text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
                 Arura Standard
               </div>
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold text-brand uppercase tracking-wider">Solid Needle</span>
-                  <span className="text-xs font-bold text-brand tabular-nums">0.18 mm</span>
+                  <span className="text-xs font-bold text-brand tabular-nums font-mono">0.18 mm</span>
                 </div>
-                <h4 className="font-display text-lg font-bold text-ink">Arura Acupuncture Needle</h4>
-                <p className="text-xs text-neutral-600 leading-relaxed font-normal">
+                <h4 className="font-display text-lg font-bold text-white">Arura Acupuncture Needle</h4>
+                <p className="text-xs text-neutral-300 leading-relaxed font-normal">
                   Surgical stainless steel 316L. Just over twice the thickness of a single hair strand.
                 </p>
               </div>
 
-              <div className="py-6 bg-neutral-50 rounded-xl flex items-center justify-center relative h-28 overflow-hidden border border-brand/20">
+              <div className="py-6 bg-neutral-900 rounded-xl flex items-center justify-center relative h-28 overflow-hidden border border-brand/40 shadow-inner">
                 <div 
-                  className="bg-neutral-800 rounded-full border border-neutral-400 shadow-sm"
+                  className="bg-white rounded-full border border-neutral-400 shadow-[0_0_12px_#fff]"
                   style={{
                     width: `${0.18 * zoomLevel * 14}px`,
                     height: `${0.18 * zoomLevel * 14}px`
                   }}
                 />
-                <span className="absolute bottom-2 text-[10px] text-brand font-semibold">
+                <span className="absolute bottom-2 text-[10px] text-pink-300 font-semibold">
                   Solid Pin-Point · Does not cut tissue
                 </span>
               </div>
 
-              <div className="text-[11px] text-neutral-700 font-medium pt-1 border-t border-neutral-100">
+              <div className="text-[11px] text-neutral-300 font-medium pt-1 border-t border-neutral-800">
                 Slides between muscle fibers painlessly
               </div>
             </div>
 
             {/* 3. Hypodermic Injection Syringe Needle */}
-            <div className="p-6 rounded-2xl bg-neutral-50/50 border border-neutral-200 space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-neutral-950/70 border border-neutral-800 space-y-4 flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Hospital Syringe</span>
-                  <span className="text-xs font-bold text-neutral-800 tabular-nums">0.81 mm (21 Gauge)</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Hospital Syringe</span>
+                  <span className="text-xs font-bold text-neutral-200 tabular-nums font-mono">0.81 mm (21 Gauge)</span>
                 </div>
-                <h4 className="font-display text-lg font-bold text-ink">Blood Draw / Syringe Needle</h4>
-                <p className="text-xs text-neutral-600 leading-relaxed font-normal">
+                <h4 className="font-display text-lg font-bold text-white">Blood Draw / Syringe Needle</h4>
+                <p className="text-xs text-neutral-400 leading-relaxed font-normal">
                   Hollow steel cylinder with beveled razor edge designed to slice tissue to inject fluid.
                 </p>
               </div>
 
-              <div className="py-6 bg-white rounded-xl border border-neutral-200/80 flex items-center justify-center relative h-28 overflow-hidden">
+              <div className="py-6 bg-neutral-900 rounded-xl border border-neutral-800 flex items-center justify-center relative h-28 overflow-hidden">
                 <div 
-                  className="rounded-full border-[5px] border-neutral-600 bg-transparent shadow-sm flex items-center justify-center"
+                  className="rounded-full border-[5px] border-neutral-400 bg-transparent shadow-md flex items-center justify-center"
                   style={{
                     width: `${0.81 * zoomLevel * 14}px`,
                     height: `${0.81 * zoomLevel * 14}px`
                   }}
                 >
-                  <span className="text-[9px] text-neutral-400">Hollow</span>
+                  <span className="text-[9px] text-neutral-500 font-mono">Hollow</span>
                 </div>
-                <span className="absolute bottom-2 text-[10px] text-neutral-400 font-medium">
+                <span className="absolute bottom-2 text-[10px] text-neutral-500 font-medium">
                   4.5× Thicker + Slices tissue
                 </span>
               </div>
 
-              <div className="text-[11px] text-neutral-500 pt-1 border-t border-neutral-200/60">
+              <div className="text-[11px] text-neutral-400 pt-1 border-t border-neutral-800">
                 Why hospital shots sting, but acupuncture does not
               </div>
             </div>
