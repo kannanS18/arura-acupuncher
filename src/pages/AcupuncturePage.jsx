@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
-import PlaceTheNeedleInteractive from '../components/PlaceTheNeedleInteractive';
+import InteractiveAcupunctureLab from '../components/interactive-lab/InteractiveAcupunctureLab';
 import { Flame, Disc, Leaf, Zap, Sun, Activity, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -109,8 +109,8 @@ export default function AcupuncturePage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* Tactile "Place the Needle" Interactive & "How Thin?" Comparison */}
-      <PlaceTheNeedleInteractive onOpenBooking={onOpenBooking} />
+      {/* Interactive Clinical Suite (All 3 Prototypes) */}
+      <InteractiveAcupunctureLab onOpenBooking={onOpenBooking} />
 
       {/* Interactive Clinical Meridian Navigator */}
       <section className="py-20 bg-surface-subtle border-b border-gray-200/80">
