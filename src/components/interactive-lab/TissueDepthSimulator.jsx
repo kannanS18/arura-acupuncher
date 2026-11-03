@@ -566,17 +566,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Lock document scrolling to guarantee true 100vh / 100vw viewport without any page scroll
+  // Lock document scrolling ONLY when user activates Full Screen mode
   useEffect(() => {
-    const origBodyOverflow = document.body.style.overflow;
-    const origHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = origBodyOverflow;
-      document.documentElement.style.overflow = origHtmlOverflow;
-    };
-  }, []);
+    if (isFullscreen) {
+      const origBodyOverflow = document.body.style.overflow;
+      const origHtmlOverflow = document.documentElement.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origBodyOverflow;
+        document.documentElement.style.overflow = origHtmlOverflow;
+      };
+    }
+  }, [isFullscreen]);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
@@ -1798,7 +1800,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className="fixed inset-0 z-50 w-screen h-screen overflow-hidden bg-neutral-950 select-none font-sans"
+      className={`w-full overflow-hidden bg-neutral-950 select-none font-sans ${isFullscreen ? "fixed inset-0 z-[100] w-screen h-screen" : "relative w-full h-full"}`}
     >
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
