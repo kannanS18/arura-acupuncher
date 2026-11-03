@@ -13,7 +13,8 @@ import {
   Layers,
   Activity,
   MoveDown,
-  Info
+  Flame,
+  ShieldCheck
 } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetUrl';
 
@@ -26,7 +27,6 @@ function playAcuSound(type, isMuted) {
     const ctx = new AudioContext();
 
     if (type === 'snap') {
-      // 1. Crisp Thanos Finger Snap Pop
       const snapOsc = ctx.createOscillator();
       const snapGain = ctx.createGain();
       snapOsc.type = 'triangle';
@@ -41,7 +41,7 @@ function playAcuSound(type, isMuted) {
       snapOsc.start();
       snapOsc.stop(ctx.currentTime + 0.09);
 
-      // 2. Wind / Ash Dissolve Ethereal Whoosh
+      // Wind / Ash Dissolve Ethereal Whoosh
       const bufferSize = ctx.sampleRate * 1.5;
       const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
@@ -70,7 +70,7 @@ function playAcuSound(type, isMuted) {
       whiteNoise.start(ctx.currentTime + 0.04);
       whiteNoise.stop(ctx.currentTime + 1.5);
 
-      // 3. Harmonic 528 Hz Healing Tone
+      // 528 Hz Healing Harmonic Tone
       setTimeout(() => {
         try {
           const toneOsc = ctx.createOscillator();
@@ -144,78 +144,102 @@ function playAcuSound(type, isMuted) {
   } catch (_) {}
 }
 
-// Procedural Canvas Texture for Side Strata (Epidermis -> Adipose Fat Lobules -> Striated Muscle)
+// Curve for Authentic Spiral Copper Needle Handle
+class SpiralHandleCurve extends THREE.Curve {
+  constructor(radius = 0.022, height = 0.28, turns = 24) {
+    super();
+    this.radius = radius;
+    this.height = height;
+    this.turns = turns;
+  }
+  getPoint(t) {
+    const angle = t * Math.PI * 2 * this.turns;
+    const x = Math.cos(angle) * this.radius;
+    const z = Math.sin(angle) * this.radius;
+    const y = (t - 0.5) * this.height;
+    return new THREE.Vector3(x, y, z);
+  }
+}
+
+// Procedural Multi-Layer Biological Strata Texture (Skin -> Adipose Pearls -> Striated Muscle)
 function createSideStrataTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 1024;
+  canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  // 1. Epidermis & Dermis (Top 0 to 120px)
-  const dermisGrad = ctx.createLinearGradient(0, 0, 0, 120);
-  dermisGrad.addColorStop(0, '#f2beaa');
-  dermisGrad.addColorStop(0.7, '#e5ad92');
-  dermisGrad.addColorStop(1, '#c87a64');
+  // 1. Epidermis & Dermis (Top 0 to 240px)
+  const dermisGrad = ctx.createLinearGradient(0, 0, 0, 240);
+  dermisGrad.addColorStop(0, '#f1c1b0');
+  dermisGrad.addColorStop(0.5, '#e4a592');
+  dermisGrad.addColorStop(1, '#c97964');
   ctx.fillStyle = dermisGrad;
-  ctx.fillRect(0, 0, 512, 120);
+  ctx.fillRect(0, 0, 1024, 240);
 
-  // Dermal capillary micro-plexus
-  ctx.strokeStyle = 'rgba(220, 38, 38, 0.4)';
-  ctx.lineWidth = 1.2;
-  for (let i = 0; i < 30; i++) {
+  // Micro-capillary vascular loops
+  ctx.strokeStyle = 'rgba(225, 29, 72, 0.45)';
+  ctx.lineWidth = 1.8;
+  for (let i = 0; i < 45; i++) {
     ctx.beginPath();
-    const x = Math.random() * 512;
-    ctx.moveTo(x, 118);
-    ctx.bezierCurveTo(x + (Math.random() - 0.5) * 40, 90, x + (Math.random() - 0.5) * 40, 60, x, 40);
+    const x = Math.random() * 1024;
+    ctx.moveTo(x, 235);
+    ctx.bezierCurveTo(x + (Math.random() - 0.5) * 60, 180, x + (Math.random() - 0.5) * 60, 110, x, 70);
     ctx.stroke();
   }
 
-  // 2. Subcutaneous Adipose Fat Lobules (120 to 280px)
-  const fatGrad = ctx.createLinearGradient(0, 120, 0, 280);
+  // 2. Subcutaneous Adipose Lipid Lobules (240 to 560px)
+  const fatGrad = ctx.createLinearGradient(0, 240, 0, 560);
   fatGrad.addColorStop(0, '#fef08a');
-  fatGrad.addColorStop(1, '#fde047');
+  fatGrad.addColorStop(1, '#eab308');
   ctx.fillStyle = fatGrad;
-  ctx.fillRect(0, 120, 512, 160);
+  ctx.fillRect(0, 240, 1024, 320);
 
-  // Clustered spherical adipose lipid cells
-  for (let i = 0; i < 400; i++) {
-    const cx = Math.random() * 512;
-    const cy = 125 + Math.random() * 150;
-    const r = 5 + Math.random() * 9;
-    ctx.fillStyle = Math.random() > 0.4 ? '#fde047' : '#f59e0b';
+  // Clustered 3D spherical adipose pearls with specular highlights
+  for (let i = 0; i < 600; i++) {
+    const cx = Math.random() * 1024;
+    const cy = 250 + Math.random() * 300;
+    const r = 8 + Math.random() * 14;
+
+    const pearlGrad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.1, cx, cy, r);
+    pearlGrad.addColorStop(0, '#fef9c3');
+    pearlGrad.addColorStop(0.6, '#facc15');
+    pearlGrad.addColorStop(1, '#ca8a04');
+
+    ctx.fillStyle = pearlGrad;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(217, 119, 6, 0.45)';
-    ctx.lineWidth = 0.8;
+
+    ctx.strokeStyle = 'rgba(161, 98, 7, 0.35)';
+    ctx.lineWidth = 1.0;
     ctx.stroke();
   }
 
-  // Fibrous fascial collagen septa dividing fat lobules
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-  ctx.lineWidth = 2.0;
-  for (let i = 0; i < 7; i++) {
+  // Glistening fibrous fascial collagen sheets
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.lineWidth = 3.0;
+  for (let i = 0; i < 9; i++) {
     ctx.beginPath();
-    ctx.moveTo(0, 130 + i * 22);
-    ctx.bezierCurveTo(150, 140 + i * 22, 350, 120 + i * 22, 512, 135 + i * 22);
+    ctx.moveTo(0, 255 + i * 36);
+    ctx.bezierCurveTo(300, 275 + i * 36, 700, 240 + i * 36, 1024, 265 + i * 36);
     ctx.stroke();
   }
 
-  // 3. Deep Striated Skeletal Muscle (280 to 512px)
-  const muscleGrad = ctx.createLinearGradient(0, 280, 0, 512);
+  // 3. Deep Striated Skeletal Muscle (560 to 1024px)
+  const muscleGrad = ctx.createLinearGradient(0, 560, 0, 1024);
   muscleGrad.addColorStop(0, '#881337');
-  muscleGrad.addColorStop(0.5, '#700c2a');
+  muscleGrad.addColorStop(0.4, '#700c2a');
   muscleGrad.addColorStop(1, '#4c0519');
   ctx.fillStyle = muscleGrad;
-  ctx.fillRect(0, 280, 512, 232);
+  ctx.fillRect(0, 560, 1024, 464);
 
-  // Horizontal muscle fascicle striations
-  for (let y = 285; y < 512; y += 3.5) {
-    ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(244, 63, 94, 0.5)' : 'rgba(76, 5, 25, 0.7)';
-    ctx.lineWidth = 1.6;
+  // Longitudinal muscle fascicle striations with myofibril texture
+  for (let y = 565; y < 1024; y += 4.5) {
+    ctx.strokeStyle = Math.random() > 0.4 ? 'rgba(251, 113, 133, 0.55)' : 'rgba(76, 5, 25, 0.75)';
+    ctx.lineWidth = 2.2;
     ctx.beginPath();
-    ctx.moveTo(0, y + (Math.sin(y * 0.08) * 2));
-    ctx.bezierCurveTo(170, y + 2, 340, y - 2, 512, y);
+    ctx.moveTo(0, y + (Math.sin(y * 0.05) * 3));
+    ctx.bezierCurveTo(340, y + 4, 680, y - 4, 1024, y);
     ctx.stroke();
   }
 
@@ -225,23 +249,28 @@ function createSideStrataTexture() {
   return texture;
 }
 
-// Procedural Canvas Texture for Top Epidermis Skin with Micro-Pores
+// Procedural Canvas Texture for Top Epidermis Skin with Micro-Pores and Natural Tone
 function createTopSkinTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 1024;
+  canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#e8b29c';
-  ctx.fillRect(0, 0, 512, 512);
+  // Subtle radial gradient simulating natural skin subsurface scattering
+  const grad = ctx.createRadialGradient(512, 512, 100, 512, 512, 700);
+  grad.addColorStop(0, '#ebd0c2');
+  grad.addColorStop(0.6, '#e2bba8');
+  grad.addColorStop(1, '#d8a691');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1024, 1024);
 
-  // Micro-dermal pore noise
-  for (let i = 0; i < 1500; i++) {
-    const x = Math.random() * 512;
-    const y = Math.random() * 512;
-    ctx.fillStyle = Math.random() > 0.5 ? 'rgba(215, 150, 130, 0.35)' : 'rgba(255, 220, 210, 0.25)';
+  // Natural micro-pores
+  for (let i = 0; i < 4000; i++) {
+    const x = Math.random() * 1024;
+    const y = Math.random() * 1024;
+    ctx.fillStyle = Math.random() > 0.5 ? 'rgba(190, 120, 100, 0.3)' : 'rgba(255, 235, 225, 0.35)';
     ctx.beginPath();
-    ctx.arc(x, y, 0.8 + Math.random() * 1.2, 0, Math.PI * 2);
+    ctx.arc(x, y, 0.7 + Math.random() * 1.4, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -259,7 +288,7 @@ const CLINICAL_PROBLEMS = [
     toolId: 'needle',
     toolName: '0.18mm Solid Needle',
     description: 'Hyper-contracted motor endplate nodule in deep skeletal muscle.',
-    actionHint: 'Click needle on tray, then drag mouse down on skin to pierce 12mm knot',
+    actionHint: 'Pick up needle from tray, then drag mouse down on skin to pierce 12mm knot',
     skinPhysicsText: 'Skin dimples downward on contact, then pops through painless dermal barrier',
     colorHex: 0xff1e46,
     reliefTitle: 'Deep Motor Spasm Dissolved (De-Qi)',
@@ -274,7 +303,7 @@ const CLINICAL_PROBLEMS = [
     toolId: 'cup',
     toolName: 'Glass Fire Cupping',
     description: 'Tangled fibrotic fascial matrix restricting micro-circulation.',
-    actionHint: 'Click cup on tray, place on skin, then drag mouse up to draw vacuum suction',
+    actionHint: 'Pick up cup from tray, place on skin, then drag mouse up to draw vacuum suction',
     skinPhysicsText: 'Skin bulges and rises upward inside glass dome, decompressing stuck fascia',
     colorHex: 0xc084fc,
     reliefTitle: 'Myofascial Adhesion Unlocked',
@@ -289,7 +318,7 @@ const CLINICAL_PROBLEMS = [
     toolId: 'moxa',
     toolName: 'Pure Herbal Moxa Roll',
     description: 'Cold micro-vascular constriction and stagnant lymphatic circulation.',
-    actionHint: 'Click moxa on tray, hover smoldering roll above skin to radiate 43°C heat',
+    actionHint: 'Pick up moxa from tray, hover smoldering roll above skin to radiate 43°C heat',
     skinPhysicsText: 'Expanding thermal heat ring radiates across skin, dilating micro-capillaries',
     colorHex: 0x38bdf8,
     reliefTitle: 'Cold Stagnation Vaporized',
@@ -316,9 +345,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // 3D Meshes
   const skinMeshRef = useRef(null);
   const originalSkinPositionsRef = useRef(null);
-  const knotMeshRef = useRef(null);
-  const adhesionMeshRef = useRef(null);
-  const stasisMeshRef = useRef(null);
+  const knotGlowRef = useRef(null);
+  const adhesionGlowRef = useRef(null);
+  const stasisGlowRef = useRef(null);
   const thermalRingRef = useRef(null);
 
   // Active in-hand 3D tools
@@ -341,7 +370,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
   const currentProb = CLINICAL_PROBLEMS[selectedProblemIdx];
 
-  // Helper to apply skin vertex deformation and tool height
+  // Apply skin vertex deformation and tool displacement
   const applySkinPhysicsAndToolHeight = useCallback((val) => {
     const skinMesh = skinMeshRef.current;
     const origPos = originalSkinPositionsRef.current;
@@ -350,7 +379,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const posAttr = skinMesh.geometry.attributes.position;
     const posArr = posAttr.array;
 
-    // Contact center in skin local coordinates: (0, 0.85)
     const targetLocalX = 0;
     const targetLocalZ = 0.85;
 
@@ -360,7 +388,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         activeNeedleRef.current.position.y = 1.25 - fraction * 1.29;
       }
 
-      // Skin Elastic Dimpling (presses down before pop)
+      // Skin Elastic Dimpling (presses down elastically before popping through)
       const dimpleAmount = val < 2.5 ? (val / 2.5) * 0.08 : Math.max(0, 0.08 - (val - 2.5) * 0.03);
 
       for (let i = 0; i < posArr.length; i += 3) {
@@ -383,7 +411,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         activeCupRef.current.position.y = 1.35 - fraction * 0.55;
       }
 
-      const bulgeHeight = fraction * 0.16; // Bulges upward inside glass dome
+      const bulgeHeight = fraction * 0.16;
       for (let i = 0; i < posArr.length; i += 3) {
         const vx = origPos[i];
         const vz = origPos[i + 2];
@@ -416,10 +444,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setIsSnapping(true);
     playAcuSound('snap', isMuted);
 
-    // Hide active pathology mesh
-    if (knotMeshRef.current) knotMeshRef.current.visible = false;
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = false;
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = false;
+    // Hide organic pathology glows
+    if (knotGlowRef.current) knotGlowRef.current.visible = false;
+    if (adhesionGlowRef.current) adhesionGlowRef.current.visible = false;
+    if (stasisGlowRef.current) stasisGlowRef.current.visible = false;
 
     // Spawn 5,000 Thanos 3D Particles at target location
     const pData = particlesRef.current;
@@ -452,7 +480,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setInteractiveDepth(val);
     applySkinPhysicsAndToolHeight(val);
 
-    // Audio cue on initial breach or suction
     if (activeTool === 'needle' && val >= 1.5 && val < 2.5) {
       playAcuSound('breach', isMuted);
     } else if (activeTool === 'cup' && val >= 3.0 && val < 4.0) {
@@ -473,9 +500,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setInteractiveDepth(0);
     applySkinPhysicsAndToolHeight(0);
 
-    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIdx === 0);
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIdx === 1);
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIdx === 2);
+    if (knotGlowRef.current) knotGlowRef.current.visible = (selectedProblemIdx === 0);
+    if (adhesionGlowRef.current) adhesionGlowRef.current.visible = (selectedProblemIdx === 1);
+    if (stasisGlowRef.current) stasisGlowRef.current.visible = (selectedProblemIdx === 2);
 
     if (thermalRingRef.current) thermalRingRef.current.material.opacity = 0;
   }, [selectedProblemIdx, applySkinPhysicsAndToolHeight]);
@@ -497,16 +524,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const width = container.clientWidth || 900;
     const height = container.clientHeight || 560;
 
-    // 1. Scene & Camera
+    // 1. Scene with Warm Clinical Sanctuary Atmosphere
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x06080d);
+    scene.background = new THREE.Color(0x0c0f17); // Refined clinical deep slate
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
     camera.position.set(2.4, 2.6, 3.8);
     cameraRef.current = camera;
 
-    // 2. High-Performance WebGL Renderer
+    // 2. High-Performance WebGL Renderer with Filmic Tone Mapping
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -527,22 +554,38 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.target.set(-0.2, 0.05, 0.2);
     controlsRef.current = controls;
 
-    // 4. Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xfff7f2, 1.3);
+    // 4. Clinical Studio Lighting Setup
+    const ambientLight = new THREE.AmbientLight(0xfff5ea, 1.4);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(4, 6, 4);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    keyLight.position.set(4, 7, 4);
     keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.bias = -0.0001;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
+    const softFillLight = new THREE.DirectionalLight(0xfef08a, 0.8);
+    softFillLight.position.set(-3, 4, 3);
+    scene.add(softFillLight);
+
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.3);
     rimLight.position.set(-4, 3, -3);
     scene.add(rimLight);
 
-    const floorLight = new THREE.PointLight(0x10b981, 0.8, 8);
-    floorLight.position.set(0, -0.6, 0);
-    scene.add(floorLight);
+    // Clinical Table / Ground Plane with Soft Contact Shadows
+    const tableGeo = new THREE.PlaneGeometry(12, 12);
+    const tableMat = new THREE.MeshStandardMaterial({
+      color: 0x090c13,
+      roughness: 0.85,
+      metalness: 0.1
+    });
+    const table = new THREE.Mesh(tableGeo, tableMat);
+    table.rotation.x = -Math.PI / 2;
+    table.position.y = -0.85;
+    table.receiveShadow = true;
+    scene.add(table);
 
     // 5. PHOTOREALISTIC 3D ANATOMICAL TISSUE BLOCK
     const tissueGroup = new THREE.Group();
@@ -553,45 +596,41 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const blockHeight = 1.5;
     const blockDepth = 1.8;
 
-    // Textures:
-    // Front face: High-res photograph cross section showing real cells, fat globules, and striated muscle
     const textureLoader = new THREE.TextureLoader();
     const crossSectionTex = textureLoader.load(getAssetUrl('tissue_cross_section_clean.jpg'));
     crossSectionTex.colorSpace = THREE.SRGBColorSpace;
 
-    // Side & Back faces: Continuous multi-layer anatomical strata texture (Skin -> Adipose -> Striated Muscle)
     const sideStrataTex = createSideStrataTexture();
     sideStrataTex.colorSpace = THREE.SRGBColorSpace;
 
-    // Top face: Natural epidermis with micro-pores
     const topSkinTex = createTopSkinTexture();
     topSkinTex.colorSpace = THREE.SRGBColorSpace;
 
     const frontCutawayMat = new THREE.MeshStandardMaterial({
       map: crossSectionTex,
-      roughness: 0.42,
-      metalness: 0.05
+      roughness: 0.38,
+      metalness: 0.04
     });
 
     const sideStrataMat = new THREE.MeshStandardMaterial({
       map: sideStrataTex,
-      roughness: 0.45,
+      roughness: 0.42,
       metalness: 0.02
     });
 
     const topSkinBoxMat = new THREE.MeshStandardMaterial({
       map: topSkinTex,
-      roughness: 0.5,
+      roughness: 0.48,
       metalness: 0.02
     });
 
     const blockMaterials = [
-      sideStrataMat,   // +X (Right side - shows layers)
-      sideStrataMat,   // -X (Left side - shows layers)
-      topSkinBoxMat,   // +Y (Top skin)
+      sideStrataMat,   // +X (Right side - shows layered cells, fat pearls, muscle)
+      sideStrataMat,   // -X (Left side - shows layered cells, fat pearls, muscle)
+      topSkinBoxMat,   // +Y (Top epidermis)
       sideStrataMat,   // -Y (Bottom)
-      frontCutawayMat, // +Z (Front cutaway showing real photographic strata & knot)
-      sideStrataMat    // -Z (Back side - shows layers)
+      frontCutawayMat, // +Z (Front cutaway showing photographic cellular strata & knot)
+      sideStrataMat    // -Z (Back side)
     ];
 
     const tissueBlockGeo = new THREE.BoxGeometry(blockWidth, blockHeight, blockDepth);
@@ -605,7 +644,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     topSkinGeo.rotateX(-Math.PI / 2);
     const topSkinMat = new THREE.MeshStandardMaterial({
       map: topSkinTex,
-      roughness: 0.45,
+      roughness: 0.44,
       metalness: 0.02,
       side: THREE.DoubleSide
     });
@@ -618,7 +657,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const skinPosAttr = topSkinGeo.attributes.position;
     originalSkinPositionsRef.current = new Float32Array(skinPosAttr.array);
 
-    // Treatment Target Beacon Ring on Skin Surface
+    // Anatomical Meridian Point Ring on Skin Surface (BL-54 / GB-34 Trigger Point)
     const beacon = new THREE.Mesh(
       new THREE.RingGeometry(0.08, 0.12, 28),
       new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
@@ -627,9 +666,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     beacon.position.set(0, blockHeight / 2 + 0.01, blockDepth / 2 - 0.05);
     tissueGroup.add(beacon);
 
-    // Thermal Bloom Ring (When Moxa is active)
+    // Thermal Heat Bloom Ring (When Moxa is active)
     const thermalRing = new THREE.Mesh(
-      new THREE.RingGeometry(0.04, 0.38, 32),
+      new THREE.RingGeometry(0.04, 0.42, 32),
       new THREE.MeshBasicMaterial({ color: 0xff6b00, transparent: true, opacity: 0.0, side: THREE.DoubleSide })
     );
     thermalRing.rotation.x = -Math.PI / 2;
@@ -637,126 +676,152 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     tissueGroup.add(thermalRing);
     thermalRingRef.current = thermalRing;
 
-    // 6. 3D PATHOLOGIES ALIGNED WITH PHOTOREALISTIC TEXTURE
+    // 6. ORGANIC PATHOLOGY INTEGRATED INTO ANATOMY (No plastic toys!)
     const targetX = -0.65;
     const targetZ = 0.91;
 
-    // A: 3D Spastic Motor Knot (Deep Muscle Layer, 12mm deep)
-    const knotGroup = new THREE.Group();
-    knotGroup.position.set(targetX, -0.42, targetZ);
-    scene.add(knotGroup);
-    knotMeshRef.current = knotGroup;
+    // A: Spastic Motor Knot Glow Zone (Pulsating biological vascular flush on the actual muscle knot in the texture)
+    const knotGlowGroup = new THREE.Group();
+    knotGlowGroup.position.set(targetX, -0.42, targetZ + 0.01);
+    scene.add(knotGlowGroup);
+    knotGlowRef.current = knotGlowGroup;
 
-    const knotCore = new THREE.Mesh(
-      new THREE.DodecahedronGeometry(0.18, 2),
-      new THREE.MeshStandardMaterial({ color: 0xff1e46, emissive: 0xcc0033, emissiveIntensity: 1.6, roughness: 0.35 })
+    const knotGlowMesh = new THREE.Mesh(
+      new THREE.RingGeometry(0.02, 0.22, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff1e46, transparent: true, opacity: 0.7, side: THREE.DoubleSide })
     );
-    knotGroup.add(knotCore);
+    knotGlowGroup.add(knotGlowMesh);
 
-    const knotRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.25, 0.016, 12, 32),
-      new THREE.MeshBasicMaterial({ color: 0xff2b56, transparent: true, opacity: 0.85 })
-    );
-    knotRing.rotation.x = Math.PI / 2;
-    knotGroup.add(knotRing);
-
-    // B: 3D Fascial Adhesion (Subcutaneous Fascia, 6mm deep, y = 0.05)
+    // B: Fascial Adhesion Zone (Subcutaneous Fascia, 6mm deep, y = 0.05)
     const adhesionGroup = new THREE.Group();
-    adhesionGroup.position.set(targetX, 0.05, targetZ);
+    adhesionGroup.position.set(targetX, 0.05, targetZ + 0.01);
     scene.add(adhesionGroup);
-    adhesionMeshRef.current = adhesionGroup;
+    adhesionGlowRef.current = adhesionGroup;
     adhesionGroup.visible = false;
 
     const adhMesh = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(0.14, 0.038, 48, 8),
-      new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x7e22ce, emissiveIntensity: 1.4, roughness: 0.4 })
+      new THREE.RingGeometry(0.04, 0.24, 32),
+      new THREE.MeshBasicMaterial({ color: 0xc084fc, transparent: true, opacity: 0.75, side: THREE.DoubleSide })
     );
     adhesionGroup.add(adhMesh);
 
-    // C: 3D Cold Stasis (Near Skin Surface, 2mm deep, y = 0.68)
+    // C: Cold Damp Microvascular Stasis Zone (Superficial Dermis, 2mm deep, y = 0.68)
     const stasisGroup = new THREE.Group();
-    stasisGroup.position.set(targetX, 0.68, targetZ);
+    stasisGroup.position.set(targetX, 0.68, targetZ + 0.01);
     scene.add(stasisGroup);
-    stasisMeshRef.current = stasisGroup;
+    stasisGlowRef.current = stasisGroup;
     stasisGroup.visible = false;
 
     const stasisMesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.3, 0.3, 0.02, 24),
-      new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 1.5, roughness: 0.3 })
+      new THREE.RingGeometry(0.03, 0.28, 32),
+      new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.75, side: THREE.DoubleSide })
     );
     stasisGroup.add(stasisMesh);
 
-    // 7. 3D STAINLESS STEEL PROCEDURE TRAY WITH CLICKABLE 3D TOOLS
+    // 7. REALISTIC 3D STAINLESS STEEL PROCEDURE TRAY WITH CLINICAL TOOLS
     const trayGroup = new THREE.Group();
     trayGroup.position.set(1.4, -0.22, 0.15);
     scene.add(trayGroup);
 
-    // Metallic Tray Base with Polished Rim
+    // Polished Surgical Stainless Steel Tray
     const trayBase = new THREE.Mesh(
-      new THREE.BoxGeometry(1.05, 0.06, 1.85),
-      new THREE.MeshStandardMaterial({ color: 0xdde3ed, roughness: 0.18, metalness: 0.94 })
+      new THREE.BoxGeometry(1.08, 0.06, 1.88),
+      new THREE.MeshStandardMaterial({ color: 0xccd6e6, roughness: 0.14, metalness: 0.95 })
     );
     trayBase.castShadow = true;
     trayBase.receiveShadow = true;
     trayGroup.add(trayBase);
 
-    // Raised Tray Rim (Edges)
-    const rimMat = new THREE.MeshStandardMaterial({ color: 0xcfd6e4, roughness: 0.15, metalness: 0.96 });
-    const rimTop = new THREE.Mesh(new THREE.BoxGeometry(1.07, 0.08, 0.04), rimMat);
-    rimTop.position.set(0, 0.04, -0.92);
+    // Tray Rim
+    const rimMat = new THREE.MeshStandardMaterial({ color: 0xb9c6db, roughness: 0.12, metalness: 0.98 });
+    const rimTop = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.08, 0.04), rimMat);
+    rimTop.position.set(0, 0.04, -0.94);
     trayGroup.add(rimTop);
-    const rimBottom = new THREE.Mesh(new THREE.BoxGeometry(1.07, 0.08, 0.04), rimMat);
-    rimBottom.position.set(0, 0.04, 0.92);
+    const rimBottom = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.08, 0.04), rimMat);
+    rimBottom.position.set(0, 0.04, 0.94);
     trayGroup.add(rimBottom);
-    const rimLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.85), rimMat);
-    rimLeft.position.set(-0.52, 0.04, 0);
+    const rimLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.88), rimMat);
+    rimLeft.position.set(-0.54, 0.04, 0);
     trayGroup.add(rimLeft);
-    const rimRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.85), rimMat);
-    rimRight.position.set(0.52, 0.04, 0);
+    const rimRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.88), rimMat);
+    rimRight.position.set(0.54, 0.04, 0);
     trayGroup.add(rimRight);
 
-    // Sterile Blue Procedure Paper Liner
+    // Sterile Procedure Drape Paper Liner
     const liner = new THREE.Mesh(
-      new THREE.BoxGeometry(0.96, 0.01, 1.76),
-      new THREE.MeshStandardMaterial({ color: 0xf0fdf4, roughness: 0.85 })
+      new THREE.BoxGeometry(0.98, 0.01, 1.78),
+      new THREE.MeshStandardMaterial({ color: 0xf0fdf4, roughness: 0.88 })
     );
     liner.position.y = 0.035;
     trayGroup.add(liner);
 
-    // 3D TOOL 1 ON TRAY: 0.18mm Solid Needle in Sterile Pack
+    // BUILD AUTHENTIC 3D NEEDLE FUNCTION
+    const buildAuthenticNeedle = (scale = 1.0) => {
+      const g = new THREE.Group();
+      
+      // 1. Wound Copper Spiral Handle (Tube along spiral curve)
+      const spiralCurve = new SpiralHandleCurve(0.022 * scale, 0.28 * scale, 22);
+      const spiralGeo = new THREE.TubeGeometry(spiralCurve, 96, 0.0035 * scale, 8, false);
+      const copperMat = new THREE.MeshStandardMaterial({
+        color: 0xc27a3c,
+        metalness: 0.92,
+        roughness: 0.22
+      });
+      const spiralMesh = new THREE.Mesh(spiralGeo, copperMat);
+      spiralMesh.position.y = 0.38 * scale;
+      g.add(spiralMesh);
+
+      // Handle Core Pin
+      const corePin = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.017 * scale, 0.017 * scale, 0.29 * scale, 16),
+        copperMat
+      );
+      corePin.position.y = 0.38 * scale;
+      g.add(corePin);
+
+      // Top Loop Finial (Authentic traditional loop)
+      const loopFinial = new THREE.Mesh(
+        new THREE.TorusGeometry(0.016 * scale, 0.0035 * scale, 8, 20),
+        copperMat
+      );
+      loopFinial.position.y = 0.53 * scale;
+      g.add(loopFinial);
+
+      // 2. Surgical Stainless Steel Needle Shaft (0.18mm fine gauge)
+      const steelMat = new THREE.MeshStandardMaterial({
+        color: 0xf8fafc,
+        metalness: 0.99,
+        roughness: 0.06
+      });
+      const shaft = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.006 * scale, 0.0015 * scale, 0.76 * scale, 16),
+        steelMat
+      );
+      shaft.position.y = -0.08 * scale;
+      g.add(shaft);
+
+      return g;
+    };
+
+    // 3D TOOL 1 ON TRAY: Authentic Needle in Guide Tube
     const tNeedleGroup = new THREE.Group();
     tNeedleGroup.position.set(-0.25, 0.08, -0.45);
     tNeedleGroup.userData = { toolId: 'needle', name: '0.18mm Needle' };
 
-    // Clear acrylic guide tube
+    // Transparent guide tube
     const tTube = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.028, 0.028, 0.62, 16),
-      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, opacity: 0.35, transparent: true, roughness: 0.1 })
+      new THREE.CylinderGeometry(0.03, 0.03, 0.65, 16),
+      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.92, opacity: 0.4, transparent: true, roughness: 0.08 })
     );
     tTube.rotation.x = Math.PI / 2;
     tNeedleGroup.add(tTube);
 
-    // Coiled Copper Handle
-    const tHandle = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.024, 0.024, 0.22, 16),
-      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
-    );
-    tHandle.rotation.x = Math.PI / 2;
-    tHandle.position.z = -0.16;
-    tNeedleGroup.add(tHandle);
+    const trayNeedleModel = buildAuthenticNeedle(0.7);
+    trayNeedleModel.rotation.x = Math.PI / 2;
+    tNeedleGroup.add(trayNeedleModel);
 
-    // Surgical Stainless Steel Shaft (0.18mm)
-    const tShaft = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.008, 0.003, 0.44, 12),
-      new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
-    );
-    tShaft.rotation.x = Math.PI / 2;
-    tShaft.position.z = 0.14;
-    tNeedleGroup.add(tShaft);
-
-    // Click target hit-box
     const tNeedleHit = new THREE.Mesh(
-      new THREE.BoxGeometry(0.2, 0.15, 0.75),
+      new THREE.BoxGeometry(0.24, 0.16, 0.75),
       new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
     );
     tNeedleGroup.add(tNeedleHit);
@@ -764,29 +829,60 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     trayGroup.add(tNeedleGroup);
     trayNeedleRef.current = tNeedleGroup;
 
-    // 3D TOOL 2 ON TRAY: Glass Fire Cupping Cup
+    // BUILD AUTHENTIC GLASS FIRE CUP FUNCTION
+    const buildGlassCup = (scale = 1.0) => {
+      const g = new THREE.Group();
+      
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        transmission: 0.96,
+        opacity: 1.0,
+        transparent: true,
+        roughness: 0.04,
+        ior: 1.52,
+        thickness: 0.12 * scale,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.04
+      });
+
+      // Bell Dome
+      const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(0.26 * scale, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.68),
+        glassMat
+      );
+      dome.rotation.x = Math.PI;
+      g.add(dome);
+
+      // Thick Rolled Glass Lip
+      const lip = new THREE.Mesh(
+        new THREE.TorusGeometry(0.25 * scale, 0.026 * scale, 16, 32),
+        glassMat
+      );
+      lip.rotation.x = Math.PI / 2;
+      lip.position.y = -0.08 * scale;
+      g.add(lip);
+
+      // Flickering Suction Fire Ember Inside
+      const flameMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(0.06 * scale, 16, 16),
+        new THREE.MeshBasicMaterial({ color: 0xff6a00, transparent: true, opacity: 0.75 })
+      );
+      flameMesh.position.y = 0.08 * scale;
+      g.add(flameMesh);
+
+      return g;
+    };
+
+    // 3D TOOL 2 ON TRAY: Thick Blown Glass Fire Cup
     const tCupGroup = new THREE.Group();
     tCupGroup.position.set(-0.1, 0.16, 0.35);
     tCupGroup.userData = { toolId: 'cup', name: 'Glass Fire Cup' };
 
-    const tcDome = new THREE.Mesh(
-      new THREE.SphereGeometry(0.18, 28, 18, 0, Math.PI * 2, 0, Math.PI * 0.68),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.55, transparent: true, roughness: 0.05, thickness: 0.06 })
-    );
-    tcDome.rotation.x = Math.PI;
-    tCupGroup.add(tcDome);
-
-    // Thick rolled rim
-    const tcRim = new THREE.Mesh(
-      new THREE.TorusGeometry(0.175, 0.02, 16, 32),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.9, opacity: 0.65, transparent: true, roughness: 0.05 })
-    );
-    tcRim.rotation.x = Math.PI / 2;
-    tcRim.position.y = -0.06;
-    tCupGroup.add(tcRim);
+    const trayCupModel = buildGlassCup(0.7);
+    tCupGroup.add(trayCupModel);
 
     const tCupHit = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.24, 0.24, 0.35, 16),
+      new THREE.CylinderGeometry(0.26, 0.26, 0.35, 16),
       new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
     );
     tCupGroup.add(tCupHit);
@@ -794,38 +890,47 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     trayGroup.add(tCupGroup);
     trayCupRef.current = tCupGroup;
 
-    // 3D TOOL 3 ON TRAY: Smoldering Moxa Cigar Roll
+    // BUILD AUTHENTIC MOXA ROLL FUNCTION
+    const buildMoxaRoll = (scale = 1.0) => {
+      const g = new THREE.Group();
+
+      // Washi Mulberry Paper Wrap
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.065 * scale, 0.065 * scale, 0.58 * scale, 24),
+        new THREE.MeshStandardMaterial({ color: 0x47382d, roughness: 0.88 })
+      );
+      g.add(body);
+
+      // Imperial Gold Seal Band
+      const band = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.067 * scale, 0.067 * scale, 0.07 * scale, 24),
+        new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.88, roughness: 0.25 })
+      );
+      band.position.y = 0.08 * scale;
+      g.add(band);
+
+      // Glowing Ember Ash Tip
+      const emberTip = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.064 * scale, 0.064 * scale, 0.05 * scale, 24),
+        new THREE.MeshStandardMaterial({ color: 0xff3b00, emissive: 0xff4500, emissiveIntensity: 2.5 })
+      );
+      emberTip.position.y = -0.3 * scale;
+      g.add(emberTip);
+
+      return g;
+    };
+
+    // 3D TOOL 3 ON TRAY: Smoldering Moxa Roll
     const tMoxaGroup = new THREE.Group();
     tMoxaGroup.position.set(0.18, 0.09, -0.3);
     tMoxaGroup.userData = { toolId: 'moxa', name: 'Herbal Moxa' };
 
-    const tmBody = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.058, 0.058, 0.52, 18),
-      new THREE.MeshStandardMaterial({ color: 0x44352a, roughness: 0.88 })
-    );
-    tmBody.rotation.x = Math.PI / 2;
-    tMoxaGroup.add(tmBody);
-
-    // Gold band on wrapper
-    const tmBand = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.06, 0.06, 0.06, 18),
-      new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.8, roughness: 0.2 })
-    );
-    tmBand.rotation.x = Math.PI / 2;
-    tmBand.position.z = -0.12;
-    tMoxaGroup.add(tmBand);
-
-    // Smoldering ember coal tip
-    const tmTip = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.057, 0.057, 0.04, 18),
-      new THREE.MeshStandardMaterial({ color: 0xff3b10, emissive: 0xff4500, emissiveIntensity: 1.8 })
-    );
-    tmTip.rotation.x = Math.PI / 2;
-    tmTip.position.z = 0.28;
-    tMoxaGroup.add(tmTip);
+    const trayMoxaModel = buildMoxaRoll(0.7);
+    trayMoxaModel.rotation.x = Math.PI / 2;
+    tMoxaGroup.add(trayMoxaModel);
 
     const tMoxaHit = new THREE.Mesh(
-      new THREE.BoxGeometry(0.2, 0.15, 0.65),
+      new THREE.BoxGeometry(0.22, 0.16, 0.65),
       new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
     );
     tMoxaGroup.add(tMoxaHit);
@@ -833,68 +938,26 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     trayGroup.add(tMoxaGroup);
     trayMoxaRef.current = tMoxaGroup;
 
-    // 8. ACTIVE IN-ACTION 3D EQUIPMENT (Over tissue block target)
+    // 8. ACTIVE IN-HAND 3D TOOLS (Over tissue target beacon)
     // Active Needle
-    const activeNeedle = new THREE.Group();
+    const activeNeedle = buildAuthenticNeedle(1.0);
     activeNeedle.position.set(targetX, 1.25, targetZ);
     scene.add(activeNeedle);
     activeNeedleRef.current = activeNeedle;
 
-    const anHandle = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.02, 0.02, 0.28, 16),
-      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
-    );
-    anHandle.position.y = 0.38;
-    activeNeedle.add(anHandle);
-
-    const anShaft = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.007, 0.002, 0.72, 12),
-      new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
-    );
-    anShaft.position.y = -0.04;
-    activeNeedle.add(anShaft);
-
     // Active Glass Fire Cup
-    const activeCup = new THREE.Group();
+    const activeCup = buildGlassCup(1.0);
     activeCup.position.set(targetX, 1.35, targetZ);
     scene.add(activeCup);
     activeCupRef.current = activeCup;
     activeCup.visible = false;
 
-    const acDome = new THREE.Mesh(
-      new THREE.SphereGeometry(0.26, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.68),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.55, transparent: true, roughness: 0.05, thickness: 0.06 })
-    );
-    acDome.rotation.x = Math.PI;
-    activeCup.add(acDome);
-
-    const acRim = new THREE.Mesh(
-      new THREE.TorusGeometry(0.25, 0.025, 16, 32),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.9, opacity: 0.65, transparent: true, roughness: 0.05 })
-    );
-    acRim.rotation.x = Math.PI / 2;
-    acRim.position.y = -0.08;
-    activeCup.add(acRim);
-
     // Active Moxa Cigar
-    const activeMoxa = new THREE.Group();
+    const activeMoxa = buildMoxaRoll(1.0);
     activeMoxa.position.set(targetX, 1.35, targetZ);
     scene.add(activeMoxa);
     activeMoxaRef.current = activeMoxa;
     activeMoxa.visible = false;
-
-    const amBody = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.07, 0.07, 0.55, 20),
-      new THREE.MeshStandardMaterial({ color: 0x3d2e24, roughness: 0.9 })
-    );
-    activeMoxa.add(amBody);
-
-    const amTip = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.068, 0.068, 0.05, 20),
-      new THREE.MeshStandardMaterial({ color: 0xff3b10, emissive: 0xff4500, emissiveIntensity: 1.8 })
-    );
-    amTip.position.y = -0.28;
-    activeMoxa.add(amTip);
 
     // 9. 3D THANOS ASH & DUST PARTICLES
     const particleCount = 5000;
@@ -965,7 +1028,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       if (isDraggingRef.current) {
         const deltaY = e.clientY - dragStartYRef.current;
         const targetMax = currentProb.depthTarget;
-        // Dragging down increases depth / suction
         const sensitivity = activeTool === 'moxa' ? 0.35 : 0.08;
         const newVal = Math.max(0, Math.min(targetMax + 3, dragStartValRef.current + deltaY * sensitivity));
         handleInteractiveChange(newVal);
@@ -973,7 +1035,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     };
 
     const handlePointerDown = (e) => {
-      // Left click only
       if (e.button !== 0) return;
 
       const rect = renderer.domElement.getBoundingClientRect();
@@ -982,7 +1043,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
       raycaster.setFromCamera(mouse, camera);
 
-      // 1. Did user click a tool directly on the 3D tray?
+      // Did user click a tool directly on the 3D tray?
       const trayTargets = [
         trayNeedleRef.current,
         trayCupRef.current,
@@ -1002,21 +1063,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         }
       }
 
-      // 2. Did user click on the tissue block / beacon to drag tool?
+      // Did user click on the tissue block / beacon to drag tool?
       const tissueTargets = [tissueBlockMesh, topSkin];
       const tissueIntersects = raycaster.intersectObjects(tissueTargets, true);
       if (tissueIntersects.length > 0) {
         isDraggingRef.current = true;
         dragStartYRef.current = e.clientY;
         dragStartValRef.current = interactiveDepth;
-        controls.enabled = false; // Disable orbit while operating tool!
+        controls.enabled = false;
         renderer.domElement.style.cursor = 'ns-resize';
       }
     };
 
     const handlePointerUp = () => {
       isDraggingRef.current = false;
-      controls.enabled = true; // Re-enable orbit controls
+      controls.enabled = true;
       renderer.domElement.style.cursor = 'grab';
     };
 
@@ -1034,13 +1095,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       const delta = clock.getDelta();
       const time = clock.getElapsedTime();
 
-      // Knot breathing pulse
-      if (knotMeshRef.current && knotMeshRef.current.visible) {
-        const s = 1.0 + Math.sin(time * 5.0) * 0.08;
-        knotMeshRef.current.scale.set(s, s, s);
+      // Organic Pathology Breathing Glow (soft natural vascular pulse)
+      if (knotGlowRef.current && knotGlowRef.current.visible) {
+        const s = 1.0 + Math.sin(time * 4.0) * 0.12;
+        knotGlowRef.current.scale.set(s, s, s);
       }
-      if (adhesionMeshRef.current && adhesionMeshRef.current.visible) {
-        adhesionMeshRef.current.rotation.y += 0.015;
+      if (adhesionGlowRef.current && adhesionGlowRef.current.visible) {
+        const s = 1.0 + Math.sin(time * 3.5) * 0.1;
+        adhesionGlowRef.current.scale.set(s, s, s);
+      }
+      if (stasisGlowRef.current && stasisGlowRef.current.visible) {
+        const s = 1.0 + Math.sin(time * 3.0) * 0.08;
+        stasisGlowRef.current.scale.set(s, s, s);
       }
 
       // Tray Tool Subtle Hover Animation
@@ -1109,9 +1175,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
   // Update visible pathology inside 3D tissue block
   useEffect(() => {
-    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIdx === 0) && !isDisintegrated;
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIdx === 1) && !isDisintegrated;
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIdx === 2) && !isDisintegrated;
+    if (knotGlowRef.current) knotGlowRef.current.visible = (selectedProblemIdx === 0) && !isDisintegrated;
+    if (adhesionGlowRef.current) adhesionGlowRef.current.visible = (selectedProblemIdx === 1) && !isDisintegrated;
+    if (stasisGlowRef.current) stasisGlowRef.current.visible = (selectedProblemIdx === 2) && !isDisintegrated;
   }, [selectedProblemIdx, isDisintegrated]);
 
   // Update active tool visibility
@@ -1127,8 +1193,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       data-testid="tissue-depth-simulator"
       className={`transition-all duration-300 font-sans focus:outline-none select-none ${
         isFullscreen 
-          ? 'fixed inset-0 z-50 w-screen h-screen bg-[#06080d] p-4 flex flex-col justify-between overflow-hidden' 
-          : 'relative bg-[#06080d] text-neutral-100 rounded-3xl border border-neutral-800 p-4 sm:p-6 shadow-2xl space-y-4 overflow-hidden'
+          ? 'fixed inset-0 z-50 w-screen h-screen bg-[#0c0f17] p-4 flex flex-col justify-between overflow-hidden' 
+          : 'relative bg-[#0c0f17] text-neutral-100 rounded-3xl border border-neutral-800 p-4 sm:p-6 shadow-2xl space-y-4 overflow-hidden'
       }`}
     >
       {/* Top Header Bar */}
@@ -1147,7 +1213,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               </span>
             </div>
             <p className="text-xs text-neutral-400">
-              Pick tools directly from tray • Drag mouse on skin to treat • Thanos snap particle disintegration
+              Photorealistic copper spiral needle • Blown glass cup • Smoldering moxa • Thanos snap ash dispersion
             </p>
           </div>
         </div>
@@ -1188,7 +1254,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </div>
         )}
 
-        {/* HUD Top-Left: Tissue Pathology Indicator (Automatically aligned to current tool) */}
+        {/* HUD Top-Left: Tissue Pathology Indicator */}
         <div className="absolute top-4 left-4 z-20 flex flex-col space-y-2 pointer-events-auto">
           <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-3 rounded-2xl shadow-xl space-y-2 max-w-xs">
             <div className="flex items-center gap-2 border-b border-neutral-800 pb-1.5">
@@ -1226,7 +1292,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </div>
         </div>
 
-        {/* HUD Bottom-Center: 3D Steel Tray Tool Selector (Click directly or pick from 3D scene) */}
+        {/* HUD Bottom-Center: 3D Steel Tray Tool Selector */}
         <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-20 pointer-events-auto">
           <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-3 rounded-2xl shadow-2xl flex flex-col space-y-2 max-w-md">
             <div className="flex items-center justify-between text-xs border-b border-neutral-800 pb-1.5">
@@ -1337,7 +1403,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               <div className="p-2 rounded-xl bg-neutral-900/80 border border-neutral-800 text-[10px] text-neutral-300 flex items-start gap-1.5">
                 <MoveDown className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Mouse Drag:</strong> Click & drag down directly on the 3D tissue to plunge into the knot!
+                  <strong>Direct Drag:</strong> Click & drag down on the 3D skin to plunge needle into the knot!
                 </span>
               </div>
             </div>
@@ -1347,8 +1413,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         {/* 3D Strata Depth Indicators */}
         <div className="absolute left-4 bottom-4 z-10 pointer-events-none hidden md:block">
           <div className="bg-neutral-950/70 backdrop-blur-sm border border-neutral-800 p-2.5 rounded-xl text-[10px] space-y-1 text-neutral-400 font-mono">
-            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#e5ad92]" /> Epidermis & Dermis (0–3mm)</div>
-            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#fde047]" /> Subcutaneous Adipose (4–8mm)</div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#ebd0c2]" /> Epidermis & Dermis (0–3mm)</div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#facc15]" /> Subcutaneous Adipose (4–8mm)</div>
             <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#881337]" /> Deep Striated Muscle (9–15mm)</div>
           </div>
         </div>

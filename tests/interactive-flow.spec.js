@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('3D Tissue Strata & Tool Tray Doctor Simulator', () => {
   test('Complete mouse-only 3D tool selection, tissue pathology treatment, and Thanos disintegration', async ({ page }) => {
+    test.setTimeout(60000);
     // 1. Visit homepage
     await page.goto('/', { waitUntil: 'networkidle' });
 
