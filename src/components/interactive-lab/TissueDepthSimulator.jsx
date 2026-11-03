@@ -590,6 +590,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // 3D Groups
   const bodyGroupRef = useRef(null);
   const bodyModelMeshRef = useRef(null);
+  const bonesRef = useRef(null);
   const targetLimbAnglesRef = useRef({ arm: 0.0, leg: 0.0 });
   const limbPinGroupsRef = useRef({});
   const strataGroupRef = useRef(null);
@@ -807,6 +808,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           break;
         case 'hand':
           // Focused on raised arm & hand
+          targetLimbAnglesRef.current.arm = 1.0;
+          targetLimbAnglesRef.current.leg = 0.0;
           targetCamPos = new THREE.Vector3(-0.25, 0.45, 2.1);
           targetLookAt = new THREE.Vector3(-0.25, 0.35, 0.0);
           break;
@@ -816,6 +819,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           break;
         case 'leg':
           // Focused on slightly lifted leg
+          targetLimbAnglesRef.current.leg = 1.0;
+          targetLimbAnglesRef.current.arm = 0.0;
           targetCamPos = new THREE.Vector3(-0.12, -0.10, 2.2);
           targetLookAt = new THREE.Vector3(-0.12, -0.28, 0.0);
           break;
@@ -1066,132 +1071,210 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     gltfLoader.load(
       modelUrl,
       (gltf) => {
-        const model = gltf.scene;
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
-
-        model.position.x -= center.x;
-        model.position.y -= center.y;
-        model.position.z -= center.z;
-
-        const scale = targetHeight / (size.y || 1);
-        model.scale.set(scale, scale, scale);
-        model.position.y = 0.52;
-        model.rotation.y = Math.PI / 2; // Default facing
-        bodyModelMeshRef.current = model;
-
-        const limbUniforms = {
-          uArmAngle: { value: 0.0 },
-          uLegAngle: { value: 0.0 }
-        };
-        model.userData.limbUniforms = limbUniforms;
-
-        model.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-            const mat = new THREE.MeshStandardMaterial({
-              color: 0xdeb89e,
-              roughness: 0.38,
-              metalness: 0.06
-            });
-
-            mat.onBeforeCompile = (shader) => {
-              shader.uniforms.uArmAngle = limbUniforms.uArmAngle;
-              shader.uniforms.uLegAngle = limbUniforms.uLegAngle;
-
-              shader.vertexShader = `
-                uniform float uArmAngle;
-                uniform float uLegAngle;
-
-                mat3 rotateAroundAxis(vec3 axis, float angle) {
-                  axis = normalize(axis);
-                  float s = sin(angle);
-                  float c = cos(angle);
-                  float oc = 1.0 - c;
-                  return mat3(
-                    oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
-                    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
-                    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c
-                  );
-                }
-              ` + shader.vertexShader;
-
-              shader.vertexShader = shader.vertexShader.replace(
-                '#include <begin_vertex>',
-                `
-                #include <begin_vertex>
-
-                // LEFT ARM: local z > 0.06, y between -0.22 and 0.35
-                if (transformed.z > 0.06 && transformed.y < 0.35 && transformed.y > -0.22) {
-                  vec3 shoulderPivot = vec3(0.0, 0.31, 0.08);
-                  float armWeight = smoothstep(0.06, 0.09, transformed.z) * smoothstep(0.35, 0.30, transformed.y);
-                  if (armWeight > 0.0) {
-                    float angle = uArmAngle * armWeight;
-                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
-                    transformed = rot * (transformed - shoulderPivot) + shoulderPivot;
-                    #ifdef USE_NORMAL
-                    objectNormal = rot * objectNormal;
-                    #endif
-                  }
-                }
-
-                // RIGHT ARM: local z < -0.06, y between -0.22 and 0.35
-                if (transformed.z < -0.06 && transformed.y < 0.35 && transformed.y > -0.22) {
-                  vec3 shoulderPivot = vec3(0.0, 0.31, -0.08);
-                  float armWeight = smoothstep(-0.06, -0.09, transformed.z) * smoothstep(0.35, 0.30, transformed.y);
-                  if (armWeight > 0.0) {
-                    float angle = -uArmAngle * armWeight;
-                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
-                    transformed = rot * (transformed - shoulderPivot) + shoulderPivot;
-                    #ifdef USE_NORMAL
-                    objectNormal = rot * objectNormal;
-                    #endif
-                  }
-                }
-
-                // LEGS: local y < 0.05, abs(z) < 0.08 (slight realistic knee/hip lift)
-                if (transformed.y < 0.05 && transformed.z > 0.008 && transformed.z < 0.08) {
-                  vec3 hipPivot = vec3(0.0, -0.02, 0.04);
-                  float legWeight = smoothstep(0.05, -0.04, transformed.y);
-                  if (legWeight > 0.0) {
-                    float angle = uLegAngle * legWeight;
-                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
-                    transformed = rot * (transformed - hipPivot) + hipPivot;
-                    #ifdef USE_NORMAL
-                    objectNormal = rot * objectNormal;
-                    #endif
-                  }
-                }
-                `
-              );
-            };
-            child.material = mat;
-          }
+        let sourceMesh = null;
+        gltf.scene.traverse((c) => {
+          if (c.isMesh && !sourceMesh) sourceMesh = c;
         });
 
-        bodyGroup.add(model);
+        if (!sourceMesh) return;
+
+        const origGeo = sourceMesh.geometry;
+        const count = origGeo.attributes.position.count;
+        const positions = origGeo.attributes.position.array;
+
+        // Anatomical Skeleton Hierarchy
+        const rootBone = new THREE.Bone();
+        rootBone.name = 'root';
+        rootBone.position.set(0, 0, 0);
+
+        const spineBone = new THREE.Bone();
+        spineBone.name = 'spine';
+        spineBone.position.set(0, 0.20, 0);
+        rootBone.add(spineBone);
+
+        // Left Arm (Anatomical Pivot & Limb Hierarchy)
+        const leftUpperArm = new THREE.Bone();
+        leftUpperArm.name = 'leftUpperArm';
+        leftUpperArm.position.set(-0.026, 0.308, 0.082);
+        rootBone.add(leftUpperArm);
+
+        const leftForearm = new THREE.Bone();
+        leftForearm.name = 'leftForearm';
+        leftForearm.position.set(0.003, -0.206, 0.052);
+        leftUpperArm.add(leftForearm);
+
+        // Right Arm
+        const rightUpperArm = new THREE.Bone();
+        rightUpperArm.name = 'rightUpperArm';
+        rightUpperArm.position.set(-0.026, 0.308, -0.082);
+        rootBone.add(rightUpperArm);
+
+        const rightForearm = new THREE.Bone();
+        rightForearm.name = 'rightForearm';
+        rightForearm.position.set(0.003, -0.206, -0.052);
+        rightUpperArm.add(rightForearm);
+
+        // Left Leg (Anatomical Hip & Knee Joint Hierarchy)
+        const leftThigh = new THREE.Bone();
+        leftThigh.name = 'leftThigh';
+        leftThigh.position.set(-0.012, -0.043, 0.039);
+        rootBone.add(leftThigh);
+
+        const leftCalf = new THREE.Bone();
+        leftCalf.name = 'leftCalf';
+        leftCalf.position.set(-0.013, -0.205, 0.002);
+        leftThigh.add(leftCalf);
+
+        // Right Leg
+        const rightThigh = new THREE.Bone();
+        rightThigh.name = 'rightThigh';
+        rightThigh.position.set(-0.012, -0.043, -0.039);
+        rootBone.add(rightThigh);
+
+        const rightCalf = new THREE.Bone();
+        rightCalf.name = 'rightCalf';
+        rightCalf.position.set(-0.013, -0.205, -0.002);
+        rightThigh.add(rightCalf);
+
+        const bones = [
+          rootBone, spineBone,
+          leftUpperArm, leftForearm,
+          rightUpperArm, rightForearm,
+          leftThigh, leftCalf,
+          rightThigh, rightCalf
+        ];
+
+        function computeArmWeight(y, z, isLeft) {
+          const sign = isLeft ? 1 : -1;
+          const absZ = z * sign;
+          if (absZ <= 0) return 0;
+          if (y < -0.13 || y > 0.34) return 0;
+
+          // If hand or forearm (y < 0.22): 100% ARM! Zero spine weight!
+          if (y < 0.22) {
+            const minZ = 0.090 + Math.max(0, 0.15 - y) * 0.15;
+            if (absZ > minZ) return 1.0;
+            return 0;
+          }
+
+          // Only in shoulder socket (0.22 <= y <= 0.34): smooth organic blend
+          const shoulderMinZ = 0.074 + (0.34 - y) * 0.05;
+          if (absZ < shoulderMinZ) return 0;
+          if (absZ > shoulderMinZ + 0.015) return 1.0;
+          return (absZ - shoulderMinZ) / 0.015;
+        }
+
+        function computeLegWeight(y, z, isLeft) {
+          const sign = isLeft ? 1 : -1;
+          const absZ = z * sign;
+          if (absZ <= 0.008) return 0;
+          if (y > -0.05) return 0;
+
+          // If below upper thigh (y < -0.10): 100% LEG! Zero pelvis weight!
+          if (y < -0.10) {
+            return 1.0;
+          }
+
+          // Hip crease blend (y from -0.05 to -0.10)
+          const hipWeight = Math.min(1.0, (-0.05 - y) / 0.05);
+          let groinWeight = 1.0;
+          if (absZ < 0.018) {
+            groinWeight = Math.max(0.0, (absZ - 0.008) / 0.01);
+          }
+          return hipWeight * groinWeight;
+        }
+
+        const skinIndices = [];
+        const skinWeights = [];
+
+        for (let i = 0; i < count; i++) {
+          const x = positions[i * 3];
+          const y = positions[i * 3 + 1];
+          const z = positions[i * 3 + 2];
+
+          const wArmL = computeArmWeight(y, z, true);
+          const wArmR = computeArmWeight(y, z, false);
+          const wLegL = computeLegWeight(y, z, true);
+          const wLegR = computeLegWeight(y, z, false);
+
+          let b0 = 1, w0 = 1.0;
+          let b1 = 0, w1 = 0.0;
+
+          if (wArmL > 0) {
+            if (y < 0.10) {
+              b0 = 3; w0 = 1.0; // 100% forearm & hand!
+            } else {
+              b0 = 2; w0 = wArmL;
+              b1 = 1; w1 = 1.0 - wArmL;
+            }
+          } else if (wArmR > 0) {
+            if (y < 0.10) {
+              b0 = 5; w0 = 1.0;
+            } else {
+              b0 = 4; w0 = wArmR;
+              b1 = 1; w1 = 1.0 - wArmR;
+            }
+          } else if (wLegL > 0) {
+            if (y < -0.25) {
+              b0 = 7; w0 = 1.0; // 100% calf & foot!
+            } else {
+              b0 = 6; w0 = wLegL;
+              b1 = 0; w1 = 1.0 - wLegL;
+            }
+          } else if (wLegR > 0) {
+            if (y < -0.25) {
+              b0 = 9; w0 = 1.0;
+            } else {
+              b0 = 8; w0 = wLegR;
+              b1 = 0; w1 = 1.0 - wLegR;
+            }
+          } else if (y < 0.08) {
+            b0 = 0; w0 = 1.0; // Pelvis
+          }
+
+          skinIndices.push(b0, b1, 0, 0);
+          skinWeights.push(w0, w1, 0, 0);
+        }
+
+        const geo = origGeo.clone();
+        geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(skinIndices, 4));
+        geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(skinWeights, 4));
+
+        const skinMat = new THREE.MeshStandardMaterial({
+          color: 0xdeb89e,
+          roughness: 0.38,
+          metalness: 0.06
+        });
+
+        const skinnedMesh = new THREE.SkinnedMesh(geo, skinMat);
+        skinnedMesh.castShadow = true;
+        skinnedMesh.receiveShadow = true;
+
+        const skeleton = new THREE.Skeleton(bones);
+        skinnedMesh.add(rootBone);
+        skinnedMesh.bind(skeleton);
+
+        const targetHeight = 2.45;
+        const scale = targetHeight / 1.0;
+        skinnedMesh.scale.set(scale, scale, scale);
+        skinnedMesh.position.y = 0.52;
+        skinnedMesh.rotation.y = -Math.PI / 2; // Default facing front!
+
+        bodyModelMeshRef.current = skinnedMesh;
+        bonesRef.current = {
+          leftUpperArm, leftForearm,
+          rightUpperArm, rightForearm,
+          leftThigh, leftCalf,
+          rightThigh, rightCalf
+        };
+
+        bodyGroup.add(skinnedMesh);
       },
       undefined,
-      () => {
-        // Fallback procedural figure
-        const skinMat = new THREE.MeshStandardMaterial({ color: 0xdeb89e, roughness: 0.38, metalness: 0.06 });
-        const cranium = new THREE.Mesh(new THREE.SphereGeometry(0.24, 24, 24), skinMat);
-        cranium.position.y = 1.05;
-        bodyGroup.add(cranium);
-
-        const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.24, 0.85, 20), skinMat);
-        torso.position.y = 0.45;
-        bodyGroup.add(torso);
-
-        const legs = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 1.0, 20), skinMat);
-        legs.position.y = -0.35;
-        bodyGroup.add(legs);
-      }
+      (err) => console.error('Failed to load human_body.glb:', err)
     );
 
-    // Glowing Acupuncture Meridian Pathway (Du Mai Line)
+        // Glowing Acupuncture Meridian Pathway (Du Mai Line)
     const meridianMat = new THREE.LineBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.65 });
     const spineMeridian = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0.85 * scaleFactor, 0),
@@ -1275,6 +1358,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       interactiveAcupointMeshes.push(hitBox);
 
       bodyGroup.add(pinGroup);
+      limbPinGroupsRef.current[pt.id] = pinGroup;
+      pinGroup.userData.basePos = {
+        x: pinGroup.position.x,
+        y: pinGroup.position.y,
+        z: pinGroup.position.z
+      };
     });
     dotHalosRef.current = dotHalos;
 
@@ -1837,43 +1926,44 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         nerveMatRef.current.emissiveIntensity = 1.6 + Math.sin(elapsedTime * 8) * 0.6;
       }
 
-      // Kinematic Limb Swing & Lift Interpolation
-      if (bodyModelMeshRef.current && bodyModelMeshRef.current.userData.limbUniforms) {
-        const u = bodyModelMeshRef.current.userData.limbUniforms;
+      // Smooth Anatomical Limb Articulation (SkinnedMesh Bones)
+      if (bonesRef.current) {
         const targetArm = targetLimbAnglesRef.current.arm;
         const targetLeg = targetLimbAnglesRef.current.leg;
+        const b = bonesRef.current;
 
-        u.uArmAngle.value += (targetArm - u.uArmAngle.value) * 0.08;
-        u.uLegAngle.value += (targetLeg - u.uLegAngle.value) * 0.08;
+        // Smooth anatomical arm swing (shoulder flexion/abduction + elbow flexion presenting forearm)
+        b.leftUpperArm.rotation.z += (targetArm * 0.65 - b.leftUpperArm.rotation.z) * 0.08;
+        b.leftUpperArm.rotation.x += (-targetArm * 0.15 - b.leftUpperArm.rotation.x) * 0.08;
+        b.leftForearm.rotation.z += (targetArm * 0.35 - b.leftForearm.rotation.z) * 0.08;
 
-        // Synchronize arm and leg acupoint beacons with articulated limb
-        const armAngle = u.uArmAngle.value;
-        const legAngle = u.uLegAngle.value;
+        // Smooth anatomical leg lift (hip flexion ~22 deg + slight knee flexion ~16 deg)
+        b.leftThigh.rotation.z += (targetLeg * 0.40 - b.leftThigh.rotation.z) * 0.08;
+        b.leftCalf.rotation.z += (-targetLeg * 0.28 - b.leftCalf.rotation.z) * 0.08;
 
-        // Arm pins (LI-4, PC-6)
+        // Synchronize arm acupoint beacons (LI-4, PC-6)
+        const currentArmSwing = b.leftUpperArm.rotation.z;
         ['li4', 'pc6'].forEach(id => {
           const pin = limbPinGroupsRef.current[id];
           if (pin && pin.userData.basePos) {
-            const b = pin.userData.basePos;
-            const shoulderY = 0.52 + 0.31 * scaleFactor;
-            const dY = b.y - shoulderY;
-            const dZ = b.z;
-            // Swing forward along Z/Y
-            pin.position.y = shoulderY + dY * Math.cos(armAngle) - dZ * Math.sin(armAngle);
-            pin.position.z = dZ * Math.cos(armAngle) + dY * Math.sin(armAngle) * 0.7;
+            const bPos = pin.userData.basePos;
+            const shoulderY = 0.52 + 0.308 * scaleFactor;
+            const dY = bPos.y - shoulderY;
+            pin.position.y = shoulderY + dY * Math.cos(currentArmSwing * 0.6);
+            pin.position.z = bPos.z + Math.sin(currentArmSwing) * 0.20;
           }
         });
 
-        // Leg pins (ST-36)
-        ['st36'].forEach(id => {
+        // Synchronize leg acupoint beacons (ST-36, SP-6)
+        const currentLegLift = b.leftThigh.rotation.z;
+        ['st36', 'sp6'].forEach(id => {
           const pin = limbPinGroupsRef.current[id];
           if (pin && pin.userData.basePos) {
-            const b = pin.userData.basePos;
-            const hipY = 0.52 - 0.02 * scaleFactor;
-            const dY = b.y - hipY;
-            const dZ = b.z;
-            pin.position.y = hipY + dY * Math.cos(legAngle) - dZ * Math.sin(legAngle);
-            pin.position.z = dZ * Math.cos(legAngle) + dY * Math.sin(legAngle) * 0.5;
+            const bPos = pin.userData.basePos;
+            const hipY = 0.52 - 0.043 * scaleFactor;
+            const dY = bPos.y - hipY;
+            pin.position.y = hipY + dY * Math.cos(currentLegLift * 0.5);
+            pin.position.z = bPos.z + Math.sin(currentLegLift) * 0.15;
           }
         });
       }
