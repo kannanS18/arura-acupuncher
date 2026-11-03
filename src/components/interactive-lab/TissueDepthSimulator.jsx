@@ -101,7 +101,7 @@ export const CLINICAL_ACUPOINTS = [
     vessels: 'First Dorsal Metacarpal Artery',
     relief: 'Frontal Migraines, TMJ Jaw Clenching, Toothache, Systemic Analgesia',
     deqi: 'Pronounced heavy warm ache spreading through palm into forearm.',
-    colorHex: 0x10b981
+    colorHex: 0xe02868
   },
   {
     id: 'pc6',
@@ -215,7 +215,7 @@ export const CLINICAL_ACUPOINTS = [
     vessels: 'Frontal Arteriole Plexus',
     relief: 'Frontal Sinus Pressure, Forehead Tension, Orbital Fatigue',
     deqi: 'Light clearing vibration releasing ocular strain.',
-    colorHex: 0x10b981
+    colorHex: 0xe02868
   },
   {
     id: 'sp6',
@@ -534,7 +534,7 @@ function createCalloutBadgeCanvas(code, isSelected) {
   canvas.height = 64;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = isSelected ? '#10b981' : 'rgba(255, 255, 255, 0.95)';
+  ctx.fillStyle = isSelected ? '#e02868' : 'rgba(255, 255, 255, 0.95)';
   ctx.beginPath();
   if (ctx.roundRect) {
     ctx.roundRect(4, 4, 152, 56, 10);
@@ -982,7 +982,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x080b11);
+    scene.background = new THREE.Color(0x09090b);
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
@@ -1055,7 +1055,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const ringLed = new THREE.Mesh(
       new THREE.RingGeometry(0.82, 0.88, 36),
-      new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide })
     );
     ringLed.rotation.x = -Math.PI / 2;
     ringLed.position.y = -0.665;
@@ -1118,7 +1118,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     );
 
     // Glowing Acupuncture Meridian Pathway (Du Mai Line)
-    const meridianMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.65 });
+    const meridianMat = new THREE.LineBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.65 });
     const spineMeridian = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0.85 * scaleFactor, 0),
       new THREE.Vector3(0, 0.65 * scaleFactor, -0.06 * scaleFactor),
@@ -1161,7 +1161,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       // Active Selection Ring
       const selRing = new THREE.Mesh(
         new THREE.RingGeometry(0.012, 0.017, 16),
-        new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.95, side: THREE.DoubleSide })
+        new THREE.MeshBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.95, side: THREE.DoubleSide })
       );
       selRing.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
       selRing.visible = (idx === selectedAcupointIdx);
@@ -1308,7 +1308,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     // Target Acupoint Marker Ring on Strata Skin
     const beacon = new THREE.Mesh(
       new THREE.RingGeometry(0.04, 0.07, 32),
-      new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide })
     );
     beacon.rotation.x = -Math.PI / 2;
     beacon.position.set(0, 0.383, 0.20);
@@ -1802,7 +1802,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* ===================================================================== */}
 
       {/* Top Header Bar: Regional Zoom & Anatomical Presets (z-40) */}
-      <div className="absolute top-3 inset-x-3 z-40 flex items-center justify-between pointer-events-none gap-2">
+      <div className="absolute top-2 inset-x-2.5 z-40 flex items-center justify-between pointer-events-none gap-2">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 p-2 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-xl pointer-events-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -1816,7 +1816,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('full')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'full'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1828,7 +1828,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('dual')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'dual'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1840,7 +1840,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('neck')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'neck'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1852,7 +1852,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('hand')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'hand'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1864,7 +1864,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('crown')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'crown'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1876,7 +1876,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onClick={() => navigateCameraToRegion('leg')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeRegion === 'leg'
-                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  ? 'bg-[#e02868] text-white shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
@@ -1895,7 +1895,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-xl"
             title="Turn Body 180° (Anterior Front vs Posterior Back)"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
+            <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
             <span>{bodyFacing === 'front' ? 'Front (Anterior)' : 'Back (Posterior)'}</span>
           </button>
 
@@ -1921,7 +1921,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             className="p-2.5 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-neutral-300 hover:text-white transition shadow-xl"
             title={isMuted ? 'Unmute' : 'Mute Sound'}
           >
-            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-[#e02868]" />}
           </button>
           <button
             type="button"
@@ -1935,20 +1935,20 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Left Panel: Acupoints & Strata Pathology (w-64) */}
-      <div className="absolute top-14 left-3 z-20 flex flex-col space-y-2 pointer-events-auto w-60 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="absolute top-11 left-2.5 z-20 flex flex-col space-y-1.5 pointer-events-auto w-56 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Acupoints Grid */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-2">
+        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-lg space-y-1.5">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-              <User className="w-3 h-3 text-emerald-400" />
+              <User className="w-3 h-3 text-[#e02868]" />
               <span>3D Body Acupoints</span>
             </span>
-            <span className="text-[9px] text-emerald-400 font-mono">
+            <span className="text-[9px] text-[#e02868] font-mono">
               Click to Zoom
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CLINICAL_ACUPOINTS.map((pt, idx) => {
               const isSelected = selectedAcupointIdx === idx;
               return (
@@ -1958,7 +1958,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   onClick={() => handleSelectAcupoint(idx)}
                   className={`p-2 rounded-xl text-left border transition ${
                     isSelected
-                      ? 'bg-emerald-500 text-neutral-950 border-emerald-400 font-black shadow-md'
+                      ? 'bg-[#e02868] text-white border-[#e02868] font-black shadow-md'
                       : 'bg-neutral-900/80 text-neutral-300 border-neutral-800 hover:border-neutral-700 hover:text-white'
                   }`}
                 >
@@ -1971,7 +1971,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         </div>
 
         {/* Pathology Selector */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-2">
+        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-lg space-y-1.5">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
               <Layers className="w-3 h-3 text-amber-400" />
@@ -2000,7 +2000,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   }}
                   className={`flex items-center justify-between p-2 rounded-xl text-left border transition ${
                     isSelected
-                      ? 'bg-emerald-500 text-neutral-950 border-emerald-400 font-black shadow-md'
+                      ? 'bg-[#e02868] text-white border-[#e02868] font-black shadow-md'
                       : 'bg-neutral-900/80 text-neutral-300 border-neutral-800 hover:border-neutral-700 hover:text-white'
                   }`}
                 >
@@ -2019,16 +2019,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Bottom Clinical Anatomy Intelligence Card */}
-      <div className="absolute bottom-3 left-3 md:left-[260px] z-20 pointer-events-auto max-w-lg hidden sm:block">
-        <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-2xl space-y-2">
+      <div className="absolute bottom-2 left-2.5 md:left-[236px] z-20 pointer-events-auto max-w-md hidden sm:block">
+        <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-xl space-y-1.5">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#10b981' }} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
               <h4 className="text-xs font-black text-white">
                 {activeAcupoint.fullName} • {activeAcupoint.translation} ({activeAcupoint.hanzi})
               </h4>
             </div>
-            <span className="text-[10px] font-mono text-emerald-400 font-bold">
+            <span className="text-[10px] font-mono text-[#e02868] font-bold">
               Target: {activeAcupoint.depthTarget}mm ({activeAcupoint.depthCun})
             </span>
           </div>
@@ -2056,22 +2056,22 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </div>
 
           <div className="text-[11px] text-neutral-300 flex items-center gap-1.5 pt-1 border-t border-neutral-800">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0" />
             <span className="truncate"><strong>Clinical Relief:</strong> {activeAcupoint.relief}</span>
           </div>
         </div>
       </div>
 
       {/* Right Panel: Penetration Control & Tool Selection (w-72) */}
-      <div className="absolute top-14 right-3 z-20 flex flex-col space-y-3 pointer-events-auto w-72 max-h-[calc(100%-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="absolute top-11 right-2.5 z-20 flex flex-col space-y-2 pointer-events-auto w-64 max-h-[calc(100%-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Needle Penetration & Hold-to-Plunge Card */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-4">
+        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-3 rounded-xl shadow-lg space-y-2.5">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
-              <ArrowDown className="w-3.5 h-3.5 text-emerald-400" />
+              <ArrowDown className="w-3.5 h-3.5 text-[#e02868]" />
               <span>Needle Penetration</span>
             </span>
-            <span className="text-xs font-mono font-bold text-emerald-400">
+            <span className="text-xs font-mono font-bold text-[#e02868]">
               {interactiveDepth.toFixed(1)} mm
             </span>
           </div>
@@ -2080,7 +2080,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div className="p-2 rounded-xl bg-neutral-900/90 border border-neutral-800 text-[10px] space-y-0.5">
             <div className="text-neutral-400 flex items-center justify-between font-mono">
               <span>Current Layer:</span>
-              <span className="text-emerald-400 font-bold">{Math.round((interactiveDepth / currentProb.depthTarget) * 100)}%</span>
+              <span className="text-[#e02868] font-bold">{Math.round((interactiveDepth / currentProb.depthTarget) * 100)}%</span>
             </div>
             <div className="text-amber-300 font-bold truncate">
               {getActiveLayerName(interactiveDepth)}
@@ -2103,7 +2103,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 }
                 handleInteractiveChange(parseFloat(e.target.value));
               }}
-              className="w-full h-2 rounded-lg bg-neutral-800 accent-emerald-400 cursor-pointer disabled:opacity-50"
+              className="w-full h-2 rounded-lg bg-neutral-800 accent-[#e02868] cursor-pointer disabled:opacity-50"
             />
             <div className="flex items-center justify-between text-[10px] text-neutral-400 font-mono">
               <span>Surface (0mm)</span>
@@ -2122,13 +2122,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               onTouchStart={startHoldPlunge}
               onTouchEnd={stopHoldPlunge}
               disabled={isSnapping}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs shadow-lg shadow-emerald-950/60 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#e02868] via-[#c21e54] to-[#e02868] hover:from-[#c21e54] hover:to-[#e02868] text-white font-black text-xs shadow-lg shadow-[#e02868]/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
             >
               <ArrowDown className="w-4 h-4 animate-bounce" />
               <span>{isSnapping ? 'Disintegrating in 3D...' : `Drop Needle to ${currentProb.depthTarget}mm Knot`}</span>
             </button>
             <div className="text-[10px] text-neutral-400 text-center flex items-center justify-center gap-1">
-              <Disc className="w-3 h-3 text-emerald-400" />
+              <Disc className="w-3 h-3 text-[#e02868]" />
               <span>Click once or press & hold to plunge</span>
             </div>
           </div>
@@ -2161,7 +2161,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 if (activeRegion === 'full') navigateCameraToRegion('dual');
                 handleInteractiveChange(12.0);
               }}
-              className="p-2 rounded-xl bg-emerald-500/20 text-emerald-300 font-mono text-center border border-emerald-500/40 font-bold transition"
+              className="p-2 rounded-xl bg-[#e02868]/20 text-[#f472b6] font-mono text-center border border-[#e02868]/40 font-bold transition"
             >
               Knot (12mm)
             </button>
@@ -2179,7 +2179,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('needle')}
                 className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
                   activeTool === 'needle'
-                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold shadow-md'
+                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
                     : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
                 }`}
               >
@@ -2192,7 +2192,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('cup')}
                 className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
                   activeTool === 'cup'
-                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold shadow-md'
+                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
                     : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
                 }`}
               >
@@ -2205,7 +2205,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('moxa')}
                 className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
                   activeTool === 'moxa'
-                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold shadow-md'
+                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
                     : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
                 }`}
               >
@@ -2220,13 +2220,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* POST-TREATMENT SUCCESS CARD (Thanos Disintegration Complete) */}
       {isDisintegrated && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="max-w-md w-full bg-neutral-950/95 border border-emerald-500/40 p-6 rounded-2xl shadow-2xl text-center space-y-4 animate-in fade-in zoom-in-95">
-            <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+          <div className="max-w-md w-full bg-neutral-950/95 border border-[#e02868]/40 p-6 rounded-2xl shadow-2xl text-center space-y-4 animate-in fade-in zoom-in-95">
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#e02868]/20 border border-[#e02868]/40 flex items-center justify-center text-[#e02868]">
               <Sparkles className="w-6 h-6 animate-spin" />
             </div>
 
             <div>
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-emerald-400">
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#e02868]">
                 Thanos Snap Complete • 5,000 Particles
               </span>
               <h3 className="text-xl font-black text-white mt-1">
@@ -2240,17 +2240,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             <div className="flex items-center justify-center gap-4 py-2 border-y border-neutral-800">
               <div>
                 <div className="text-neutral-400 text-[10px] uppercase font-mono">Myofascial Spasm</div>
-                <div className="font-bold text-emerald-400">0% Dissolved</div>
+                <div className="font-bold text-[#e02868]">0% Dissolved</div>
               </div>
               <div className="w-px h-8 bg-neutral-800" />
               <div>
                 <div className="text-neutral-400 text-[10px] uppercase font-mono">Nerve De-Qi Pulse</div>
-                <div className="font-bold text-emerald-400">+380% Active</div>
+                <div className="font-bold text-[#e02868]">+380% Active</div>
               </div>
               <div className="w-px h-8 bg-neutral-800" />
               <div>
                 <div className="text-neutral-400 text-[10px] uppercase font-mono">Endorphins</div>
-                <div className="font-bold text-emerald-400">Vagal Harmonic</div>
+                <div className="font-bold text-[#e02868]">Vagal Harmonic</div>
               </div>
             </div>
 
@@ -2274,7 +2274,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 <button
                   type="button"
                   onClick={onOpenBooking}
-                  className="py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-black transition shadow-lg shadow-emerald-500/20"
+                  className="py-2.5 px-4 rounded-xl bg-[#e02868] hover:bg-[#c21e54] text-neutral-950 text-xs font-black transition shadow-lg shadow-[#e02868]/25"
                 >
                   Book In-Clinic Care
                 </button>
