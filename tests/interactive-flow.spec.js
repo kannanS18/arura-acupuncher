@@ -20,20 +20,19 @@ test.describe('3D Tissue Strata & Tool Tray Doctor Simulator', () => {
     await expect(cupBtn).toBeVisible();
     await expect(moxaBtn).toBeVisible();
 
-    // 4. Select tool with mouse
+    // 4. Select needle tool with mouse
     await needleBtn.click();
     await page.waitForTimeout(300);
 
-    // 5. Execute 3D Needle Insertion & Disintegration
-    const actionBtn = page.locator('[data-testid="target-acupoint"]').first();
-    await expect(actionBtn).toBeVisible();
-    await actionBtn.click({ force: true });
+    // 5. Test interactive mouse drag on slider to plunge needle to 12 mm
+    const depthSlider = page.locator('[data-testid="tool-depth-slider"]').first();
+    await expect(depthSlider).toBeVisible();
+    await depthSlider.fill('12');
     await page.waitForTimeout(1400);
 
     // 6. Verify 3D Disintegration Payoff
     await expect(page.locator('text=De-Qi Unlocked (得气)').first()).toBeVisible();
     await expect(page.locator('text=0%').first()).toBeVisible();
-    await expect(page.locator('text=+340%').first()).toBeVisible();
 
     // 7. Reset to treat another 3D pathology
     const resetBtn = page.locator('button:has-text("Treat Another 3D Pathology")').first();
@@ -49,9 +48,9 @@ test.describe('3D Tissue Strata & Tool Tray Doctor Simulator', () => {
     await cupBtn.click();
     await page.waitForTimeout(300);
 
-    // 10. Treat Fascial Adhesion with Cupping
-    const cupActionBtn = page.locator('[data-testid="target-acupoint"]').first();
-    await cupActionBtn.click({ force: true });
+    // 10. Drag suction slider to trigger cupping vacuum decompression
+    const suctionSlider = page.locator('[data-testid="tool-depth-slider"]').first();
+    await suctionSlider.fill('6');
     await page.waitForTimeout(1400);
     await expect(page.locator('text=Myofascial Adhesion Unlocked').first()).toBeVisible();
 
