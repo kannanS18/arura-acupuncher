@@ -17,7 +17,7 @@ export default function Navbar({ onOpenBooking }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-xs transition-colors duration-200">
+    <header className="relative z-30 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-xs transition-colors duration-200">
       {/* Top Utility Strip — Minimalist & Direct */}
       <div className="bg-surface-subtle text-gray-700 text-xs py-2 px-4 sm:px-8 border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto">
