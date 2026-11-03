@@ -1,61 +1,65 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Clinical Acupuncture Sandbox & Procedure Tray', () => {
-  test('Complete hands-on procedure tray workflow, flex inspection, and Thanos pain disintegration', async ({ page }) => {
+test.describe('3D Tissue Strata & Tool Tray Doctor Simulator', () => {
+  test('Complete mouse-only 3D tool selection, tissue pathology treatment, and Thanos disintegration', async ({ page }) => {
     // 1. Visit homepage
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    // 2. Scroll to simulator
+    // 2. Scroll to 3D simulator
     const simulator = page.locator('[data-testid="tissue-depth-simulator"]').first();
     await simulator.scrollIntoViewIfNeeded();
     await page.evaluate(() => window.scrollBy(0, -100));
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(500);
     await expect(simulator).toBeVisible();
 
-    // 3. Verify Procedure Tray tools are accessible
-    await expect(page.locator('text=Procedure Tray').first()).toBeVisible();
-    await expect(page.locator('text=0.18mm Sterile Needle').first()).toBeVisible();
-    await expect(page.locator('text=Alcohol Prep Swab').first()).toBeVisible();
-    await expect(page.locator('text=Pure Moxa Cigar').first()).toBeVisible();
-    await expect(page.locator('text=Glass Fire Cup').first()).toBeVisible();
-    await expect(page.locator('text=528Hz Tuning Fork').first()).toBeVisible();
+    // 3. Verify 3D Tray Tools are present
+    const needleBtn = page.locator('[data-testid="tool-needle"]').first();
+    const cupBtn = page.locator('[data-testid="tool-cup"]').first();
+    const moxaBtn = page.locator('[data-testid="tool-moxa"]').first();
+    await expect(needleBtn).toBeVisible();
+    await expect(cupBtn).toBeVisible();
+    await expect(moxaBtn).toBeVisible();
 
-    // 4. Test "Needle vs Hair Flex Test" Inspector Modal
-    const inspectorBtn = page.locator('button:has-text("Needle vs Hair Flex Test")').first();
-    await inspectorBtn.click();
+    // 4. Select tool with mouse
+    await needleBtn.click();
     await page.waitForTimeout(300);
-    await expect(page.locator('text=The 0.18mm Needle vs. Human Hair').first()).toBeVisible();
 
-    // Close Inspector
-    const closeBtn = page.locator('[data-testid="close-inspector"]').first();
-    await closeBtn.click();
-    await page.waitForTimeout(300);
-    await expect(page.locator('[data-testid="close-inspector"]')).toHaveCount(0);
-
-    // 5. Test Alcohol Swab tool on tray
-    const swabTool = page.locator('text=Alcohol Prep Swab').first();
-    await swabTool.click();
-    await page.waitForTimeout(200);
-
-    // 6. Verify Initial Condition is visible
-    await expect(page.locator('text=TRAPEZIUS DESK SPASM').first()).toBeVisible();
-
-    // 7. Treat the Acupoint directly (trigger Thanos Disintegration)
-    const targetAcupoint = page.locator('[data-testid="target-acupoint"]').first();
-    await targetAcupoint.click({ force: true });
+    // 5. Execute 3D Needle Insertion & Disintegration
+    const actionBtn = page.locator('[data-testid="target-acupoint"]').first();
+    await expect(actionBtn).toBeVisible();
+    await actionBtn.click({ force: true });
     await page.waitForTimeout(1400);
 
-    // 8. Verify Disintegration & De-Qi Relief Payoff
+    // 6. Verify 3D Disintegration Payoff
     await expect(page.locator('text=De-Qi Unlocked (得气)').first()).toBeVisible();
     await expect(page.locator('text=0%').first()).toBeVisible();
     await expect(page.locator('text=+340%').first()).toBeVisible();
 
-    // 9. Fullscreen Toggle
+    // 7. Reset to treat another 3D pathology
+    const resetBtn = page.locator('button:has-text("Treat Another 3D Pathology")').first();
+    await resetBtn.click();
+    await page.waitForTimeout(300);
+
+    // 8. Select another pathology: Fascial Adhesion
+    const adhesionBtn = page.locator('button:has-text("Fascial Adhesion")').first();
+    await adhesionBtn.click();
+    await page.waitForTimeout(300);
+
+    // 9. Select Glass Fire Cup tool with mouse
+    await cupBtn.click();
+    await page.waitForTimeout(300);
+
+    // 10. Treat Fascial Adhesion with Cupping
+    const cupActionBtn = page.locator('[data-testid="target-acupoint"]').first();
+    await cupActionBtn.click({ force: true });
+    await page.waitForTimeout(1400);
+    await expect(page.locator('text=Myofascial Adhesion Unlocked').first()).toBeVisible();
+
+    // 11. Fullscreen Toggle
     const fullScreenBtn = page.locator('button:has-text("Full Screen")').first();
     await fullScreenBtn.click();
     await expect(page.locator('text=Exit').first()).toBeVisible();
 
-    // Exit Full Screen
     const exitBtn = page.locator('button:has-text("Exit")').first();
     await exitBtn.click();
     await page.waitForTimeout(200);
