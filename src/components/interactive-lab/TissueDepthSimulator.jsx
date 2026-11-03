@@ -526,6 +526,36 @@ function playAcuSound(type, isMuted) {
   } catch (_) {}
 }
 
+
+// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts (Matching media_1793707544443_f2fee650.png)
+function createCalloutBadgeCanvas(code, isSelected) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 160;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = isSelected ? '#10b981' : 'rgba(255, 255, 255, 0.95)';
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(4, 4, 152, 56, 10);
+  } else {
+    ctx.rect(4, 4, 152, 56);
+  }
+  ctx.fill();
+
+  ctx.strokeStyle = isSelected ? '#047857' : 'rgba(0, 0, 0, 0.6)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.fillStyle = isSelected ? '#022c22' : '#0f172a';
+  ctx.font = 'bold 26px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(code, 80, 32);
+
+  return canvas;
+}
+
 export default function TissueDepthSimulator({ onOpenBooking }) {
   const mountRef = useRef(null);
   const [selectedAcupointIdx, setSelectedAcupointIdx] = useState(0);
@@ -753,46 +783,47 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     let targetLookAt;
 
     if (regionKey === 'full') {
-      // Whole Body Standing View (Centered, full height from head to toe visible)
+      // Whole Body Standing View (Centered, Big, Head-to-Toe Framing)
       if (bodyGroupRef.current) bodyGroupRef.current.position.set(0.0, -0.18, 0.0);
       if (strataGroupRef.current) strataGroupRef.current.visible = false;
-      targetCamPos = new THREE.Vector3(0.0, 0.45, 3.8);
-      targetLookAt = new THREE.Vector3(0.0, 0.35, 0.0);
+      targetCamPos = new THREE.Vector3(0.0, 0.48, 3.4);
+      targetLookAt = new THREE.Vector3(0.0, 0.45, 0.0);
     } else {
-      // Focused / Dual View (Body on left, Strata on right, both framed together!)
-      if (bodyGroupRef.current) bodyGroupRef.current.position.set(-0.45, -0.18, 0.0);
+      // Focused / Dual View (Body on left, 3D Strata on right at exact anatomical eye-level!)
+      if (bodyGroupRef.current) bodyGroupRef.current.position.set(-0.48, -0.18, 0.0);
       if (strataGroupRef.current) strataGroupRef.current.visible = true;
 
       switch (regionKey) {
         case 'neck':
-          // Occipital Skull Base & Neck + Strata
-          targetCamPos = new THREE.Vector3(0.12, 0.85, 2.1);
-          targetLookAt = new THREE.Vector3(0.12, 0.65, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.85, 0.0);
+          targetCamPos = new THREE.Vector3(0.08, 1.05, 1.85);
+          targetLookAt = new THREE.Vector3(0.08, 0.90, 0.0);
           break;
         case 'hand':
-          // Dorsal Hand & Forearm + Strata
-          targetCamPos = new THREE.Vector3(0.10, 0.45, 2.0);
-          targetLookAt = new THREE.Vector3(0.10, 0.35, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.42, 0.0);
+          targetCamPos = new THREE.Vector3(-0.05, 0.45, 1.80);
+          targetLookAt = new THREE.Vector3(-0.05, 0.38, 0.0);
           break;
         case 'crown':
-          // Cranial Vertex + Strata
-          targetCamPos = new THREE.Vector3(0.12, 1.15, 2.1);
-          targetLookAt = new THREE.Vector3(0.12, 0.85, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 1.05, 0.0);
+          targetCamPos = new THREE.Vector3(0.08, 1.25, 1.75);
+          targetLookAt = new THREE.Vector3(0.08, 1.05, 0.0);
           break;
         case 'leg':
-          // Lower Leg & Knee + Strata
-          targetCamPos = new THREE.Vector3(0.10, 0.0, 2.1);
-          targetLookAt = new THREE.Vector3(0.10, -0.15, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, -0.15, 0.0);
+          targetCamPos = new THREE.Vector3(0.08, -0.15, 1.85);
+          targetLookAt = new THREE.Vector3(0.08, -0.25, 0.0);
           break;
         case 'back':
-          // Lumbar Spine + Strata
-          targetCamPos = new THREE.Vector3(0.12, 0.50, 2.2);
-          targetLookAt = new THREE.Vector3(0.12, 0.38, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.55, 0.0);
+          targetCamPos = new THREE.Vector3(0.08, 0.65, 1.85);
+          targetLookAt = new THREE.Vector3(0.08, 0.52, 0.0);
           break;
         case 'dual':
         default:
-          targetCamPos = new THREE.Vector3(0.12, 0.35, 2.5);
-          targetLookAt = new THREE.Vector3(0.12, 0.22, 0.0);
+          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.35, 0.0);
+          targetCamPos = new THREE.Vector3(0.08, 0.40, 2.25);
+          targetLookAt = new THREE.Vector3(0.08, 0.32, 0.0);
           break;
       }
     }
@@ -1113,37 +1144,50 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       );
       pinGroup.add(dotMesh);
 
-      // Subtle Luminous Halo Ring flush on skin
+      // Subtle Luminous Ring flush on skin
       const haloMesh = new THREE.Mesh(
-        new THREE.RingGeometry(0.009, 0.014, 16),
-        new THREE.MeshBasicMaterial({
-          color: 0x38bdf8,
-          transparent: true,
-          opacity: 0.85,
-          side: THREE.DoubleSide
-        })
+        new THREE.RingGeometry(0.008, 0.012, 16),
+        new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85, side: THREE.DoubleSide })
       );
       haloMesh.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
       pinGroup.add(haloMesh);
 
-      // Active Selection Green Ring
+      // Active Selection Ring
       const selRing = new THREE.Mesh(
-        new THREE.RingGeometry(0.015, 0.021, 16),
-        new THREE.MeshBasicMaterial({
-          color: 0x10b981,
-          transparent: true,
-          opacity: 0.95,
-          side: THREE.DoubleSide
-        })
+        new THREE.RingGeometry(0.012, 0.017, 16),
+        new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.95, side: THREE.DoubleSide })
       );
       selRing.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
       selRing.visible = (idx === selectedAcupointIdx);
       pinGroup.add(selRing);
       dotHalos.push(selRing);
 
-      // Clickable Raycasting Hitbox
+      // CRISP 3D CALLOUT BADGE & LEADER LINE (Matching media_1793707544443_f2fee650.png!)
+      const isLeft = pt.bodyPosition[0] < 0;
+      const leaderOffsetX = isLeft ? -0.065 : 0.065;
+      const leaderOffsetY = 0.032;
+
+      // Thin White Leader Line from Pinpoint to Callout Badge
+      const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(leaderOffsetX * 0.7, leaderOffsetY, 0),
+        new THREE.Vector3(leaderOffsetX, leaderOffsetY, 0)
+      ]);
+      const leaderLineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 });
+      const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
+      pinGroup.add(leaderLine);
+
+      // 3D Canvas Sprite Badge
+      const badgeTex = new THREE.CanvasTexture(createCalloutBadgeCanvas(pt.code, idx === selectedAcupointIdx));
+      const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
+      const badgeSprite = new THREE.Sprite(badgeMat);
+      badgeSprite.position.set(leaderOffsetX * 1.15, leaderOffsetY, 0);
+      badgeSprite.scale.set(0.065, 0.026, 1.0);
+      pinGroup.add(badgeSprite);
+
+      // Clickable Raycasting Hitbox for both Dot and Badge
       const hitBox = new THREE.Mesh(
-        new THREE.SphereGeometry(0.025, 8, 8),
+        new THREE.SphereGeometry(0.035, 8, 8),
         new THREE.MeshBasicMaterial({ visible: false })
       );
       hitBox.userData = { acupointIdx: idx };
@@ -1181,7 +1225,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     // ZERO SPACE BETWEEN LAYERS WHEN STACKED!
     // =========================================================================
     const strataGroup = new THREE.Group();
-    strataGroup.position.set(0.72, 0.12, 0.0);
+    strataGroup.position.set(0.58, 0.35, 0.0);
+    strataGroup.rotation.y = -0.32; // 3/4 isometric angle showing top skin, front & cut-end faces!
+    strataGroup.rotation.x = 0.16;
     strataGroup.visible = false; // Hidden on initial full-body load!
     scene.add(strataGroup);
     strataGroupRef.current = strataGroup;
