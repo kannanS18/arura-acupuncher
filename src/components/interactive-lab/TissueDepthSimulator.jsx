@@ -566,19 +566,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Lock document scrolling ONLY when user activates Full Screen mode
+  // Guarantee document scrolling is completely untampered and clean
   useEffect(() => {
-    if (isFullscreen) {
-      const origBodyOverflow = document.body.style.overflow;
-      const origHtmlOverflow = document.documentElement.style.overflow;
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = origBodyOverflow;
-        document.documentElement.style.overflow = origHtmlOverflow;
-      };
-    }
-  }, [isFullscreen]);
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, []);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
@@ -1943,7 +1935,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Left Panel: Acupoints & Strata Pathology (w-64) */}
-      <div className="absolute top-14 left-3 z-20 flex flex-col space-y-2 pointer-events-auto w-60 max-h-[calc(100vh-170px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="absolute top-14 left-3 z-20 flex flex-col space-y-2 pointer-events-auto w-60 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Acupoints Grid */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
@@ -2071,7 +2063,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Right Panel: Penetration Control & Tool Selection (w-72) */}
-      <div className="absolute top-14 right-3 z-20 flex flex-col space-y-3 pointer-events-auto w-72 max-h-[calc(100vh-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="absolute top-14 right-3 z-20 flex flex-col space-y-3 pointer-events-auto w-72 max-h-[calc(100%-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Needle Penetration & Hold-to-Plunge Card */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
