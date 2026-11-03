@@ -550,8 +550,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // 3D Thanos Particles
   const particlesRef = useRef(null);
 
-  // Target coordinates for Strata Block (Right side)
-  const targetX = 1.15;
+  // Target coordinates for Strata Block (Right side, seamlessly adjacent)
+  const targetX = 0.72;
   const targetZ = 0.20;
 
   // Apply Needle Depth & Skin Physics
@@ -748,24 +748,24 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     switch (viewKey) {
       case 'body':
         // Zoom in to Big Standing Human Body
-        targetCamPos = new THREE.Vector3(-0.75, 0.45, 2.1);
-        targetLookAt = new THREE.Vector3(-0.75, 0.40, 0.0);
+        targetCamPos = new THREE.Vector3(-0.45, 0.45, 1.85);
+        targetLookAt = new THREE.Vector3(-0.45, 0.35, 0.0);
         break;
       case 'strata':
         // Zoom in to Compact Tissue Strata Block
-        targetCamPos = new THREE.Vector3(1.15, 0.50, 1.6);
-        targetLookAt = new THREE.Vector3(1.15, 0.15, 0.0);
+        targetCamPos = new THREE.Vector3(0.72, 0.45, 1.45);
+        targetLookAt = new THREE.Vector3(0.72, 0.15, 0.0);
         break;
       case 'nerves':
         // Extreme Close-up of Nerves & Motor Endplate Knot
-        targetCamPos = new THREE.Vector3(1.15, 0.08, 0.95);
-        targetLookAt = new THREE.Vector3(1.15, -0.05, 0.20);
+        targetCamPos = new THREE.Vector3(0.72, 0.08, 0.95);
+        targetLookAt = new THREE.Vector3(0.72, -0.05, 0.20);
         break;
       case 'dual':
       default:
-        // Dual Suite (Big Body on Left + Compact Strata on Right)
-        targetCamPos = new THREE.Vector3(-0.10, 0.40, 3.2);
-        targetLookAt = new THREE.Vector3(-0.15, 0.25, 0.0);
+        // Dual Suite (Body & Strata side-by-side with zero awkward gaps)
+        targetCamPos = new THREE.Vector3(0.12, 0.35, 2.6);
+        targetLookAt = new THREE.Vector3(0.12, 0.22, 0.0);
         break;
     }
 
@@ -803,7 +803,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    camera.position.set(-0.10, 0.40, 3.2);
+    camera.position.set(0.12, 0.35, 2.6);
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -822,7 +822,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.dampingFactor = 0.07;
     controls.maxDistance = 7.5;
     controls.minDistance = 1.1;
-    controls.target.set(-0.15, 0.25, 0.0);
+    controls.target.set(0.12, 0.22, 0.0);
     controlsRef.current = controls;
 
     // Studio Lighting
@@ -856,7 +856,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     // 5. 3D WHOLE HUMAN BODY MODEL (Hero Position: Left/Center, Large Scale)
     // =========================================================================
     const bodyGroup = new THREE.Group();
-    bodyGroup.position.set(-0.85, -0.22, 0.0);
+    bodyGroup.position.set(-0.45, -0.18, 0.0);
     scene.add(bodyGroup);
 
     // Circular Diagnostic Pedestal
@@ -1027,10 +1027,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     renderer.domElement.addEventListener('click', handleCanvasClick);
 
     // =========================================================================
-    // 6. COMPACT REALISTIC 3D TISSUE STRATA BLOCK (Right Side at x: +1.15)
+    // 6. COMPACT REALISTIC 3D TISSUE STRATA BLOCK (Right Side at x: +0.72)
     // =========================================================================
     const strataGroup = new THREE.Group();
-    strataGroup.position.set(1.15, 0.12, 0.0);
+    strataGroup.position.set(0.72, 0.12, 0.0);
     scene.add(strataGroup);
 
     const blockWidth = 1.25;
@@ -1408,8 +1408,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className={`relative w-full rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 transition-all select-none ${
-        isFullscreen ? 'fixed inset-0 z-50 rounded-none' : 'h-[620px]'
+      className={`relative w-full overflow-hidden bg-neutral-950 transition-all select-none ${
+        isFullscreen 
+          ? 'fixed inset-0 z-50 rounded-none h-screen w-screen' 
+          : 'h-[88vh] min-h-[750px] max-h-[960px] rounded-none border-y border-neutral-800'
       }`}
     >
       {/* 3D WebGL Canvas */}
@@ -1503,7 +1505,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CLINICAL_ACUPOINTS.map((pt, idx) => {
               const isSelected = selectedAcupointIdx === idx;
               return (

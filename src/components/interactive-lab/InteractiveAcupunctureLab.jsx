@@ -3,8 +3,8 @@ import TissueDepthSimulator from './TissueDepthSimulator';
 
 export default function InteractiveAcupunctureLab({ onOpenBooking }) {
   return (
-    <section id="interactive-lab" className="py-20 lg:py-28 bg-white border-b border-neutral-200/80 text-ink">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="interactive-lab" className="w-full bg-neutral-950 border-y border-neutral-800 text-white relative p-0 m-0">
+      <div className="w-full h-full p-0 m-0">
         <TissueDepthSimulator onOpenBooking={onOpenBooking} />
       </div>
     </section>
