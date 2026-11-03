@@ -1801,134 +1801,42 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* HUD OVERLAY INTERFACE (MULTIPLES OF 4 SPACING THROUGHOUT)             */}
       {/* ===================================================================== */}
 
-      {/* Top Header Bar: Regional Zoom & Anatomical Presets (z-40) */}
-      <div className="absolute top-2 inset-x-2.5 z-40 flex items-center justify-between pointer-events-none gap-2">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 p-2 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-xl pointer-events-auto">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY SUITE</span>
+      {/* Top Header Bar: Clean & Minimalist */}
+      <div className="absolute top-2.5 inset-x-3 z-40 flex items-center justify-between pointer-events-none gap-2">
+        <div className="flex items-center gap-3 pointer-events-auto">
+          <div className="flex items-center gap-2 p-2 px-3.5 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
+            <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY</span>
           </div>
-
-          {/* Body Region Zoom Switcher */}
-          <div className="hidden lg:flex items-center gap-2 p-1 bg-neutral-950/85 backdrop-blur-md border border-neutral-800 rounded-2xl pointer-events-auto shadow-xl">
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('full')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'full'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <User className="w-3.5 h-3.5" />
-              <span>Whole Body Focus</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('dual')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'dual'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5" />
-              <span>Dual Suite (Body + Strata)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('neck')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'neck'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Activity className="w-3.5 h-3.5" />
-              <span>Neck / Occiput</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('hand')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'hand'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Hand className="w-3.5 h-3.5" />
-              <span>Hand & Forearm</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('crown')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'crown'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Crown / Head</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateCameraToRegion('leg')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeRegion === 'leg'
-                  ? 'bg-[#e02868] text-white shadow-md font-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Crosshair className="w-3.5 h-3.5" />
-              <span>Leg / Knee</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => navigateCameraToRegion('full')}
+            className="px-3 py-1.5 rounded-xl bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 hover:text-white text-xs font-medium transition shadow-md flex items-center gap-1.5"
+            title="Reset Camera to Whole Body"
+          >
+            <User className="w-3.5 h-3.5 text-[#e02868]" />
+            <span>Reset View</span>
+          </button>
         </div>
 
-        {/* Top Right Actions: Exploded Anatomy Toggle, Flip Angle & Fullscreen */}
+        {/* Top Right Actions: Flip Front/Back & Fullscreen */}
         <div className="flex items-center gap-2 pointer-events-auto">
-          {/* Flip Anterior / Posterior */}
           <button
             type="button"
             onClick={toggleBodyFacing}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-xl"
-            title="Turn Body 180° (Anterior Front vs Posterior Back)"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-medium text-neutral-300 hover:text-white transition shadow-lg"
+            title="Turn Body 180°"
           >
             <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
-            <span>{bodyFacing === 'front' ? 'Front (Anterior)' : 'Back (Posterior)'}</span>
+            <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
           </button>
 
-          {activeRegion !== 'full' && (
-            <button
-              type="button"
-              onClick={toggleExplodedView}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-neutral-950/85 backdrop-blur-md border text-xs font-bold transition shadow-xl ${
-                isExploded 
-                  ? 'border-amber-400 text-amber-300 bg-amber-950/40' 
-                  : 'border-neutral-800 text-neutral-300 hover:text-white'
-              }`}
-              title="Toggle between Stacked Solid Block (Zero Gaps) and Exploded Histological Layers"
-            >
-              <Boxes className="w-4 h-4" />
-              <span>{isExploded ? 'Exploded Anatomy' : 'Stacked Solid'}</span>
-            </button>
-          )}
-
-          <button
-            type="button"
-            onClick={() => setIsMuted(!isMuted)}
-            className="p-2.5 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-neutral-300 hover:text-white transition shadow-xl"
-            title={isMuted ? 'Unmute' : 'Mute Sound'}
-          >
-            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-[#e02868]" />}
-          </button>
           <button
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="flex items-center gap-2 p-2.5 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-xl"
+            className="flex items-center gap-1.5 p-1.5 px-3 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-lg"
           >
-            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5 text-[#e02868]" />}
             <span>{isFullscreen ? 'Exit' : 'Full Screen'}</span>
           </button>
         </div>
@@ -2058,161 +1966,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div className="text-[11px] text-neutral-300 flex items-center gap-1.5 pt-1 border-t border-neutral-800">
             <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0" />
             <span className="truncate"><strong>Clinical Relief:</strong> {activeAcupoint.relief}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Panel: Penetration Control & Tool Selection (w-72) */}
-      <div className="absolute top-11 right-2.5 z-20 flex flex-col space-y-2 pointer-events-auto w-64 max-h-[calc(100%-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {/* Needle Penetration & Hold-to-Plunge Card */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-3 rounded-xl shadow-lg space-y-2.5">
-          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-            <span className="text-xs font-bold text-white flex items-center gap-1.5">
-              <ArrowDown className="w-3.5 h-3.5 text-[#e02868]" />
-              <span>Needle Penetration</span>
-            </span>
-            <span className="text-xs font-mono font-bold text-[#e02868]">
-              {interactiveDepth.toFixed(1)} mm
-            </span>
-          </div>
-
-          {/* Active Layer Anatomical Readout */}
-          <div className="p-2 rounded-xl bg-neutral-900/90 border border-neutral-800 text-[10px] space-y-0.5">
-            <div className="text-neutral-400 flex items-center justify-between font-mono">
-              <span>Current Layer:</span>
-              <span className="text-[#e02868] font-bold">{Math.round((interactiveDepth / currentProb.depthTarget) * 100)}%</span>
-            </div>
-            <div className="text-amber-300 font-bold truncate">
-              {getActiveLayerName(interactiveDepth)}
-            </div>
-          </div>
-
-          {/* Depth Slider */}
-          <div className="space-y-2">
-            <input
-              type="range"
-              min="0"
-              max={currentProb.depthTarget}
-              step="0.1"
-              data-testid="tool-depth-slider"
-              value={interactiveDepth}
-              disabled={isSnapping || isDisintegrated}
-              onChange={(e) => {
-                if (activeRegion === 'full') {
-                  navigateCameraToRegion('dual');
-                }
-                handleInteractiveChange(parseFloat(e.target.value));
-              }}
-              className="w-full h-2 rounded-lg bg-neutral-800 accent-[#e02868] cursor-pointer disabled:opacity-50"
-            />
-            <div className="flex items-center justify-between text-[10px] text-neutral-400 font-mono">
-              <span>Surface (0mm)</span>
-              <span className="text-amber-400 font-bold">Knot Target: {currentProb.depthTarget} {currentProb.depthUnit}</span>
-            </div>
-          </div>
-
-          {/* INTERACTIVE HOLD-TO-PLUNGE OR DROP BUTTON */}
-          <div className="space-y-2">
-            <button
-              type="button"
-              data-testid="target-acupoint"
-              onClick={dropNeedleToTarget}
-              onMouseDown={startHoldPlunge}
-              onMouseUp={stopHoldPlunge}
-              onTouchStart={startHoldPlunge}
-              onTouchEnd={stopHoldPlunge}
-              disabled={isSnapping}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#e02868] via-[#c21e54] to-[#e02868] hover:from-[#c21e54] hover:to-[#e02868] text-white font-black text-xs shadow-lg shadow-[#e02868]/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <ArrowDown className="w-4 h-4 animate-bounce" />
-              <span>{isSnapping ? 'Disintegrating in 3D...' : `Drop Needle to ${currentProb.depthTarget}mm Knot`}</span>
-            </button>
-            <div className="text-[10px] text-neutral-400 text-center flex items-center justify-center gap-1">
-              <Disc className="w-3 h-3 text-[#e02868]" />
-              <span>Click once or press & hold to plunge</span>
-            </div>
-          </div>
-
-          {/* Depth Presets */}
-          <div className="grid grid-cols-3 gap-2 text-[10px]">
-            <button
-              type="button"
-              onClick={() => {
-                if (activeRegion === 'full') navigateCameraToRegion('dual');
-                handleInteractiveChange(0);
-              }}
-              className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 font-mono text-center border border-neutral-800 transition"
-            >
-              Surface (0mm)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (activeRegion === 'full') navigateCameraToRegion('dual');
-                handleInteractiveChange(4.5);
-              }}
-              className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 font-mono text-center border border-neutral-800 transition"
-            >
-              Adipose (4.5mm)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (activeRegion === 'full') navigateCameraToRegion('dual');
-                handleInteractiveChange(12.0);
-              }}
-              className="p-2 rounded-xl bg-[#e02868]/20 text-[#f472b6] font-mono text-center border border-[#e02868]/40 font-bold transition"
-            >
-              Knot (12mm)
-            </button>
-          </div>
-
-          {/* Clinical Treatment Tools (Stainless Steel Tray Styling) */}
-          <div className="pt-2 border-t border-neutral-800 space-y-2">
-            <span className="text-[10px] font-bold text-neutral-400 block uppercase tracking-wider">
-              Clinical Tool:
-            </span>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                data-testid="tool-needle"
-                onClick={() => handleSelectTool('needle')}
-                className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
-                  activeTool === 'needle'
-                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
-                    : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
-                }`}
-              >
-                <span className="text-base">📍</span>
-                <span className="text-[10px] font-bold">Needle</span>
-              </button>
-              <button
-                type="button"
-                data-testid="tool-cup"
-                onClick={() => handleSelectTool('cup')}
-                className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
-                  activeTool === 'cup'
-                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
-                    : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
-                }`}
-              >
-                <span className="text-base">🫧</span>
-                <span className="text-[10px] font-bold">Fire Cup</span>
-              </button>
-              <button
-                type="button"
-                data-testid="tool-moxa"
-                onClick={() => handleSelectTool('moxa')}
-                className={`p-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${
-                  activeTool === 'moxa'
-                    ? 'bg-[#e02868]/20 border-[#e02868] text-[#f472b6] font-bold shadow-md'
-                    : 'bg-neutral-900/60 border-neutral-800 text-neutral-400 hover:text-white'
-                }`}
-              >
-                <span className="text-base">🔥</span>
-                <span className="text-[10px] font-bold">Moxa</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
