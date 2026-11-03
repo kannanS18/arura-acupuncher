@@ -590,6 +590,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // 3D Groups
   const bodyGroupRef = useRef(null);
   const bodyModelMeshRef = useRef(null);
+  const targetLimbAnglesRef = useRef({ arm: 0.0, leg: 0.0 });
+  const limbPinGroupsRef = useRef({});
   const strataGroupRef = useRef(null);
   const strataLayersRef = useRef({});
 
@@ -788,48 +790,42 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     let targetCamPos;
     let targetLookAt;
 
+    // Keep human body prominently centered and heroic
+    if (bodyGroupRef.current) bodyGroupRef.current.position.set(0.0, -0.18, 0.0);
+    if (strataGroupRef.current) strataGroupRef.current.visible = false;
+
     if (regionKey === 'full') {
-      // Whole Body Standing View (Centered, Big, Head-to-Toe Framing)
-      if (bodyGroupRef.current) bodyGroupRef.current.position.set(0.0, -0.18, 0.0);
-      if (strataGroupRef.current) strataGroupRef.current.visible = false;
+      targetLimbAnglesRef.current.arm = 0.0;
+      targetLimbAnglesRef.current.leg = 0.0;
       targetCamPos = new THREE.Vector3(0.0, 0.48, 3.4);
       targetLookAt = new THREE.Vector3(0.0, 0.45, 0.0);
     } else {
-      // Focused / Dual View (Body on left, 3D Strata on right at exact anatomical eye-level!)
-      if (bodyGroupRef.current) bodyGroupRef.current.position.set(-0.48, -0.18, 0.0);
-      if (strataGroupRef.current) strataGroupRef.current.visible = true;
-
       switch (regionKey) {
         case 'neck':
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.85, 0.0);
-          targetCamPos = new THREE.Vector3(0.08, 1.05, 1.85);
-          targetLookAt = new THREE.Vector3(0.08, 0.90, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.95, 2.0);
+          targetLookAt = new THREE.Vector3(0.0, 0.82, 0.0);
           break;
         case 'hand':
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.42, 0.0);
-          targetCamPos = new THREE.Vector3(-0.05, 0.45, 1.80);
-          targetLookAt = new THREE.Vector3(-0.05, 0.38, 0.0);
+          // Focused on raised arm & hand
+          targetCamPos = new THREE.Vector3(-0.25, 0.45, 2.1);
+          targetLookAt = new THREE.Vector3(-0.25, 0.35, 0.0);
           break;
         case 'crown':
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 1.05, 0.0);
-          targetCamPos = new THREE.Vector3(0.08, 1.25, 1.75);
-          targetLookAt = new THREE.Vector3(0.08, 1.05, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 1.20, 1.9);
+          targetLookAt = new THREE.Vector3(0.0, 1.05, 0.0);
           break;
         case 'leg':
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, -0.15, 0.0);
-          targetCamPos = new THREE.Vector3(0.08, -0.15, 1.85);
-          targetLookAt = new THREE.Vector3(0.08, -0.25, 0.0);
+          // Focused on slightly lifted leg
+          targetCamPos = new THREE.Vector3(-0.12, -0.10, 2.2);
+          targetLookAt = new THREE.Vector3(-0.12, -0.28, 0.0);
           break;
         case 'back':
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.55, 0.0);
-          targetCamPos = new THREE.Vector3(0.08, 0.65, 1.85);
-          targetLookAt = new THREE.Vector3(0.08, 0.52, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.60, 2.2);
+          targetLookAt = new THREE.Vector3(0.0, 0.50, 0.0);
           break;
-        case 'dual':
         default:
-          if (strataGroupRef.current) strataGroupRef.current.position.set(0.58, 0.35, 0.0);
-          targetCamPos = new THREE.Vector3(0.08, 0.40, 2.25);
-          targetLookAt = new THREE.Vector3(0.08, 0.32, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.48, 3.4);
+          targetLookAt = new THREE.Vector3(0.0, 0.45, 0.0);
           break;
       }
     }
@@ -1085,15 +1081,93 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         model.rotation.y = Math.PI / 2; // Default facing
         bodyModelMeshRef.current = model;
 
+        const limbUniforms = {
+          uArmAngle: { value: 0.0 },
+          uLegAngle: { value: 0.0 }
+        };
+        model.userData.limbUniforms = limbUniforms;
+
         model.traverse((child) => {
           if (child.isMesh) {
             child.castShadow = true;
             child.receiveShadow = true;
-            child.material = new THREE.MeshStandardMaterial({
+            const mat = new THREE.MeshStandardMaterial({
               color: 0xdeb89e,
               roughness: 0.38,
               metalness: 0.06
             });
+
+            mat.onBeforeCompile = (shader) => {
+              shader.uniforms.uArmAngle = limbUniforms.uArmAngle;
+              shader.uniforms.uLegAngle = limbUniforms.uLegAngle;
+
+              shader.vertexShader = `
+                uniform float uArmAngle;
+                uniform float uLegAngle;
+
+                mat3 rotateAroundAxis(vec3 axis, float angle) {
+                  axis = normalize(axis);
+                  float s = sin(angle);
+                  float c = cos(angle);
+                  float oc = 1.0 - c;
+                  return mat3(
+                    oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c
+                  );
+                }
+              ` + shader.vertexShader;
+
+              shader.vertexShader = shader.vertexShader.replace(
+                '#include <begin_vertex>',
+                `
+                #include <begin_vertex>
+
+                // LEFT ARM: local z > 0.06, y between -0.22 and 0.35
+                if (transformed.z > 0.06 && transformed.y < 0.35 && transformed.y > -0.22) {
+                  vec3 shoulderPivot = vec3(0.0, 0.31, 0.08);
+                  float armWeight = smoothstep(0.06, 0.09, transformed.z) * smoothstep(0.35, 0.30, transformed.y);
+                  if (armWeight > 0.0) {
+                    float angle = uArmAngle * armWeight;
+                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
+                    transformed = rot * (transformed - shoulderPivot) + shoulderPivot;
+                    #ifdef USE_NORMAL
+                    objectNormal = rot * objectNormal;
+                    #endif
+                  }
+                }
+
+                // RIGHT ARM: local z < -0.06, y between -0.22 and 0.35
+                if (transformed.z < -0.06 && transformed.y < 0.35 && transformed.y > -0.22) {
+                  vec3 shoulderPivot = vec3(0.0, 0.31, -0.08);
+                  float armWeight = smoothstep(-0.06, -0.09, transformed.z) * smoothstep(0.35, 0.30, transformed.y);
+                  if (armWeight > 0.0) {
+                    float angle = -uArmAngle * armWeight;
+                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
+                    transformed = rot * (transformed - shoulderPivot) + shoulderPivot;
+                    #ifdef USE_NORMAL
+                    objectNormal = rot * objectNormal;
+                    #endif
+                  }
+                }
+
+                // LEGS: local y < 0.05, abs(z) < 0.08 (slight realistic knee/hip lift)
+                if (transformed.y < 0.05 && transformed.z > 0.008 && transformed.z < 0.08) {
+                  vec3 hipPivot = vec3(0.0, -0.02, 0.04);
+                  float legWeight = smoothstep(0.05, -0.04, transformed.y);
+                  if (legWeight > 0.0) {
+                    float angle = uLegAngle * legWeight;
+                    mat3 rot = rotateAroundAxis(vec3(0.0, 0.0, 1.0), angle);
+                    transformed = rot * (transformed - hipPivot) + hipPivot;
+                    #ifdef USE_NORMAL
+                    objectNormal = rot * objectNormal;
+                    #endif
+                  }
+                }
+                `
+              );
+            };
+            child.material = mat;
           }
         });
 
@@ -1220,6 +1294,25 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         const hitIdx = intersects[0].object.userData.acupointIdx;
         if (typeof hitIdx === 'number') {
           handleSelectAcupoint(hitIdx);
+        }
+      } else if (bodyModelMeshRef.current) {
+        // Direct click on 3D Human Body Anatomy (Arms or Legs)
+        const bodyHits = raycaster.intersectObject(bodyModelMeshRef.current, true);
+        if (bodyHits.length > 0) {
+          const hit = bodyHits[0].point;
+          // Clicked Arm: lateral region
+          if (Math.abs(hit.x) > 0.18 && hit.y > -0.15 && hit.y < 0.65) {
+            targetLimbAnglesRef.current.arm = targetLimbAnglesRef.current.arm > 0.1 ? 0.0 : 0.68;
+            targetLimbAnglesRef.current.leg = 0.0;
+            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'hand');
+            if (armPtIdx !== -1) handleSelectAcupoint(armPtIdx);
+          } else if (hit.y < 0.15 && Math.abs(hit.x) < 0.22) {
+            // Clicked Leg: lower region
+            targetLimbAnglesRef.current.leg = targetLimbAnglesRef.current.leg > 0.1 ? 0.0 : 0.32;
+            targetLimbAnglesRef.current.arm = 0.0;
+            const legPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'leg');
+            if (legPtIdx !== -1) handleSelectAcupoint(legPtIdx);
+          }
         }
       }
     };
@@ -1742,6 +1835,47 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       // Bio-pulse pulsation on contacted nerve
       if (nerveMatRef.current && interactiveDepth >= 11.5) {
         nerveMatRef.current.emissiveIntensity = 1.6 + Math.sin(elapsedTime * 8) * 0.6;
+      }
+
+      // Kinematic Limb Swing & Lift Interpolation
+      if (bodyModelMeshRef.current && bodyModelMeshRef.current.userData.limbUniforms) {
+        const u = bodyModelMeshRef.current.userData.limbUniforms;
+        const targetArm = targetLimbAnglesRef.current.arm;
+        const targetLeg = targetLimbAnglesRef.current.leg;
+
+        u.uArmAngle.value += (targetArm - u.uArmAngle.value) * 0.08;
+        u.uLegAngle.value += (targetLeg - u.uLegAngle.value) * 0.08;
+
+        // Synchronize arm and leg acupoint beacons with articulated limb
+        const armAngle = u.uArmAngle.value;
+        const legAngle = u.uLegAngle.value;
+
+        // Arm pins (LI-4, PC-6)
+        ['li4', 'pc6'].forEach(id => {
+          const pin = limbPinGroupsRef.current[id];
+          if (pin && pin.userData.basePos) {
+            const b = pin.userData.basePos;
+            const shoulderY = 0.52 + 0.31 * scaleFactor;
+            const dY = b.y - shoulderY;
+            const dZ = b.z;
+            // Swing forward along Z/Y
+            pin.position.y = shoulderY + dY * Math.cos(armAngle) - dZ * Math.sin(armAngle);
+            pin.position.z = dZ * Math.cos(armAngle) + dY * Math.sin(armAngle) * 0.7;
+          }
+        });
+
+        // Leg pins (ST-36)
+        ['st36'].forEach(id => {
+          const pin = limbPinGroupsRef.current[id];
+          if (pin && pin.userData.basePos) {
+            const b = pin.userData.basePos;
+            const hipY = 0.52 - 0.02 * scaleFactor;
+            const dY = b.y - hipY;
+            const dZ = b.z;
+            pin.position.y = hipY + dY * Math.cos(legAngle) - dZ * Math.sin(legAngle);
+            pin.position.z = dZ * Math.cos(legAngle) + dY * Math.sin(legAngle) * 0.5;
+          }
+        });
       }
 
       controls.update();
