@@ -19,11 +19,13 @@ import {
   Zap, 
   ShieldCheck, 
   Check,
-  ChevronRight
+  ChevronRight,
+  Hand,
+  Disc
 } from 'lucide-react';
 
 // ============================================================================
-// CLINICAL ACUPOINTS CATALOG WITH DEEP NEUROLOGICAL & ANATOMICAL METRICS
+// CLINICAL ACUPOINTS CATALOG WITH REGIONAL ZOOM MAPPINGS
 // ============================================================================
 export const CLINICAL_ACUPOINTS = [
   {
@@ -32,7 +34,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'GB-20 (Fengchi)',
     hanzi: '风池',
     translation: 'Wind Pool',
-    region: 'Occipital Skull Base',
+    region: 'neck',
+    regionLabel: 'Occipital Neck',
     meridian: 'Gallbladder Meridian',
     depthTarget: 12.0,
     depthCun: '0.8–1.2 cun',
@@ -49,7 +52,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'GV-20 (Baihui)',
     hanzi: '百会',
     translation: 'Hundred Convergences',
-    region: 'Vertex / Crown of Cranium',
+    region: 'crown',
+    regionLabel: 'Cranial Crown',
     meridian: 'Governing Vessel (Du Mai)',
     depthTarget: 6.0,
     depthCun: '0.3–0.5 cun',
@@ -66,7 +70,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'BL-10 (Tianzhu)',
     hanzi: '天柱',
     translation: 'Celestial Pillar',
-    region: 'Upper Cervical Spine',
+    region: 'neck',
+    regionLabel: 'Upper Neck',
     meridian: 'Bladder Meridian',
     depthTarget: 10.0,
     depthCun: '0.5–0.8 cun',
@@ -83,7 +88,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'LI-4 (Hegu)',
     hanzi: '合谷',
     translation: 'Joining Valley',
-    region: 'First Dorsal Interosseous (Hand)',
+    region: 'hand',
+    regionLabel: 'Dorsal Hand',
     meridian: 'Large Intestine Meridian',
     depthTarget: 12.0,
     depthCun: '0.5–1.0 cun',
@@ -100,7 +106,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'PC-6 (Neiguan)',
     hanzi: '内关',
     translation: 'Inner Pass',
-    region: 'Ventral Forearm',
+    region: 'hand',
+    regionLabel: 'Inner Forearm',
     meridian: 'Pericardium Meridian',
     depthTarget: 10.0,
     depthCun: '0.5–0.8 cun',
@@ -117,7 +124,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'ST-36 (Zusanli)',
     hanzi: '足三里',
     translation: 'Leg Three Miles',
-    region: 'Anterolateral Lower Leg',
+    region: 'leg',
+    regionLabel: 'Anterior Leg',
     meridian: 'Stomach Meridian',
     depthTarget: 15.0,
     depthCun: '1.0–1.5 cun',
@@ -134,7 +142,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'BL-23 (Shenshu)',
     hanzi: '肾俞',
     translation: 'Kidney Shu',
-    region: 'Lower Lumbar Spine (L2)',
+    region: 'back',
+    regionLabel: 'Lumbar Spine',
     meridian: 'Bladder Meridian',
     depthTarget: 14.0,
     depthCun: '0.8–1.2 cun',
@@ -151,7 +160,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'GV-16 (Fengfu)',
     hanzi: '风府',
     translation: 'Palace of Wind',
-    region: 'Occipital Depression',
+    region: 'neck',
+    regionLabel: 'Occipital Center',
     meridian: 'Governing Vessel',
     depthTarget: 10.0,
     depthCun: '0.5–0.8 cun',
@@ -168,7 +178,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'TE-17 (Yifeng)',
     hanzi: '翳风',
     translation: 'Wind Screen',
-    region: 'Behind Earlobe',
+    region: 'neck',
+    regionLabel: 'Behind Ear',
     meridian: 'Triple Energizer',
     depthTarget: 12.0,
     depthCun: '0.8–1.2 cun',
@@ -185,7 +196,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'GB-14 (Yangbai)',
     hanzi: '阳白',
     translation: 'Yang White',
-    region: 'Forehead Above Eyebrow',
+    region: 'crown',
+    regionLabel: 'Forehead',
     meridian: 'Gallbladder Meridian',
     depthTarget: 8.0,
     depthCun: '0.3–0.5 cun',
@@ -202,7 +214,8 @@ export const CLINICAL_ACUPOINTS = [
     fullName: 'SP-6 (Sanyinjiao)',
     hanzi: '三阴交',
     translation: 'Three Yin Intersection',
-    region: 'Medial Lower Leg',
+    region: 'leg',
+    regionLabel: 'Inner Ankle',
     meridian: 'Spleen Meridian',
     depthTarget: 14.0,
     depthCun: '1.0–1.5 cun',
@@ -212,23 +225,6 @@ export const CLINICAL_ACUPOINTS = [
     relief: 'Pelvic Circulation, Insomnia, Leg Cramping, Hormonal Balance',
     deqi: 'Steady rhythmic warmth coursing up the inner calf.',
     colorHex: 0xec4899
-  },
-  {
-    id: 'cv12',
-    code: 'CV-12',
-    fullName: 'CV-12 (Zhongwan)',
-    hanzi: '中脘',
-    translation: 'Middle Cavity',
-    region: 'Epigastrium Midline',
-    meridian: 'Conception Vessel (Ren Mai)',
-    depthTarget: 12.0,
-    depthCun: '0.8–1.2 cun',
-    bodyPosition: [0.0, 0.18, 0.076],
-    nerves: '7th Intercostal Nerve Anterior Ramus',
-    vessels: 'Superior Epigastric Artery',
-    relief: 'Gastric Motility, Acid Reflux, Digestive Bloating, Epigastric Calm',
-    deqi: 'Soothing circular warmth relaxing the celiac solar plexus.',
-    colorHex: 0xfacc15
   }
 ];
 
@@ -275,9 +271,9 @@ const CLINICAL_PROBLEMS = [
   }
 ];
 
-// Curve for Authentic Spiral Copper Needle Handle
+// Curve for Spiral Copper Needle Handle
 class SpiralHandleCurve extends THREE.Curve {
-  constructor(radius = 0.016, height = 0.22, turns = 18) {
+  constructor(radius = 0.014, height = 0.20, turns = 18) {
     super();
     this.radius = radius;
     this.height = height;
@@ -292,39 +288,39 @@ class SpiralHandleCurve extends THREE.Curve {
   }
 }
 
-// Procedural High-Definition Living Human Skin Texture
+// Procedural Stratified Skin Texture (Epidermis & Dermal Layers)
 function createSkinTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  const grad = ctx.createLinearGradient(0, 0, 512, 512);
-  grad.addColorStop(0, '#f2cebe');
-  grad.addColorStop(0.4, '#e5bba8');
-  grad.addColorStop(0.8, '#dca894');
-  grad.addColorStop(1.0, '#cf957f');
+  const grad = ctx.createLinearGradient(0, 0, 0, 512);
+  grad.addColorStop(0, '#f4cebc');
+  grad.addColorStop(0.2, '#ebb59f');
+  grad.addColorStop(0.5, '#e0a088');
+  grad.addColorStop(1.0, '#cf8e78');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 512, 512);
 
   const imgData = ctx.getImageData(0, 0, 512, 512);
   const data = imgData.data;
   for (let i = 0; i < data.length; i += 4) {
-    const noise = (Math.random() - 0.5) * 10;
+    const noise = (Math.random() - 0.5) * 8;
     data[i] = Math.min(255, Math.max(0, data[i] + noise));
     data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise * 0.9));
     data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise * 0.8));
   }
   ctx.putImageData(imgData, 0, 0);
 
-  ctx.fillStyle = 'rgba(140, 70, 50, 0.06)';
-  for (let i = 0; i < 400; i++) {
-    const x = Math.random() * 512;
-    const y = Math.random() * 512;
-    const r = Math.random() * 1.2 + 0.4;
+  // Micro-crease dermal stratum
+  ctx.strokeStyle = 'rgba(180, 100, 80, 0.15)';
+  ctx.lineWidth = 0.8;
+  for (let i = 0; i < 40; i++) {
     ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(Math.random() * 512, Math.random() * 512);
+    ctx.lineTo(Math.random() * 512, Math.random() * 512);
+    ctx.stroke();
   }
 
   const tex = new THREE.CanvasTexture(canvas);
@@ -333,25 +329,24 @@ function createSkinTexture() {
   return tex;
 }
 
-// Procedural Adipose Fat Texture with Cellular Micro-Lobules & Collagen Septa
+// Procedural Hypodermis Cellular Adipose Texture
 function createAdiposeTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  const grad = ctx.createLinearGradient(0, 0, 0, 512);
-  grad.addColorStop(0, '#f59e0b');
-  grad.addColorStop(0.5, '#d97706');
-  grad.addColorStop(1.0, '#b45309');
+  const grad = ctx.createRadialGradient(256, 256, 10, 256, 256, 300);
+  grad.addColorStop(0, '#fbbf24');
+  grad.addColorStop(0.6, '#f59e0b');
+  grad.addColorStop(1.0, '#d97706');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 512, 512);
 
-  // Micro-lobular clusters
-  for (let i = 0; i < 350; i++) {
+  for (let i = 0; i < 400; i++) {
     const x = Math.random() * 512;
     const y = Math.random() * 512;
-    const r = Math.random() * 10 + 5;
+    const r = Math.random() * 11 + 6;
     const cellGrad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, 1, x, y, r);
     cellGrad.addColorStop(0, '#fef08a');
     cellGrad.addColorStop(0.7, '#f59e0b');
@@ -362,10 +357,10 @@ function createAdiposeTexture() {
     ctx.fill();
   }
 
-  // Interlobular fibrous collagen septa
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+  // Delicate white collagenous fibrous septa
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.40)';
   ctx.lineWidth = 1.0;
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 30; i++) {
     ctx.beginPath();
     ctx.moveTo(Math.random() * 512, Math.random() * 512);
     ctx.bezierCurveTo(
@@ -382,7 +377,7 @@ function createAdiposeTexture() {
   return tex;
 }
 
-// Procedural Striated Muscle Fascicle Texture
+// Procedural Striated Muscle Fascicle Texture with Tendinous Sheath Lines
 function createMuscleStriationTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
@@ -390,20 +385,22 @@ function createMuscleStriationTexture() {
   const ctx = canvas.getContext('2d');
 
   const grad = ctx.createLinearGradient(0, 0, 0, 512);
-  grad.addColorStop(0, '#580c1f');
-  grad.addColorStop(0.5, '#7f1d1d');
-  grad.addColorStop(1, '#450a0a');
+  grad.addColorStop(0, '#650c21');
+  grad.addColorStop(0.5, '#881337');
+  grad.addColorStop(1.0, '#4c0519');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 512, 512);
 
+  // Parallel striated myofibrils
   for (let y = 0; y < 512; y += 4) {
-    const alpha = Math.sin(y * 0.8) * 0.16 + 0.16;
+    const alpha = Math.sin(y * 0.75) * 0.18 + 0.18;
     ctx.fillStyle = `rgba(254, 202, 202, ${alpha})`;
     ctx.fillRect(0, y, 512, 2);
   }
 
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-  for (let i = 0; i < 80; i++) {
+  // Silvery connective epimysium tendon bands
+  ctx.fillStyle = 'rgba(241, 245, 249, 0.12)';
+  for (let i = 0; i < 70; i++) {
     const y = Math.random() * 512;
     ctx.fillRect(0, y, 512, 1);
   }
@@ -521,7 +518,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [activeCameraView, setActiveCameraView] = useState('dual');
+  const [activeRegion, setActiveRegion] = useState('dual'); // 'full', 'neck', 'hand', 'crown', 'leg', 'back', 'dual'
+
+  const isHoldingRef = useRef(false);
+  const holdTimerRef = useRef(null);
 
   const activeAcupoint = CLINICAL_ACUPOINTS[selectedAcupointIdx] || CLINICAL_ACUPOINTS[0];
   const currentProb = CLINICAL_PROBLEMS[selectedProblemIdx];
@@ -550,7 +550,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // 3D Thanos Particles
   const particlesRef = useRef(null);
 
-  // Target coordinates for Strata Block (Right side, seamlessly adjacent)
+  // Target coordinates for Strata Block
   const targetX = 0.72;
   const targetZ = 0.20;
 
@@ -566,11 +566,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (activeTool === 'needle') {
       const fraction = Math.min(1.0, val / 12.0);
       if (activeNeedleRef.current) {
-        // Needle tip at surface y=0.41, reaches knot y=-0.22 at val=12
-        activeNeedleRef.current.position.y = 0.85 - fraction * 0.63;
+        // Needle tip at surface y=0.35, reaches knot y=-0.28 at val=12
+        activeNeedleRef.current.position.y = 0.82 - fraction * 0.63;
       }
       if (guideTubeRef.current) {
-        guideTubeRef.current.position.y = 0.52;
+        guideTubeRef.current.position.y = 0.48;
       }
 
       // Skin Elastic Dimpling on contact
@@ -594,7 +594,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     } else if (activeTool === 'cup') {
       const suctionFraction = Math.min(1.0, val / 6.0);
       if (activeCupRef.current) {
-        activeCupRef.current.position.y = 0.52 + suctionFraction * 0.04;
+        activeCupRef.current.position.y = 0.48 + suctionFraction * 0.04;
       }
 
       // Fascial Suction Lift
@@ -617,7 +617,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     } else if (activeTool === 'moxa') {
       const tempFraction = Math.min(1.0, Math.max(0, (val - 35.0) / 8.0));
       if (activeMoxaRef.current) {
-        activeMoxaRef.current.position.y = 0.65;
+        activeMoxaRef.current.position.y = 0.62;
       }
       if (thermalRingRef.current) {
         thermalRingRef.current.material.opacity = tempFraction * 0.85;
@@ -657,7 +657,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
       const posAttr = pData.geo.attributes.position;
       const posArr = posAttr.array;
-      const originY = activeTool === 'needle' ? -0.10 : activeTool === 'cup' ? 0.25 : 0.45;
+      const originY = activeTool === 'needle' ? -0.16 : activeTool === 'cup' ? 0.20 : 0.40;
 
       for (let i = 0; i < 5000; i++) {
         posArr[i * 3] = targetX + (Math.random() - 0.5) * 0.35;
@@ -714,30 +714,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     playAcuSound('pickup', isMuted);
   }, [handleReset, isMuted]);
 
-  // Select Acupoint from Catalog
-  const handleSelectAcupoint = useCallback((idx) => {
-    setSelectedAcupointIdx(idx);
-    handleReset();
-    playAcuSound('pickup', isMuted);
-
-    // Update active highlight on 3D dots
-    if (dotHalosRef.current) {
-      dotHalosRef.current.forEach((halo, i) => {
-        if (halo) halo.visible = (i === idx);
-      });
-    }
-  }, [handleReset, isMuted]);
-
-  // Animate Needle Drop Down to Target (Instant & smooth drop)
-  const dropNeedleToTarget = useCallback(() => {
-    if (isSnapping || isDisintegrated) return;
-    const target = currentProb.depthTarget;
-    handleInteractiveChange(target);
-  }, [currentProb.depthTarget, isSnapping, isDisintegrated, handleInteractiveChange]);
-
-  // Smooth Camera Tween to any Perspective Angle
-  const switchCameraView = useCallback((viewKey) => {
-    setActiveCameraView(viewKey);
+  // Smooth Camera Tween to any Perspective or Anatomical Region
+  const navigateCameraToRegion = useCallback((regionKey) => {
+    setActiveRegion(regionKey);
     const camera = cameraRef.current;
     const controls = controlsRef.current;
     if (!camera || !controls) return;
@@ -745,25 +724,45 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     let targetCamPos;
     let targetLookAt;
 
-    switch (viewKey) {
-      case 'body':
-        // Zoom in to Big Standing Human Body
-        targetCamPos = new THREE.Vector3(-0.45, 0.45, 1.85);
-        targetLookAt = new THREE.Vector3(-0.45, 0.35, 0.0);
+    switch (regionKey) {
+      case 'neck':
+        // Zoom right to Occipital Skull Base & Neck (GB-20, BL-10, GV-16, TE-17)
+        targetCamPos = new THREE.Vector3(-0.40, 1.35, 1.15);
+        targetLookAt = new THREE.Vector3(-0.42, 1.25, -0.05);
+        break;
+      case 'hand':
+        // Zoom right to Hand & Forearm (LI-4, PC-6)
+        targetCamPos = new THREE.Vector3(-0.75, 0.52, 1.05);
+        targetLookAt = new THREE.Vector3(-0.82, 0.45, 0.05);
+        break;
+      case 'crown':
+        // Zoom to Cranial Vertex (GV-20, GB-14)
+        targetCamPos = new THREE.Vector3(-0.42, 1.70, 1.10);
+        targetLookAt = new THREE.Vector3(-0.42, 1.55, 0.0);
+        break;
+      case 'leg':
+        // Zoom to Lower Leg & Knee (ST-36, SP-6)
+        targetCamPos = new THREE.Vector3(-0.42, 0.05, 1.25);
+        targetLookAt = new THREE.Vector3(-0.45, -0.12, 0.05);
+        break;
+      case 'back':
+        // Zoom to Lumbar Spine (BL-23)
+        targetCamPos = new THREE.Vector3(-0.42, 0.65, -1.25);
+        targetLookAt = new THREE.Vector3(-0.42, 0.55, -0.10);
         break;
       case 'strata':
-        // Zoom in to Compact Tissue Strata Block
+        // Close-up on Tissue Strata & Nerves
         targetCamPos = new THREE.Vector3(0.72, 0.45, 1.45);
         targetLookAt = new THREE.Vector3(0.72, 0.15, 0.0);
         break;
-      case 'nerves':
-        // Extreme Close-up of Nerves & Motor Endplate Knot
-        targetCamPos = new THREE.Vector3(0.72, 0.08, 0.95);
-        targetLookAt = new THREE.Vector3(0.72, -0.05, 0.20);
+      case 'full':
+        // Full Standing Body
+        targetCamPos = new THREE.Vector3(-0.45, 0.45, 2.2);
+        targetLookAt = new THREE.Vector3(-0.45, 0.35, 0.0);
         break;
       case 'dual':
       default:
-        // Dual Suite (Body & Strata side-by-side with zero awkward gaps)
+        // Dual Suite (Body + Strata with zero gap)
         targetCamPos = new THREE.Vector3(0.12, 0.35, 2.6);
         targetLookAt = new THREE.Vector3(0.12, 0.22, 0.0);
         break;
@@ -774,7 +773,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     let progress = 0;
 
     const animateCamera = () => {
-      progress += 0.06;
+      progress += 0.07;
       if (progress <= 1.0) {
         camera.position.lerpVectors(startPos, targetCamPos, progress);
         controls.target.lerpVectors(startTarget, targetLookAt, progress);
@@ -788,6 +787,71 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     };
     animateCamera();
   }, []);
+
+  // Select Acupoint from Catalog and auto-zoom to that region
+  const handleSelectAcupoint = useCallback((idx) => {
+    setSelectedAcupointIdx(idx);
+    handleReset();
+    playAcuSound('pickup', isMuted);
+
+    const pt = CLINICAL_ACUPOINTS[idx];
+    if (pt && pt.region) {
+      navigateCameraToRegion(pt.region);
+    }
+
+    // Update active highlight on 3D dots
+    if (dotHalosRef.current) {
+      dotHalosRef.current.forEach((halo, i) => {
+        if (halo) halo.visible = (i === idx);
+      });
+    }
+  }, [handleReset, isMuted, navigateCameraToRegion]);
+
+  // Click & Hold to Plunge Needle into Acupoint
+  const startHoldPlunge = useCallback(() => {
+    if (isSnapping || isDisintegrated) return;
+    isHoldingRef.current = true;
+    let currentVal = interactiveDepth;
+
+    if (holdTimerRef.current) clearInterval(holdTimerRef.current);
+    holdTimerRef.current = setInterval(() => {
+      if (!isHoldingRef.current) {
+        clearInterval(holdTimerRef.current);
+        return;
+      }
+      currentVal += 0.6;
+      if (currentVal >= currentProb.depthTarget) {
+        currentVal = currentProb.depthTarget;
+        clearInterval(holdTimerRef.current);
+      }
+      handleInteractiveChange(currentVal);
+    }, 45);
+  }, [interactiveDepth, isSnapping, isDisintegrated, currentProb.depthTarget, handleInteractiveChange]);
+
+  const stopHoldPlunge = useCallback(() => {
+    isHoldingRef.current = false;
+    if (holdTimerRef.current) clearInterval(holdTimerRef.current);
+
+    // If released before knot, smoothly retract needle
+    if (!isDisintegrated && !isSnapping) {
+      let currentVal = interactiveDepth;
+      const retractTimer = setInterval(() => {
+        currentVal -= 1.0;
+        if (currentVal <= 0) {
+          currentVal = 0;
+          clearInterval(retractTimer);
+        }
+        handleInteractiveChange(currentVal);
+      }, 35);
+    }
+  }, [interactiveDepth, isDisintegrated, isSnapping, handleInteractiveChange]);
+
+  // Animate Needle Drop Down to Target (Instant & smooth drop)
+  const dropNeedleToTarget = useCallback(() => {
+    if (isSnapping || isDisintegrated) return;
+    const target = currentProb.depthTarget;
+    handleInteractiveChange(target);
+  }, [currentProb.depthTarget, isSnapping, isDisintegrated, handleInteractiveChange]);
 
   // Main Three.js Scene Setup
   useEffect(() => {
@@ -821,12 +885,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.enableDamping = true;
     controls.dampingFactor = 0.07;
     controls.maxDistance = 7.5;
-    controls.minDistance = 1.1;
+    controls.minDistance = 0.9;
     controls.target.set(0.12, 0.22, 0.0);
     controlsRef.current = controls;
 
     // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.90);
     scene.add(ambientLight);
 
     const keySpot = new THREE.SpotLight(0xffffff, 3.2, 25, Math.PI / 4, 0.35, 1);
@@ -853,7 +917,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     scene.add(table);
 
     // =========================================================================
-    // 5. 3D WHOLE HUMAN BODY MODEL (Hero Position: Left/Center, Large Scale)
+    // 2. 3D WHOLE HUMAN BODY MODEL (Centered Hero)
     // =========================================================================
     const bodyGroup = new THREE.Group();
     bodyGroup.position.set(-0.45, -0.18, 0.0);
@@ -879,7 +943,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     // Load Whole Human Body GLB Model
     const gltfLoader = new GLTFLoader();
     const modelUrl = `${import.meta.env.BASE_URL}models/human_body.glb`;
-    const targetHeight = 2.45; // Big human model!
+    const targetHeight = 2.45; // Large human model!
     const scaleFactor = targetHeight / 1.72; // Scaling multiplier for acupoints
 
     gltfLoader.load(
@@ -944,7 +1008,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     bodyGroup.add(meridianLine);
 
     // =========================================================================
-    // 3D ANATOMICAL DOTS (Small, Crisp Pinpoint Dots - NOT Large Spheres!)
+    // 3. 3D ANATOMICAL PINPOINT DOTS (Clean Dots - NOT Giant Spheres!)
     // =========================================================================
     const dotHalos = [];
     const interactiveAcupointMeshes = [];
@@ -957,14 +1021,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         pt.bodyPosition[2] * scaleFactor
       );
 
-      // 1. Crisp Pinpoint Dot (0.007 radius - sharp and small)
+      // Crisp Pinpoint Dot (0.007 radius - sharp and subtle)
       const dotMesh = new THREE.Mesh(
         new THREE.SphereGeometry(0.007, 12, 12),
         new THREE.MeshBasicMaterial({ color: 0xffffff })
       );
       pinGroup.add(dotMesh);
 
-      // 2. Subtle Luminous Halo Ring flush against skin
+      // Subtle Luminous Halo Ring flush on skin
       const haloMesh = new THREE.Mesh(
         new THREE.RingGeometry(0.009, 0.014, 16),
         new THREE.MeshBasicMaterial({
@@ -977,7 +1041,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       haloMesh.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
       pinGroup.add(haloMesh);
 
-      // 3. Active Selection Ring
+      // Active Selection Green Ring
       const selRing = new THREE.Mesh(
         new THREE.RingGeometry(0.015, 0.021, 16),
         new THREE.MeshBasicMaterial({
@@ -994,7 +1058,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
       // Clickable Raycasting Hitbox
       const hitBox = new THREE.Mesh(
-        new THREE.SphereGeometry(0.022, 8, 8),
+        new THREE.SphereGeometry(0.025, 8, 8),
         new THREE.MeshBasicMaterial({ visible: false })
       );
       hitBox.userData = { acupointIdx: idx };
@@ -1027,37 +1091,65 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     renderer.domElement.addEventListener('click', handleCanvasClick);
 
     // =========================================================================
-    // 6. COMPACT REALISTIC 3D TISSUE STRATA BLOCK (Right Side at x: +0.72)
+    // 4. REALISTIC 5-LAYER 3D TISSUE STRATA MODEL (NO GAP BETWEEN LAYERS!)
+    // Inspired by Medical Cross-Section: Epidermis -> Dermis -> Hypodermis -> Fascia -> Muscle
     // =========================================================================
     const strataGroup = new THREE.Group();
     strataGroup.position.set(0.72, 0.12, 0.0);
     scene.add(strataGroup);
 
     const blockWidth = 1.25;
-    const blockDepth = 0.90;
+    const blockDepth = 0.85;
 
     const skinTex = createSkinTexture();
     const fatTex = createAdiposeTexture();
     const muscleTex = createMuscleStriationTexture();
 
-    // --- LAYER 1: Epidermis & Dermis (Skin Layer) ---
+    // Circular Diagnostic Frame / Bezel around the tissue strata
+    const lensRing = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.72, 0.72, 0.90, 36, 1, true),
+      new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        metalness: 0.85,
+        roughness: 0.25,
+        transparent: true,
+        opacity: 0.35,
+        side: THREE.BackSide
+      })
+    );
+    lensRing.position.y = -0.03;
+    strataGroup.add(lensRing);
+
+    // --- LAYER 1: EPIDERMIS (y = 0.30 to 0.38, height 0.08) ---
     const dermisMat = new THREE.MeshStandardMaterial({ map: skinTex, roughness: 0.42, metalness: 0.04 });
-    const dermisMesh = new THREE.Mesh(new THREE.BoxGeometry(blockWidth, 0.18, blockDepth), dermisMat);
-    dermisMesh.position.y = 0.32;
+    const dermisMesh = new THREE.Mesh(new THREE.BoxGeometry(blockWidth, 0.08, blockDepth), dermisMat);
+    dermisMesh.position.y = 0.34;
     dermisMesh.castShadow = true;
     dermisMesh.receiveShadow = true;
     strataGroup.add(dermisMesh);
 
-    // Dynamic Skin Plane for Realistic Elastic Dimpling
+    // Dynamic Top Skin Plane for Needle Dimpling
     const topSkinGeo = new THREE.PlaneGeometry(blockWidth, blockDepth, 32, 32);
     topSkinGeo.rotateX(-Math.PI / 2);
     const topSkinMat = new THREE.MeshStandardMaterial({ map: skinTex, roughness: 0.38, metalness: 0.04, side: THREE.DoubleSide });
     const topSkin = new THREE.Mesh(topSkinGeo, topSkinMat);
-    topSkin.position.y = 0.411;
+    topSkin.position.y = 0.381;
     topSkin.receiveShadow = true;
     strataGroup.add(topSkin);
     skinMeshRef.current = topSkin;
     originalSkinPositionsRef.current = new Float32Array(topSkinGeo.attributes.position.array);
+
+    // Hair shafts emerging from epidermis
+    const hairMat = new THREE.MeshBasicMaterial({ color: 0x1f2937 });
+    for (let i = 0; i < 18; i++) {
+      const hCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3((Math.random() - 0.5) * 1.0, 0.38, (Math.random() - 0.5) * 0.7),
+        new THREE.Vector3((Math.random() - 0.5) * 1.0 + 0.02, 0.44 + Math.random() * 0.04, (Math.random() - 0.5) * 0.7 + 0.02),
+        new THREE.Vector3((Math.random() - 0.5) * 1.0 + 0.05, 0.50 + Math.random() * 0.06, (Math.random() - 0.5) * 0.7 + 0.04)
+      ]);
+      const hair = new THREE.Mesh(new THREE.TubeGeometry(hCurve, 8, 0.002, 4, false), hairMat);
+      strataGroup.add(hair);
+    }
 
     // Target Acupoint Marker Ring on Strata Skin
     const beacon = new THREE.Mesh(
@@ -1065,7 +1157,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
     );
     beacon.rotation.x = -Math.PI / 2;
-    beacon.position.set(0, 0.413, 0.20);
+    beacon.position.set(0, 0.383, 0.20);
     strataGroup.add(beacon);
 
     // Thermal Bloom Ring (When Moxa is active)
@@ -1074,22 +1166,56 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       new THREE.MeshBasicMaterial({ color: 0xff6b00, transparent: true, opacity: 0.0, side: THREE.DoubleSide })
     );
     thermalRing.rotation.x = -Math.PI / 2;
-    thermalRing.position.set(0, 0.414, 0.20);
+    thermalRing.position.set(0, 0.384, 0.20);
     strataGroup.add(thermalRing);
     thermalRingRef.current = thermalRing;
 
-    // --- LAYER 2: Subcutaneous Adipose (Continuous Realistic Cellular Fat Block) ---
+    // --- LAYER 2: DERMIS (No Gap! Directly below Epidermis, y = 0.16 to 0.30, height 0.14) ---
+    const reticularDermisMat = new THREE.MeshStandardMaterial({
+      color: 0xdda792,
+      roughness: 0.35,
+      metalness: 0.05
+    });
+    const reticularMesh = new THREE.Mesh(new THREE.BoxGeometry(blockWidth, 0.14, blockDepth), reticularDermisMat);
+    reticularMesh.position.y = 0.23;
+    strataGroup.add(reticularMesh);
+
+    // Dermal Micro-Capillaries & Coiled Sweat Glands
+    const dermalCapMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.3 });
+    const dermalVenMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.3 });
+    for (let c = 0; c < 12; c++) {
+      const capCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3((Math.random() - 0.5) * 1.0, 0.18, 0.43),
+        new THREE.Vector3((Math.random() - 0.5) * 1.0, 0.26 + Math.random() * 0.05, 0.44),
+        new THREE.Vector3((Math.random() - 0.5) * 1.0, 0.31, 0.43)
+      ]);
+      const mat = c % 2 === 0 ? dermalCapMat : dermalVenMat;
+      const cap = new THREE.Mesh(new THREE.TubeGeometry(capCurve, 10, 0.004, 6, false), mat);
+      strataGroup.add(cap);
+    }
+
+    // Coiled Yellow Sweat Gland
+    const sweatCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0.18, 0.34, 0.44),
+      new THREE.Vector3(0.19, 0.27, 0.44),
+      new THREE.Vector3(0.17, 0.22, 0.44),
+      new THREE.Vector3(0.20, 0.19, 0.44)
+    ]);
+    const sweatMesh = new THREE.Mesh(new THREE.TubeGeometry(sweatCurve, 14, 0.005, 6, false), new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.3 }));
+    strataGroup.add(sweatMesh);
+
+    // --- LAYER 3: HYPODERMIS / SUBCUTANEOUS ADIPOSE (No Gap! y = -0.06 to 0.16, height 0.22) ---
     const fatBaseMat = new THREE.MeshStandardMaterial({
       map: fatTex,
-      roughness: 0.30,
-      metalness: 0.05,
+      roughness: 0.28,
+      metalness: 0.06,
       color: 0xf59e0b
     });
-    const fatBase = new THREE.Mesh(new THREE.BoxGeometry(blockWidth, 0.24, blockDepth), fatBaseMat);
-    fatBase.position.y = 0.11;
+    const fatBase = new THREE.Mesh(new THREE.BoxGeometry(blockWidth, 0.22, blockDepth), fatBaseMat);
+    fatBase.position.y = 0.05;
     strataGroup.add(fatBase);
 
-    // Front edge delicate micro-lobules
+    // Dense Clustered Lipid Lobules along the front edge
     const lobuleGeo = new THREE.SphereGeometry(0.024, 10, 10);
     const lobuleMat = new THREE.MeshStandardMaterial({
       color: 0xf59e0b,
@@ -1098,55 +1224,69 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       emissive: 0x78350f,
       emissiveIntensity: 0.15
     });
-    for (let x = -0.55; x <= 0.55; x += 0.08) {
-      for (let y = 0.02; y <= 0.20; y += 0.07) {
+    for (let x = -0.55; x <= 0.55; x += 0.075) {
+      for (let y = -0.04; y <= 0.14; y += 0.065) {
         const lobule = new THREE.Mesh(lobuleGeo, lobuleMat);
-        lobule.position.set(x + (Math.random() - 0.5) * 0.03, y, 0.46);
+        lobule.position.set(x + (Math.random() - 0.5) * 0.02, y, 0.435);
         strataGroup.add(lobule);
       }
     }
 
-    // --- LAYER 3: Deep Fascia Sheath (Glistening Silvery Aponeurosis) ---
+    // --- LAYER 4: DEEP FASCIA SHEATH (No Gap! y = -0.08 to -0.06, height 0.02) ---
     const fasciaSheath = new THREE.Mesh(
-      new THREE.BoxGeometry(blockWidth, 0.014, blockDepth),
+      new THREE.BoxGeometry(blockWidth, 0.02, blockDepth),
       new THREE.MeshStandardMaterial({
         color: 0xf8fafc,
-        roughness: 0.20,
-        metalness: 0.15,
+        roughness: 0.15,
+        metalness: 0.18,
         transparent: true,
-        opacity: 0.90
+        opacity: 0.92
       })
     );
-    fasciaSheath.position.y = -0.01;
+    fasciaSheath.position.y = -0.07;
     strataGroup.add(fasciaSheath);
 
-    // --- LAYER 4: Striated Skeletal Muscle Layer ---
+    // --- LAYER 5: DEEP STRIATED SKELETAL MUSCLE (No Gap! y = -0.42 to -0.08, height 0.34) ---
     const muscleBase = new THREE.Mesh(
-      new THREE.BoxGeometry(blockWidth, 0.38, blockDepth),
-      new THREE.MeshStandardMaterial({ map: muscleTex, roughness: 0.42 })
+      new THREE.BoxGeometry(blockWidth, 0.34, blockDepth),
+      new THREE.MeshStandardMaterial({ map: muscleTex, roughness: 0.40 })
     );
-    muscleBase.position.y = -0.21;
+    muscleBase.position.y = -0.25;
     strataGroup.add(muscleBase);
 
-    // Muscle Fascicle Cylinders running horizontally
+    // Striated Muscle Fascicles with Tendon Ends and Cross-Sections
     const fascicleMat = new THREE.MeshStandardMaterial({ map: muscleTex, roughness: 0.30, metalness: 0.12 });
-    for (let y = -0.36; y <= -0.04; y += 0.045) {
-      const fascicle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, blockWidth, 12), fascicleMat);
+    const tendonMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.25 });
+
+    for (let y = -0.40; y <= -0.10; y += 0.048) {
+      // Cylindrical Muscle Fascicle
+      const fascicle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, blockWidth * 0.85, 14), fascicleMat);
       fascicle.rotation.z = Math.PI / 2;
-      fascicle.position.set(0, y, 0.46);
+      fascicle.position.set(0, y, 0.435);
       strataGroup.add(fascicle);
+
+      // Tendinous Aponeurosis Caps on Ends
+      const tendonCapL = new THREE.Mesh(new THREE.CylinderGeometry(0.017, 0.017, blockWidth * 0.10, 14), tendonMat);
+      tendonCapL.rotation.z = Math.PI / 2;
+      tendonCapL.position.set(-0.52, y, 0.435);
+      strataGroup.add(tendonCapL);
+
+      const tendonCapR = new THREE.Mesh(new THREE.CylinderGeometry(0.017, 0.017, blockWidth * 0.10, 14), tendonMat);
+      tendonCapR.rotation.z = Math.PI / 2;
+      tendonCapR.position.set(0.52, y, 0.435);
+      strataGroup.add(tendonCapR);
     }
 
-    // --- LAYER 5: 3D BRANCHING NERVES & BLOOD VESSELS ---
+    // --- LAYER 6: 3D BRANCHING NERVES & ARTERIAL PLEXUS ---
     const neuroVascularGroup = new THREE.Group();
     strataGroup.add(neuroVascularGroup);
 
-    // Main Nerve Trunk (Glowing Golden Yellow)
+    // Main Golden Myelin Nerve Trunk
     const nerveCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.25, 0.22, 0.46),
-      new THREE.Vector3(0.12, 0.08, 0.45),
-      new THREE.Vector3(0.04, -0.04, 0.44),
-      new THREE.Vector3(0.0, -0.22, 0.20) // Terminating at the deep knot
+      new THREE.Vector3(0.24, 0.20, 0.44),
+      new THREE.Vector3(0.12, 0.05, 0.43),
+      new THREE.Vector3(0.04, -0.07, 0.42),
+      new THREE.Vector3(0.0, -0.28, 0.20) // Terminating at deep motor endplate knot
     ]);
     const nerveMat = new THREE.MeshStandardMaterial({
       color: 0xfacc15,
@@ -1155,43 +1295,43 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       roughness: 0.2,
       metalness: 0.1
     });
-    const nerveMesh = new THREE.Mesh(new THREE.TubeGeometry(nerveCurve, 30, 0.009, 8, false), nerveMat);
+    const nerveMesh = new THREE.Mesh(new THREE.TubeGeometry(nerveCurve, 32, 0.009, 8, false), nerveMat);
     neuroVascularGroup.add(nerveMesh);
     nerveMatRef.current = nerveMat;
 
     // Secondary Terminal Axon Branches
     const branchCurve1 = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.04, -0.04, 0.44),
-      new THREE.Vector3(-0.16, -0.14, 0.45),
-      new THREE.Vector3(-0.32, -0.26, 0.44)
+      new THREE.Vector3(0.04, -0.07, 0.42),
+      new THREE.Vector3(-0.16, -0.16, 0.43),
+      new THREE.Vector3(-0.32, -0.28, 0.42)
     ]);
     const branch1 = new THREE.Mesh(new THREE.TubeGeometry(branchCurve1, 16, 0.005, 6, false), nerveMat);
     neuroVascularGroup.add(branch1);
 
-    // Arterial Blood Vessel (Crimson)
+    // Branching Arterial Blood Vessel (Crimson)
     const arteryCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.30, 0.22, 0.45),
-      new THREE.Vector3(0.18, 0.06, 0.44),
-      new THREE.Vector3(0.08, -0.08, 0.45),
-      new THREE.Vector3(0.04, -0.22, 0.20)
+      new THREE.Vector3(0.28, 0.20, 0.43),
+      new THREE.Vector3(0.16, 0.04, 0.42),
+      new THREE.Vector3(0.08, -0.10, 0.43),
+      new THREE.Vector3(0.04, -0.28, 0.20)
     ]);
     const arteryMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, emissive: 0x991b1b, emissiveIntensity: 0.7, roughness: 0.3 });
-    const arteryMesh = new THREE.Mesh(new THREE.TubeGeometry(arteryCurve, 30, 0.010, 8, false), arteryMat);
+    const arteryMesh = new THREE.Mesh(new THREE.TubeGeometry(arteryCurve, 32, 0.010, 8, false), arteryMat);
     neuroVascularGroup.add(arteryMesh);
 
     // Accompanying Venule (Deep Blue)
     const veinCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.32, 0.22, 0.44),
-      new THREE.Vector3(0.20, 0.07, 0.43),
-      new THREE.Vector3(0.10, -0.07, 0.43)
+      new THREE.Vector3(0.30, 0.20, 0.42),
+      new THREE.Vector3(0.18, 0.05, 0.41),
+      new THREE.Vector3(0.10, -0.09, 0.41)
     ]);
     const veinMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.35 });
     const veinMesh = new THREE.Mesh(new THREE.TubeGeometry(veinCurve, 20, 0.008, 8, false), veinMat);
     neuroVascularGroup.add(veinMesh);
 
-    // 8. 3D Pathology: Hyper-Contracted Spastic Trigger Knot
+    // 5. 3D Pathology: Hyper-Contracted Spastic Trigger Knot
     const knot3DGroup = new THREE.Group();
-    knot3DGroup.position.set(0.0, -0.22, 0.20);
+    knot3DGroup.position.set(0.0, -0.28, 0.20);
     strataGroup.add(knot3DGroup);
     knotMeshRef.current = knot3DGroup;
 
@@ -1203,7 +1343,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     // Fascial Adhesion (Problem 2)
     const adhesion3DGroup = new THREE.Group();
-    adhesion3DGroup.position.set(0.0, 0.02, 0.20);
+    adhesion3DGroup.position.set(0.0, -0.06, 0.20);
     adhesion3DGroup.visible = false;
     strataGroup.add(adhesion3DGroup);
     adhesionMeshRef.current = adhesion3DGroup;
@@ -1216,7 +1356,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     // Cold Damp Stasis (Problem 3)
     const stasis3DGroup = new THREE.Group();
-    stasis3DGroup.position.set(0.0, 0.32, 0.20);
+    stasis3DGroup.position.set(0.0, 0.26, 0.20);
     stasis3DGroup.visible = false;
     strataGroup.add(stasis3DGroup);
     stasisMeshRef.current = stasis3DGroup;
@@ -1228,11 +1368,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     stasis3DGroup.add(stasisCore);
 
     // =========================================================================
-    // 9. 3D SURGICAL TOOLS (Needle, Glass Cup, Moxa Roll)
+    // 6. 3D SURGICAL TOOLS (Needle, Glass Cup, Moxa Roll)
     // =========================================================================
     // A. 0.18mm Guide-Tube Needle
     const needleAssembly = new THREE.Group();
-    needleAssembly.position.set(0.0, 0.85, 0.20);
+    needleAssembly.position.set(0.0, 0.82, 0.20);
     strataGroup.add(needleAssembly);
     activeNeedleRef.current = needleAssembly;
 
@@ -1257,13 +1397,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       new THREE.CylinderGeometry(0.024, 0.024, 0.40, 20, 1, true),
       new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.08, transmission: 0.85 })
     );
-    guideTube.position.set(0.0, 0.52, 0.20);
+    guideTube.position.set(0.0, 0.48, 0.20);
     strataGroup.add(guideTube);
     guideTubeRef.current = guideTube;
 
     // B. Glass Fire Cup
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(0.0, 0.52, 0.20);
+    cupGroup.position.set(0.0, 0.48, 0.20);
     cupGroup.visible = false;
     strataGroup.add(cupGroup);
     activeCupRef.current = cupGroup;
@@ -1277,7 +1417,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     // C. Pure Herbal Moxa Roll
     const moxaGroup = new THREE.Group();
-    moxaGroup.position.set(0.0, 0.65, 0.20);
+    moxaGroup.position.set(0.0, 0.62, 0.20);
     moxaGroup.visible = false;
     strataGroup.add(moxaGroup);
     activeMoxaRef.current = moxaGroup;
@@ -1296,7 +1436,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     moxaEmber.position.y = 0.015;
     moxaGroup.add(moxaEmber);
 
-    // 10. 5,000 3D Thanos Particles
+    // 7. 5,000 3D Thanos Particles
     const pCount = 5000;
     const pGeo = new THREE.BufferGeometry();
     const pPositions = new Float32Array(pCount * 3);
@@ -1304,7 +1444,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     for (let i = 0; i < pCount; i++) {
       pPositions[i * 3] = targetX;
-      pPositions[i * 3 + 1] = -0.10;
+      pPositions[i * 3 + 1] = -0.16;
       pPositions[i * 3 + 2] = targetZ;
 
       pVelocities[i * 3] = (Math.random() - 0.5) * 0.025;
@@ -1340,7 +1480,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       animId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Slow gentle rotation of diagnostic pedestal
+      // Diagnostic LED rotation
       ringLed.rotation.z += 0.004;
 
       // Thanos Particles Physics
@@ -1354,7 +1494,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           pos[i * 3] += vel[i * 3];
           pos[i * 3 + 1] += vel[i * 3 + 1];
           pos[i * 3 + 2] += vel[i * 3 + 2];
-          vel[i * 3 + 1] += 0.0004; // Gentle upward ash drift
+          vel[i * 3 + 1] += 0.0004; // Upward ash drift
         }
         pData.geo.attributes.position.needsUpdate = true;
         pData.mat.opacity = Math.max(0, 1.0 - pData.timer / 2.2);
@@ -1411,31 +1551,31 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       className={`relative w-full overflow-hidden bg-neutral-950 transition-all select-none ${
         isFullscreen 
           ? 'fixed inset-0 z-50 rounded-none h-screen w-screen' 
-          : 'h-[88vh] min-h-[750px] max-h-[960px] rounded-none border-y border-neutral-800'
+          : 'h-[90vh] min-h-[760px] max-h-[960px] rounded-none border-y border-neutral-800'
       }`}
     >
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
       {/* ===================================================================== */}
-      {/* HUD OVERLAY INTERFACE (EVEN MULTIPLES OF 4 SPACING THROUGHOUT)       */}
+      {/* HUD OVERLAY INTERFACE (STRICT MULTIPLES OF 4 SPACING THROUGHOUT)     */}
       {/* ===================================================================== */}
 
-      {/* Top Header Bar (p-4 gap-4, z-40 so fullscreen/audio controls are always accessible) */}
+      {/* Top Header Bar: Regional Zoom Navigation (p-4 gap-4, z-40) */}
       <div className="absolute top-4 inset-x-4 z-40 flex items-center justify-between pointer-events-none">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 p-2 px-4 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-xl pointer-events-auto">
+          <div className="flex items-center gap-2 p-2 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-xl pointer-events-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY SUITE</span>
           </div>
 
-          {/* Perspective View Modes (gap-2) */}
-          <div className="hidden md:flex items-center gap-2 p-1 bg-neutral-950/80 backdrop-blur-md border border-neutral-800 rounded-2xl pointer-events-auto shadow-xl">
+          {/* Body Region Zoom Switcher (gap-2) */}
+          <div className="hidden lg:flex items-center gap-2 p-1 bg-neutral-950/85 backdrop-blur-md border border-neutral-800 rounded-2xl pointer-events-auto shadow-xl">
             <button
               type="button"
-              onClick={() => switchCameraView('dual')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                activeCameraView === 'dual'
+              onClick={() => navigateCameraToRegion('dual')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'dual'
                   ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
@@ -1445,27 +1585,63 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </button>
             <button
               type="button"
-              onClick={() => switchCameraView('body')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                activeCameraView === 'body'
+              onClick={() => navigateCameraToRegion('full')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'full'
                   ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
               <User className="w-3.5 h-3.5" />
-              <span>Whole Body Focus</span>
+              <span>Full Body</span>
             </button>
             <button
               type="button"
-              onClick={() => switchCameraView('strata')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                activeCameraView === 'strata'
+              onClick={() => navigateCameraToRegion('neck')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'neck'
                   ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Strata & Nerves</span>
+              <Activity className="w-3.5 h-3.5" />
+              <span>Neck / Occiput</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateCameraToRegion('hand')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'hand'
+                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              <Hand className="w-3.5 h-3.5" />
+              <span>Hand & Forearm</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateCameraToRegion('crown')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'crown'
+                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span>Crown / Head</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => navigateCameraToRegion('leg')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                activeRegion === 'leg'
+                  ? 'bg-emerald-500 text-neutral-950 shadow-md font-black'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              <Crosshair className="w-3.5 h-3.5" />
+              <span>Leg / Knee</span>
             </button>
           </div>
         </div>
@@ -1475,7 +1651,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <button
             type="button"
             onClick={() => setIsMuted(!isMuted)}
-            className="p-2.5 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-neutral-800 text-neutral-300 hover:text-white transition shadow-xl"
+            className="p-2.5 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-neutral-300 hover:text-white transition shadow-xl"
             title={isMuted ? 'Unmute' : 'Mute Sound'}
           >
             {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
@@ -1483,7 +1659,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <button
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="flex items-center gap-2 p-2.5 px-4 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-xl"
+            className="flex items-center gap-2 p-2.5 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-xl"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             <span>{isFullscreen ? 'Exit' : 'Full Screen'}</span>
@@ -1491,9 +1667,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         </div>
       </div>
 
-      {/* Left Panel: Acupoint & Pathology Selector (top-16 left-4 space-y-4 w-64) */}
+      {/* Left Panel: Acupoints & Strata Pathology (top-16 left-4 space-y-4 w-64) */}
       <div className="absolute top-16 left-4 z-20 flex flex-col space-y-4 pointer-events-auto w-64">
-        {/* Acupoint Pins Grid (p-4 space-y-2) */}
+        {/* Acupoints Grid (p-4 space-y-2) */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
@@ -1501,7 +1677,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               <span>3D Body Acupoints</span>
             </span>
             <span className="text-[9px] text-emerald-400 font-mono">
-              Click Dot
+              Click to Zoom
             </span>
           </div>
 
@@ -1572,8 +1748,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         </div>
       </div>
 
-      {/* Bottom Card: Essential Clinical Anatomy Intelligence (p-4 gap-4 max-w-xl) */}
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto max-w-xl hidden sm:block">
+      {/* Bottom Card: Essential Clinical Anatomy Intelligence (p-4 gap-4 max-w-lg) */}
+      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto max-w-lg hidden sm:block">
         <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-2xl space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <div className="flex items-center gap-2">
@@ -1618,7 +1794,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
       {/* Right Panel: Penetration Control & Tool Selection (top-16 right-4 space-y-4 w-72) */}
       <div className="absolute top-16 right-4 z-20 flex flex-col space-y-4 pointer-events-auto w-72">
-        {/* Needle Penetration Card (p-4 space-y-4) */}
+        {/* Needle Penetration & Hold-to-Plunge Card (p-4 space-y-4) */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
@@ -1649,17 +1825,27 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </div>
           </div>
 
-          {/* ONE-CLICK DROP NEEDLE BUTTON */}
-          <button
-            type="button"
-            data-testid="target-acupoint"
-            onClick={dropNeedleToTarget}
-            disabled={isSnapping}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs shadow-lg shadow-emerald-950/60 active:scale-95 transition flex items-center justify-center gap-2"
-          >
-            <ArrowDown className="w-4 h-4 animate-bounce" />
-            <span>{isSnapping ? 'Disintegrating in 3D...' : `Drop Needle to ${currentProb.depthTarget}mm Knot`}</span>
-          </button>
+          {/* INTERACTIVE HOLD-TO-PLUNGE OR DROP BUTTON */}
+          <div className="space-y-2">
+            <button
+              type="button"
+              data-testid="target-acupoint"
+              onClick={dropNeedleToTarget}
+              onMouseDown={startHoldPlunge}
+              onMouseUp={stopHoldPlunge}
+              onTouchStart={startHoldPlunge}
+              onTouchEnd={stopHoldPlunge}
+              disabled={isSnapping}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs shadow-lg shadow-emerald-950/60 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <ArrowDown className="w-4 h-4 animate-bounce" />
+              <span>{isSnapping ? 'Disintegrating in 3D...' : `Drop Needle to ${currentProb.depthTarget}mm Knot`}</span>
+            </button>
+            <div className="text-[10px] text-neutral-400 text-center flex items-center justify-center gap-1">
+              <Disc className="w-3 h-3 text-emerald-400" />
+              <span>Click once or press & hold to plunge</span>
+            </div>
+          </div>
 
           {/* Depth Presets (gap-2) */}
           <div className="grid grid-cols-3 gap-2 text-[10px]">
