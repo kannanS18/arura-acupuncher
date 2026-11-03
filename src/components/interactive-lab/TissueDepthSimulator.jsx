@@ -9,12 +9,11 @@ import {
   RotateCcw, 
   Sparkles, 
   Check, 
-  Flame, 
   Hand,
-  Activity,
   Layers,
-  Sliders,
-  ShieldCheck
+  Activity,
+  MoveDown,
+  Info
 } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetUrl';
 
@@ -34,7 +33,7 @@ function playAcuSound(type, isMuted) {
       snapOsc.frequency.setValueAtTime(1450, ctx.currentTime);
       snapOsc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.08);
 
-      snapGain.gain.setValueAtTime(0.7, ctx.currentTime);
+      snapGain.gain.setValueAtTime(0.75, ctx.currentTime);
       snapGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
 
       snapOsc.connect(snapGain);
@@ -61,7 +60,7 @@ function playAcuSound(type, isMuted) {
 
       const noiseGain = ctx.createGain();
       noiseGain.gain.setValueAtTime(0.01, ctx.currentTime);
-      noiseGain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.12);
+      noiseGain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.12);
       noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.4);
 
       whiteNoise.connect(filter);
@@ -78,7 +77,7 @@ function playAcuSound(type, isMuted) {
           const toneGain = ctx.createGain();
           toneOsc.type = 'sine';
           toneOsc.frequency.value = 528;
-          toneGain.gain.setValueAtTime(0.2, ctx.currentTime);
+          toneGain.gain.setValueAtTime(0.25, ctx.currentTime);
           toneGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.4);
           toneOsc.connect(toneGain);
           toneGain.connect(ctx.destination);
@@ -88,7 +87,6 @@ function playAcuSound(type, isMuted) {
       }, 250);
 
     } else if (type === 'suction') {
-      // Cupping vacuum draw sound
       const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < buffer.length; i++) {
@@ -105,7 +103,6 @@ function playAcuSound(type, isMuted) {
       noise.start();
 
     } else if (type === 'moxa') {
-      // Warm herbal moxa crackle
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
@@ -118,59 +115,182 @@ function playAcuSound(type, isMuted) {
       osc.start();
       osc.stop(ctx.currentTime + 0.35);
 
-    } else if (type === 'breach') {
-      // Instant painless dermal breach click
+    } else if (type === 'pickup') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(2400, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.03);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
       gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start();
-      osc.stop(ctx.currentTime + 0.03);
+      osc.stop(ctx.currentTime + 0.1);
+
+    } else if (type === 'breach') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(2200, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(280, ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.28, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.04);
     }
   } catch (_) {}
 }
 
-const PATHOLOGIES = [
+// Procedural Canvas Texture for Side Strata (Epidermis -> Adipose Fat Lobules -> Striated Muscle)
+function createSideStrataTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  // 1. Epidermis & Dermis (Top 0 to 120px)
+  const dermisGrad = ctx.createLinearGradient(0, 0, 0, 120);
+  dermisGrad.addColorStop(0, '#f2beaa');
+  dermisGrad.addColorStop(0.7, '#e5ad92');
+  dermisGrad.addColorStop(1, '#c87a64');
+  ctx.fillStyle = dermisGrad;
+  ctx.fillRect(0, 0, 512, 120);
+
+  // Dermal capillary micro-plexus
+  ctx.strokeStyle = 'rgba(220, 38, 38, 0.4)';
+  ctx.lineWidth = 1.2;
+  for (let i = 0; i < 30; i++) {
+    ctx.beginPath();
+    const x = Math.random() * 512;
+    ctx.moveTo(x, 118);
+    ctx.bezierCurveTo(x + (Math.random() - 0.5) * 40, 90, x + (Math.random() - 0.5) * 40, 60, x, 40);
+    ctx.stroke();
+  }
+
+  // 2. Subcutaneous Adipose Fat Lobules (120 to 280px)
+  const fatGrad = ctx.createLinearGradient(0, 120, 0, 280);
+  fatGrad.addColorStop(0, '#fef08a');
+  fatGrad.addColorStop(1, '#fde047');
+  ctx.fillStyle = fatGrad;
+  ctx.fillRect(0, 120, 512, 160);
+
+  // Clustered spherical adipose lipid cells
+  for (let i = 0; i < 400; i++) {
+    const cx = Math.random() * 512;
+    const cy = 125 + Math.random() * 150;
+    const r = 5 + Math.random() * 9;
+    ctx.fillStyle = Math.random() > 0.4 ? '#fde047' : '#f59e0b';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.45)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // Fibrous fascial collagen septa dividing fat lobules
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+  ctx.lineWidth = 2.0;
+  for (let i = 0; i < 7; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, 130 + i * 22);
+    ctx.bezierCurveTo(150, 140 + i * 22, 350, 120 + i * 22, 512, 135 + i * 22);
+    ctx.stroke();
+  }
+
+  // 3. Deep Striated Skeletal Muscle (280 to 512px)
+  const muscleGrad = ctx.createLinearGradient(0, 280, 0, 512);
+  muscleGrad.addColorStop(0, '#881337');
+  muscleGrad.addColorStop(0.5, '#700c2a');
+  muscleGrad.addColorStop(1, '#4c0519');
+  ctx.fillStyle = muscleGrad;
+  ctx.fillRect(0, 280, 512, 232);
+
+  // Horizontal muscle fascicle striations
+  for (let y = 285; y < 512; y += 3.5) {
+    ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(244, 63, 94, 0.5)' : 'rgba(76, 5, 25, 0.7)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(0, y + (Math.sin(y * 0.08) * 2));
+    ctx.bezierCurveTo(170, y + 2, 340, y - 2, 512, y);
+    ctx.stroke();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
+
+// Procedural Canvas Texture for Top Epidermis Skin with Micro-Pores
+function createTopSkinTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#e8b29c';
+  ctx.fillRect(0, 0, 512, 512);
+
+  // Micro-dermal pore noise
+  for (let i = 0; i < 1500; i++) {
+    const x = Math.random() * 512;
+    const y = Math.random() * 512;
+    ctx.fillStyle = Math.random() > 0.5 ? 'rgba(215, 150, 130, 0.35)' : 'rgba(255, 220, 210, 0.25)';
+    ctx.beginPath();
+    ctx.arc(x, y, 0.8 + Math.random() * 1.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
+const CLINICAL_PROBLEMS = [
   {
     id: 'knot',
     name: 'Spastic Motor Knot',
-    layer: 'Deep Striated Muscle',
-    targetDepth: 12.0, // mm
-    maxDepth: 15.0,
-    requiredTool: 'needle',
-    toolTitle: '0.18mm Solid Needle',
-    skinEffectDesc: 'Painless dermal breach -> glides into deep muscle -> depolarizes knot',
+    layer: 'Deep Striated Muscle (12mm)',
+    depthTarget: 12.0,
+    depthUnit: 'mm',
+    toolId: 'needle',
+    toolName: '0.18mm Solid Needle',
+    description: 'Hyper-contracted motor endplate nodule in deep skeletal muscle.',
+    actionHint: 'Click needle on tray, then drag mouse down on skin to pierce 12mm knot',
+    skinPhysicsText: 'Skin dimples downward on contact, then pops through painless dermal barrier',
     colorHex: 0xff1e46,
-    reliefTitle: 'Motor Endplate Decompressed',
+    reliefTitle: 'Deep Motor Spasm Dissolved (De-Qi)',
     reliefText: 'Spastic knot vaporized into ash. Muscle fibers uncoil into relaxed parallel flow.'
   },
   {
     id: 'adhesion',
     name: 'Fascial Adhesion',
-    layer: 'Subcutaneous Fascia',
-    targetDepth: 6.0, // mm suction bulge
-    maxDepth: 10.0,
-    requiredTool: 'cup',
-    toolTitle: 'Glass Fire Cupping',
-    skinEffectDesc: 'Vacuum negative pressure -> skin bulges upward -> de-glues stuck fascia',
-    colorHex: 0xa855f7,
+    layer: 'Subcutaneous Fascia (6mm)',
+    depthTarget: 6.0,
+    depthUnit: 'mm bulge',
+    toolId: 'cup',
+    toolName: 'Glass Fire Cupping',
+    description: 'Tangled fibrotic fascial matrix restricting micro-circulation.',
+    actionHint: 'Click cup on tray, place on skin, then drag mouse up to draw vacuum suction',
+    skinPhysicsText: 'Skin bulges and rises upward inside glass dome, decompressing stuck fascia',
+    colorHex: 0xc084fc,
     reliefTitle: 'Myofascial Adhesion Unlocked',
     reliefText: 'Negative pressure separates restricted fascia. Micro-circulation surges +380%.'
   },
   {
     id: 'stasis',
-    name: 'Cold Damp Stagnation',
-    layer: 'Epidermis & Dermis',
-    targetDepth: 43.0, // °C thermal heat
-    maxDepth: 45.0,
-    requiredTool: 'moxa',
-    toolTitle: 'Pure Herbal Moxa',
-    skinEffectDesc: 'Smoldering mugwort roll -> 43°C infrared heat bloom dilates micro-capillaries',
+    name: 'Cold Damp Stasis',
+    layer: 'Epidermis & Dermis (43°C)',
+    depthTarget: 43.0,
+    depthUnit: '°C',
+    toolId: 'moxa',
+    toolName: 'Pure Herbal Moxa Roll',
+    description: 'Cold micro-vascular constriction and stagnant lymphatic circulation.',
+    actionHint: 'Click moxa on tray, hover smoldering roll above skin to radiate 43°C heat',
+    skinPhysicsText: 'Expanding thermal heat ring radiates across skin, dilating micro-capillaries',
     colorHex: 0x38bdf8,
     reliefTitle: 'Cold Stagnation Vaporized',
     reliefText: 'Infrared heat clears cold constriction. Soothing therapeutic warmth active.'
@@ -179,39 +299,197 @@ const PATHOLOGIES = [
 
 export default function TissueDepthSimulator({ onOpenBooking }) {
   const mountRef = useRef(null);
-  const [selectedProblemIndex, setSelectedProblemIndex] = useState(0);
+  const [selectedProblemIdx, setSelectedProblemIdx] = useState(0);
   const [activeTool, setActiveTool] = useState('needle'); // 'needle', 'cup', 'moxa'
-  const [interactiveValue, setInteractiveValue] = useState(0); // 0 to 15 (depth mm or suction mm or temp)
+  const [interactiveDepth, setInteractiveDepth] = useState(0);
   const [isDisintegrated, setIsDisintegrated] = useState(false);
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const [trayHoveredTool, setTrayHoveredTool] = useState(null);
 
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
 
-  // Dynamic 3D Meshes & Deformers
-  const skinSurfaceMeshRef = useRef(null);
+  // 3D Meshes
+  const skinMeshRef = useRef(null);
   const originalSkinPositionsRef = useRef(null);
   const knotMeshRef = useRef(null);
   const adhesionMeshRef = useRef(null);
   const stasisMeshRef = useRef(null);
-  const thermalBloomMeshRef = useRef(null);
+  const thermalRingRef = useRef(null);
 
-  // Active 3D Tools
+  // Active in-hand 3D tools
   const activeNeedleRef = useRef(null);
   const activeCupRef = useRef(null);
   const activeMoxaRef = useRef(null);
 
+  // Tray 3D Tool Groups
+  const trayNeedleRef = useRef(null);
+  const trayCupRef = useRef(null);
+  const trayMoxaRef = useRef(null);
+
+  // Mouse Drag Tracking
+  const isDraggingRef = useRef(false);
+  const dragStartYRef = useRef(0);
+  const dragStartValRef = useRef(0);
+
   // 3D Thanos Particles
   const particlesRef = useRef(null);
 
-  const currentProb = PATHOLOGIES[selectedProblemIndex];
+  const currentProb = CLINICAL_PROBLEMS[selectedProblemIdx];
 
-  // Initialize Three.js 3D Scene
+  // Helper to apply skin vertex deformation and tool height
+  const applySkinPhysicsAndToolHeight = useCallback((val) => {
+    const skinMesh = skinMeshRef.current;
+    const origPos = originalSkinPositionsRef.current;
+    if (!skinMesh || !origPos) return;
+
+    const posAttr = skinMesh.geometry.attributes.position;
+    const posArr = posAttr.array;
+
+    // Contact center in skin local coordinates: (0, 0.85)
+    const targetLocalX = 0;
+    const targetLocalZ = 0.85;
+
+    if (activeTool === 'needle') {
+      const fraction = Math.min(1.0, val / 15.0);
+      if (activeNeedleRef.current) {
+        activeNeedleRef.current.position.y = 1.25 - fraction * 1.29;
+      }
+
+      // Skin Elastic Dimpling (presses down before pop)
+      const dimpleAmount = val < 2.5 ? (val / 2.5) * 0.08 : Math.max(0, 0.08 - (val - 2.5) * 0.03);
+
+      for (let i = 0; i < posArr.length; i += 3) {
+        const vx = origPos[i];
+        const vz = origPos[i + 2];
+        const dist = Math.hypot(vx - targetLocalX, vz - targetLocalZ);
+
+        if (dist < 0.28) {
+          const falloff = Math.cos((dist / 0.28) * (Math.PI / 2));
+          posArr[i + 1] = origPos[i + 1] - dimpleAmount * falloff;
+        } else {
+          posArr[i + 1] = origPos[i + 1];
+        }
+      }
+      posAttr.needsUpdate = true;
+
+    } else if (activeTool === 'cup') {
+      const fraction = Math.min(1.0, val / 10.0);
+      if (activeCupRef.current) {
+        activeCupRef.current.position.y = 1.35 - fraction * 0.55;
+      }
+
+      const bulgeHeight = fraction * 0.16; // Bulges upward inside glass dome
+      for (let i = 0; i < posArr.length; i += 3) {
+        const vx = origPos[i];
+        const vz = origPos[i + 2];
+        const dist = Math.hypot(vx - targetLocalX, vz - targetLocalZ);
+
+        if (dist < 0.28) {
+          const falloff = Math.cos((dist / 0.28) * (Math.PI / 2));
+          posArr[i + 1] = origPos[i + 1] + bulgeHeight * falloff;
+        } else {
+          posArr[i + 1] = origPos[i + 1];
+        }
+      }
+      posAttr.needsUpdate = true;
+
+    } else if (activeTool === 'moxa') {
+      const fraction = Math.min(1.0, val / 45.0);
+      if (activeMoxaRef.current) {
+        activeMoxaRef.current.position.y = 1.35 - fraction * 0.45;
+      }
+
+      if (thermalRingRef.current) {
+        thermalRingRef.current.material.opacity = fraction * 0.9;
+      }
+    }
+  }, [activeTool]);
+
+  // 3D Thanos Snap Disintegration Engine
+  const triggerThanosDisintegration = useCallback(() => {
+    if (isSnapping || isDisintegrated) return;
+    setIsSnapping(true);
+    playAcuSound('snap', isMuted);
+
+    // Hide active pathology mesh
+    if (knotMeshRef.current) knotMeshRef.current.visible = false;
+    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = false;
+    if (stasisMeshRef.current) stasisMeshRef.current.visible = false;
+
+    // Spawn 5,000 Thanos 3D Particles at target location
+    const pData = particlesRef.current;
+    if (pData) {
+      pData.active = true;
+      pData.timer = 0;
+      pData.mat.opacity = 1.0;
+      pData.mat.color = new THREE.Color(currentProb.colorHex);
+
+      const posAttr = pData.geo.attributes.position;
+      const posArr = posAttr.array;
+      const originY = activeTool === 'needle' ? -0.42 : activeTool === 'cup' ? 0.05 : 0.68;
+
+      for (let i = 0; i < 5000; i++) {
+        posArr[i * 3] = -0.65 + (Math.random() - 0.5) * 0.35;
+        posArr[i * 3 + 1] = originY + (Math.random() - 0.5) * 0.35;
+        posArr[i * 3 + 2] = 0.91 + (Math.random() - 0.5) * 0.35;
+      }
+      posAttr.needsUpdate = true;
+    }
+
+    setTimeout(() => {
+      setIsDisintegrated(true);
+      setIsSnapping(false);
+    }, 400);
+  }, [isSnapping, isDisintegrated, activeTool, isMuted, currentProb]);
+
+  // Handle interactive value change
+  const handleInteractiveChange = useCallback((val) => {
+    setInteractiveDepth(val);
+    applySkinPhysicsAndToolHeight(val);
+
+    // Audio cue on initial breach or suction
+    if (activeTool === 'needle' && val >= 1.5 && val < 2.5) {
+      playAcuSound('breach', isMuted);
+    } else if (activeTool === 'cup' && val >= 3.0 && val < 4.0) {
+      playAcuSound('suction', isMuted);
+    } else if (activeTool === 'moxa' && val >= 25.0 && val < 28.0) {
+      playAcuSound('moxa', isMuted);
+    }
+
+    if (val >= currentProb.depthTarget && !isDisintegrated && !isSnapping) {
+      triggerThanosDisintegration();
+    }
+  }, [activeTool, currentProb.depthTarget, isDisintegrated, isSnapping, isMuted, applySkinPhysicsAndToolHeight, triggerThanosDisintegration]);
+
+  // Reset treatment
+  const handleReset = useCallback(() => {
+    setIsDisintegrated(false);
+    setIsSnapping(false);
+    setInteractiveDepth(0);
+    applySkinPhysicsAndToolHeight(0);
+
+    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIdx === 0);
+    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIdx === 1);
+    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIdx === 2);
+
+    if (thermalRingRef.current) thermalRingRef.current.material.opacity = 0;
+  }, [selectedProblemIdx, applySkinPhysicsAndToolHeight]);
+
+  // Select tool (from 3D tray or HUD)
+  const handleSelectTool = useCallback((toolId) => {
+    setActiveTool(toolId);
+    const probIdx = toolId === 'needle' ? 0 : toolId === 'cup' ? 1 : 2;
+    setSelectedProblemIdx(probIdx);
+    handleReset();
+    playAcuSound('pickup', isMuted);
+  }, [handleReset, isMuted]);
+
+  // Initialize Three.js Scene
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
@@ -224,12 +502,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     scene.background = new THREE.Color(0x06080d);
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(2.6, 3.0, 3.6);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(2.4, 2.6, 3.8);
     cameraRef.current = camera;
 
     // 2. High-Performance WebGL Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -240,325 +518,385 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 3. OrbitControls (Mouse drag to orbit 360, scroll to zoom)
+    // 3. OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.maxDistance = 7.0;
+    controls.dampingFactor = 0.06;
+    controls.maxDistance = 6.8;
     controls.minDistance = 1.8;
-    controls.target.set(0, 0.2, 0);
+    controls.target.set(-0.2, 0.05, 0.2);
     controlsRef.current = controls;
 
     // 4. Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xfff5ee, 1.3);
+    const ambientLight = new THREE.AmbientLight(0xfff7f2, 1.3);
     scene.add(ambientLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
     keyLight.position.set(4, 6, 4);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
     scene.add(keyLight);
 
     const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
     rimLight.position.set(-4, 3, -3);
     scene.add(rimLight);
 
-    const softFloorLight = new THREE.PointLight(0x10b981, 0.9, 8);
-    softFloorLight.position.set(0, -0.6, 0);
-    scene.add(softFloorLight);
+    const floorLight = new THREE.PointLight(0x10b981, 0.8, 8);
+    floorLight.position.set(0, -0.6, 0);
+    scene.add(floorLight);
 
-    // 5. Build 3D Stratified Anatomical Human Tissue Block (Cutaway View)
+    // 5. PHOTOREALISTIC 3D ANATOMICAL TISSUE BLOCK
     const tissueGroup = new THREE.Group();
-    tissueGroup.position.set(-0.55, 0, 0);
+    tissueGroup.position.set(-0.65, 0, 0);
     scene.add(tissueGroup);
 
-    const blockWidth = 2.2;
-    const blockDepth = 2.2;
+    const blockWidth = 2.6;
+    const blockHeight = 1.5;
+    const blockDepth = 1.8;
 
-    // Texture Loader for biological cross-section
+    // Textures:
+    // Front face: High-res photograph cross section showing real cells, fat globules, and striated muscle
     const textureLoader = new THREE.TextureLoader();
-    const cutawayTexture = textureLoader.load(getAssetUrl('tissue_cross_section_clean.jpg'));
-    cutawayTexture.wrapS = THREE.RepeatWrapping;
-    cutawayTexture.wrapT = THREE.RepeatWrapping;
+    const crossSectionTex = textureLoader.load(getAssetUrl('tissue_cross_section_clean.jpg'));
+    crossSectionTex.colorSpace = THREE.SRGBColorSpace;
 
-    // Layer 1: Deep Striated Skeletal Muscle (Bottom Layer, 9–15mm)
-    const muscleGeo = new THREE.BoxGeometry(blockWidth, 0.6, blockDepth);
-    const muscleMat = new THREE.MeshStandardMaterial({
-      color: 0x881337,
-      map: cutawayTexture,
-      roughness: 0.55,
+    // Side & Back faces: Continuous multi-layer anatomical strata texture (Skin -> Adipose -> Striated Muscle)
+    const sideStrataTex = createSideStrataTexture();
+    sideStrataTex.colorSpace = THREE.SRGBColorSpace;
+
+    // Top face: Natural epidermis with micro-pores
+    const topSkinTex = createTopSkinTexture();
+    topSkinTex.colorSpace = THREE.SRGBColorSpace;
+
+    const frontCutawayMat = new THREE.MeshStandardMaterial({
+      map: crossSectionTex,
+      roughness: 0.42,
       metalness: 0.05
     });
-    const muscleMesh = new THREE.Mesh(muscleGeo, muscleMat);
-    muscleMesh.position.y = -0.3;
-    muscleMesh.castShadow = true;
-    muscleMesh.receiveShadow = true;
-    tissueGroup.add(muscleMesh);
 
-    // Muscle fiber striated ridges
-    for (let i = -4; i <= 4; i++) {
-      const fiberGeo = new THREE.BoxGeometry(blockWidth + 0.01, 0.02, 0.08);
-      const fiberMat = new THREE.MeshBasicMaterial({ color: 0x9f1239 });
-      const fiber = new THREE.Mesh(fiberGeo, fiberMat);
-      fiber.position.set(0, -0.15 - Math.abs(i) * 0.03, i * 0.22);
-      tissueGroup.add(fiber);
-    }
-
-    // Layer 2: Subcutaneous Fascia & Adipose (Middle Layer, 4–8mm)
-    const fasciaGeo = new THREE.BoxGeometry(blockWidth, 0.45, blockDepth);
-    const fasciaMat = new THREE.MeshStandardMaterial({
-      color: 0xfef08a,
-      roughness: 0.8,
+    const sideStrataMat = new THREE.MeshStandardMaterial({
+      map: sideStrataTex,
+      roughness: 0.45,
       metalness: 0.02
     });
-    const fasciaMesh = new THREE.Mesh(fasciaGeo, fasciaMat);
-    fasciaMesh.position.y = 0.225;
-    fasciaMesh.castShadow = true;
-    fasciaMesh.receiveShadow = true;
-    tissueGroup.add(fasciaMesh);
 
-    // 3D Adipose / Fat globules (Yellow clusters)
-    for (let i = 0; i < 26; i++) {
-      const fatGeo = new THREE.SphereGeometry(0.065 + Math.random() * 0.03, 12, 10);
-      const fatMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.5 });
-      const fat = new THREE.Mesh(fatGeo, fatMat);
-      const fx = (Math.random() - 0.5) * 1.8;
-      const fz = (Math.random() - 0.5) * 1.8;
-      const fy = 0.12 + Math.random() * 0.22;
-      fat.position.set(fx, fy, fz);
-      tissueGroup.add(fat);
-    }
+    const topSkinBoxMat = new THREE.MeshStandardMaterial({
+      map: topSkinTex,
+      roughness: 0.5,
+      metalness: 0.02
+    });
 
-    // Layer 3: Epidermis & Dermis (Top Skin Surface with Real Dynamic Deformable Vertex Grid)
-    // High-subdivision plane for real skin indentation (needle) & skin bulging (cupping suction)
-    const skinGeo = new THREE.PlaneGeometry(blockWidth, blockDepth, 32, 32);
-    skinGeo.rotateX(-Math.PI / 2);
-    const skinMat = new THREE.MeshStandardMaterial({
-      color: 0xe0a98f, // Natural healthy human skin tone
+    const blockMaterials = [
+      sideStrataMat,   // +X (Right side - shows layers)
+      sideStrataMat,   // -X (Left side - shows layers)
+      topSkinBoxMat,   // +Y (Top skin)
+      sideStrataMat,   // -Y (Bottom)
+      frontCutawayMat, // +Z (Front cutaway showing real photographic strata & knot)
+      sideStrataMat    // -Z (Back side - shows layers)
+    ];
+
+    const tissueBlockGeo = new THREE.BoxGeometry(blockWidth, blockHeight, blockDepth);
+    const tissueBlockMesh = new THREE.Mesh(tissueBlockGeo, blockMaterials);
+    tissueBlockMesh.castShadow = true;
+    tissueBlockMesh.receiveShadow = true;
+    tissueGroup.add(tissueBlockMesh);
+
+    // High-subdivision Top Skin Surface for REAL DYNAMIC INDENTATION / BULGING
+    const topSkinGeo = new THREE.PlaneGeometry(blockWidth, blockDepth, 32, 32);
+    topSkinGeo.rotateX(-Math.PI / 2);
+    const topSkinMat = new THREE.MeshStandardMaterial({
+      map: topSkinTex,
       roughness: 0.45,
       metalness: 0.02,
       side: THREE.DoubleSide
     });
-    const skinSurface = new THREE.Mesh(skinGeo, skinMat);
-    skinSurface.position.y = 0.7; // Top surface level
-    skinSurface.receiveShadow = true;
-    tissueGroup.add(skinSurface);
-    skinSurfaceMeshRef.current = skinSurface;
+    const topSkin = new THREE.Mesh(topSkinGeo, topSkinMat);
+    topSkin.position.y = blockHeight / 2 + 0.005;
+    topSkin.receiveShadow = true;
+    tissueGroup.add(topSkin);
+    skinMeshRef.current = topSkin;
 
-    // Save initial vertex positions for deformation physics
-    const posAttr = skinGeo.attributes.position;
-    originalSkinPositionsRef.current = new Float32Array(posAttr.array);
+    const skinPosAttr = topSkinGeo.attributes.position;
+    originalSkinPositionsRef.current = new Float32Array(skinPosAttr.array);
 
-    // Dermal block support sides
-    const dermisSideGeo = new THREE.BoxGeometry(blockWidth, 0.25, blockDepth);
-    const dermisSideMat = new THREE.MeshStandardMaterial({ color: 0xd9957a, roughness: 0.5 });
-    const dermisSide = new THREE.Mesh(dermisSideGeo, dermisSideMat);
-    dermisSide.position.y = 0.575;
-    tissueGroup.add(dermisSide);
+    // Treatment Target Beacon Ring on Skin Surface
+    const beacon = new THREE.Mesh(
+      new THREE.RingGeometry(0.08, 0.12, 28),
+      new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
+    );
+    beacon.rotation.x = -Math.PI / 2;
+    beacon.position.set(0, blockHeight / 2 + 0.01, blockDepth / 2 - 0.05);
+    tissueGroup.add(beacon);
 
-    // Thermal Bloom Circle (Appears on skin when Moxa is applied)
-    const bloomGeo = new THREE.RingGeometry(0.02, 0.42, 32);
-    const bloomMat = new THREE.MeshBasicMaterial({
-      color: 0xff6b00,
-      transparent: true,
-      opacity: 0.0,
-      side: THREE.DoubleSide
-    });
-    const thermalBloom = new THREE.Mesh(bloomGeo, bloomMat);
-    thermalBloom.rotation.x = -Math.PI / 2;
-    thermalBloom.position.set(-0.65, 0.705, 0.72);
-    scene.add(thermalBloom);
-    thermalBloomMeshRef.current = thermalBloom;
+    // Thermal Bloom Ring (When Moxa is active)
+    const thermalRing = new THREE.Mesh(
+      new THREE.RingGeometry(0.04, 0.38, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff6b00, transparent: true, opacity: 0.0, side: THREE.DoubleSide })
+    );
+    thermalRing.rotation.x = -Math.PI / 2;
+    thermalRing.position.set(0, blockHeight / 2 + 0.012, blockDepth / 2 - 0.05);
+    tissueGroup.add(thermalRing);
+    thermalRingRef.current = thermalRing;
 
-    // 6. PATHOLOGIES INSIDE 3D TISSUE (Visible at front cutaway edge)
-    const cutawayX = -0.65;
-    const cutawayZ = 0.72;
+    // 6. 3D PATHOLOGIES ALIGNED WITH PHOTOREALISTIC TEXTURE
+    const targetX = -0.65;
+    const targetZ = 0.91;
 
-    // A: Spastic Motor Knot (Deep muscle layer, 12mm deep)
+    // A: 3D Spastic Motor Knot (Deep Muscle Layer, 12mm deep)
     const knotGroup = new THREE.Group();
-    knotGroup.position.set(cutawayX, -0.22, cutawayZ);
+    knotGroup.position.set(targetX, -0.42, targetZ);
     scene.add(knotGroup);
     knotMeshRef.current = knotGroup;
 
     const knotCore = new THREE.Mesh(
       new THREE.DodecahedronGeometry(0.18, 2),
-      new THREE.MeshStandardMaterial({ color: 0xff1e46, emissive: 0xcc0033, emissiveIntensity: 1.5, roughness: 0.35 })
+      new THREE.MeshStandardMaterial({ color: 0xff1e46, emissive: 0xcc0033, emissiveIntensity: 1.6, roughness: 0.35 })
     );
     knotGroup.add(knotCore);
 
     const knotRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.26, 0.018, 12, 32),
+      new THREE.TorusGeometry(0.25, 0.016, 12, 32),
       new THREE.MeshBasicMaterial({ color: 0xff2b56, transparent: true, opacity: 0.85 })
     );
     knotRing.rotation.x = Math.PI / 2;
     knotGroup.add(knotRing);
 
-    // Target Aiming Reticle on skin surface
-    const beacon = new THREE.Mesh(
-      new THREE.RingGeometry(0.08, 0.12, 24),
-      new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
-    );
-    beacon.rotation.x = -Math.PI / 2;
-    beacon.position.set(cutawayX, 0.71, cutawayZ);
-    scene.add(beacon);
-
-    // B: Fascial Adhesion (Subcutaneous fascia, 5mm deep)
+    // B: 3D Fascial Adhesion (Subcutaneous Fascia, 6mm deep, y = 0.05)
     const adhesionGroup = new THREE.Group();
-    adhesionGroup.position.set(cutawayX, 0.24, cutawayZ);
+    adhesionGroup.position.set(targetX, 0.05, targetZ);
     scene.add(adhesionGroup);
     adhesionMeshRef.current = adhesionGroup;
     adhesionGroup.visible = false;
 
     const adhMesh = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(0.14, 0.04, 48, 8),
-      new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x7e22ce, emissiveIntensity: 1.3, roughness: 0.4 })
+      new THREE.TorusKnotGeometry(0.14, 0.038, 48, 8),
+      new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x7e22ce, emissiveIntensity: 1.4, roughness: 0.4 })
     );
     adhesionGroup.add(adhMesh);
 
-    // C: Cold Stasis (Near skin surface, 2mm deep)
+    // C: 3D Cold Stasis (Near Skin Surface, 2mm deep, y = 0.68)
     const stasisGroup = new THREE.Group();
-    stasisGroup.position.set(cutawayX, 0.69, cutawayZ);
+    stasisGroup.position.set(targetX, 0.68, targetZ);
     scene.add(stasisGroup);
     stasisMeshRef.current = stasisGroup;
     stasisGroup.visible = false;
 
     const stasisMesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.32, 0.32, 0.02, 24),
-      new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 1.4, roughness: 0.3 })
+      new THREE.CylinderGeometry(0.3, 0.3, 0.02, 24),
+      new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 1.5, roughness: 0.3 })
     );
     stasisGroup.add(stasisMesh);
 
-    // 7. 3D INSTRUMENT TRAY NEXT TO TISSUE BLOCK
+    // 7. 3D STAINLESS STEEL PROCEDURE TRAY WITH CLICKABLE 3D TOOLS
     const trayGroup = new THREE.Group();
-    trayGroup.position.set(1.45, -0.2, 0);
+    trayGroup.position.set(1.4, -0.22, 0.15);
     scene.add(trayGroup);
 
-    // Stainless steel procedure tray
+    // Metallic Tray Base with Polished Rim
     const trayBase = new THREE.Mesh(
-      new THREE.BoxGeometry(1.0, 0.05, 1.8),
-      new THREE.MeshStandardMaterial({ color: 0xdde3ed, roughness: 0.2, metalness: 0.92 })
+      new THREE.BoxGeometry(1.05, 0.06, 1.85),
+      new THREE.MeshStandardMaterial({ color: 0xdde3ed, roughness: 0.18, metalness: 0.94 })
     );
     trayBase.castShadow = true;
     trayBase.receiveShadow = true;
     trayGroup.add(trayBase);
 
-    // Sterile cloth liner
+    // Raised Tray Rim (Edges)
+    const rimMat = new THREE.MeshStandardMaterial({ color: 0xcfd6e4, roughness: 0.15, metalness: 0.96 });
+    const rimTop = new THREE.Mesh(new THREE.BoxGeometry(1.07, 0.08, 0.04), rimMat);
+    rimTop.position.set(0, 0.04, -0.92);
+    trayGroup.add(rimTop);
+    const rimBottom = new THREE.Mesh(new THREE.BoxGeometry(1.07, 0.08, 0.04), rimMat);
+    rimBottom.position.set(0, 0.04, 0.92);
+    trayGroup.add(rimBottom);
+    const rimLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.85), rimMat);
+    rimLeft.position.set(-0.52, 0.04, 0);
+    trayGroup.add(rimLeft);
+    const rimRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 1.85), rimMat);
+    rimRight.position.set(0.52, 0.04, 0);
+    trayGroup.add(rimRight);
+
+    // Sterile Blue Procedure Paper Liner
     const liner = new THREE.Mesh(
-      new THREE.BoxGeometry(0.92, 0.01, 1.72),
-      new THREE.MeshStandardMaterial({ color: 0xecfdf5, roughness: 0.85 })
+      new THREE.BoxGeometry(0.96, 0.01, 1.76),
+      new THREE.MeshStandardMaterial({ color: 0xf0fdf4, roughness: 0.85 })
     );
-    liner.position.y = 0.03;
+    liner.position.y = 0.035;
     trayGroup.add(liner);
 
-    // 3D Needle on Tray
-    const trayNeedle = new THREE.Group();
-    trayNeedle.position.set(-0.25, 0.08, -0.45);
-    trayNeedle.rotation.z = Math.PI / 2;
+    // 3D TOOL 1 ON TRAY: 0.18mm Solid Needle in Sterile Pack
+    const tNeedleGroup = new THREE.Group();
+    tNeedleGroup.position.set(-0.25, 0.08, -0.45);
+    tNeedleGroup.userData = { toolId: 'needle', name: '0.18mm Needle' };
+
+    // Clear acrylic guide tube
+    const tTube = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.028, 0.028, 0.62, 16),
+      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, opacity: 0.35, transparent: true, roughness: 0.1 })
+    );
+    tTube.rotation.x = Math.PI / 2;
+    tNeedleGroup.add(tTube);
+
+    // Coiled Copper Handle
     const tHandle = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.02, 0.02, 0.2, 16),
+      new THREE.CylinderGeometry(0.024, 0.024, 0.22, 16),
       new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
     );
-    tHandle.position.y = 0.15;
-    trayNeedle.add(tHandle);
+    tHandle.rotation.x = Math.PI / 2;
+    tHandle.position.z = -0.16;
+    tNeedleGroup.add(tHandle);
+
+    // Surgical Stainless Steel Shaft (0.18mm)
     const tShaft = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.007, 0.002, 0.45, 12),
+      new THREE.CylinderGeometry(0.008, 0.003, 0.44, 12),
       new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
     );
-    tShaft.position.y = -0.12;
-    trayNeedle.add(tShaft);
-    trayGroup.add(trayNeedle);
+    tShaft.rotation.x = Math.PI / 2;
+    tShaft.position.z = 0.14;
+    tNeedleGroup.add(tShaft);
 
-    // 3D Moxa Cigar on Tray
-    const trayMoxa = new THREE.Group();
-    trayMoxa.position.set(0.15, 0.08, -0.35);
-    trayMoxa.rotation.x = Math.PI / 2;
-    const mBody = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.05, 0.45, 16),
-      new THREE.MeshStandardMaterial({ color: 0x44352a, roughness: 0.9 })
+    // Click target hit-box
+    const tNeedleHit = new THREE.Mesh(
+      new THREE.BoxGeometry(0.2, 0.15, 0.75),
+      new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
     );
-    trayMoxa.add(mBody);
-    const mTip = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.048, 0.048, 0.04, 16),
-      new THREE.MeshStandardMaterial({ color: 0xff4500, emissive: 0xff3b10, emissiveIntensity: 1.4 })
-    );
-    mTip.position.y = 0.23;
-    trayMoxa.add(mTip);
-    trayGroup.add(trayMoxa);
+    tNeedleGroup.add(tNeedleHit);
 
-    // 3D Glass Fire Cup on Tray
-    const trayCup = new THREE.Group();
-    trayCup.position.set(-0.1, 0.14, 0.4);
-    const cDome = new THREE.Mesh(
-      new THREE.SphereGeometry(0.15, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.65),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.5, transparent: true, roughness: 0.05 })
-    );
-    cDome.rotation.x = Math.PI;
-    trayCup.add(cDome);
-    trayGroup.add(trayCup);
+    trayGroup.add(tNeedleGroup);
+    trayNeedleRef.current = tNeedleGroup;
 
-    // 8. ACTIVE IN-ACTION 3D TOOLS (HOVERING ABOVE TISSUE CUTAWAY)
+    // 3D TOOL 2 ON TRAY: Glass Fire Cupping Cup
+    const tCupGroup = new THREE.Group();
+    tCupGroup.position.set(-0.1, 0.16, 0.35);
+    tCupGroup.userData = { toolId: 'cup', name: 'Glass Fire Cup' };
+
+    const tcDome = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 28, 18, 0, Math.PI * 2, 0, Math.PI * 0.68),
+      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.55, transparent: true, roughness: 0.05, thickness: 0.06 })
+    );
+    tcDome.rotation.x = Math.PI;
+    tCupGroup.add(tcDome);
+
+    // Thick rolled rim
+    const tcRim = new THREE.Mesh(
+      new THREE.TorusGeometry(0.175, 0.02, 16, 32),
+      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.9, opacity: 0.65, transparent: true, roughness: 0.05 })
+    );
+    tcRim.rotation.x = Math.PI / 2;
+    tcRim.position.y = -0.06;
+    tCupGroup.add(tcRim);
+
+    const tCupHit = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.24, 0.24, 0.35, 16),
+      new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+    );
+    tCupGroup.add(tCupHit);
+
+    trayGroup.add(tCupGroup);
+    trayCupRef.current = tCupGroup;
+
+    // 3D TOOL 3 ON TRAY: Smoldering Moxa Cigar Roll
+    const tMoxaGroup = new THREE.Group();
+    tMoxaGroup.position.set(0.18, 0.09, -0.3);
+    tMoxaGroup.userData = { toolId: 'moxa', name: 'Herbal Moxa' };
+
+    const tmBody = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.058, 0.058, 0.52, 18),
+      new THREE.MeshStandardMaterial({ color: 0x44352a, roughness: 0.88 })
+    );
+    tmBody.rotation.x = Math.PI / 2;
+    tMoxaGroup.add(tmBody);
+
+    // Gold band on wrapper
+    const tmBand = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06, 0.06, 0.06, 18),
+      new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.8, roughness: 0.2 })
+    );
+    tmBand.rotation.x = Math.PI / 2;
+    tmBand.position.z = -0.12;
+    tMoxaGroup.add(tmBand);
+
+    // Smoldering ember coal tip
+    const tmTip = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.057, 0.057, 0.04, 18),
+      new THREE.MeshStandardMaterial({ color: 0xff3b10, emissive: 0xff4500, emissiveIntensity: 1.8 })
+    );
+    tmTip.rotation.x = Math.PI / 2;
+    tmTip.position.z = 0.28;
+    tMoxaGroup.add(tmTip);
+
+    const tMoxaHit = new THREE.Mesh(
+      new THREE.BoxGeometry(0.2, 0.15, 0.65),
+      new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+    );
+    tMoxaGroup.add(tMoxaHit);
+
+    trayGroup.add(tMoxaGroup);
+    trayMoxaRef.current = tMoxaGroup;
+
+    // 8. ACTIVE IN-ACTION 3D EQUIPMENT (Over tissue block target)
     // Active Needle
     const activeNeedle = new THREE.Group();
-    activeNeedle.position.set(cutawayX, 1.15, cutawayZ);
+    activeNeedle.position.set(targetX, 1.25, targetZ);
     scene.add(activeNeedle);
     activeNeedleRef.current = activeNeedle;
 
-    const aHandle = new THREE.Mesh(
+    const anHandle = new THREE.Mesh(
       new THREE.CylinderGeometry(0.02, 0.02, 0.28, 16),
       new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
     );
-    aHandle.position.y = 0.38;
-    activeNeedle.add(aHandle);
+    anHandle.position.y = 0.38;
+    activeNeedle.add(anHandle);
 
-    const aShaft = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.007, 0.002, 0.62, 12),
+    const anShaft = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.007, 0.002, 0.72, 12),
       new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
     );
-    aShaft.position.y = 0.02;
-    activeNeedle.add(aShaft);
+    anShaft.position.y = -0.04;
+    activeNeedle.add(anShaft);
 
-    const aTube = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.028, 0.028, 0.5, 16),
-      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, opacity: 0.45, transparent: true, roughness: 0.1 })
-    );
-    aTube.position.y = 0.15;
-    activeNeedle.add(aTube);
-
-    // Active Glass Cup
+    // Active Glass Fire Cup
     const activeCup = new THREE.Group();
-    activeCup.position.set(cutawayX, 1.25, cutawayZ);
+    activeCup.position.set(targetX, 1.35, targetZ);
     scene.add(activeCup);
     activeCupRef.current = activeCup;
     activeCup.visible = false;
 
-    const actDome = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.65),
-      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.55, transparent: true, roughness: 0.05, thickness: 0.05 })
+    const acDome = new THREE.Mesh(
+      new THREE.SphereGeometry(0.26, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.68),
+      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.95, opacity: 0.55, transparent: true, roughness: 0.05, thickness: 0.06 })
     );
-    actDome.rotation.x = Math.PI;
-    activeCup.add(actDome);
+    acDome.rotation.x = Math.PI;
+    activeCup.add(acDome);
+
+    const acRim = new THREE.Mesh(
+      new THREE.TorusGeometry(0.25, 0.025, 16, 32),
+      new THREE.MeshPhysicalMaterial({ color: 0x67e8f9, transmission: 0.9, opacity: 0.65, transparent: true, roughness: 0.05 })
+    );
+    acRim.rotation.x = Math.PI / 2;
+    acRim.position.y = -0.08;
+    activeCup.add(acRim);
 
     // Active Moxa Cigar
     const activeMoxa = new THREE.Group();
-    activeMoxa.position.set(cutawayX, 1.25, cutawayZ);
+    activeMoxa.position.set(targetX, 1.35, targetZ);
     scene.add(activeMoxa);
     activeMoxaRef.current = activeMoxa;
     activeMoxa.visible = false;
 
-    const actMoxaBody = new THREE.Mesh(
+    const amBody = new THREE.Mesh(
       new THREE.CylinderGeometry(0.07, 0.07, 0.55, 20),
       new THREE.MeshStandardMaterial({ color: 0x3d2e24, roughness: 0.9 })
     );
-    activeMoxa.add(actMoxaBody);
-    const actMoxaTip = new THREE.Mesh(
+    activeMoxa.add(amBody);
+
+    const amTip = new THREE.Mesh(
       new THREE.CylinderGeometry(0.068, 0.068, 0.05, 20),
       new THREE.MeshStandardMaterial({ color: 0xff3b10, emissive: 0xff4500, emissiveIntensity: 1.8 })
     );
-    actMoxaTip.position.y = -0.28;
-    activeMoxa.add(actMoxaTip);
+    amTip.position.y = -0.28;
+    activeMoxa.add(amTip);
 
-    // 9. 3D THANOS ASH & DUST DISINTEGRATION PARTICLES
+    // 9. 3D THANOS ASH & DUST PARTICLES
     const particleCount = 5000;
     const pGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
@@ -569,8 +907,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       positions[i * 3 + 1] = -100;
       positions[i * 3 + 2] = 0;
 
-      velocities[i * 3] = (Math.random() - 0.2) * 2.0; // Blow rightward
-      velocities[i * 3 + 1] = Math.random() * 2.2 + 0.5; // Rise upward
+      velocities[i * 3] = (Math.random() - 0.2) * 2.2;
+      velocities[i * 3 + 1] = Math.random() * 2.4 + 0.6;
       velocities[i * 3 + 2] = (Math.random() - 0.5) * 1.8;
     }
 
@@ -578,7 +916,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const pMat = new THREE.PointsMaterial({
       color: 0xff3b56,
-      size: 0.035,
+      size: 0.038,
       transparent: true,
       opacity: 0.0,
       blending: THREE.AdditiveBlending
@@ -588,7 +926,106 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     scene.add(particles);
     particlesRef.current = { mesh: particles, geo: pGeo, mat: pMat, velocities, active: false, timer: 0 };
 
-    // 10. Animation Loop
+    // 10. MOUSE RAYCASTER FOR 3D TRAY INTERACTION & TISSUE DRAG
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    const handlePointerMove = (e) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+
+      // Check tray tool hover
+      const trayTargets = [
+        trayNeedleRef.current,
+        trayCupRef.current,
+        trayMoxaRef.current
+      ].filter(Boolean);
+
+      const intersects = raycaster.intersectObjects(trayTargets, true);
+      if (intersects.length > 0) {
+        let parentGroup = intersects[0].object;
+        while (parentGroup && !parentGroup.userData.toolId && parentGroup.parent) {
+          parentGroup = parentGroup.parent;
+        }
+        if (parentGroup && parentGroup.userData.toolId) {
+          setTrayHoveredTool(parentGroup.userData.name);
+          renderer.domElement.style.cursor = 'pointer';
+        }
+      } else {
+        setTrayHoveredTool(null);
+        if (!isDraggingRef.current) {
+          renderer.domElement.style.cursor = 'grab';
+        }
+      }
+
+      // If user is dragging mouse on canvas to plunge/suction tool
+      if (isDraggingRef.current) {
+        const deltaY = e.clientY - dragStartYRef.current;
+        const targetMax = currentProb.depthTarget;
+        // Dragging down increases depth / suction
+        const sensitivity = activeTool === 'moxa' ? 0.35 : 0.08;
+        const newVal = Math.max(0, Math.min(targetMax + 3, dragStartValRef.current + deltaY * sensitivity));
+        handleInteractiveChange(newVal);
+      }
+    };
+
+    const handlePointerDown = (e) => {
+      // Left click only
+      if (e.button !== 0) return;
+
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+
+      // 1. Did user click a tool directly on the 3D tray?
+      const trayTargets = [
+        trayNeedleRef.current,
+        trayCupRef.current,
+        trayMoxaRef.current
+      ].filter(Boolean);
+
+      const trayIntersects = raycaster.intersectObjects(trayTargets, true);
+      if (trayIntersects.length > 0) {
+        let parentGroup = trayIntersects[0].object;
+        while (parentGroup && !parentGroup.userData.toolId && parentGroup.parent) {
+          parentGroup = parentGroup.parent;
+        }
+        if (parentGroup && parentGroup.userData.toolId) {
+          handleSelectTool(parentGroup.userData.toolId);
+          controls.enabled = false;
+          return;
+        }
+      }
+
+      // 2. Did user click on the tissue block / beacon to drag tool?
+      const tissueTargets = [tissueBlockMesh, topSkin];
+      const tissueIntersects = raycaster.intersectObjects(tissueTargets, true);
+      if (tissueIntersects.length > 0) {
+        isDraggingRef.current = true;
+        dragStartYRef.current = e.clientY;
+        dragStartValRef.current = interactiveDepth;
+        controls.enabled = false; // Disable orbit while operating tool!
+        renderer.domElement.style.cursor = 'ns-resize';
+      }
+    };
+
+    const handlePointerUp = () => {
+      isDraggingRef.current = false;
+      controls.enabled = true; // Re-enable orbit controls
+      renderer.domElement.style.cursor = 'grab';
+    };
+
+    const domEl = renderer.domElement;
+    domEl.addEventListener('pointermove', handlePointerMove);
+    domEl.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointerup', handlePointerUp);
+
+    // 11. Animation Loop
     let clock = new THREE.Clock();
     let animId;
 
@@ -597,13 +1034,24 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       const delta = clock.getDelta();
       const time = clock.getElapsedTime();
 
-      // Knot breathing pulsation
+      // Knot breathing pulse
       if (knotMeshRef.current && knotMeshRef.current.visible) {
         const s = 1.0 + Math.sin(time * 5.0) * 0.08;
         knotMeshRef.current.scale.set(s, s, s);
       }
       if (adhesionMeshRef.current && adhesionMeshRef.current.visible) {
         adhesionMeshRef.current.rotation.y += 0.015;
+      }
+
+      // Tray Tool Subtle Hover Animation
+      if (trayNeedleRef.current) {
+        trayNeedleRef.current.position.y = 0.08 + Math.sin(time * 2.0) * 0.005;
+      }
+      if (trayCupRef.current) {
+        trayCupRef.current.position.y = 0.16 + Math.sin(time * 2.0 + 1) * 0.005;
+      }
+      if (trayMoxaRef.current) {
+        trayMoxaRef.current.position.y = 0.09 + Math.sin(time * 2.0 + 2) * 0.005;
       }
 
       // 3D Thanos Particle Drift Physics
@@ -648,192 +1096,30 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      domEl.removeEventListener('pointermove', handlePointerMove);
+      domEl.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointerup', handlePointerUp);
       cancelAnimationFrame(animId);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
     };
-  }, []);
+  }, [handleInteractiveChange, handleSelectTool, interactiveDepth, currentProb.depthTarget]);
 
   // Update visible pathology inside 3D tissue block
   useEffect(() => {
-    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIndex === 0) && !isDisintegrated;
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIndex === 1) && !isDisintegrated;
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIndex === 2) && !isDisintegrated;
-  }, [selectedProblemIndex, isDisintegrated]);
+    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIdx === 0) && !isDisintegrated;
+    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIdx === 1) && !isDisintegrated;
+    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIdx === 2) && !isDisintegrated;
+  }, [selectedProblemIdx, isDisintegrated]);
 
-  // Update active tool visibility above tissue block
+  // Update active tool visibility
   useEffect(() => {
     if (activeNeedleRef.current) activeNeedleRef.current.visible = (activeTool === 'needle');
     if (activeCupRef.current) activeCupRef.current.visible = (activeTool === 'cup');
     if (activeMoxaRef.current) activeMoxaRef.current.visible = (activeTool === 'moxa');
   }, [activeTool]);
-
-  // REAL DYNAMIC SKIN DEFORMATION & TOOL DISPLACEMENT WITH MOUSE VALUE
-  const applySkinPhysicsAndToolHeight = useCallback((val) => {
-    const skinMesh = skinSurfaceMeshRef.current;
-    const origPos = originalSkinPositionsRef.current;
-    if (!skinMesh || !origPos) return;
-
-    const posAttr = skinMesh.geometry.attributes.position;
-    const posArr = posAttr.array;
-
-    // Contact center in skin local coordinates
-    const targetLocalX = -0.65 - (-0.55); // -0.1
-    const targetLocalZ = 0.72 - 0; // 0.72
-
-    if (activeTool === 'needle') {
-      // NEEDLE INTERACTION:
-      // Depth val: 0mm (resting above) to 15mm (plunged deep into muscle)
-      // Tool height: from 1.15 (resting) down to 0.38 (plunged)
-      const depthFraction = Math.min(1.0, val / 15.0);
-      if (activeNeedleRef.current) {
-        activeNeedleRef.current.position.y = 1.15 - depthFraction * 0.77;
-      }
-
-      // Skin Elastic Dimpling:
-      // As needle presses 0 to 1.5mm, skin indents downward locally, then pops through!
-      const dimpleAmount = val < 2.0 ? (val / 2.0) * 0.06 : Math.max(0, 0.06 - (val - 2.0) * 0.02);
-
-      for (let i = 0; i < posArr.length; i += 3) {
-        const vx = origPos[i];
-        const vz = origPos[i + 2];
-        const dist = Math.hypot(vx - targetLocalX, vz - targetLocalZ);
-
-        if (dist < 0.28) {
-          const falloff = Math.cos((dist / 0.28) * (Math.PI / 2));
-          posArr[i + 1] = origPos[i + 1] - dimpleAmount * falloff; // Indent downward
-        } else {
-          posArr[i + 1] = origPos[i + 1];
-        }
-      }
-      posAttr.needsUpdate = true;
-
-    } else if (activeTool === 'cup') {
-      // CUPPING INTERACTION:
-      // Vacuum suction val: 0mm to 10mm
-      // Cup descends onto skin, then skin BULGES UPWARD inside the dome
-      const suctionFraction = Math.min(1.0, val / 10.0);
-      if (activeCupRef.current) {
-        activeCupRef.current.position.y = 1.25 - suctionFraction * 0.45;
-      }
-
-      const bulgeHeight = suctionFraction * 0.14; // Bulges upward inside glass dome
-      for (let i = 0; i < posArr.length; i += 3) {
-        const vx = origPos[i];
-        const vz = origPos[i + 2];
-        const dist = Math.hypot(vx - targetLocalX, vz - targetLocalZ);
-
-        if (dist < 0.26) {
-          const falloff = Math.cos((dist / 0.26) * (Math.PI / 2));
-          posArr[i + 1] = origPos[i + 1] + bulgeHeight * falloff; // Bulge upward
-        } else {
-          posArr[i + 1] = origPos[i + 1];
-        }
-      }
-      posAttr.needsUpdate = true;
-
-    } else if (activeTool === 'moxa') {
-      // MOXA INTERACTION:
-      // Temperature val: 0°C to 45°C
-      const heatFraction = Math.min(1.0, val / 45.0);
-      if (activeMoxaRef.current) {
-        activeMoxaRef.current.position.y = 1.25 - heatFraction * 0.35;
-      }
-
-      // Radiate thermal bloom on skin
-      if (thermalBloomMeshRef.current) {
-        thermalBloomMeshRef.current.material.opacity = heatFraction * 0.85;
-      }
-    }
-  }, [activeTool]);
-
-  // Handle Mouse Slider/Drag to Control Tool in Real-Time
-  const handleInteractiveChange = (val) => {
-    setInteractiveValue(val);
-    applySkinPhysicsAndToolHeight(val);
-
-    // Audio cue on initial breach or suction
-    if (activeTool === 'needle' && val >= 1.5 && val < 2.5) {
-      playAcuSound('breach', isMuted);
-    } else if (activeTool === 'cup' && val >= 3.0 && val < 4.0) {
-      playAcuSound('suction', isMuted);
-    } else if (activeTool === 'moxa' && val >= 25.0 && val < 28.0) {
-      playAcuSound('moxa', isMuted);
-    }
-
-    // Target threshold reached -> Trigger 3D Thanos Disintegration!
-    if (val >= currentProb.targetDepth && !isDisintegrated && !isSnapping) {
-      triggerThanosDisintegration();
-    }
-  };
-
-  // 3D Thanos Snap Disintegration Engine
-  const triggerThanosDisintegration = useCallback(() => {
-    if (isSnapping || isDisintegrated) return;
-    setIsSnapping(true);
-    playAcuSound('snap', isMuted);
-
-    // Hide active pathology mesh
-    if (knotMeshRef.current) knotMeshRef.current.visible = false;
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = false;
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = false;
-
-    // Spawn 5,000 Thanos 3D Particles
-    const pData = particlesRef.current;
-    if (pData) {
-      pData.active = true;
-      pData.timer = 0;
-      pData.mat.opacity = 1.0;
-      pData.mat.color = new THREE.Color(currentProb.colorHex);
-
-      const posAttr = pData.geo.attributes.position;
-      const posArr = posAttr.array;
-      const originY = activeTool === 'needle' ? -0.22 : activeTool === 'cup' ? 0.24 : 0.69;
-
-      for (let i = 0; i < 5000; i++) {
-        posArr[i * 3] = -0.65 + (Math.random() - 0.5) * 0.35;
-        posArr[i * 3 + 1] = originY + (Math.random() - 0.5) * 0.35;
-        posArr[i * 3 + 2] = 0.72 + (Math.random() - 0.5) * 0.35;
-      }
-      posAttr.needsUpdate = true;
-    }
-
-    // Trigger UI relief state
-    setTimeout(() => {
-      setIsDisintegrated(true);
-      setIsSnapping(false);
-    }, 400);
-  }, [isSnapping, isDisintegrated, activeTool, isMuted, currentProb]);
-
-  // Reset treatment
-  const handleReset = useCallback(() => {
-    setIsDisintegrated(false);
-    setIsSnapping(false);
-    setInteractiveValue(0);
-
-    applySkinPhysicsAndToolHeight(0);
-
-    if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIndex === 0);
-    if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIndex === 1);
-    if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIndex === 2);
-
-    if (thermalBloomMeshRef.current) thermalBloomMeshRef.current.material.opacity = 0;
-  }, [selectedProblemIndex, applySkinPhysicsAndToolHeight]);
-
-  // Switch pathology
-  const handleSelectPathology = (idx) => {
-    setSelectedProblemIndex(idx);
-    setActiveTool(PATHOLOGIES[idx].requiredTool);
-    handleReset();
-  };
-
-  // Switch tool from 3D Tray
-  const handleSelectTool = (toolId) => {
-    setActiveTool(toolId);
-    handleReset();
-  };
 
   return (
     <div 
@@ -854,14 +1140,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                3D Tissue Strata & Equipment Tray
+                3D Anatomical Strata & Procedure Tray
               </h2>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                Mouse Physics
+                100% Mouse Controlled
               </span>
             </div>
             <p className="text-xs text-neutral-400">
-              Drag mouse to apply 3D equipment • Real skin dimple & suction bulge physics • 3D Thanos ash disintegration
+              Pick tools directly from tray • Drag mouse on skin to treat • Thanos snap particle disintegration
             </p>
           </div>
         </div>
@@ -891,27 +1177,35 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* Main 3D Viewport & Interactive Layer Controls */}
       <div className="relative w-full h-[520px] sm:h-[580px] rounded-2xl border border-neutral-800/90 overflow-hidden bg-black shadow-inner">
         
-        {/* Three.js Canvas Container (Mouse: Left Drag to Orbit, Wheel to Zoom) */}
+        {/* Three.js Canvas Container */}
         <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-        {/* HUD Top-Left: Tissue Strata & Pathology Selector */}
+        {/* Tray Tool Hover Indicator Tooltip */}
+        {trayHoveredTool && (
+          <div className="absolute top-1/2 right-12 z-20 pointer-events-none transform -translate-y-1/2 bg-neutral-950/90 border border-emerald-500/50 px-3 py-1.5 rounded-xl shadow-xl flex items-center gap-2 animate-bounce">
+            <Hand className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-bold text-white">Click to take {trayHoveredTool}</span>
+          </div>
+        )}
+
+        {/* HUD Top-Left: Tissue Pathology Indicator (Automatically aligned to current tool) */}
         <div className="absolute top-4 left-4 z-20 flex flex-col space-y-2 pointer-events-auto">
           <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-3 rounded-2xl shadow-xl space-y-2 max-w-xs">
             <div className="flex items-center gap-2 border-b border-neutral-800 pb-1.5">
               <Layers className="w-4 h-4 text-emerald-400" />
               <span className="text-[11px] font-black uppercase tracking-wider text-white">
-                Tissue Strata Pathologies
+                Active Condition in Strata
               </span>
             </div>
 
             <div className="flex flex-col gap-1.5">
-              {PATHOLOGIES.map((p, idx) => {
-                const isSelected = selectedProblemIndex === idx;
+              {CLINICAL_PROBLEMS.map((p, idx) => {
+                const isSelected = selectedProblemIdx === idx;
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    onClick={() => handleSelectPathology(idx)}
+                    onClick={() => handleSelectTool(p.toolId)}
                     className={`flex items-center justify-between p-2 rounded-xl text-left border transition ${
                       isSelected
                         ? 'bg-emerald-500 text-neutral-950 border-emerald-400 font-bold shadow-md shadow-emerald-500/20'
@@ -923,7 +1217,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                       <div className="text-[10px] opacity-80">{p.layer}</div>
                     </div>
                     <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/30">
-                      {p.requiredTool}
+                      {p.toolName.split(' ')[0]}
                     </span>
                   </button>
                 );
@@ -932,16 +1226,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </div>
         </div>
 
-        {/* HUD Bottom-Center: 3D Steel Tray Tool Selector */}
+        {/* HUD Bottom-Center: 3D Steel Tray Tool Selector (Click directly or pick from 3D scene) */}
         <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-20 pointer-events-auto">
           <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-3 rounded-2xl shadow-2xl flex flex-col space-y-2 max-w-md">
             <div className="flex items-center justify-between text-xs border-b border-neutral-800 pb-1.5">
               <span className="font-black text-white flex items-center gap-1.5">
                 <Hand className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Select Tool from 3D Tray:</span>
+                <span>3D Equipment Tray:</span>
               </span>
               <span className="text-[10px] text-emerald-400 font-mono">
-                Click Tool to Equip
+                Click Tool on Tray or Below
               </span>
             </div>
 
@@ -953,7 +1247,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('needle')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1 transition ${
                   activeTool === 'needle'
-                    ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-lg shadow-emerald-500/20'
+                    ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-lg shadow-emerald-500/20 scale-105'
                     : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:border-neutral-700'
                 }`}
               >
@@ -969,7 +1263,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('cup')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1 transition ${
                   activeTool === 'cup'
-                    ? 'bg-purple-500/20 border-purple-500 text-purple-300 shadow-lg shadow-purple-500/20'
+                    ? 'bg-purple-500/20 border-purple-500 text-purple-300 shadow-lg shadow-purple-500/20 scale-105'
                     : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:border-neutral-700'
                 }`}
               >
@@ -985,65 +1279,67 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                 onClick={() => handleSelectTool('moxa')}
                 className={`p-2.5 rounded-xl border flex flex-col items-center gap-1 transition ${
                   activeTool === 'moxa'
-                    ? 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-lg shadow-amber-500/20'
+                    ? 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-lg shadow-amber-500/20 scale-105'
                     : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:border-neutral-700'
                 }`}
               >
                 <span className="text-xl">🔥</span>
                 <span className="text-[11px] font-bold">Herbal Moxa</span>
-                <span className="text-[9px] text-neutral-400">43°C Infrared Heat</span>
+                <span className="text-[9px] text-neutral-400">43°C Heat</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* TACTILE INTERACTIVE MOUSE CONTROL SLIDER: Real-time Skin Physics & Plunge */}
+        {/* TACTILE INTERACTIVE MOUSE CONTROL HUD */}
         {!isDisintegrated && (
           <div className="absolute top-4 right-4 z-20 pointer-events-auto max-w-xs w-full">
             <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-2xl space-y-3">
               <div className="flex items-center justify-between text-xs font-black">
                 <span className="text-white flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>{activeTool === 'needle' ? 'Plunge Depth' : activeTool === 'cup' ? 'Suction Vacuum' : 'Moxa Heat'}</span>
+                  <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>{activeTool === 'needle' ? 'Needle Penetration' : activeTool === 'cup' ? 'Vacuum Suction' : 'Moxa Heat'}</span>
                 </span>
                 <span className="text-emerald-400 font-mono text-sm">
-                  {activeTool === 'needle' ? `${interactiveValue.toFixed(1)} mm` : activeTool === 'cup' ? `${interactiveValue.toFixed(1)} mm bulge` : `${interactiveValue.toFixed(0)} °C`}
+                  {interactiveDepth.toFixed(1)} {currentProb.depthUnit}
                 </span>
               </div>
 
-              {/* Interactive Mouse Drag Slider */}
+              {/* Mouse Drag / Depth Slider */}
               <input
                 type="range"
                 data-testid="tool-depth-slider"
                 min="0"
-                max={currentProb.maxDepth}
+                max={currentProb.depthTarget + 3}
                 step="0.1"
-                value={interactiveValue}
+                value={interactiveDepth}
                 onChange={(e) => handleInteractiveChange(parseFloat(e.target.value))}
-                className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                className="w-full h-2.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
               />
 
               <div className="flex items-center justify-between text-[10px] text-neutral-400 font-mono">
-                <span>0</span>
-                <span className="text-amber-400 font-bold">Target: {currentProb.targetDepth} {activeTool === 'moxa' ? '°C' : 'mm'}</span>
-                <span>{currentProb.maxDepth}</span>
+                <span>Surface (0)</span>
+                <span className="text-amber-400 font-bold">Target: {currentProb.depthTarget} {currentProb.depthUnit}</span>
               </div>
 
-              {/* 1-Click Action Alternative (Also available) */}
+              {/* Direct Plunge Action Button */}
               <button
                 type="button"
                 data-testid="target-acupoint"
-                onClick={() => handleInteractiveChange(currentProb.targetDepth)}
+                onClick={() => handleInteractiveChange(currentProb.depthTarget)}
                 disabled={isSnapping}
                 className="w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-black text-xs shadow-lg shadow-rose-950/60 active:scale-95 transition flex items-center justify-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                <span>{isSnapping ? 'Disintegrating in 3D...' : `Apply ${currentProb.toolTitle}`}</span>
+                <span>{isSnapping ? 'Disintegrating in 3D...' : `Apply ${currentProb.toolName}`}</span>
               </button>
 
-              <p className="text-[10px] text-neutral-400 italic text-center">
-                {currentProb.skinEffectDesc}
-              </p>
+              <div className="p-2 rounded-xl bg-neutral-900/80 border border-neutral-800 text-[10px] text-neutral-300 flex items-start gap-1.5">
+                <MoveDown className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <span>
+                  <strong>Mouse Drag:</strong> Click & drag down directly on the 3D tissue to plunge into the knot!
+                </span>
+              </div>
             </div>
           </div>
         )}
@@ -1051,67 +1347,69 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         {/* 3D Strata Depth Indicators */}
         <div className="absolute left-4 bottom-4 z-10 pointer-events-none hidden md:block">
           <div className="bg-neutral-950/70 backdrop-blur-sm border border-neutral-800 p-2.5 rounded-xl text-[10px] space-y-1 text-neutral-400 font-mono">
-            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#e0a98f]" /> Epidermis & Dermis (0–3mm)</div>
-            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#fef08a]" /> Subcutaneous Adipose (4–8mm)</div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#e5ad92]" /> Epidermis & Dermis (0–3mm)</div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#fde047]" /> Subcutaneous Adipose (4–8mm)</div>
             <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-[#881337]" /> Deep Striated Muscle (9–15mm)</div>
           </div>
         </div>
 
-        {/* Post-Disintegration 3D Relief Overlay */}
+        {/* LIVE IN-SCENE STATUS BANNER (No full-screen covering modal!) */}
         {isDisintegrated && (
-          <div className="absolute inset-0 z-30 bg-emerald-950/40 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center space-y-4 animate-fadeIn pointer-events-auto">
-            <div className="w-16 h-16 rounded-3xl bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-300 shadow-xl shadow-emerald-500/30">
-              <Sparkles className="w-8 h-8 text-emerald-400" />
-            </div>
-
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold mb-2">
-                <Check className="w-3.5 h-3.5" /> De-Qi Unlocked (得气) • 3D Thanos Disintegration Complete
+          <div className="absolute top-4 right-4 z-30 pointer-events-auto max-w-sm w-full animate-fadeIn">
+            <div className="bg-neutral-950/95 backdrop-blur-md border border-emerald-500/50 p-4 rounded-2xl shadow-2xl space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold">
+                  <Check className="w-3.5 h-3.5" /> De-Qi Unlocked (得气)
+                </div>
+                <span className="text-[10px] font-mono text-emerald-400">Thanos Snap ✓</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-white">
-                {currentProb.reliefTitle}
-              </h3>
-              <p className="text-xs text-neutral-300 max-w-md mx-auto mt-1">
-                {currentProb.reliefText}
-              </p>
-            </div>
 
-            {/* Metrics */}
-            <div className="grid grid-cols-3 gap-3 w-full max-w-md">
-              <div className="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 text-center">
-                <span className="text-[10px] font-bold text-neutral-400 block">Pathology Spasm</span>
-                <span className="text-lg font-black text-emerald-400">0%</span>
+              <div>
+                <h4 className="text-sm font-black text-white">
+                  {currentProb.reliefTitle}
+                </h4>
+                <p className="text-[11px] text-neutral-300 mt-0.5 leading-relaxed">
+                  {currentProb.reliefText}
+                </p>
               </div>
-              <div className="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 text-center">
-                <span className="text-[10px] font-bold text-neutral-400 block">Micro-Flow</span>
-                <span className="text-lg font-black text-cyan-400">+380%</span>
-              </div>
-              <div className="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 text-center">
-                <span className="text-[10px] font-bold text-neutral-400 block">Needle Sensation</span>
-                <span className="text-lg font-black text-emerald-300">Painless</span>
-              </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <button
-                type="button"
-                onClick={handleReset}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold transition"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Treat Another 3D Pathology</span>
-              </button>
+              {/* Physiological Metrics */}
+              <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
+                <div className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800">
+                  <span className="text-neutral-400 block">Spasm</span>
+                  <span className="text-sm font-black text-emerald-400">0%</span>
+                </div>
+                <div className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800">
+                  <span className="text-neutral-400 block">Micro-Flow</span>
+                  <span className="text-sm font-black text-cyan-400">+380%</span>
+                </div>
+                <div className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800">
+                  <span className="text-neutral-400 block">Sensation</span>
+                  <span className="text-sm font-black text-emerald-300">Painless</span>
+                </div>
+              </div>
 
-              {onOpenBooking && (
+              {/* Actions */}
+              <div className="flex items-center gap-2 pt-1">
                 <button
                   type="button"
-                  onClick={() => onOpenBooking(currentProb.name)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-black shadow-lg shadow-emerald-500/25 transition"
+                  onClick={handleReset}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold transition"
                 >
-                  <span>Book Consultation (₹600)</span>
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Treat Another 3D Pathology</span>
                 </button>
-              )}
+
+                {onOpenBooking && (
+                  <button
+                    type="button"
+                    onClick={() => onOpenBooking(currentProb.name)}
+                    className="flex-1 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-black shadow-md shadow-emerald-500/25 transition"
+                  >
+                    <span>Book (₹600)</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
