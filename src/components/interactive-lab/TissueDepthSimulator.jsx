@@ -565,6 +565,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isDisintegrated, setIsDisintegrated] = useState(false);
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Lock document scrolling to guarantee true 100vh / 100vw viewport without any page scroll
+  useEffect(() => {
+    const origBodyOverflow = document.body.style.overflow;
+    const origHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = origBodyOverflow;
+      document.documentElement.style.overflow = origHtmlOverflow;
+    };
+  }, []);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
@@ -1786,11 +1798,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className={`relative w-full overflow-hidden bg-neutral-950 transition-all select-none ${
-        isFullscreen 
-          ? 'fixed inset-0 z-50 rounded-none h-screen w-screen' 
-          : 'h-[90vh] min-h-[760px] max-h-[960px] rounded-none border-y border-neutral-800'
-      }`}
+      className="fixed inset-0 z-50 w-screen h-screen overflow-hidden bg-neutral-950 select-none font-sans"
     >
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
@@ -1800,7 +1808,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* ===================================================================== */}
 
       {/* Top Header Bar: Regional Zoom & Anatomical Presets (z-40) */}
-      <div className="absolute top-4 inset-x-4 z-40 flex items-center justify-between pointer-events-none">
+      <div className="absolute top-3 inset-x-3 z-40 flex items-center justify-between pointer-events-none gap-2">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 p-2 px-4 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-xl pointer-events-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -1933,7 +1941,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Left Panel: Acupoints & Strata Pathology (w-64) */}
-      <div className="absolute top-16 left-4 z-20 flex flex-col space-y-4 pointer-events-auto w-64">
+      <div className="absolute top-14 left-3 z-20 flex flex-col space-y-2 pointer-events-auto w-60 max-h-[calc(100vh-170px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Acupoints Grid */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
@@ -2017,7 +2025,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Bottom Clinical Anatomy Intelligence Card */}
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto max-w-lg hidden sm:block">
+      <div className="absolute bottom-3 left-3 md:left-[260px] z-20 pointer-events-auto max-w-lg hidden sm:block">
         <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-2xl space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
             <div className="flex items-center gap-2">
@@ -2061,7 +2069,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Right Panel: Penetration Control & Tool Selection (w-72) */}
-      <div className="absolute top-16 right-4 z-20 flex flex-col space-y-4 pointer-events-auto w-72">
+      <div className="absolute top-14 right-3 z-20 flex flex-col space-y-3 pointer-events-auto w-72 max-h-[calc(100vh-70px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Needle Penetration & Hold-to-Plunge Card */}
         <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-4 rounded-2xl shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
