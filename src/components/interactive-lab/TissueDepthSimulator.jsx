@@ -534,21 +534,21 @@ function createCalloutBadgeCanvas(code, isSelected) {
   canvas.height = 64;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = isSelected ? '#e02868' : 'rgba(255, 255, 255, 0.95)';
+  ctx.fillStyle = isSelected ? '#e02868' : 'rgba(255, 255, 255, 0.96)';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 152, 56, 10);
+    ctx.roundRect(4, 4, 152, 56, 12);
   } else {
     ctx.rect(4, 4, 152, 56);
   }
   ctx.fill();
 
-  ctx.strokeStyle = isSelected ? '#047857' : 'rgba(0, 0, 0, 0.6)';
+  ctx.strokeStyle = isSelected ? '#c21e54' : 'rgba(224, 40, 104, 0.35)';
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  ctx.fillStyle = isSelected ? '#022c22' : '#0f172a';
-  ctx.font = 'bold 26px monospace';
+  ctx.fillStyle = isSelected ? '#ffffff' : '#09090b';
+  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(code, 80, 32);
@@ -798,39 +798,39 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (regionKey === 'full') {
       targetLimbAnglesRef.current.arm = 0.0;
       targetLimbAnglesRef.current.leg = 0.0;
-      targetCamPos = new THREE.Vector3(0.0, 0.48, 3.4);
-      targetLookAt = new THREE.Vector3(0.0, 0.45, 0.0);
+      targetCamPos = new THREE.Vector3(0.0, 0.34, 4.2);
+      targetLookAt = new THREE.Vector3(0.0, 0.34, 0.0);
     } else {
       switch (regionKey) {
         case 'neck':
-          targetCamPos = new THREE.Vector3(0.0, 0.95, 2.0);
-          targetLookAt = new THREE.Vector3(0.0, 0.82, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.70, 2.4);
+          targetLookAt = new THREE.Vector3(0.0, 0.60, 0.0);
           break;
         case 'hand':
           // Focused on raised arm & hand
           targetLimbAnglesRef.current.arm = 1.0;
           targetLimbAnglesRef.current.leg = 0.0;
-          targetCamPos = new THREE.Vector3(-0.25, 0.45, 2.1);
-          targetLookAt = new THREE.Vector3(-0.25, 0.35, 0.0);
+          targetCamPos = new THREE.Vector3(-0.25, 0.35, 2.5);
+          targetLookAt = new THREE.Vector3(-0.25, 0.28, 0.0);
           break;
         case 'crown':
-          targetCamPos = new THREE.Vector3(0.0, 1.20, 1.9);
-          targetLookAt = new THREE.Vector3(0.0, 1.05, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.85, 2.4);
+          targetLookAt = new THREE.Vector3(0.0, 0.75, 0.0);
           break;
         case 'leg':
           // Focused on slightly lifted leg
           targetLimbAnglesRef.current.leg = 1.0;
           targetLimbAnglesRef.current.arm = 0.0;
-          targetCamPos = new THREE.Vector3(-0.12, -0.10, 2.2);
-          targetLookAt = new THREE.Vector3(-0.12, -0.28, 0.0);
+          targetCamPos = new THREE.Vector3(-0.10, -0.05, 2.5);
+          targetLookAt = new THREE.Vector3(-0.10, -0.15, 0.0);
           break;
         case 'back':
-          targetCamPos = new THREE.Vector3(0.0, 0.60, 2.2);
-          targetLookAt = new THREE.Vector3(0.0, 0.50, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.45, 2.6);
+          targetLookAt = new THREE.Vector3(0.0, 0.38, 0.0);
           break;
         default:
-          targetCamPos = new THREE.Vector3(0.0, 0.48, 3.4);
-          targetLookAt = new THREE.Vector3(0.0, 0.45, 0.0);
+          targetCamPos = new THREE.Vector3(0.0, 0.34, 4.2);
+          targetLookAt = new THREE.Vector3(0.0, 0.34, 0.0);
           break;
       }
     }
@@ -981,14 +981,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const width = container.clientWidth || 960;
     const height = container.clientHeight || 580;
 
-    // 1. Scene, Camera, Renderer
+    // 1. Scene, Camera, Renderer (Light Luxury Clinical Theme)
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x09090b);
+    scene.background = new THREE.Color(0xf8fafc); // Light shade matching site theme!
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    // Starts centered on Whole Body (Full view from head to toe)!
-    camera.position.set(0.0, 0.45, 3.8);
+    // Starts centered on human body scaled to ~60% of vertical screen height!
+    camera.position.set(0.0, 0.34, 4.2);
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -997,7 +997,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.05;
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -1006,66 +1006,66 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.enableDamping = true;
     controls.dampingFactor = 0.07;
     controls.maxDistance = 8.0;
-    controls.minDistance = 0.9;
-    controls.target.set(0.0, 0.35, 0.0);
+    controls.minDistance = 1.0;
+    controls.target.set(0.0, 0.34, 0.0);
     controlsRef.current = controls;
 
-    // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    // Clean Studio Lighting for Light Theme
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.SpotLight(0xffffff, 3.4, 25, Math.PI / 4, 0.35, 1);
-    keySpot.position.set(1.5, 6.0, 4.0);
+    const keySpot = new THREE.DirectionalLight(0xffffff, 1.6);
+    keySpot.position.set(2.5, 5.0, 3.5);
     keySpot.castShadow = true;
     scene.add(keySpot);
 
-    const softFill = new THREE.DirectionalLight(0xfed7aa, 1.3);
-    softFill.position.set(-3.5, 3.0, 2.5);
+    const softFill = new THREE.DirectionalLight(0xffe4e6, 0.55);
+    softFill.position.set(-2.5, 2.5, 2.0);
     scene.add(softFill);
 
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.8);
-    rimLight.position.set(-2.5, 3.5, -3.0);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.85);
+    rimLight.position.set(0.0, 2.5, -3.0);
     scene.add(rimLight);
 
-    // Floor Platform
+    // Soft Shadow Floor Receiver
     const table = new THREE.Mesh(
       new THREE.PlaneGeometry(24, 24),
-      new THREE.MeshStandardMaterial({ color: 0x05070c, roughness: 0.9, metalness: 0.1 })
+      new THREE.ShadowMaterial({ opacity: 0.08 })
     );
     table.rotation.x = -Math.PI / 2;
-    table.position.y = -0.92;
+    table.position.y = -0.49;
     table.receiveShadow = true;
     scene.add(table);
 
     // =========================================================================
-    // 2. 3D WHOLE HUMAN BODY MODEL (Centered Hero)
+    // 2. 3D WHOLE HUMAN BODY MODEL (Centered, 60% Screen Height Fit)
     // =========================================================================
     const bodyGroup = new THREE.Group();
-    bodyGroup.position.set(0.0, -0.18, 0.0); // Centered on initial load!
+    bodyGroup.position.set(0.0, 0.0, 0.0); // Centered on initial load!
     scene.add(bodyGroup);
     bodyGroupRef.current = bodyGroup;
 
-    // Circular Diagnostic Pedestal
+    // Minimal Elegant Pedestal with Arura Rose Rim
     const pedestal = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.85, 0.90, 0.06, 36),
-      new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.3, metalness: 0.7 })
+      new THREE.CylinderGeometry(0.48, 0.52, 0.03, 48),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1 })
     );
-    pedestal.position.y = -0.70;
+    pedestal.position.y = -0.47;
     pedestal.receiveShadow = true;
     bodyGroup.add(pedestal);
 
     const ringLed = new THREE.Mesh(
-      new THREE.RingGeometry(0.82, 0.88, 36),
+      new THREE.RingGeometry(0.46, 0.50, 48),
       new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide })
     );
     ringLed.rotation.x = -Math.PI / 2;
-    ringLed.position.y = -0.665;
+    ringLed.position.y = -0.45;
     bodyGroup.add(ringLed);
 
-    // Load Whole Human Body GLB Model
+    // Load Whole Human Body GLB Model (Sized to fit in 60% of screen)
     const gltfLoader = new GLTFLoader();
     const modelUrl = `${import.meta.env.BASE_URL}models/human_body.glb`;
-    const targetHeight = 2.45; // Heroic scale!
+    const targetHeight = 1.55; // Sized for 60% screen height fit!
     const scaleFactor = targetHeight / 1.72;
 
     gltfLoader.load(
@@ -1254,10 +1254,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         skinnedMesh.add(rootBone);
         skinnedMesh.bind(skeleton);
 
-        const targetHeight = 2.45;
+        const targetHeight = 1.55;
         const scale = targetHeight / 1.0;
         skinnedMesh.scale.set(scale, scale, scale);
-        skinnedMesh.position.y = 0.52;
+        skinnedMesh.position.y = 0.34;
         skinnedMesh.rotation.y = -Math.PI / 2; // Default facing front!
 
         bodyModelMeshRef.current = skinnedMesh;
@@ -1296,28 +1296,28 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       const pinGroup = new THREE.Group();
       pinGroup.position.set(
         pt.bodyPosition[0] * scaleFactor,
-        pt.bodyPosition[1] * scaleFactor + 0.52,
+        pt.bodyPosition[1] * scaleFactor + 0.34,
         pt.bodyPosition[2] * scaleFactor
       );
 
-      // Crisp Pinpoint Dot (0.007 radius - sharp and subtle)
+      // Crisp Pinpoint Dot (0.006 radius - rose brand dot)
       const dotMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(0.007, 12, 12),
-        new THREE.MeshBasicMaterial({ color: 0xffffff })
+        new THREE.SphereGeometry(0.006, 12, 12),
+        new THREE.MeshBasicMaterial({ color: 0xe02868 })
       );
       pinGroup.add(dotMesh);
 
       // Subtle Luminous Ring flush on skin
       const haloMesh = new THREE.Mesh(
-        new THREE.RingGeometry(0.008, 0.012, 16),
-        new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85, side: THREE.DoubleSide })
+        new THREE.RingGeometry(0.007, 0.011, 16),
+        new THREE.MeshBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.85, side: THREE.DoubleSide })
       );
       haloMesh.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
       pinGroup.add(haloMesh);
 
       // Active Selection Ring
       const selRing = new THREE.Mesh(
-        new THREE.RingGeometry(0.012, 0.017, 16),
+        new THREE.RingGeometry(0.011, 0.016, 16),
         new THREE.MeshBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.95, side: THREE.DoubleSide })
       );
       selRing.lookAt(new THREE.Vector3(pt.bodyPosition[0] * 3, pt.bodyPosition[1] * 3, pt.bodyPosition[2] * 3));
@@ -1325,18 +1325,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       pinGroup.add(selRing);
       dotHalos.push(selRing);
 
-      // CRISP 3D CALLOUT BADGE & LEADER LINE (Matching media_1793707544443_f2fee650.png!)
+      // CRISP 3D CALLOUT BADGE & LEADER LINE
       const isLeft = pt.bodyPosition[0] < 0;
       const leaderOffsetX = isLeft ? -0.065 : 0.065;
       const leaderOffsetY = 0.032;
 
-      // Thin White Leader Line from Pinpoint to Callout Badge
+      // Darker subtle leader line visible on light background
       const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(leaderOffsetX * 0.7, leaderOffsetY, 0),
         new THREE.Vector3(leaderOffsetX, leaderOffsetY, 0)
       ]);
-      const leaderLineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 });
+      const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.65 });
       const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
       pinGroup.add(leaderLine);
 
@@ -1947,10 +1947,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const pin = limbPinGroupsRef.current[id];
           if (pin && pin.userData.basePos) {
             const bPos = pin.userData.basePos;
-            const shoulderY = 0.52 + 0.308 * scaleFactor;
+            const shoulderY = 0.34 + 0.308 * targetHeight;
             const dY = bPos.y - shoulderY;
             pin.position.y = shoulderY + dY * Math.cos(currentArmSwing * 0.6);
-            pin.position.z = bPos.z + Math.sin(currentArmSwing) * 0.20;
+            pin.position.z = bPos.z + Math.sin(currentArmSwing) * 0.14;
           }
         });
 
@@ -1960,10 +1960,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const pin = limbPinGroupsRef.current[id];
           if (pin && pin.userData.basePos) {
             const bPos = pin.userData.basePos;
-            const hipY = 0.52 - 0.043 * scaleFactor;
+            const hipY = 0.34 - 0.043 * targetHeight;
             const dY = bPos.y - hipY;
             pin.position.y = hipY + dY * Math.cos(currentLegLift * 0.5);
-            pin.position.z = bPos.z + Math.sin(currentLegLift) * 0.15;
+            pin.position.z = bPos.z + Math.sin(currentLegLift) * 0.10;
           }
         });
       }
@@ -2016,26 +2016,26 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className={`w-full overflow-hidden bg-neutral-950 select-none font-sans ${isFullscreen ? "fixed inset-0 z-[100] w-screen h-screen" : "relative w-full h-full"}`}
+      className="relative w-full h-full overflow-hidden bg-[#f8fafc] select-none font-sans"
     >
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
       {/* ===================================================================== */}
-      {/* HUD OVERLAY INTERFACE (MULTIPLES OF 4 SPACING THROUGHOUT)             */}
+      {/* HUD OVERLAY INTERFACE (LIGHT LUXURY CLINICAL THEME)                    */}
       {/* ===================================================================== */}
 
       {/* Top Header Bar: Clean & Minimalist */}
-      <div className="absolute top-2.5 inset-x-3 z-40 flex items-center justify-between pointer-events-none gap-2">
-        <div className="flex items-center gap-3 pointer-events-auto">
-          <div className="flex items-center gap-2 p-2 px-3.5 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-white shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
+      <div className="absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-none gap-2">
+        <div className="flex items-center gap-2.5 pointer-events-auto">
+          <div className="flex items-center gap-2 p-2 px-3.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm font-display">
+            <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
             <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY</span>
           </div>
           <button
             type="button"
             onClick={() => navigateCameraToRegion('full')}
-            className="px-3 py-1.5 rounded-xl bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 hover:text-white text-xs font-medium transition shadow-md flex items-center gap-1.5"
+            className="px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
             title="Reset Camera to Whole Body"
           >
             <User className="w-3.5 h-3.5 text-[#e02868]" />
@@ -2043,44 +2043,35 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </button>
         </div>
 
-        {/* Top Right Actions: Flip Front/Back & Fullscreen */}
+        {/* Top Right Action: Flip Front/Back (Full Screen removed as requested) */}
         <div className="flex items-center gap-2 pointer-events-auto">
           <button
             type="button"
             onClick={toggleBodyFacing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-medium text-neutral-300 hover:text-white transition shadow-lg"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
             title="Turn Body 180°"
           >
             <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
             <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => setIsFullscreen(!isFullscreen)}
-            className="flex items-center gap-1.5 p-1.5 px-3 rounded-xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 text-xs font-bold text-neutral-300 hover:text-white transition shadow-lg"
-          >
-            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5 text-[#e02868]" />}
-            <span>{isFullscreen ? 'Exit' : 'Full Screen'}</span>
-          </button>
         </div>
       </div>
 
-      {/* Left Panel: Acupoints & Strata Pathology (w-64) */}
-      <div className="absolute top-11 left-2.5 z-20 flex flex-col space-y-1.5 pointer-events-auto w-56 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* Left Panel: Acupoints & Strata Pathology (w-56) */}
+      <div className="absolute top-14 left-3 z-30 flex flex-col space-y-2 pointer-events-auto w-56 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Acupoints Grid */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
+        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
+          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
+            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
               <User className="w-3 h-3 text-[#e02868]" />
               <span>3D Body Acupoints</span>
             </span>
-            <span className="text-[9px] text-[#e02868] font-mono">
+            <span className="text-[9px] text-[#e02868] font-mono font-bold">
               Click to Zoom
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="grid grid-cols-2 gap-1.5 max-h-36 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CLINICAL_ACUPOINTS.map((pt, idx) => {
               const isSelected = selectedAcupointIdx === idx;
               return (
@@ -2090,12 +2081,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   onClick={() => handleSelectAcupoint(idx)}
                   className={`p-2 rounded-xl text-left border transition ${
                     isSelected
-                      ? 'bg-[#e02868] text-white border-[#e02868] font-black shadow-md'
-                      : 'bg-neutral-900/80 text-neutral-300 border-neutral-800 hover:border-neutral-700 hover:text-white'
+                      ? 'bg-[#e02868] text-white border-[#e02868] font-bold shadow-md'
+                      : 'bg-neutral-50/80 text-neutral-700 border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900'
                   }`}
                 >
                   <div className="text-xs font-bold">{pt.code}</div>
-                  <div className="text-[9px] opacity-75 truncate">{pt.hanzi} • {pt.depthTarget}mm</div>
+                  <div className="text-[9px] opacity-80 truncate">{pt.hanzi} • {pt.depthTarget}mm</div>
                 </button>
               );
             })}
@@ -2103,18 +2094,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         </div>
 
         {/* Pathology Selector */}
-        <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-              <Layers className="w-3 h-3 text-amber-400" />
+        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
+          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
+            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+              <Layers className="w-3 h-3 text-amber-500" />
               <span>Strata Pathology</span>
             </span>
-            <span className="text-[9px] text-amber-400 font-mono">
+            <span className="text-[9px] text-amber-600 font-mono font-bold">
               Tissue Target
             </span>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             {CLINICAL_PROBLEMS.map((prob, idx) => {
               const isSelected = selectedProblemIdx === idx;
               return (
@@ -2132,15 +2123,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   }}
                   className={`flex items-center justify-between p-2 rounded-xl text-left border transition ${
                     isSelected
-                      ? 'bg-[#e02868] text-white border-[#e02868] font-black shadow-md'
-                      : 'bg-neutral-900/80 text-neutral-300 border-neutral-800 hover:border-neutral-700 hover:text-white'
+                      ? 'bg-[#e02868] text-white border-[#e02868] font-bold shadow-md'
+                      : 'bg-neutral-50/80 text-neutral-700 border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-100'
                   }`}
                 >
                   <div>
                     <div className="text-xs font-bold">{prob.name}</div>
-                    <div className="text-[9px] opacity-75">{prob.layer.split(' ')[0]}</div>
+                    <div className="text-[9px] opacity-80">{prob.layer.split(' ')[0]}</div>
                   </div>
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/30">
+                  <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-neutral-200/60 text-neutral-700'
+                  }`}>
                     {prob.depthTarget}{prob.depthUnit.split(' ')[0]}
                   </span>
                 </button>
@@ -2151,12 +2144,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       </div>
 
       {/* Bottom Clinical Anatomy Intelligence Card */}
-      <div className="absolute bottom-2 left-2.5 md:left-[236px] z-20 pointer-events-auto max-w-md hidden sm:block">
-        <div className="bg-neutral-950/90 backdrop-blur-md border border-neutral-800 p-2.5 rounded-xl shadow-xl space-y-1.5">
-          <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+      <div className="absolute bottom-3 left-3 md:left-[240px] z-30 pointer-events-auto max-w-md hidden sm:block">
+        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-xl space-y-2 text-[#09090b]">
+          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
-              <h4 className="text-xs font-black text-white">
+              <h4 className="text-xs font-bold text-[#09090b]">
                 {activeAcupoint.fullName} • {activeAcupoint.translation} ({activeAcupoint.hanzi})
               </h4>
             </div>
@@ -2165,29 +2158,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div className="p-2 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-1">
-              <div className="text-[10px] font-bold text-amber-400 flex items-center gap-1">
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+              <div className="text-[10px] font-bold text-amber-600 flex items-center gap-1">
                 <Zap className="w-3 h-3" />
                 <span>Nerve Contact:</span>
               </div>
-              <div className="text-neutral-200 text-[11px] font-medium leading-tight">
+              <div className="text-neutral-700 text-[11px] font-medium leading-tight">
                 {activeAcupoint.nerves}
               </div>
             </div>
 
-            <div className="p-2 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-1">
-              <div className="text-[10px] font-bold text-red-400 flex items-center gap-1">
+            <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+              <div className="text-[10px] font-bold text-red-600 flex items-center gap-1">
                 <Activity className="w-3 h-3" />
                 <span>Vessel Contact:</span>
               </div>
-              <div className="text-neutral-200 text-[11px] font-medium leading-tight">
+              <div className="text-neutral-700 text-[11px] font-medium leading-tight">
                 {activeAcupoint.vessels}
               </div>
             </div>
           </div>
 
-          <div className="text-[11px] text-neutral-300 flex items-center gap-1.5 pt-1 border-t border-neutral-800">
+          <div className="text-[11px] text-neutral-600 flex items-center gap-1.5 pt-1.5 border-t border-neutral-200/80">
             <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0" />
             <span className="truncate"><strong>Clinical Relief:</strong> {activeAcupoint.relief}</span>
           </div>
