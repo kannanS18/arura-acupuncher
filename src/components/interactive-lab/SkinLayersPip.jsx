@@ -111,8 +111,8 @@ export default function SkinLayersPip({
 
     const camera = new THREE.PerspectiveCamera(38, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.06, 1.30, 2.70);
-      camera.lookAt(0.06, 0.02, 0.15);
+      camera.position.set(0.18, 1.25, 2.85);
+      camera.lookAt(0.18, 0.02, 0.12);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -143,7 +143,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? 0.06 : 0, fullStage ? 0.02 : 0.05, fullStage ? 0.15 : 0);
+    controls.target.set(fullStage ? 0.18 : 0, fullStage ? 0.02 : 0.05, fullStage ? 0.12 : 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -215,10 +215,11 @@ export default function SkinLayersPip({
 
     // 4. Surgical 3D Tools Operating on Top of the Skin Model
     const offsetX = fullStage ? -0.38 : 0.0;
+    const offsetZ = 0.485; // Positioned directly at visible cut strata front face!
 
     // A. 3D Needle Assembly
     const needleAssembly = new THREE.Group();
-    needleAssembly.position.set(offsetX, 0.38, 0.28); // Positioned directly at visible cut strata cross-section
+    needleAssembly.position.set(offsetX, 0.285, offsetZ);
     scene.add(needleAssembly);
     needleGroupRef.current = needleAssembly;
 
@@ -259,54 +260,85 @@ export default function SkinLayersPip({
     handle.position.y = 0.77;
     needleAssembly.add(handle);
 
-    // B. 3D Glass Vacuum Cup
+    // B. 3D Glass Vacuum Cup (Realistic, visible, solid medical glassware)
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(offsetX, 0.38, 0.28);
+    cupGroup.position.set(offsetX, 0.28, offsetZ);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
 
     const cupGlassMat = new THREE.MeshStandardMaterial({
-      color: 0x38bdf8,
+      color: 0x0284c7,
+      roughness: 0.12,
+      metalness: 0.15,
       transparent: true,
-      opacity: 0.70,
-      roughness: 0.15,
-      metalness: 0.1
+      opacity: 0.78,
+      side: THREE.DoubleSide
     });
-    const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
-    cupDome.rotation.x = Math.PI;
-    cupDome.position.y = 0.18;
-    cupGroup.add(cupDome);
 
-    const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.014, 12, 32), cupGlassMat);
+    // 1. Thick Smooth Rounded Lip Rim (Base on skin)
+    const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.014, 20, 36), cupGlassMat);
     cupRim.rotation.x = Math.PI / 2;
-    cupRim.position.y = 0.0;
+    cupRim.position.y = 0.014;
     cupGroup.add(cupRim);
 
-    // Hyperemic suction tissue bulge
+    // 1b. Crisp Specular Edge Highlight Ring
+    const rimHighlight = new THREE.Mesh(
+      new THREE.TorusGeometry(0.14, 0.004, 16, 36),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.05, metalness: 0.8 })
+    );
+    rimHighlight.rotation.x = Math.PI / 2;
+    rimHighlight.position.y = 0.014;
+    cupGroup.add(rimHighlight);
+
+    // 2. Flared Bell Body
+    const cupBell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.11, 0.14, 0.13, 32, 1, true),
+      cupGlassMat
+    );
+    cupBell.position.y = 0.079;
+    cupGroup.add(cupBell);
+
+    // 3. Smooth Bulbous Glass Dome
+    const cupDome = new THREE.Mesh(
+      new THREE.SphereGeometry(0.112, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.5),
+      cupGlassMat
+    );
+    cupDome.position.y = 0.144;
+    cupGroup.add(cupDome);
+
+    // 4. Brass Vacuum Valve Collar on Top Dome
+    const valveCollar = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.016, 0.020, 0.025, 24),
+      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
+    );
+    valveCollar.position.y = 0.256;
+    cupGroup.add(valveCollar);
+
+    // 5. Polished Brass Mechanical Suction Valve Pin
+    const cupValve = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.006, 0.009, 0.035, 16),
+      new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.95, roughness: 0.2 })
+    );
+    cupValve.position.y = 0.276;
+    cupGroup.add(cupValve);
+
+    // 6. Hyperemic suction tissue bulge inside glass cup
     const bulgeMat = new THREE.MeshStandardMaterial({
       color: 0xf43f5e,
       roughness: 0.35,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.92
     });
-    const suctionBulge = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 16, 0, Math.PI * 2, 0, Math.PI / 2), bulgeMat);
+    const suctionBulge = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 18, 0, Math.PI * 2, 0, Math.PI / 2), bulgeMat);
     suctionBulge.position.y = 0.0;
     suctionBulge.scale.set(1.0, 0.01, 1.0);
     cupGroup.add(suctionBulge);
     suctionBulgeRef.current = suctionBulge;
 
-    // Brass vacuum release valve on top of cup
-    const cupValve = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.018, 0.022, 0.045, 16),
-      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
-    );
-    cupValve.position.y = 0.20;
-    cupGroup.add(cupValve);
-
     // C. 3D Moxa Herbal Warmer
     const moxaGroup = new THREE.Group();
-    moxaGroup.position.set(offsetX, 0.46, 0.28);
+    moxaGroup.position.set(offsetX, 0.38, offsetZ);
     moxaGroup.visible = (activeTool === 'moxa');
     scene.add(moxaGroup);
     moxaGroupRef.current = moxaGroup;
@@ -344,34 +376,34 @@ export default function SkinLayersPip({
     thermalRing.position.y = -0.18;
     moxaGroup.add(thermalRing);
 
-    // 5. 3 Distinct Clinical Pathologies Corresponding to Tools
+    // 5. 3 Distinct Clinical Pathologies Corresponding to Tools (Flush on Cut Face)
     // A. Needle Target: Spastic Motor Endplate Knot (Striated Muscle, 12mm)
-    const knotGeo = new THREE.TorusKnotGeometry(0.065, 0.022, 64, 16, 2, 3);
+    const knotGeo = new THREE.TorusKnotGeometry(0.075, 0.024, 64, 16, 2, 3);
     const knotMat = new THREE.MeshStandardMaterial({
       color: 0xff1e46,
-      emissive: 0x9f1239,
-      emissiveIntensity: 0.8,
-      roughness: 0.35
+      emissive: 0xbe123c,
+      emissiveIntensity: 1.6,
+      roughness: 0.25
     });
     const knot = new THREE.Mesh(knotGeo, knotMat);
-    knot.position.set(offsetX, -0.18, 0.28); // Inside deep striated muscle at visible cut cross-section!
+    knot.position.set(offsetX, -0.18, offsetZ); // Deep striated muscle layer right on cut face!
     knot.castShadow = true;
     knot.visible = (activeTool === 'needle');
     scene.add(knot);
     knotMeshRef.current = knot;
 
     // B. Cupping Target: Fibrotic Fascial Adhesion (Subcutaneous Fascia, 6mm)
-    const adhesionGeo = new THREE.IcosahedronGeometry(0.075, 2);
+    const adhesionGeo = new THREE.IcosahedronGeometry(0.08, 2);
     const adhesionMat = new THREE.MeshStandardMaterial({
       color: 0xc084fc,
-      emissive: 0x7e22ce,
-      emissiveIntensity: 0.8,
-      roughness: 0.35,
+      emissive: 0x9333ea,
+      emissiveIntensity: 1.6,
+      roughness: 0.25,
       transparent: true,
-      opacity: 0.90
+      opacity: 0.95
     });
     const adhesion = new THREE.Mesh(adhesionGeo, adhesionMat);
-    adhesion.position.set(offsetX, -0.05, 0.28); // Inside deep fascia at visible cut cross-section!
+    adhesion.position.set(offsetX, -0.05, offsetZ); // Deep fascia layer right on cut face!
     adhesion.castShadow = true;
     adhesion.visible = (activeTool === 'cup');
     scene.add(adhesion);
@@ -382,13 +414,14 @@ export default function SkinLayersPip({
     const stasisMat = new THREE.MeshStandardMaterial({
       color: 0x38bdf8,
       emissive: 0x0284c7,
-      emissiveIntensity: 0.9,
+      emissiveIntensity: 1.6,
       roughness: 0.20,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.90
     });
     const stasis = new THREE.Mesh(stasisGeo, stasisMat);
-    stasis.position.set(offsetX, 0.16, 0.28); // In dermal microvascular layer at visible cut cross-section!
+    stasis.rotation.x = Math.PI / 2;
+    stasis.position.set(offsetX, 0.16, offsetZ); // Dermal microvascular layer right on cut face!
     stasis.castShadow = true;
     stasis.visible = (activeTool === 'moxa');
     scene.add(stasis);
@@ -401,9 +434,9 @@ export default function SkinLayersPip({
     const pVel = new Float32Array(pCount * 3);
 
     for (let i = 0; i < pCount; i++) {
-      pPos[i * 3] = offsetX + (Math.random() - 0.5) * 0.14;
-      pPos[i * 3 + 1] = -0.15 + (Math.random() - 0.5) * 0.10;
-      pPos[i * 3 + 2] = 0.28 + (Math.random() - 0.5) * 0.12;
+      pPos[i * 3] = offsetX + (Math.random() - 0.5) * 0.18;
+      pPos[i * 3 + 1] = -0.15 + (Math.random() - 0.5) * 0.15;
+      pPos[i * 3 + 2] = offsetZ + (Math.random() - 0.5) * 0.08;
       pVel[i * 3] = (Math.random() - 0.5) * 0.008;
       pVel[i * 3 + 1] = 0.004 + Math.random() * 0.012; // Floating upward
       pVel[i * 3 + 2] = (Math.random() - 0.5) * 0.008;
@@ -432,8 +465,8 @@ export default function SkinLayersPip({
     // 6B. Mount Physical 3D Surgical Instrument Tray Comfortably Beside Tissue Block
     if (fullStage) {
       const trayMount = new THREE.Group();
-      trayMount.position.set(0.52, -0.06, 0.42);
-      trayMount.rotation.y = -0.38;
+      trayMount.position.set(0.78, -0.06, 0.38);
+      trayMount.rotation.y = -0.32;
       trayMount.scale.setScalar(1.22);
       scene.add(trayMount);
 
@@ -450,11 +483,6 @@ export default function SkinLayersPip({
     const animate = () => {
       animIdRef.current = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
-
-      // Idle gentle rotation of the skin model when not interacting
-      if (!controls.state || controls.state === -1) {
-        skinGroup.rotation.y += 0.0015;
-      }
 
       const curD = depthRef.current;
       // Live electric bio-pulse on muscle knot
@@ -644,18 +672,18 @@ export default function SkinLayersPip({
     if (moxaGroupRef.current) moxaGroupRef.current.visible = (activeTool === 'moxa');
 
     if (activeTool === 'needle' && needleGroupRef.current) {
-      // At depth 0mm: needle tip sits right on skin surface (y = 0.38)
-      // At depth 15mm: needle tip penetrates into deep muscle (y = -0.18)
+      // At depth 0mm: needle tip sits right on skin surface (y = 0.285)
+      // At depth 15mm: needle tip penetrates into deep muscle knot (y = -0.18)
       const fraction = Math.min(1.0, depth / 15.0);
-      needleGroupRef.current.position.y = 0.38 - fraction * 0.56;
+      needleGroupRef.current.position.y = 0.285 - fraction * 0.465;
     } else if (activeTool === 'cup' && cupGroupRef.current) {
-      cupGroupRef.current.position.y = 0.38;
+      cupGroupRef.current.position.y = 0.28;
       if (suctionBulgeRef.current) {
         const suctionFraction = Math.min(1.0, depth / 6.0);
         suctionBulgeRef.current.scale.set(1.0, suctionFraction * 0.45 + 0.02, 1.0);
       }
     } else if (activeTool === 'moxa' && moxaGroupRef.current) {
-      moxaGroupRef.current.position.y = 0.46;
+      moxaGroupRef.current.position.y = 0.38;
     }
 
     if (knotMeshRef.current) {
@@ -709,7 +737,10 @@ export default function SkinLayersPip({
               <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
               <span>Treating: {pointCode} • {pointName}</span>
               <span className="text-[10px] font-mono text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
-                Target: {targetDepth}mm
+                {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm` : activeTool === 'cup' ? 'Suction: 6.0mm' : 'Heat: 43°C'}
+              </span>
+              <span className="text-[10px] font-bold text-amber-700 bg-amber-500/15 px-2 py-0.5 rounded-full">
+                {activeTool === 'needle' ? '⚠️ Spastic Motor Knot' : activeTool === 'cup' ? '⚠️ Fascial Adhesion' : '⚠️ Cold Damp Stasis'}
               </span>
             </div>
           </div>

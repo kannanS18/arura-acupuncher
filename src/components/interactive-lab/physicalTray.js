@@ -140,16 +140,14 @@ export function buildPhysical3DTray(parentGroup, trayToolHitboxes, trayHaloMeshe
   cupSlot.add(cupHalo);
   if (trayHaloMeshes) trayHaloMeshes.cup = cupHalo;
 
-  // Premium Thick Medical Glass Material for Cupping Jar
-  const cupGlassMat = new THREE.MeshPhysicalMaterial({
-    color: 0x67e8f9,
-    transmission: 0.88,
-    opacity: 0.88,
+  // Premium Thick Medical Glass Material for Cupping Jar (Solid presence, rich glass tint)
+  const cupGlassMat = new THREE.MeshStandardMaterial({
+    color: 0x0284c7,
+    roughness: 0.10,
+    metalness: 0.20,
     transparent: true,
-    roughness: 0.08,
-    ior: 1.52,
-    thickness: 0.05,
-    specularIntensity: 1.0
+    opacity: 0.88,
+    side: THREE.DoubleSide
   });
 
   // 1. Thick Smooth Rounded Lip Rim (Base of Jar)

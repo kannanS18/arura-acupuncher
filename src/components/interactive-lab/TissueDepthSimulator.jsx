@@ -328,36 +328,57 @@ function playAcuSound(type, isMuted) {
   } catch (_) {}
 }
 
-// Procedural Razor-Sharp 2D Pinpoint Skin Dot Texture (Flush on Skin, Never 3D Spheres)
+// Procedural Razor-Sharp 2D Pinpoint Skin Dot Texture (High DPI, Solid Vibrant Arura Rose Core)
 function createSkinDotTexture(color = '#e02868', isSelected = false) {
   const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
+  canvas.width = 128;
+  canvas.height = 128;
   const ctx = canvas.getContext('2d');
+  const cx = 64;
+  const cy = 64;
 
   if (isSelected) {
-    const aura = ctx.createRadialGradient(32, 32, 8, 32, 32, 28);
-    aura.addColorStop(0, 'rgba(224, 40, 104, 0.65)');
+    const aura = ctx.createRadialGradient(cx, cy, 24, cx, cy, 62);
+    aura.addColorStop(0, 'rgba(224, 40, 104, 0.95)');
+    aura.addColorStop(0.5, 'rgba(244, 63, 94, 0.60)');
     aura.addColorStop(1, 'rgba(224, 40, 104, 0.0)');
     ctx.fillStyle = aura;
     ctx.beginPath();
-    ctx.arc(32, 32, 28, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 62, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    const softGlow = ctx.createRadialGradient(cx, cy, 20, cx, cy, 58);
+    softGlow.addColorStop(0, 'rgba(224, 40, 104, 0.70)');
+    softGlow.addColorStop(1, 'rgba(224, 40, 104, 0.0)');
+    ctx.fillStyle = softGlow;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 58, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // Crisp White Outer Ring (guarantees contrast against all skin tones & lighting)
+  // 1. Solid Outer Shadow Border (High-contrast separation against white mannequin)
   ctx.beginPath();
-  ctx.arc(32, 32, 14, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-  ctx.shadowBlur = 4;
+  ctx.arc(cx, cy, 46, 0, Math.PI * 2);
+  ctx.fillStyle = '#881337';
   ctx.fill();
 
-  // Core Solid Clinical Dot
-  ctx.shadowBlur = 0;
+  // 2. Vibrant Solid Arura Rose Disc (Full saturated color foundation)
   ctx.beginPath();
-  ctx.arc(32, 32, 10, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 42, 0, Math.PI * 2);
   ctx.fillStyle = color;
+  ctx.fill();
+
+  // 3. Crisp Concentric White Contrast Ring (Guarantees optical definition)
+  ctx.beginPath();
+  ctx.arc(cx, cy, 26, 0, Math.PI * 2);
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 6;
+  ctx.stroke();
+
+  // 4. Center Micro-Glint Highlight (Pinpoint center)
+  ctx.beginPath();
+  ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
   ctx.fill();
 
   return new THREE.CanvasTexture(canvas);
@@ -928,10 +949,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       playAcuSound('moxa', isMuted);
     }
 
-    if (val >= currentProb.depthTarget && !isDisintegrated && !isSnapping) {
+    const curPt = CLINICAL_ACUPOINTS[selectedAcupointIdx] || CLINICAL_ACUPOINTS[0];
+    const targetThreshold = activeTool === 'needle'
+      ? (curPt.depthTarget || 12.0) - 0.2
+      : activeTool === 'cup' ? 5.8 : 42.0;
+
+    if (val >= targetThreshold && !isDisintegrated && !isSnapping) {
       triggerThanosDisintegration();
     }
-  }, [activeTool, currentProb.depthTarget, isDisintegrated, isSnapping, isMuted, applySkinPhysicsAndToolHeight, triggerThanosDisintegration]);
+  }, [activeTool, selectedAcupointIdx, isDisintegrated, isSnapping, isMuted, applySkinPhysicsAndToolHeight, triggerThanosDisintegration]);
 
   // Reset treatment
   const handleReset = useCallback(() => {
@@ -1350,12 +1376,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         const skinDotTex = createSkinDotTexture('#e02868', false);
         const skinDotSelTex = createSkinDotTexture('#e02868', true);
 
-        // Directly attach all 11 Acupoint Pin Groups to bodyMesh!
-        // Guarantees 100% mathematical lockstep with the skin surface (Zero floating!)
+        // Directly attach all 11 Acupoint Pin Groups to bodyMesh with outward surface-normal offset!
+        // Guarantees zero sinking/occlusion into mannequin polygons and 100% lockstep tracking
         CLINICAL_ACUPOINTS.forEach((pt, idx) => {
           const pinGroup = new THREE.Group();
           const pos = pt.modelPos || [0, 0, 0];
-          pinGroup.position.set(pos[0], pos[1], pos[2]);
+          const norm = pt.surfaceNormal || [0, 0, 1];
+          const nLen = Math.hypot(norm[0], norm[1], norm[2]) || 1;
+          const offX = (norm[0] / nLen) * 0.012;
+          const offY = (norm[1] / nLen) * 0.012;
+          const offZ = (norm[2] / nLen) * 0.012;
+          pinGroup.position.set(pos[0] + offX, pos[1] + offY, pos[2] + offZ);
           pinGroup.scale.set(1, 1, 1); // Visible in normal state!
           pinGroup.userData = {
             targetScale: 1.0,
@@ -1365,19 +1396,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             orderIndex: pt.orderIndex ?? 0
           };
 
-          // Crisp 2D Pinpoint Dot flush on skin (Camera-facing sprite, depthTest: false so it never clips)
+          // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite, depthTest: false so it never clips)
           const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
           const dotSprite = new THREE.Sprite(dotMat);
-          dotSprite.scale.set(0.022, 0.022, 1.0);
-          dotSprite.renderOrder = 999;
+          dotSprite.scale.set(0.052, 0.052, 1.0);
+          dotSprite.renderOrder = 9999;
           pinGroup.add(dotSprite);
 
           // Active Selection Aura Ring
           const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
           const selRing = new THREE.Sprite(selRingMat);
-          selRing.scale.set(0.038, 0.038, 1.0);
+          selRing.scale.set(0.082, 0.082, 1.0);
           selRing.visible = (idx === selectedAcupointIdx);
-          selRing.renderOrder = 998;
+          selRing.renderOrder = 9998;
           pinGroup.add(selRing);
 
           // Leader Line (Crisp callout pointer for active acupoint)
