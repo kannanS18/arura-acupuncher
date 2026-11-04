@@ -4,7 +4,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GV-20",
     "fullName": "GV-20 (Baihui)",
     "pinyin": "Baihui",
-    "hanzi": "\u767e\u4f1a",
+    "hanzi": "百会",
     "translation": "Hundred Convergences",
     "englishTitle": "Hundred Convergences",
     "region": "face",
@@ -12,8 +12,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Governing Vessel (Du Mai)",
-    "depthTarget": 6.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 6,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       0.001,
       0.9478,
@@ -25,9 +25,9 @@ export const CLINICAL_ACUPOINTS = [
       0.91
     ],
     "badgeOffset": [
-      -0.017,
-      0.043,
-      0.041
+      0,
+      0.08,
+      0
     ],
     "painName": "Cranial Dural Tension & Mental Brain Fog",
     "nerves": "Supraorbital & Greater Occipital Anastomosis",
@@ -41,7 +41,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "EX-HN3",
     "fullName": "EX-HN3 (Yintang)",
     "pinyin": "Yintang",
-    "hanzi": "\u5370\u5802",
+    "hanzi": "印堂",
     "translation": "Hall of Impression",
     "englishTitle": "Third Eye Glabella",
     "region": "face",
@@ -49,22 +49,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Extra Head & Neck Point",
-    "depthTarget": 5.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 5,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       0.0119,
       0.8192,
       0.0998
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0,
+      0.06,
+      0.05
     ],
     "painName": "Frontal Sinus Headache & Glabella Tension",
     "nerves": "Supratrochlear Nerve (V1)",
@@ -78,7 +78,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "EX-HN5-L",
     "fullName": "EX-HN5 (Left Taiyang)",
     "pinyin": "Taiyang",
-    "hanzi": "\u592a\u9633",
+    "hanzi": "太阳",
     "translation": "Supreme Yang (Left)",
     "englishTitle": "Left Temple Hollow",
     "region": "face",
@@ -86,22 +86,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 2,
     "meridian": "Extra Head & Neck Point",
-    "depthTarget": 8.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 8,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       0.0583,
       0.8285,
       0.0715
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.08,
+      0.04,
+      0.03
     ],
     "painName": "Temporal Migraine & Retro-Orbital Eye Strain",
     "nerves": "Zygomaticotemporal Nerve & Facial Nerve",
@@ -115,7 +115,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "EX-HN5-R",
     "fullName": "EX-HN5 (Right Taiyang)",
     "pinyin": "Taiyang",
-    "hanzi": "\u592a\u9633",
+    "hanzi": "太阳",
     "translation": "Supreme Yang (Right)",
     "englishTitle": "Right Temple Hollow",
     "region": "face",
@@ -123,8 +123,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Extra Head & Neck Point",
-    "depthTarget": 8.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 8,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       -0.0565,
       0.8428,
@@ -136,9 +136,9 @@ export const CLINICAL_ACUPOINTS = [
       0.792
     ],
     "badgeOffset": [
-      -0.027,
-      0.042,
-      0.036
+      -0.08,
+      0.04,
+      0.03
     ],
     "painName": "Right Temporal Migraine & Ocular Strain",
     "nerves": "Zygomaticotemporal Nerve & Facial Nerve",
@@ -152,7 +152,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "ST-2-L",
     "fullName": "ST-2 (Left Sibai)",
     "pinyin": "Sibai",
-    "hanzi": "\u56db\u767d",
+    "hanzi": "四白",
     "translation": "Four Whites (Left)",
     "englishTitle": "Left Infraorbital",
     "region": "face",
@@ -160,22 +160,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Stomach Meridian",
-    "depthTarget": 7.0,
-    "depthCun": "0.2\u20130.4 cun",
+    "depthTarget": 7,
+    "depthCun": "0.2–0.4 cun",
     "modelPos": [
       0.0302,
       0.7912,
       0.0988
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.07,
+      -0.03,
+      0.05
     ],
     "painName": "Trigeminal Facial Spasm & Sinus Congestion",
     "nerves": "Infraorbital Nerve (V2)",
@@ -189,7 +189,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "ST-2-R",
     "fullName": "ST-2 (Right Sibai)",
     "pinyin": "Sibai",
-    "hanzi": "\u56db\u767d",
+    "hanzi": "四白",
     "translation": "Four Whites (Right)",
     "englishTitle": "Right Infraorbital",
     "region": "face",
@@ -197,8 +197,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 5,
     "meridian": "Stomach Meridian",
-    "depthTarget": 7.0,
-    "depthCun": "0.2\u20130.4 cun",
+    "depthTarget": 7,
+    "depthCun": "0.2–0.4 cun",
     "modelPos": [
       -0.0271,
       0.7894,
@@ -210,9 +210,9 @@ export const CLINICAL_ACUPOINTS = [
       0.928
     ],
     "badgeOffset": [
-      -0.017,
-      0.037,
-      0.042
+      -0.07,
+      -0.03,
+      0.05
     ],
     "painName": "Right Trigeminal Spasm & Infraorbital Pressure",
     "nerves": "Infraorbital Nerve (V2)",
@@ -226,7 +226,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "LI-20",
     "fullName": "LI-20 (Yingxiang)",
     "pinyin": "Yingxiang",
-    "hanzi": "\u8fce\u9999",
+    "hanzi": "迎香",
     "translation": "Welcome Fragrance",
     "englishTitle": "Nasolabial Groove",
     "region": "face",
@@ -234,22 +234,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 6,
     "meridian": "Large Intestine Meridian",
-    "depthTarget": 6.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 6,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       0.0177,
       0.7516,
       0.1022
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0,
+      -0.06,
+      0.06
     ],
     "painName": "Nasal Airway Congestion & Maxillary Sinus Stasis",
     "nerves": "Infraorbital Nerve & Facial Nerve Branches",
@@ -263,7 +263,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GB-20-L",
     "fullName": "GB-20 (Left Fengchi)",
     "pinyin": "Fengchi",
-    "hanzi": "\u98ce\u6c60",
+    "hanzi": "风池",
     "translation": "Wind Pool (Left)",
     "englishTitle": "Left Occipital Hollow",
     "region": "neck",
@@ -271,22 +271,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 0,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.8\u20131.2 cun",
+    "depthTarget": 12,
+    "depthCun": "0.8–1.2 cun",
     "modelPos": [
       0.0292,
       0.6885,
       -0.0827
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.07,
+      0.04,
+      -0.05
     ],
     "painName": "Occipital Neuralgia & Severe Cervical Migraine",
     "nerves": "Greater Occipital Nerve (C2)",
@@ -300,7 +300,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GB-20-R",
     "fullName": "GB-20 (Right Fengchi)",
     "pinyin": "Fengchi",
-    "hanzi": "\u98ce\u6c60",
+    "hanzi": "风池",
     "translation": "Wind Pool (Right)",
     "englishTitle": "Right Occipital Hollow",
     "region": "neck",
@@ -308,8 +308,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 1,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.8\u20131.2 cun",
+    "depthTarget": 12,
+    "depthCun": "0.8–1.2 cun",
     "modelPos": [
       -0.0402,
       0.6912,
@@ -321,9 +321,9 @@ export const CLINICAL_ACUPOINTS = [
       0.98
     ],
     "badgeOffset": [
-      0.003,
-      0.043,
-      0.044
+      -0.07,
+      0.04,
+      -0.05
     ],
     "painName": "Right Occipital Neuralgia & Suboccipital Spasm",
     "nerves": "Greater Occipital Nerve (C2)",
@@ -337,7 +337,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-10-L",
     "fullName": "BL-10 (Left Tianzhu)",
     "pinyin": "Tianzhu",
-    "hanzi": "\u5929\u67f1",
+    "hanzi": "天柱",
     "translation": "Celestial Pillar (Left)",
     "englishTitle": "Left Upper Neck",
     "region": "neck",
@@ -345,22 +345,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 2,
     "meridian": "Bladder Meridian",
-    "depthTarget": 10.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 10,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.0197,
       0.6421,
       -0.0995
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.06,
+      -0.02,
+      -0.06
     ],
     "painName": "Forward-Head Cervical Spasm & Upper Trapezius Strain",
     "nerves": "Lesser Occipital Nerve (C2-C3)",
@@ -374,7 +374,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-10-R",
     "fullName": "BL-10 (Right Tianzhu)",
     "pinyin": "Tianzhu",
-    "hanzi": "\u5929\u67f1",
+    "hanzi": "天柱",
     "translation": "Celestial Pillar (Right)",
     "englishTitle": "Right Upper Neck",
     "region": "neck",
@@ -382,8 +382,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 3,
     "meridian": "Bladder Meridian",
-    "depthTarget": 10.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 10,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.0273,
       0.644,
@@ -395,9 +395,9 @@ export const CLINICAL_ACUPOINTS = [
       0.967
     ],
     "badgeOffset": [
-      0.002,
-      0.046,
-      0.044
+      -0.06,
+      -0.02,
+      -0.06
     ],
     "painName": "Right Cervical Paraspinal Spasm & Neck Lock",
     "nerves": "Lesser Occipital Nerve (C2-C3)",
@@ -411,7 +411,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GB-21-L",
     "fullName": "GB-21 (Left Jianjing)",
     "pinyin": "Jianjing",
-    "hanzi": "\u80a9\u4e95",
+    "hanzi": "肩井",
     "translation": "Shoulder Well (Left)",
     "englishTitle": "Left Trapezius Ridge",
     "region": "neck",
@@ -419,22 +419,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.1242,
       0.6285,
       -0.0433
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.08,
+      0.06,
+      -0.02
     ],
     "painName": "Chronic Levator Scapulae Spasm & Shoulder Lock",
     "nerves": "Spinal Accessory Nerve (CN XI) & Supraclavicular Nerves",
@@ -448,7 +448,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GB-21-R",
     "fullName": "GB-21 (Right Jianjing)",
     "pinyin": "Jianjing",
-    "hanzi": "\u80a9\u4e95",
+    "hanzi": "肩井",
     "translation": "Shoulder Well (Right)",
     "englishTitle": "Right Trapezius Ridge",
     "region": "neck",
@@ -456,8 +456,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 5,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.0894,
       0.627,
@@ -469,9 +469,9 @@ export const CLINICAL_ACUPOINTS = [
       0.846
     ],
     "badgeOffset": [
-      -0.021,
-      0.047,
-      0.038
+      -0.08,
+      0.06,
+      -0.02
     ],
     "painName": "Right Trapezius Trigger Point & Scapular Lock",
     "nerves": "Spinal Accessory Nerve (CN XI) & Supraclavicular Nerves",
@@ -485,7 +485,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GV-14",
     "fullName": "GV-14 (Dazhui)",
     "pinyin": "Dazhui",
-    "hanzi": "\u5927\u690e",
+    "hanzi": "大椎",
     "translation": "Great Vertebra",
     "englishTitle": "C7 Cervicothoracic Joint",
     "region": "neck",
@@ -493,8 +493,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 6,
     "meridian": "Governing Vessel (Du Mai)",
-    "depthTarget": 10.0,
-    "depthCun": "0.5\u20131.0 cun",
+    "depthTarget": 10,
+    "depthCun": "0.5–1.0 cun",
     "modelPos": [
       0.0045,
       0.5751,
@@ -506,9 +506,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.107
     ],
     "badgeOffset": [
-      -0.033,
-      0.065,
-      -0.005
+      0,
+      -0.06,
+      -0.06
     ],
     "painName": "Cervicothoracic Joint Stagnation & Stiff Spine",
     "nerves": "Dorsal Ramus of C8 Spinal Nerve",
@@ -522,7 +522,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "LI-11",
     "fullName": "LI-11 (Quchi)",
     "pinyin": "Quchi",
-    "hanzi": "\u66f2\u6c60",
+    "hanzi": "曲池",
     "translation": "Pool at the Bend",
     "englishTitle": "Left Elbow Crease",
     "region": "arm_left",
@@ -530,8 +530,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Large Intestine Meridian",
-    "depthTarget": 15.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 15,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.228,
       0.1637,
@@ -543,9 +543,9 @@ export const CLINICAL_ACUPOINTS = [
       0.63
     ],
     "badgeOffset": [
-      0.034,
-      0.044,
-      0.028
+      0.07,
+      0.06,
+      0
     ],
     "painName": "Lateral Epicondylitis (Tennis Elbow) & Inflammation",
     "nerves": "Radial Nerve & Posterior Cutaneous Nerve",
@@ -559,7 +559,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "PC-6",
     "fullName": "PC-6 (Neiguan)",
     "pinyin": "Neiguan",
-    "hanzi": "\u5185\u5173",
+    "hanzi": "内关",
     "translation": "Inner Gate",
     "englishTitle": "Left Inner Forearm",
     "region": "arm_left",
@@ -567,8 +567,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Pericardium Meridian",
-    "depthTarget": 10.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 10,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.2294,
       0.0115,
@@ -580,9 +580,9 @@ export const CLINICAL_ACUPOINTS = [
       0.96
     ],
     "badgeOffset": [
-      0.011,
+      -0.06,
       0.04,
-      0.043
+      0.07
     ],
     "painName": "Median Nerve Compression & Chest Angina",
     "nerves": "Median Nerve Trunk",
@@ -596,7 +596,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "LU-7",
     "fullName": "LU-7 (Lieque)",
     "pinyin": "Lieque",
-    "hanzi": "\u5217\u7f3a",
+    "hanzi": "列缺",
     "translation": "Broken Sequence",
     "englishTitle": "Left Radial Forearm",
     "region": "arm_left",
@@ -604,8 +604,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 2,
     "meridian": "Lung Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.2595,
       -0.0129,
@@ -617,9 +617,9 @@ export const CLINICAL_ACUPOINTS = [
       0.52
     ],
     "badgeOffset": [
-      0.038,
-      0.04,
-      0.023
+      0.08,
+      0.02,
+      0.05
     ],
     "painName": "Radial Styloid Tenosynovitis & Stiff Forearm",
     "nerves": "Lateral Antebrachial Cutaneous Nerve",
@@ -633,7 +633,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "HT-7",
     "fullName": "HT-7 (Shenmen)",
     "pinyin": "Shenmen",
-    "hanzi": "\u795e\u95e8",
+    "hanzi": "神门",
     "translation": "Spirit Gate",
     "englishTitle": "Left Ulnar Wrist",
     "region": "arm_left",
@@ -641,8 +641,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Heart Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 8,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       0.217,
       -0.0038,
@@ -654,9 +654,9 @@ export const CLINICAL_ACUPOINTS = [
       0.88
     ],
     "badgeOffset": [
-      -0.02,
-      0.04,
-      0.04
+      -0.07,
+      -0.03,
+      -0.02
     ],
     "painName": "Restless Insomnia & Cardiac Palpitations",
     "nerves": "Ulnar Nerve & Medial Antebrachial Cutaneous Nerve",
@@ -670,7 +670,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "LI-4",
     "fullName": "LI-4 (Hegu)",
     "pinyin": "Hegu",
-    "hanzi": "\u5408\u8c37",
+    "hanzi": "合谷",
     "translation": "Joining Valley",
     "englishTitle": "Left Dorsal Hand",
     "region": "arm_left",
@@ -678,8 +678,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Large Intestine Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20131.0 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–1.0 cun",
     "modelPos": [
       0.2317,
       -0.0209,
@@ -691,9 +691,9 @@ export const CLINICAL_ACUPOINTS = [
       0.96
     ],
     "badgeOffset": [
-      0.009,
-      0.044,
-      0.043
+      0.02,
+      -0.07,
+      0.08
     ],
     "painName": "Trigeminal Facial Spasm & TMJ Jaw Clenching",
     "nerves": "Superficial Radial Nerve",
@@ -707,7 +707,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-LI-11",
     "fullName": "LI-11 (Right Quchi)",
     "pinyin": "Quchi",
-    "hanzi": "\u66f2\u6c60",
+    "hanzi": "曲池",
     "translation": "Pool at the Bend (Right)",
     "englishTitle": "Right Elbow Crease",
     "region": "arm_right",
@@ -715,8 +715,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Large Intestine Meridian",
-    "depthTarget": 15.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 15,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       -0.2325,
       0.1669,
@@ -728,9 +728,9 @@ export const CLINICAL_ACUPOINTS = [
       0.63
     ],
     "badgeOffset": [
-      -0.034,
-      0.044,
-      0.028
+      -0.07,
+      0.06,
+      0
     ],
     "painName": "Right Lateral Epicondylitis & Tendon Inflammation",
     "nerves": "Right Radial Nerve",
@@ -744,7 +744,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-PC-6",
     "fullName": "PC-6 (Right Neiguan)",
     "pinyin": "Neiguan",
-    "hanzi": "\u5185\u5173",
+    "hanzi": "内关",
     "translation": "Inner Gate (Right)",
     "englishTitle": "Right Inner Forearm",
     "region": "arm_right",
@@ -752,8 +752,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Pericardium Meridian",
-    "depthTarget": 10.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 10,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.1863,
       0.0103,
@@ -765,9 +765,9 @@ export const CLINICAL_ACUPOINTS = [
       0.96
     ],
     "badgeOffset": [
-      -0.011,
+      0.06,
       0.04,
-      0.043
+      0.07
     ],
     "painName": "Right Median Nerve Compression & Vasovagal Nausea",
     "nerves": "Right Median Nerve Trunk",
@@ -781,7 +781,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-LU-7",
     "fullName": "LU-7 (Right Lieque)",
     "pinyin": "Lieque",
-    "hanzi": "\u5217\u7f3a",
+    "hanzi": "列缺",
     "translation": "Broken Sequence (Right)",
     "englishTitle": "Right Radial Forearm",
     "region": "arm_right",
@@ -789,8 +789,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 2,
     "meridian": "Lung Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.2296,
       -0.0198,
@@ -802,9 +802,9 @@ export const CLINICAL_ACUPOINTS = [
       0.52
     ],
     "badgeOffset": [
-      -0.038,
-      0.04,
-      0.023
+      -0.08,
+      0.02,
+      0.05
     ],
     "painName": "Right Radial Styloid Tenosynovitis & Stiff Wrist",
     "nerves": "Lateral Antebrachial Cutaneous Nerve",
@@ -818,7 +818,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-HT-7",
     "fullName": "HT-7 (Right Shenmen)",
     "pinyin": "Shenmen",
-    "hanzi": "\u795e\u95e8",
+    "hanzi": "神门",
     "translation": "Spirit Gate (Right)",
     "englishTitle": "Right Ulnar Wrist",
     "region": "arm_right",
@@ -826,8 +826,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Heart Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.3\u20130.5 cun",
+    "depthTarget": 8,
+    "depthCun": "0.3–0.5 cun",
     "modelPos": [
       -0.1725,
       -0.0175,
@@ -839,9 +839,9 @@ export const CLINICAL_ACUPOINTS = [
       0.88
     ],
     "badgeOffset": [
-      0.02,
-      0.04,
-      0.04
+      0.07,
+      -0.03,
+      -0.02
     ],
     "painName": "Autonomic Stress Spasm & Sleep Disturbance",
     "nerves": "Right Ulnar Nerve",
@@ -855,7 +855,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-LI-4",
     "fullName": "LI-4 (Right Hegu)",
     "pinyin": "Hegu",
-    "hanzi": "\u5408\u8c37",
+    "hanzi": "合谷",
     "translation": "Joining Valley (Right)",
     "englishTitle": "Right Dorsal Hand",
     "region": "arm_right",
@@ -863,8 +863,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Large Intestine Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20131.0 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–1.0 cun",
     "modelPos": [
       -0.1851,
       -0.033,
@@ -876,9 +876,9 @@ export const CLINICAL_ACUPOINTS = [
       0.96
     ],
     "badgeOffset": [
-      -0.009,
-      0.044,
-      0.043
+      -0.02,
+      -0.07,
+      0.08
     ],
     "painName": "Right Masseter Spasm & Frontal Headache",
     "nerves": "Superficial Radial Nerve",
@@ -892,7 +892,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-13-L",
     "fullName": "BL-13 (Left Feishu)",
     "pinyin": "Feishu",
-    "hanzi": "\u80ba\u4fde",
+    "hanzi": "肺俞",
     "translation": "Lung Shu (Left)",
     "englishTitle": "Left Upper Back T3",
     "region": "back",
@@ -900,22 +900,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 0,
     "meridian": "Bladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.0424,
       0.4744,
       -0.1569
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.08,
+      0.04,
+      -0.05
     ],
     "painName": "Thoracic Rhomboid Spasm & Bronchial Constriction",
     "nerves": "Dorsal Ramus of T3 Spinal Nerve",
@@ -929,7 +929,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-13-R",
     "fullName": "BL-13 (Right Feishu)",
     "pinyin": "Feishu",
-    "hanzi": "\u80ba\u4fde",
+    "hanzi": "肺俞",
     "translation": "Lung Shu (Right)",
     "englishTitle": "Right Upper Back T3",
     "region": "back",
@@ -937,8 +937,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 1,
     "meridian": "Bladder Meridian",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.0506,
       0.4652,
@@ -950,9 +950,9 @@ export const CLINICAL_ACUPOINTS = [
       0.268
     ],
     "badgeOffset": [
-      -0.022,
-      0.073,
-      0.012
+      -0.08,
+      0.04,
+      -0.05
     ],
     "painName": "Right Rhomboid Stagnation & Interscapular Knot",
     "nerves": "Dorsal Ramus of T3 Spinal Nerve",
@@ -966,7 +966,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-23-L",
     "fullName": "BL-23 (Left Shenshu)",
     "pinyin": "Shenshu",
-    "hanzi": "\u80be\u4fde",
+    "hanzi": "肾俞",
     "translation": "Kidney Shu (Left)",
     "englishTitle": "Left Lumbar L2",
     "region": "back",
@@ -974,22 +974,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 2,
     "meridian": "Bladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "0.8\u20131.2 cun",
+    "depthTarget": 14,
+    "depthCun": "0.8–1.2 cun",
     "modelPos": [
       0.0394,
       0.0858,
       -0.1391
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.08,
+      -0.03,
+      -0.05
     ],
     "painName": "Lumbar Erector Spinae Spasm & Sciatic Compression",
     "nerves": "Lumbar Spinal Nerve Dorsal Ramus (L2)",
@@ -1003,7 +1003,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-23-R",
     "fullName": "BL-23 (Right Shenshu)",
     "pinyin": "Shenshu",
-    "hanzi": "\u80be\u4fde",
+    "hanzi": "肾俞",
     "translation": "Kidney Shu (Right)",
     "englishTitle": "Right Lumbar L2",
     "region": "back",
@@ -1011,8 +1011,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 3,
     "meridian": "Bladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "0.8\u20131.2 cun",
+    "depthTarget": 14,
+    "depthCun": "0.8–1.2 cun",
     "modelPos": [
       -0.0343,
       0.12,
@@ -1024,9 +1024,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.836
     ],
     "badgeOffset": [
-      -0.004,
-      0.059,
-      -0.038
+      -0.08,
+      -0.03,
+      -0.05
     ],
     "painName": "Right Lumbar Facet Spasm & Sacroiliac Strain",
     "nerves": "Lumbar Spinal Nerve Dorsal Ramus (L2)",
@@ -1040,7 +1040,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GV-4",
     "fullName": "GV-4 (Mingmen)",
     "pinyin": "Mingmen",
-    "hanzi": "\u547d\u95e8",
+    "hanzi": "命门",
     "translation": "Gate of Life",
     "englishTitle": "Lumbar L2 Midline",
     "region": "back",
@@ -1048,22 +1048,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 4,
     "meridian": "Governing Vessel (Du Mai)",
-    "depthTarget": 12.0,
-    "depthCun": "0.5\u20131.0 cun",
+    "depthTarget": 12,
+    "depthCun": "0.5–1.0 cun",
     "modelPos": [
       0.0117,
       0.1212,
       -0.1217
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0,
+      0.06,
+      -0.07
     ],
     "painName": "Lumbar Disc Fatigue & Core Spinal Instability",
     "nerves": "Posterior Branch of Lumbar Nerve",
@@ -1077,7 +1077,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "ST-36",
     "fullName": "ST-36 (Zusanli)",
     "pinyin": "Zusanli",
-    "hanzi": "\u8db3\u4e09\u91cc",
+    "hanzi": "足三里",
     "translation": "Leg Three Miles",
     "englishTitle": "Left Anterior Tibial Shin",
     "region": "leg_left",
@@ -1085,22 +1085,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Stomach Meridian",
-    "depthTarget": 15.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 15,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.1153,
       -0.3914,
       0.034
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.07,
+      0.04,
+      0.06
     ],
     "painName": "Quadriceps Motor Endplate Spasm & Gastric Cramp",
     "nerves": "Deep Peroneal (Fibular) Nerve",
@@ -1114,7 +1114,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "GB-34",
     "fullName": "GB-34 (Yanglingquan)",
     "pinyin": "Yanglingquan",
-    "hanzi": "\u9633\u9675\u6cc9",
+    "hanzi": "阳陵泉",
     "translation": "Yang Mound Spring",
     "englishTitle": "Left Lateral Knee Fibula",
     "region": "leg_left",
@@ -1122,22 +1122,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.1582,
       -0.5228,
       -0.1016
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.08,
+      0,
+      -0.04
     ],
     "painName": "Peroneal Tendon Adhesion & Lateral Knee Stiffness",
     "nerves": "Common Peroneal (Fibular) Nerve",
@@ -1151,7 +1151,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "BL-40",
     "fullName": "BL-40 (Weizhong)",
     "pinyin": "Weizhong",
-    "hanzi": "\u59d4\u4e2d",
+    "hanzi": "委中",
     "translation": "Middle of the Crease",
     "englishTitle": "Left Popliteal Knee Fossa",
     "region": "leg_left",
@@ -1159,22 +1159,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 2,
     "meridian": "Bladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.121,
       -0.5231,
       -0.12
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0,
+      -0.05,
+      -0.08
     ],
     "painName": "Popliteal Fascial Restriction & Lumbar Radiculopathy",
     "nerves": "Tibial Nerve",
@@ -1188,7 +1188,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "SP-6",
     "fullName": "SP-6 (Sanyinjiao)",
     "pinyin": "Sanyinjiao",
-    "hanzi": "\u4e09\u9634\u4ea4",
+    "hanzi": "三阴交",
     "translation": "Three Yin Intersection",
     "englishTitle": "Left Medial Ankle Calf",
     "region": "leg_left",
@@ -1196,22 +1196,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Spleen Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.0892,
       -0.6119,
       -0.0367
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      -0.07,
+      0.03,
+      0.05
     ],
     "painName": "Medial Tibial Stress (Shin Splint) & Pelvic Stasis",
     "nerves": "Tibial Nerve & Saphenous Nerve",
@@ -1225,7 +1225,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "LV-3",
     "fullName": "LV-3 (Taichong)",
     "pinyin": "Taichong",
-    "hanzi": "\u592a\u51b2",
+    "hanzi": "太冲",
     "translation": "Great Surge",
     "englishTitle": "Left Foot Dorsum",
     "region": "leg_left",
@@ -1233,22 +1233,22 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Liver Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       0.1091,
       -0.9072,
       0.0805
     ],
     "surfaceNormal": [
-      0.0,
-      0.0,
-      1.0
+      0,
+      0,
+      1
     ],
     "badgeOffset": [
-      0.0,
-      0.035,
-      0.045
+      0.06,
+      0.05,
+      0.07
     ],
     "painName": "Tarsal Tunnel Pain & Vertex Hypertensive Pressure",
     "nerves": "Deep Peroneal (Fibular) Nerve Branch",
@@ -1262,7 +1262,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-ST-36",
     "fullName": "ST-36 (Right Zusanli)",
     "pinyin": "Zusanli",
-    "hanzi": "\u8db3\u4e09\u91cc",
+    "hanzi": "足三里",
     "translation": "Leg Three Miles (Right)",
     "englishTitle": "Right Anterior Tibial Shin",
     "region": "leg_right",
@@ -1270,8 +1270,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Stomach Meridian",
-    "depthTarget": 15.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 15,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       -0.1127,
       -0.397,
@@ -1283,9 +1283,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.95
     ],
     "badgeOffset": [
-      0.014,
-      0.037,
-      -0.043
+      -0.07,
+      0.04,
+      0.06
     ],
     "painName": "Right Quadriceps Motor Spasm & Leg Fatigue",
     "nerves": "Right Deep Peroneal Nerve",
@@ -1299,7 +1299,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-GB-34",
     "fullName": "GB-34 (Right Yanglingquan)",
     "pinyin": "Yanglingquan",
-    "hanzi": "\u9633\u9675\u6cc9",
+    "hanzi": "阳陵泉",
     "translation": "Yang Mound Spring (Right)",
     "englishTitle": "Right Lateral Knee Fibula",
     "region": "leg_right",
@@ -1307,8 +1307,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Gallbladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       -0.157,
       -0.5292,
@@ -1320,9 +1320,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.683
     ],
     "badgeOffset": [
-      -0.033,
-      0.035,
-      -0.031
+      -0.08,
+      0,
+      -0.04
     ],
     "painName": "Right Peroneal Tendon Adhesion & Knee Stiffness",
     "nerves": "Right Common Peroneal Nerve",
@@ -1336,7 +1336,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-BL-40",
     "fullName": "BL-40 (Right Weizhong)",
     "pinyin": "Weizhong",
-    "hanzi": "\u59d4\u4e2d",
+    "hanzi": "委中",
     "translation": "Middle of the Crease (Right)",
     "englishTitle": "Right Popliteal Knee Fossa",
     "region": "leg_right",
@@ -1344,8 +1344,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "back",
     "orderIndex": 2,
     "meridian": "Bladder Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       -0.1155,
       -0.5223,
@@ -1357,9 +1357,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.987
     ],
     "badgeOffset": [
-      -0.003,
-      0.042,
-      -0.044
+      0,
+      -0.05,
+      -0.08
     ],
     "painName": "Right Popliteal Fascial Adhesion & Sciatic Ache",
     "nerves": "Right Tibial Nerve",
@@ -1373,7 +1373,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-SP-6",
     "fullName": "SP-6 (Right Sanyinjiao)",
     "pinyin": "Sanyinjiao",
-    "hanzi": "\u4e09\u9634\u4ea4",
+    "hanzi": "三阴交",
     "translation": "Three Yin Intersection (Right)",
     "englishTitle": "Right Medial Ankle Calf",
     "region": "leg_right",
@@ -1381,8 +1381,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Spleen Meridian",
-    "depthTarget": 14.0,
-    "depthCun": "1.0\u20131.5 cun",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
     "modelPos": [
       -0.086,
       -0.6194,
@@ -1394,9 +1394,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.297
     ],
     "badgeOffset": [
-      -0.042,
-      0.027,
-      -0.013
+      0.07,
+      0.03,
+      0.05
     ],
     "painName": "Right Medial Tibial Stress & Calf Muscle Cramp",
     "nerves": "Right Tibial & Saphenous Nerves",
@@ -1410,7 +1410,7 @@ export const CLINICAL_ACUPOINTS = [
     "code": "R-LV-3",
     "fullName": "LV-3 (Right Taichong)",
     "pinyin": "Taichong",
-    "hanzi": "\u592a\u51b2",
+    "hanzi": "太冲",
     "translation": "Great Surge (Right)",
     "englishTitle": "Right Foot Dorsum",
     "region": "leg_right",
@@ -1418,8 +1418,8 @@ export const CLINICAL_ACUPOINTS = [
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Liver Meridian",
-    "depthTarget": 8.0,
-    "depthCun": "0.5\u20130.8 cun",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
     "modelPos": [
       -0.1048,
       -0.908,
@@ -1431,9 +1431,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.762
     ],
     "badgeOffset": [
-      0.029,
-      0.037,
-      -0.034
+      -0.06,
+      0.05,
+      0.07
     ],
     "painName": "Right Tarsal Tunnel Pain & Plantar Fascia Strain",
     "nerves": "Right Deep Peroneal Nerve Branch",

@@ -95,16 +95,21 @@ export default function SkinLayersPip({
     if (!container) return;
 
     // 1. Scene, Camera, Renderer
-    const width = container.clientWidth || (fullStage ? window.innerWidth : 340);
-    const height = container.clientHeight || (fullStage ? Math.max(window.innerHeight, 720) : 260);
+    const getContainerDims = () => {
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(container.clientWidth || rect.width || window.innerWidth, 320);
+      const h = Math.max(container.clientHeight || rect.height || (fullStage ? window.innerHeight : 680), 320);
+      return { w, h };
+    };
+    const { w: initW, h: initH } = getContainerDims();
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf8fafc);
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+    const camera = new THREE.PerspectiveCamera(38, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.16, 1.45, 3.10);
+      camera.position.set(0.18, 1.45, 3.15);
       camera.lookAt(0.14, 0.05, 0);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
@@ -113,12 +118,20 @@ export default function SkinLayersPip({
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setSize(width, height);
+    renderer.setSize(initW, initH);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
+
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
+
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -533,28 +546,27 @@ export default function SkinLayersPip({
     renderer.domElement.addEventListener('click', onClickCanvas);
 
     const handleResize = () => {
-      if (!container) return;
-      const nw = container.clientWidth || window.innerWidth;
-      const nh = container.clientHeight || (fullStage ? Math.max(window.innerHeight, 720) : 260);
-      if (nw > 50 && nh > 50) {
-        camera.aspect = nw / nh;
-        camera.updateProjectionMatrix();
-        renderer.setSize(nw, nh);
+      if (!container || !rendererRef.current || !cameraRef.current) return;
+      const { w, h } = getContainerDims();
+      if (w > 50 && h > 50) {
+        cameraRef.current.aspect = w / h;
+        cameraRef.current.updateProjectionMatrix();
+        rendererRef.current.setSize(w, h, false);
+        rendererRef.current.domElement.style.width = '100%';
+        rendererRef.current.domElement.style.height = '100%';
       }
     };
     window.addEventListener('resize', handleResize);
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width: nw, height: nh } = entry.contentRect;
-        if (nw > 50 && nh > 50) {
-          camera.aspect = nw / nh;
-          camera.updateProjectionMatrix();
-          renderer.setSize(nw, nh);
-        }
-      }
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
     });
     resizeObserver.observe(container);
+
+    requestAnimationFrame(handleResize);
+    setTimeout(handleResize, 60);
+    setTimeout(handleResize, 180);
+    setTimeout(handleResize, 360);
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -612,9 +624,9 @@ export default function SkinLayersPip({
 
   if (fullStage) {
     return (
-      <div className={`relative w-full h-full min-h-[700px] overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
+      <div className={`absolute inset-0 w-full h-full min-h-[680px] overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
         {/* Main 3D Canvas */}
-        <div ref={containerRef} className="w-full h-full min-h-[700px] cursor-grab active:cursor-grabbing" />
+        <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 
         {/* Top Header Bar */}
         <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">

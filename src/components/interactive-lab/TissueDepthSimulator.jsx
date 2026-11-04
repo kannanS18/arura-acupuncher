@@ -1720,15 +1720,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const interactiveAcupointMeshes = [];
 
-    // Build Physical 3D Surgical Instrument Tray in Scene (Mayo Stand)
-    const trayGroup = buildPhysical3DTray(
-      scene,
-      trayToolHitboxesRef.current,
-      trayHaloMeshesRef.current,
-      trayLabelSpritesRef.current
-    );
-    physicalTrayGroupRef.current = trayGroup;
-
     // Load Whole Human Body GLB Model (Sized to fit in 60% of screen)
     const gltfLoader = new GLTFLoader();
     const modelUrl = `${import.meta.env.BASE_URL}models/human_body.glb`;
@@ -1836,27 +1827,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing });
         });
 
-        // Build Physical 3D Tools directly on Body Mesh!
-        const toolAssemblyData = buildBodyToolAssembly(bodyMesh, needleHandleHitboxesRef.current);
-        toolAssemblyData.assembly.visible = false; // Zero tools on the 3D man model!
-        bodyToolAssemblyRef.current = toolAssemblyData.assembly;
-        needleBodyToolRef.current = toolAssemblyData.needleGroup;
-        needleShaftGroupRef.current = toolAssemblyData.needleShaftGroup;
-        needleHoloBadgeRef.current = toolAssemblyData.holoSprite;
-        deqiWaveRingRef.current = toolAssemblyData.deqiRing;
-        cupBodyToolRef.current = toolAssemblyData.cupGroup;
-        cupFleshBulgeRef.current = toolAssemblyData.fleshBulge;
-        cupErythemaRingRef.current = toolAssemblyData.cupErythemaRing;
-        cupHoloSpriteRef.current = toolAssemblyData.cupHoloSprite;
-        moxaBodyToolRef.current = toolAssemblyData.moxaGroup;
-        moxaThermalRingRef.current = toolAssemblyData.moxaThermalRing;
-        moxaHoloSpriteRef.current = toolAssemblyData.moxaHoloSprite;
-        moxaThermalLightRef.current = toolAssemblyData.thermalLight;
-        bodyThanosParticlesRef.current = toolAssemblyData.bodyPData;
-
-        // Position on initially active acupoint
-        updateBodyToolPlacement(selectedAcupointIdx, activeTool);
-
+        // Human Body Model Added to Scene (Pure anatomy: zero tools on man model)
         bodyGroup.add(bodyMesh);
 
         // Initially reveal all pins across whole body view after mount
@@ -1876,72 +1847,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks & direct stabbing
+    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks
     let pointerDownPos = { x: 0, y: 0, hasDown: false };
     const handlePointerDown = (e) => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-
-      // Priority 1: Did user grab the 3D Needle Drag Handle on the human body to stab?
-      const handleHits = raycaster.intersectObjects(needleHandleHitboxesRef.current, true);
-      if (handleHits.length > 0) {
-        isStabbingRef.current = true;
-        stabStartYRef.current = e.clientY;
-        stabStartDepthRef.current = interactiveDepthRef.current;
-        controls.enabled = false; // Freeze OrbitControls so model doesn't rotate while stabbing!
-        renderer.domElement.style.cursor = 'grabbing';
-        pointerDownPos.hasDown = false;
-        e.preventDefault();
-        return;
-      }
-
-      // Priority 2: Did user click on a tool slot on the Physical 3D Surgical Tray?
-      const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
-      if (trayHits.length > 0) {
-        const toolId = trayHits[0].object.userData.toolId;
-        if (toolId) {
-          handleSelectTool(toolId);
-          pointerDownPos.hasDown = false;
-          e.preventDefault();
-          return;
-        }
-      }
-
       pointerDownPos = { x: e.clientX, y: e.clientY, hasDown: true };
     };
 
     const handlePointerMove = (e) => {
-      if (isStabbingRef.current) {
-        const deltaY = e.clientY - stabStartYRef.current;
-        const depthChange = deltaY * 0.085;
-        const currentTool = activeToolRef.current;
-        const maxD = currentTool === 'needle' ? 15.0 : currentTool === 'cup' ? 6.0 : 43.0;
-        const newDepth = Math.max(0, Math.min(maxD, stabStartDepthRef.current + depthChange));
-        handleInteractiveChange(newDepth);
-        return;
-      }
-
-      // Cursor hover feedback
+      // Natural hover feedback on Acupoints
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
-      // Natural hover feedback on Acupoints
       const acuHover = raycaster.intersectObjects(interactiveAcupointMeshes, true);
       if (acuHover.length > 0) {
-        renderer.domElement.style.cursor = 'pointer';
-        return;
-      }
-      const handleHover = raycaster.intersectObjects(needleHandleHitboxesRef.current, true);
-      if (handleHover.length > 0) {
-        renderer.domElement.style.cursor = 'grab';
-        return;
-      }
-      const trayHover = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
-      if (trayHover.length > 0) {
         renderer.domElement.style.cursor = 'pointer';
         return;
       }
@@ -2609,35 +2529,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           isCameraAnimatingRef.current = false;
         }
       }
-      // Smoothly reposition the Physical 3D Surgical Tray on Mayo stand
-      if (physicalTrayGroupRef.current) {
-        const tray = physicalTrayGroupRef.current;
-        let targetTrayPos;
-        let targetTrayRotY;
-        let targetTrayScale = 1.0;
-
-        if (activeRegionRef.current === 'full') {
-          targetTrayPos = new THREE.Vector3(0.38, -0.22, 0.28);
-          targetTrayRotY = -0.35;
-          targetTrayScale = 1.0;
-        } else {
-          // In close-up view, position Mayo stand into lower foreground, nicely scaled and within easy click reach
-          const lookAt = controls.target || new THREE.Vector3(0, 0.34, 0);
-          const camDir = camera.position.clone().sub(lookAt).normalize();
-          const rightDir = new THREE.Vector3().crossVectors(camDir, new THREE.Vector3(0, 1, 0)).normalize();
-          targetTrayPos = lookAt.clone()
-            .add(rightDir.clone().multiplyScalar(-0.14))
-            .add(new THREE.Vector3(0, -0.05, 0))
-            .add(camDir.clone().multiplyScalar(0.19));
-          targetTrayRotY = camera.rotation.y + 0.15;
-          targetTrayScale = 0.65;
-        }
-        tray.position.lerp(targetTrayPos, 0.08);
-        tray.rotation.y = THREE.MathUtils.lerp(tray.rotation.y, targetTrayRotY, 0.08);
-        const curScale = tray.scale.x;
-        const nextScale = THREE.MathUtils.lerp(curScale, targetTrayScale, 0.08);
-        tray.scale.set(nextScale, nextScale, nextScale);
-      }
 
       controls.update();
       renderer.render(scene, camera);
@@ -2788,11 +2679,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div className="flex items-center gap-2 pointer-events-auto">
             <button
               type="button"
-              onClick={() => setShowStrataPip(!showStrataPip)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm ${
-                showStrataPip ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white'
-              }`}
-              title="Toggle 3D Skin Layers Microscopy"
+              onClick={() => {
+                setViewMode('tissue');
+                window.dispatchEvent(new Event('resize'));
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white hover:text-neutral-900"
+              title="Open 3D Tissue Strata & Surgical Instrument Tray"
             >
               <Layers className="w-3.5 h-3.5 text-[#e02868]" />
               <span className="hidden sm:inline">3D Strata</span>
@@ -2810,36 +2702,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           </div>
         </div>
 
-        {/* Bottom Floating Physical Tool Dock */}
-        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-lg">
-          <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500 pl-2 pr-1 flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-[#e02868]" />
-            <span className="hidden sm:inline">Tool:</span>
-          </span>
-          {[
-            { id: 'needle', name: '01 Needle', icon: Zap, sub: '0.18mm Guide-Tube' },
-            { id: 'cup', name: '02 Cup', icon: Flame, sub: 'Vacuum Fire Cup' },
-            { id: 'moxa', name: '03 Moxa', icon: Flame, sub: 'Herbal Warmth' }
-          ].map(t => (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => handleSelectTool(t.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeTool === t.id
-                  ? 'bg-[#e02868] text-white shadow-sm'
-                  : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
-              }`}
-              title={t.sub}
-            >
-              <t.icon className="w-3.5 h-3.5" />
-              <span>{t.name}</span>
-            </button>
-          ))}
+        {/* Bottom Anatomy Inspection Guide */}
+        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-lg text-xs font-medium text-neutral-700">
+          <Sparkles className="w-4 h-4 text-[#e02868] animate-pulse shrink-0" />
+          <span>Click any limb to inspect points • Click an acupoint to open 3D Tissue Strata & Surgical Tray</span>
         </div>
 
         {/* Thanos Disintegration Ash Floating Toast */}
-        {isDisintegrated && (
+        {isDisintegrated && viewMode === 'body' && (
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
             <div className="flex items-center gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
