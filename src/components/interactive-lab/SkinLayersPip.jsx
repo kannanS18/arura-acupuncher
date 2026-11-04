@@ -95,17 +95,17 @@ export default function SkinLayersPip({
     if (!container) return;
 
     // 1. Scene, Camera, Renderer
-    const width = container.clientWidth || 340;
-    const height = container.clientHeight || 260;
+    const width = container.clientWidth || (fullStage ? window.innerWidth : 340);
+    const height = container.clientHeight || (fullStage ? Math.max(window.innerHeight, 720) : 260);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xfbfcfe);
+    scene.background = new THREE.Color(0xf8fafc);
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.18, 1.35, 2.35);
-      camera.lookAt(0.15, 0.05, 0);
+      camera.position.set(0.16, 1.45, 3.10);
+      camera.lookAt(0.14, 0.05, 0);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -128,7 +128,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? 0.15 : 0, 0.05, 0);
+    controls.target.set(fullStage ? 0.14 : 0, fullStage ? 0.05 : 0.05, 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -152,7 +152,7 @@ export default function SkinLayersPip({
     // 3. Load Meshy AI Skin Layers GLB Model
     const skinGroup = new THREE.Group();
     if (fullStage) {
-      skinGroup.position.set(-0.45, 0.0, 0.0);
+      skinGroup.position.set(-0.52, -0.06, 0.0);
     }
     scene.add(skinGroup);
 
@@ -169,7 +169,7 @@ export default function SkinLayersPip({
         const size = new THREE.Vector3();
         box.getSize(size);
         const maxDim = Math.max(size.x, size.y, size.z);
-        const normScale = 1.45 / maxDim;
+        const normScale = (fullStage ? 1.70 : 1.45) / maxDim;
         model.scale.setScalar(normScale);
 
         const center = new THREE.Vector3();
@@ -199,7 +199,7 @@ export default function SkinLayersPip({
     );
 
     // 4. Surgical 3D Tools Operating on Top of the Skin Model
-    const offsetX = fullStage ? -0.45 : 0.0;
+    const offsetX = fullStage ? -0.52 : 0.0;
 
     // A. 3D Needle Assembly
     const needleAssembly = new THREE.Group();
@@ -381,8 +381,9 @@ export default function SkinLayersPip({
     // 6B. Mount Physical 3D Surgical Instrument Tray with 3 Aligned Tools
     if (fullStage) {
       const trayMount = new THREE.Group();
-      trayMount.position.set(0.78, -0.16, 0.08);
-      trayMount.rotation.y = -0.22;
+      trayMount.position.set(0.85, -0.15, 0.10);
+      trayMount.rotation.y = -0.32;
+      trayMount.scale.setScalar(1.35);
       scene.add(trayMount);
 
       buildPhysical3DTray(
@@ -533,16 +534,31 @@ export default function SkinLayersPip({
 
     const handleResize = () => {
       if (!container) return;
-      const nw = container.clientWidth;
-      const nh = container.clientHeight;
-      camera.aspect = nw / nh;
-      camera.updateProjectionMatrix();
-      renderer.setSize(nw, nh);
+      const nw = container.clientWidth || window.innerWidth;
+      const nh = container.clientHeight || (fullStage ? Math.max(window.innerHeight, 720) : 260);
+      if (nw > 50 && nh > 50) {
+        camera.aspect = nw / nh;
+        camera.updateProjectionMatrix();
+        renderer.setSize(nw, nh);
+      }
     };
     window.addEventListener('resize', handleResize);
 
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width: nw, height: nh } = entry.contentRect;
+        if (nw > 50 && nh > 50) {
+          camera.aspect = nw / nh;
+          camera.updateProjectionMatrix();
+          renderer.setSize(nw, nh);
+        }
+      }
+    });
+    resizeObserver.observe(container);
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDownCustom);
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
@@ -596,9 +612,9 @@ export default function SkinLayersPip({
 
   if (fullStage) {
     return (
-      <div className={`relative w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
+      <div className={`relative w-full h-full min-h-[700px] overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
         {/* Main 3D Canvas */}
-        <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+        <div ref={containerRef} className="w-full h-full min-h-[700px] cursor-grab active:cursor-grabbing" />
 
         {/* Top Header Bar */}
         <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">

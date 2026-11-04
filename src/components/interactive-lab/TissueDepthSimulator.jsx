@@ -1383,9 +1383,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         if (allPinObjectsRef.current) {
           allPinObjectsRef.current.forEach(pin => {
             pin.userData.targetScale = 1.0;
+            if (pin.userData.badge) pin.userData.badge.visible = (pin.userData.acupointIdx === selectedAcupointIdx);
+            if (pin.userData.leaderLine) pin.userData.leaderLine.visible = (pin.userData.acupointIdx === selectedAcupointIdx);
           });
         }
-      }, 250);
+      }, 200);
       return;
     }
 
@@ -1433,7 +1435,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       isCameraAnimatingRef.current = true;
     }
 
-    // Sequentially pop up the acupoint pins for THIS region one-by-one with crystalline chimes
+    // Sequentially pop up the acupoint pins for THIS region one-by-one WITH NAMES and crystalline chimes
     if (allPinObjectsRef.current) {
       const regionPins = allPinObjectsRef.current
         .filter(p => p.userData.region === regionKey)
@@ -1442,8 +1444,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       regionPins.forEach((pin, i) => {
         setTimeout(() => {
           pin.userData.targetScale = 1.0;
+          if (pin.userData.badge) pin.userData.badge.visible = true;
+          if (pin.userData.leaderLine) pin.userData.leaderLine.visible = true;
           playAcuSound('popup', isMuted);
-        }, 320 + i * 260);
+        }, 180 + i * 220);
       });
     }
 
@@ -1768,10 +1772,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const pinGroup = new THREE.Group();
           const pos = pt.modelPos || [0, 0, 0];
           pinGroup.position.set(pos[0], pos[1], pos[2]);
-          pinGroup.scale.set(0, 0, 0); // Revealed on load & region selection
+          pinGroup.scale.set(1, 1, 1); // Visible in normal state!
           pinGroup.userData = {
-            targetScale: 0.0,
-            currentScale: 0.0,
+            targetScale: 1.0,
+            currentScale: 1.0,
             acupointIdx: idx,
             region: pt.region,
             orderIndex: pt.orderIndex ?? 0
@@ -1780,14 +1784,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           // Crisp 2D Pinpoint Dot flush on skin (Camera-facing sprite, depthTest: false so it never clips)
           const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
           const dotSprite = new THREE.Sprite(dotMat);
-          dotSprite.scale.set(0.012, 0.012, 1.0);
+          dotSprite.scale.set(0.022, 0.022, 1.0);
           dotSprite.renderOrder = 999;
           pinGroup.add(dotSprite);
 
           // Active Selection Aura Ring
           const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
           const selRing = new THREE.Sprite(selRingMat);
-          selRing.scale.set(0.022, 0.022, 1.0);
+          selRing.scale.set(0.038, 0.038, 1.0);
           selRing.visible = (idx === selectedAcupointIdx);
           selRing.renderOrder = 998;
           pinGroup.add(selRing);
@@ -1815,14 +1819,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           badgeSprite.visible = (idx === selectedAcupointIdx);
           pinGroup.add(badgeSprite);
 
-          // Clickable HitBox for Raycaster (comfortable radius 0.024)
+          // Clickable HitBox for Raycaster (generous radius 0.045 for natural, effortless clicking)
           const hitBox = new THREE.Mesh(
-            new THREE.SphereGeometry(0.024, 12, 12),
+            new THREE.SphereGeometry(0.045, 12, 12),
             new THREE.MeshBasicMaterial({ visible: false })
           );
           hitBox.userData = { acupointIdx: idx };
           pinGroup.add(hitBox);
           interactiveAcupointMeshes.push(hitBox);
+
+          pinGroup.userData.badge = badgeSprite;
+          pinGroup.userData.leaderLine = leaderLine;
 
           bodyMesh.add(pinGroup);
           allPinObjectsRef.current.push(pinGroup);
@@ -1922,6 +1929,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
+      // Natural hover feedback on Acupoints
+      const acuHover = raycaster.intersectObjects(interactiveAcupointMeshes, true);
+      if (acuHover.length > 0) {
+        renderer.domElement.style.cursor = 'pointer';
+        return;
+      }
       const handleHover = raycaster.intersectObjects(needleHandleHitboxesRef.current, true);
       if (handleHover.length > 0) {
         renderer.domElement.style.cursor = 'grab';
@@ -2693,30 +2706,32 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       data-testid="tissue-depth-simulator"
       className="relative w-full h-full min-h-[680px] overflow-hidden bg-[#f8fafc] font-sans select-none"
     >
-      {/* 1. FULL-STAGE 3D TISSUE STRATA & PHYSICAL SURGICAL TRAY VIEW */}
-      <div className={`relative w-full h-full ${viewMode === 'tissue' ? 'block' : 'hidden'}`}>
-        <SkinLayersPip
-          fullStage={true}
-          activeTool={activeTool}
-          depth={interactiveDepth}
-          maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
-          targetDepth={activeAcupoint.depthTarget || 12.0}
-          pointCode={activeAcupoint.code}
-          pointName={activeAcupoint.translation}
-          painName={activeAcupoint.painName}
-          isDisintegrated={isDisintegrated}
-          isSnapping={isSnapping}
-          onDepthChange={handleInteractiveChange}
-          onReset={handleReset}
-          onBackToBody={handleBackToBody}
-          onSelectTool={handleSelectTool}
-          isMuted={isMuted}
-          playAcuSound={playAcuSound}
-        />
-      </div>
+      {/* 1. FULL-STAGE 3D TISSUE STRATA & PHYSICAL SURGICAL TRAY VIEW (Rendered as absolute full overlay) */}
+      {viewMode === 'tissue' && (
+        <div className="absolute inset-0 z-30 w-full h-full min-h-[700px] bg-[#f8fafc]">
+          <SkinLayersPip
+            fullStage={true}
+            activeTool={activeTool}
+            depth={interactiveDepth}
+            maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
+            targetDepth={activeAcupoint.depthTarget || 12.0}
+            pointCode={activeAcupoint.code}
+            pointName={activeAcupoint.translation}
+            painName={activeAcupoint.painName}
+            isDisintegrated={isDisintegrated}
+            isSnapping={isSnapping}
+            onDepthChange={handleInteractiveChange}
+            onReset={handleReset}
+            onBackToBody={handleBackToBody}
+            onSelectTool={handleSelectTool}
+            isMuted={isMuted}
+            playAcuSound={playAcuSound}
+          />
+        </div>
+      )}
 
       {/* 2. WHOLE BODY 3D CLINICAL ANATOMY VIEW */}
-      <div className={`relative w-full h-full flex flex-col lg:flex-row ${viewMode === 'body' ? 'flex' : 'hidden'}`}>
+      <div className="relative w-full h-full flex flex-col lg:flex-row">
       {/* ===================================================================== */}
       {/* 1. LEFT COLUMN (65% width): MAIN 3D ANATOMY VIEWPORT                  */}
       {/* ===================================================================== */}
@@ -2850,28 +2865,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR (380px)        */}
       {/* ===================================================================== */}
       <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 h-[45vh] lg:h-full border-t lg:border-t-0 lg:border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
-        {/* 1. 3D Tissue Strata Microscopy PiP (Embedded seamlessly at top of sidebar) */}
-        {showStrataPip && (
-          <div className="p-3 border-b border-neutral-200/80 bg-neutral-50/50">
-            <SkinLayersPip
-              embedded={true}
-              activeTool={activeTool}
-              depth={interactiveDepth}
-              maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
-              targetDepth={activeAcupoint.depthTarget || 12.0}
-              pointCode={activeAcupoint.code}
-              pointName={activeAcupoint.translation}
-              painName={activeAcupoint.painName}
-              isDisintegrated={isDisintegrated}
-              isSnapping={isSnapping}
-              onDepthChange={handleInteractiveChange}
-              onReset={handleReset}
-              onClose={() => setShowStrataPip(false)}
-              isMuted={isMuted}
-              playAcuSound={playAcuSound}
-            />
+        {/* Clinical Overview Header in Sidebar */}
+        <div className="p-3.5 border-b border-neutral-200/80 bg-neutral-50/70 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#e02868] animate-pulse" />
+            <h4 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
+              Clinical Point Directory
+            </h4>
           </div>
-        )}
+          <span className="text-[10px] font-bold text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
+            {filteredAcupoints.length} Points Available
+          </span>
+        </div>
 
         {/* 2. Target Acupoint Clinical Intelligence */}
         <div className="p-4 border-b border-neutral-200/80 space-y-2.5">
