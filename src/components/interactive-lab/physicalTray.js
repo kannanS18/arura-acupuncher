@@ -125,14 +125,14 @@ export function buildPhysical3DTray(parentGroup, trayToolHitboxes, trayHaloMeshe
   if (trayToolHitboxes) trayToolHitboxes.push(nHit);
 
   // ==========================================
-  // Slot 2: Glass Cupping Jar (Center Slot)
+  // Slot 2: Glass Cupping Jar (Center Slot) - Realistic Bell Glass
   // ==========================================
   const cupSlot = new THREE.Group();
   cupSlot.position.set(0.0, 0.020, 0.0);
   trayGroup.add(cupSlot);
 
   const cupHalo = new THREE.Mesh(
-    new THREE.RingGeometry(0.04, 0.08, 32),
+    new THREE.RingGeometry(0.05, 0.10, 32),
     new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
   );
   cupHalo.rotation.x = -Math.PI / 2;
@@ -140,36 +140,71 @@ export function buildPhysical3DTray(parentGroup, trayToolHitboxes, trayHaloMeshe
   cupSlot.add(cupHalo);
   if (trayHaloMeshes) trayHaloMeshes.cup = cupHalo;
 
-  const cupGlassMat = new THREE.MeshStandardMaterial({
-    color: 0x38bdf8,
+  // Premium Thick Medical Glass Material for Cupping Jar
+  const cupGlassMat = new THREE.MeshPhysicalMaterial({
+    color: 0x67e8f9,
+    transmission: 0.88,
+    opacity: 0.88,
     transparent: true,
-    opacity: 0.70,
-    roughness: 0.15,
-    metalness: 0.15
+    roughness: 0.08,
+    ior: 1.52,
+    thickness: 0.05,
+    specularIntensity: 1.0
   });
-  const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.042, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
+
+  // 1. Thick Smooth Rounded Lip Rim (Base of Jar)
+  const cupLipRim = new THREE.Mesh(
+    new THREE.TorusGeometry(0.052, 0.007, 16, 32),
+    cupGlassMat
+  );
+  cupLipRim.rotation.x = Math.PI / 2;
+  cupLipRim.position.y = 0.007;
+  cupSlot.add(cupLipRim);
+
+  // 2. Flared Bell Body (Cylinder tapering up)
+  const cupBody = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.046, 0.052, 0.038, 32, 1, true),
+    cupGlassMat
+  );
+  cupBody.position.y = 0.026;
+  cupSlot.add(cupBody);
+
+  // 3. Bulbous Glass Dome (Top half of jar)
+  const cupDome = new THREE.Mesh(
+    new THREE.SphereGeometry(0.054, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.72),
+    cupGlassMat
+  );
   cupDome.rotation.x = Math.PI;
-  cupDome.position.y = 0.042;
+  cupDome.position.y = 0.088;
   cupSlot.add(cupDome);
 
+  // 4. Brass Vacuum Valve Collar on Top Dome
+  const valveCollar = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.012, 0.014, 0.015, 20),
+    cupGlassMat
+  );
+  valveCollar.position.y = 0.092;
+  cupSlot.add(valveCollar);
+
+  // 5. Polished Brass Mechanical Suction Valve Pin
   const cupValve = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.005, 0.006, 0.015, 14),
+    new THREE.CylinderGeometry(0.005, 0.007, 0.026, 16),
     new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
   );
-  cupValve.position.y = 0.048;
+  cupValve.position.y = 0.106;
   cupSlot.add(cupValve);
 
   const cupLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('02 Cup', 'Glass Vacuum', false));
   const cupLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: cupLabelTex }));
-  cupLabelSprite.position.set(0, 0.065, 0.11);
-  cupLabelSprite.scale.set(0.11, 0.032, 1.0);
+  cupLabelSprite.position.set(0, 0.085, 0.12);
+  cupLabelSprite.scale.set(0.12, 0.035, 1.0);
   cupLabelSprite.userData = { isToolSlot: true, toolId: 'cup' };
   cupSlot.add(cupLabelSprite);
   if (trayLabelSprites) trayLabelSprites.cup = cupLabelSprite;
   if (trayToolHitboxes) trayToolHitboxes.push(cupLabelSprite);
 
-  const cupHit = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.10, 0.28), new THREE.MeshBasicMaterial({ visible: false }));
-  cupHit.position.y = 0.03;
+  const cupHit = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.28), new THREE.MeshBasicMaterial({ visible: false }));
+  cupHit.position.y = 0.05;
   cupHit.userData = { isToolSlot: true, toolId: 'cup' };
   cupSlot.add(cupHit);
   if (trayToolHitboxes) trayToolHitboxes.push(cupHit);

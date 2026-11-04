@@ -51,6 +51,8 @@ export default function SkinLayersPip({
   const cupGroupRef = useRef(null);
   const moxaGroupRef = useRef(null);
   const knotMeshRef = useRef(null);
+  const adhesionMeshRef = useRef(null);
+  const stasisMeshRef = useRef(null);
   const particlesRef = useRef(null);
   const thermalLightRef = useRef(null);
   const trayToolHitboxesRef = useRef([]);
@@ -98,7 +100,7 @@ export default function SkinLayersPip({
     const getContainerDims = () => {
       const rect = container.getBoundingClientRect();
       const w = Math.max(container.clientWidth || rect.width || window.innerWidth, 320);
-      const h = Math.max(container.clientHeight || rect.height || (fullStage ? window.innerHeight : 680), 320);
+      const h = Math.max(container.clientHeight || rect.height || (container.parentElement ? container.parentElement.clientHeight : 600), 320);
       return { w, h };
     };
     const { w: initW, h: initH } = getContainerDims();
@@ -109,8 +111,8 @@ export default function SkinLayersPip({
 
     const camera = new THREE.PerspectiveCamera(38, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.18, 1.45, 3.15);
-      camera.lookAt(0.14, 0.05, 0);
+      camera.position.set(0.06, 1.30, 2.70);
+      camera.lookAt(0.06, 0.02, 0.15);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -141,7 +143,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? 0.14 : 0, fullStage ? 0.05 : 0.05, 0);
+    controls.target.set(fullStage ? 0.06 : 0, fullStage ? 0.02 : 0.05, fullStage ? 0.15 : 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -165,7 +167,7 @@ export default function SkinLayersPip({
     // 3. Load Meshy AI Skin Layers GLB Model
     const skinGroup = new THREE.Group();
     if (fullStage) {
-      skinGroup.position.set(-0.52, -0.06, 0.0);
+      skinGroup.position.set(-0.38, -0.05, 0.0);
     }
     scene.add(skinGroup);
 
@@ -182,7 +184,7 @@ export default function SkinLayersPip({
         const size = new THREE.Vector3();
         box.getSize(size);
         const maxDim = Math.max(size.x, size.y, size.z);
-        const normScale = (fullStage ? 1.70 : 1.45) / maxDim;
+        const normScale = (fullStage ? 1.38 : 1.35) / maxDim;
         model.scale.setScalar(normScale);
 
         const center = new THREE.Vector3();
@@ -212,11 +214,11 @@ export default function SkinLayersPip({
     );
 
     // 4. Surgical 3D Tools Operating on Top of the Skin Model
-    const offsetX = fullStage ? -0.52 : 0.0;
+    const offsetX = fullStage ? -0.38 : 0.0;
 
     // A. 3D Needle Assembly
     const needleAssembly = new THREE.Group();
-    needleAssembly.position.set(offsetX, 0.65, 0.0); // Above epidermis surface (surface ~0.42)
+    needleAssembly.position.set(offsetX, 0.38, 0.28); // Positioned directly at visible cut strata cross-section
     scene.add(needleAssembly);
     needleGroupRef.current = needleAssembly;
 
@@ -259,7 +261,7 @@ export default function SkinLayersPip({
 
     // B. 3D Glass Vacuum Cup
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(offsetX, 0.50, 0.0);
+    cupGroup.position.set(offsetX, 0.38, 0.28);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
@@ -304,7 +306,7 @@ export default function SkinLayersPip({
 
     // C. 3D Moxa Herbal Warmer
     const moxaGroup = new THREE.Group();
-    moxaGroup.position.set(offsetX, 0.72, 0.0);
+    moxaGroup.position.set(offsetX, 0.46, 0.28);
     moxaGroup.visible = (activeTool === 'moxa');
     scene.add(moxaGroup);
     moxaGroupRef.current = moxaGroup;
@@ -342,19 +344,55 @@ export default function SkinLayersPip({
     thermalRing.position.y = -0.18;
     moxaGroup.add(thermalRing);
 
-    // 5. Deep Muscle Motor Knot (Tense Trigger Point Target)
-    const knotGeo = new THREE.SphereGeometry(0.055, 16, 16);
+    // 5. 3 Distinct Clinical Pathologies Corresponding to Tools
+    // A. Needle Target: Spastic Motor Endplate Knot (Striated Muscle, 12mm)
+    const knotGeo = new THREE.TorusKnotGeometry(0.065, 0.022, 64, 16, 2, 3);
     const knotMat = new THREE.MeshStandardMaterial({
-      color: 0x991b1b,
-      emissive: 0x7f1d1d,
-      emissiveIntensity: 0.4,
-      roughness: 0.45
+      color: 0xff1e46,
+      emissive: 0x9f1239,
+      emissiveIntensity: 0.8,
+      roughness: 0.35
     });
     const knot = new THREE.Mesh(knotGeo, knotMat);
-    knot.position.set(offsetX, -0.12, 0.0); // Inside deep muscle layer!
+    knot.position.set(offsetX, -0.18, 0.28); // Inside deep striated muscle at visible cut cross-section!
     knot.castShadow = true;
+    knot.visible = (activeTool === 'needle');
     scene.add(knot);
     knotMeshRef.current = knot;
+
+    // B. Cupping Target: Fibrotic Fascial Adhesion (Subcutaneous Fascia, 6mm)
+    const adhesionGeo = new THREE.IcosahedronGeometry(0.075, 2);
+    const adhesionMat = new THREE.MeshStandardMaterial({
+      color: 0xc084fc,
+      emissive: 0x7e22ce,
+      emissiveIntensity: 0.8,
+      roughness: 0.35,
+      transparent: true,
+      opacity: 0.90
+    });
+    const adhesion = new THREE.Mesh(adhesionGeo, adhesionMat);
+    adhesion.position.set(offsetX, -0.05, 0.28); // Inside deep fascia at visible cut cross-section!
+    adhesion.castShadow = true;
+    adhesion.visible = (activeTool === 'cup');
+    scene.add(adhesion);
+    adhesionMeshRef.current = adhesion;
+
+    // C. Moxa Target: Cold Damp Stasis Pool (Dermal Plexus, 43°C)
+    const stasisGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.035, 24);
+    const stasisMat = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.9,
+      roughness: 0.20,
+      transparent: true,
+      opacity: 0.85
+    });
+    const stasis = new THREE.Mesh(stasisGeo, stasisMat);
+    stasis.position.set(offsetX, 0.16, 0.28); // In dermal microvascular layer at visible cut cross-section!
+    stasis.castShadow = true;
+    stasis.visible = (activeTool === 'moxa');
+    scene.add(stasis);
+    stasisMeshRef.current = stasis;
 
     // 6. Thanos Particle Ash System for Disintegration
     const pCount = 3000;
@@ -363,9 +401,9 @@ export default function SkinLayersPip({
     const pVel = new Float32Array(pCount * 3);
 
     for (let i = 0; i < pCount; i++) {
-      pPos[i * 3] = offsetX + (Math.random() - 0.5) * 0.12;
-      pPos[i * 3 + 1] = -0.12 + (Math.random() - 0.5) * 0.08;
-      pPos[i * 3 + 2] = (Math.random() - 0.5) * 0.12;
+      pPos[i * 3] = offsetX + (Math.random() - 0.5) * 0.14;
+      pPos[i * 3 + 1] = -0.15 + (Math.random() - 0.5) * 0.10;
+      pPos[i * 3 + 2] = 0.28 + (Math.random() - 0.5) * 0.12;
       pVel[i * 3] = (Math.random() - 0.5) * 0.008;
       pVel[i * 3 + 1] = 0.004 + Math.random() * 0.012; // Floating upward
       pVel[i * 3 + 2] = (Math.random() - 0.5) * 0.008;
@@ -391,12 +429,12 @@ export default function SkinLayersPip({
       timer: 0
     };
 
-    // 6B. Mount Physical 3D Surgical Instrument Tray with 3 Aligned Tools
+    // 6B. Mount Physical 3D Surgical Instrument Tray Comfortably Beside Tissue Block
     if (fullStage) {
       const trayMount = new THREE.Group();
-      trayMount.position.set(0.85, -0.15, 0.10);
-      trayMount.rotation.y = -0.32;
-      trayMount.scale.setScalar(1.35);
+      trayMount.position.set(0.52, -0.06, 0.42);
+      trayMount.rotation.y = -0.38;
+      trayMount.scale.setScalar(1.22);
       scene.add(trayMount);
 
       buildPhysical3DTray(
@@ -418,18 +456,31 @@ export default function SkinLayersPip({
         skinGroup.rotation.y += 0.0015;
       }
 
+      const curD = depthRef.current;
       // Live electric bio-pulse on muscle knot
-      if (knotMeshRef.current) {
-        if (depth >= 11.5) {
+      if (knotMeshRef.current && knotMeshRef.current.visible) {
+        if (curD >= 11.5) {
           const pulse = Math.sin(elapsedTime * 12) * 0.5 + 0.5;
-          knotMeshRef.current.material.emissiveIntensity = 1.0 + pulse * 1.5;
+          knotMeshRef.current.material.emissiveIntensity = 1.2 + pulse * 1.5;
           knotMeshRef.current.material.emissive.setHex(0xe02868);
           knotMeshRef.current.scale.setScalar(1.0 + pulse * 0.12);
         } else {
-          knotMeshRef.current.material.emissiveIntensity = 0.3;
-          knotMeshRef.current.material.emissive.setHex(0x7f1d1d);
+          knotMeshRef.current.material.emissiveIntensity = 0.5;
+          knotMeshRef.current.material.emissive.setHex(0x9f1239);
           knotMeshRef.current.scale.set(1, 1, 1);
         }
+      }
+
+      // Live fascial adhesion tension feedback
+      if (adhesionMeshRef.current && adhesionMeshRef.current.visible) {
+        const pulse = Math.sin(elapsedTime * 6) * 0.5 + 0.5;
+        adhesionMeshRef.current.material.emissiveIntensity = 0.6 + (curD / 6.0) * 1.4 + pulse * 0.3;
+      }
+
+      // Live cold stasis thermal dispersion feedback
+      if (stasisMeshRef.current && stasisMeshRef.current.visible) {
+        const tempFraction = Math.max(0, (curD - 20) / 23);
+        stasisMeshRef.current.material.opacity = Math.max(0.1, 0.85 - tempFraction * 0.6);
       }
 
       // Thanos disintegration ash physics
@@ -593,22 +644,28 @@ export default function SkinLayersPip({
     if (moxaGroupRef.current) moxaGroupRef.current.visible = (activeTool === 'moxa');
 
     if (activeTool === 'needle' && needleGroupRef.current) {
-      // At depth 0mm: needle tip sits right on skin surface (y = 0.42)
-      // At depth 15mm: needle tip penetrates into deep muscle (y = -0.15)
+      // At depth 0mm: needle tip sits right on skin surface (y = 0.38)
+      // At depth 15mm: needle tip penetrates into deep muscle (y = -0.18)
       const fraction = Math.min(1.0, depth / 15.0);
-      needleGroupRef.current.position.y = 0.42 - fraction * 0.57;
+      needleGroupRef.current.position.y = 0.38 - fraction * 0.56;
     } else if (activeTool === 'cup' && cupGroupRef.current) {
-      cupGroupRef.current.position.y = 0.42;
+      cupGroupRef.current.position.y = 0.38;
       if (suctionBulgeRef.current) {
         const suctionFraction = Math.min(1.0, depth / 6.0);
         suctionBulgeRef.current.scale.set(1.0, suctionFraction * 0.45 + 0.02, 1.0);
       }
     } else if (activeTool === 'moxa' && moxaGroupRef.current) {
-      moxaGroupRef.current.position.y = 0.55;
+      moxaGroupRef.current.position.y = 0.46;
     }
 
     if (knotMeshRef.current) {
-      knotMeshRef.current.visible = !isDisintegrated;
+      knotMeshRef.current.visible = (activeTool === 'needle') && !isDisintegrated;
+    }
+    if (adhesionMeshRef.current) {
+      adhesionMeshRef.current.visible = (activeTool === 'cup') && !isDisintegrated;
+    }
+    if (stasisMeshRef.current) {
+      stasisMeshRef.current.visible = (activeTool === 'moxa') && !isDisintegrated;
     }
   }, [activeTool, depth, isDisintegrated]);
 
@@ -618,13 +675,18 @@ export default function SkinLayersPip({
       particlesRef.current.active = true;
       particlesRef.current.timer = 0;
       particlesRef.current.mat.opacity = 1.0;
+      particlesRef.current.mat.color.set(
+        activeTool === 'needle' ? 0xe02868 : activeTool === 'cup' ? 0xc084fc : 0x38bdf8
+      );
       if (knotMeshRef.current) knotMeshRef.current.visible = false;
+      if (adhesionMeshRef.current) adhesionMeshRef.current.visible = false;
+      if (stasisMeshRef.current) stasisMeshRef.current.visible = false;
     }
-  }, [isSnapping]);
+  }, [isSnapping, activeTool]);
 
   if (fullStage) {
     return (
-      <div className={`absolute inset-0 w-full h-full min-h-[680px] overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
+      <div className={`absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
         {/* Main 3D Canvas */}
         <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 

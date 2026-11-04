@@ -363,20 +363,35 @@ function createSkinDotTexture(color = '#e02868', isSelected = false) {
   return new THREE.CanvasTexture(canvas);
 }
 
-// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts (100% English)
-function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected) {
+const REGION_DISPLAY_NAMES = {
+  arm_right: 'RIGHT ARM',
+  arm_left: 'LEFT ARM',
+  arm: 'ARM',
+  neck: 'NECK',
+  face: 'FACE',
+  crown: 'HEAD',
+  back: 'BACK',
+  leg_right: 'RIGHT LEG',
+  leg_left: 'LEFT LEG',
+  leg: 'LEG',
+  hand: 'HAND',
+  full: 'BODY'
+};
+
+// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts with Region Tag (100% English)
+function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected, regionLabel) {
   const canvas = document.createElement('canvas');
-  canvas.width = 240;
-  canvas.height = 70;
+  canvas.width = 260;
+  canvas.height = 76;
   const ctx = canvas.getContext('2d');
 
   // Pill card background
-  ctx.fillStyle = isSelected ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+  ctx.fillStyle = isSelected ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.94)';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 232, 62, 14);
+    ctx.roundRect(4, 4, 252, 68, 14);
   } else {
-    ctx.rect(4, 4, 232, 62);
+    ctx.rect(4, 4, 252, 68);
   }
   ctx.fill();
 
@@ -389,29 +404,47 @@ function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected) {
   ctx.fillStyle = '#e02868';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(12, 14, 62, 42, 8);
+    ctx.roundRect(12, 12, 62, 52, 10);
   } else {
-    ctx.rect(12, 14, 62, 42);
+    ctx.rect(12, 12, 62, 52);
   }
   ctx.fill();
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 43, 35);
+  ctx.fillText(code, 43, 38);
 
-  // Primary English Name in bold
-  ctx.fillStyle = '#09090b';
-  ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
-  ctx.fillText(englishName || code, 82, 33);
 
-  // Subtitle: Pinyin + Target Needle Depth in English
-  ctx.fillStyle = '#64748b';
-  ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Target', 82, 51);
+  if (regionLabel) {
+    // 1. Bold Uppercase Region Name Tag
+    ctx.fillStyle = isSelected ? '#e02868' : '#be123c';
+    ctx.font = '800 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(`• ${regionLabel.toUpperCase()}`, 82, 22);
+
+    // 2. Primary English Name in bold
+    ctx.fillStyle = '#09090b';
+    ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(englishName || code, 82, 41);
+
+    // 3. Subtitle: Pinyin + Target Needle Depth in English
+    ctx.fillStyle = '#64748b';
+    ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Target', 82, 58);
+  } else {
+    // Primary English Name in bold
+    ctx.fillStyle = '#09090b';
+    ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(englishName || code, 82, 34);
+
+    // Subtitle: Pinyin + Target Needle Depth in English
+    ctx.fillStyle = '#64748b';
+    ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Target', 82, 53);
+  }
 
   return canvas;
 }
@@ -500,450 +533,6 @@ function createToolDepthBadgeCanvas(toolId, value, targetValue, isCured, painNam
   }
 
   return canvas;
-}
-
-// 3D Floating Tool Label Sprite on Physical Instrument Tray
-function createTrayToolLabelCanvas(title, subtitle, isActive) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 220;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = isActive ? 'rgba(224, 40, 104, 0.95)' : 'rgba(255, 255, 255, 0.92)';
-  ctx.strokeStyle = isActive ? '#ffffff' : 'rgba(203, 213, 225, 0.9)';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 212, 56, 12);
-  } else {
-    ctx.rect(4, 4, 212, 56);
-  }
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = isActive ? '#ffffff' : '#0f172a';
-  ctx.font = 'bold 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText(title, 110, 22);
-
-  ctx.fillStyle = isActive ? 'rgba(255, 255, 255, 0.88)' : '#64748b';
-  ctx.font = '600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText(subtitle, 110, 42);
-
-  return canvas;
-}
-
-// Build 3D Surgical Instrument Tray on Mayo Stand in WebGL Scene
-function buildPhysical3DTray(scene, trayToolHitboxes, trayHaloMeshes, trayLabelSprites) {
-  const trayGroup = new THREE.Group();
-  trayGroup.position.set(0.40, -0.22, 0.28);
-  trayGroup.rotation.y = -0.35;
-  scene.add(trayGroup);
-
-  const steelMat = new THREE.MeshStandardMaterial({
-    color: 0xf1f5f9,
-    metalness: 0.95,
-    roughness: 0.16
-  });
-
-  // Stainless Steel Surgical Mayo Tray
-  const trayBase = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.015, 0.22), steelMat);
-  trayBase.castShadow = true;
-  trayBase.receiveShadow = true;
-  trayGroup.add(trayBase);
-
-  // Beveled Tray Rims
-  const rimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.98, roughness: 0.12 });
-  const rimH = 0.016;
-  const rimT = 0.010;
-  const rimL = new THREE.Mesh(new THREE.BoxGeometry(rimT, rimH, 0.22), rimMat);
-  rimL.position.set(-0.16 + rimT / 2, rimH / 2, 0);
-  trayGroup.add(rimL);
-  const rimR = new THREE.Mesh(new THREE.BoxGeometry(rimT, rimH, 0.22), rimMat);
-  rimR.position.set(0.16 - rimT / 2, rimH / 2, 0);
-  trayGroup.add(rimR);
-  const rimB = new THREE.Mesh(new THREE.BoxGeometry(0.32, rimH, rimT), rimMat);
-  rimB.position.set(0, rimH / 2, -0.11 + rimT / 2);
-  trayGroup.add(rimB);
-  const rimF = new THREE.Mesh(new THREE.BoxGeometry(0.32, rimH, rimT), rimMat);
-  rimF.position.set(0, rimH / 2, 0.11 - rimT / 2);
-  trayGroup.add(rimF);
-
-  // Sterile Medical Drape
-  const drapeMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.88, metalness: 0.05 });
-  const drape = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.003, 0.20), drapeMat);
-  drape.position.y = 0.009;
-  trayGroup.add(drape);
-
-  // Floating Instrument Tray Hover Halo Underglow (Completely Stand-Free!)
-  const underglow = new THREE.Mesh(
-    new THREE.RingGeometry(0.04, 0.16, 32),
-    new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.35 })
-  );
-  underglow.rotation.x = -Math.PI / 2;
-  underglow.position.y = -0.012;
-  trayGroup.add(underglow);
-
-  // 1. Tool Slot: 0.18mm Needle
-  const needleSlot = new THREE.Group();
-  needleSlot.position.set(-0.095, 0.014, 0.0);
-  trayGroup.add(needleSlot);
-
-  const needleHalo = new THREE.Mesh(
-    new THREE.RingGeometry(0.025, 0.055, 32),
-    new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide, transparent: true, opacity: 0.75 })
-  );
-  needleHalo.rotation.x = -Math.PI / 2;
-  needleHalo.position.y = 0.001;
-  needleSlot.add(needleHalo);
-  trayHaloMeshes.needle = needleHalo;
-
-  const nShaft = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0015, 0.0015, 0.11, 12),
-    new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.98, roughness: 0.08 })
-  );
-  nShaft.rotation.x = Math.PI / 2;
-  nShaft.position.set(0, 0.005, 0.01);
-  needleSlot.add(nShaft);
-
-  const nHandleCurve = new SpiralHandleCurve(0.0035, 0.040, 14);
-  const nHandleGeo = new THREE.TubeGeometry(nHandleCurve, 40, 0.0012, 6, false);
-  const nHandle = new THREE.Mesh(
-    nHandleGeo,
-    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.92, roughness: 0.22 })
-  );
-  nHandle.rotation.x = Math.PI / 2;
-  nHandle.position.set(0, 0.005, -0.055);
-  needleSlot.add(nHandle);
-
-  const nGuide = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0045, 0.0045, 0.085, 16, 1, true),
-    new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.1, transmission: 0.88 })
-  );
-  nGuide.rotation.x = Math.PI / 2;
-  nGuide.position.set(0.012, 0.005, 0.015);
-  needleSlot.add(nGuide);
-
-  const nLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('0.18mm Needle', 'Solid Seirin', true));
-  const nLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: nLabelTex }));
-  nLabelSprite.position.set(0, 0.035, 0.075);
-  nLabelSprite.scale.set(0.075, 0.022, 1.0);
-  nLabelSprite.userData = { isToolSlot: true, toolId: 'needle' };
-  needleSlot.add(nLabelSprite);
-  trayLabelSprites.needle = nLabelSprite;
-  trayToolHitboxes.push(nLabelSprite);
-
-  const nHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.05, 0.17), new THREE.MeshBasicMaterial({ visible: false }));
-  nHit.position.y = 0.02;
-  nHit.userData = { isToolSlot: true, toolId: 'needle' };
-  needleSlot.add(nHit);
-  trayToolHitboxes.push(nHit);
-
-  // 2. Tool Slot: Glass Cupping Jar
-  const cupSlot = new THREE.Group();
-  cupSlot.position.set(0.0, 0.014, 0.0);
-  trayGroup.add(cupSlot);
-
-  const cupHalo = new THREE.Mesh(
-    new THREE.RingGeometry(0.025, 0.055, 32),
-    new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
-  );
-  cupHalo.rotation.x = -Math.PI / 2;
-  cupHalo.position.y = 0.001;
-  cupSlot.add(cupHalo);
-  trayHaloMeshes.cup = cupHalo;
-
-  const cupGlassMat = new THREE.MeshStandardMaterial({
-    color: 0x38bdf8,
-    transparent: true,
-    opacity: 0.70,
-    roughness: 0.15,
-    metalness: 0.15
-  });
-  const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.028, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
-  cupDome.rotation.x = Math.PI;
-  cupDome.position.y = 0.028;
-  cupSlot.add(cupDome);
-
-  const cupValve = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.004, 0.005, 0.010, 14),
-    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
-  );
-  cupValve.position.y = 0.033;
-  cupSlot.add(cupValve);
-
-  const cupLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('Glass Cup', 'Vacuum Fire', false));
-  const cupLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: cupLabelTex }));
-  cupLabelSprite.position.set(0, 0.045, 0.075);
-  cupLabelSprite.scale.set(0.075, 0.022, 1.0);
-  cupLabelSprite.userData = { isToolSlot: true, toolId: 'cup' };
-  cupSlot.add(cupLabelSprite);
-  trayLabelSprites.cup = cupLabelSprite;
-  trayToolHitboxes.push(cupLabelSprite);
-
-  const cupHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.06, 0.09), new THREE.MeshBasicMaterial({ visible: false }));
-  cupHit.position.y = 0.025;
-  cupHit.userData = { isToolSlot: true, toolId: 'cup' };
-  cupSlot.add(cupHit);
-  trayToolHitboxes.push(cupHit);
-
-  // 3. Tool Slot: Herbal Moxa Roll
-  const moxaSlot = new THREE.Group();
-  moxaSlot.position.set(0.095, 0.014, 0.0);
-  trayGroup.add(moxaSlot);
-
-  const moxaHalo = new THREE.Mesh(
-    new THREE.RingGeometry(0.025, 0.055, 32),
-    new THREE.MeshBasicMaterial({ color: 0xf97316, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
-  );
-  moxaHalo.rotation.x = -Math.PI / 2;
-  moxaHalo.position.y = 0.001;
-  moxaSlot.add(moxaHalo);
-  trayHaloMeshes.moxa = moxaHalo;
-
-  const moxaStick = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.008, 0.008, 0.11, 16),
-    new THREE.MeshStandardMaterial({ color: 0x543310, roughness: 0.88 })
-  );
-  moxaStick.rotation.x = Math.PI / 2;
-  moxaStick.position.set(0, 0.009, 0.0);
-  moxaSlot.add(moxaStick);
-
-  const moxaEmber = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0082, 0.0082, 0.014, 16),
-    new THREE.MeshBasicMaterial({ color: 0xff3b00 })
-  );
-  moxaEmber.rotation.x = Math.PI / 2;
-  moxaEmber.position.set(0, 0.009, 0.062);
-  moxaSlot.add(moxaEmber);
-
-  const moxaLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('Herbal Moxa', 'Warm Artemisia', false));
-  const moxaLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: moxaLabelTex }));
-  moxaLabelSprite.position.set(0, 0.035, 0.075);
-  moxaLabelSprite.scale.set(0.075, 0.022, 1.0);
-  moxaLabelSprite.userData = { isToolSlot: true, toolId: 'moxa' };
-  moxaSlot.add(moxaLabelSprite);
-  trayLabelSprites.moxa = moxaLabelSprite;
-  trayToolHitboxes.push(moxaLabelSprite);
-
-  const moxaHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.05, 0.17), new THREE.MeshBasicMaterial({ visible: false }));
-  moxaHit.position.y = 0.02;
-  moxaHit.userData = { isToolSlot: true, toolId: 'moxa' };
-  moxaSlot.add(moxaHit);
-  trayToolHitboxes.push(moxaHit);
-
-  return trayGroup;
-}
-
-// Build 3D Surgical Tools Directly on the Human Body Mesh
-function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
-  const assembly = new THREE.Group();
-  bodyMesh.add(assembly);
-
-  const pt0 = CLINICAL_ACUPOINTS[0];
-  assembly.position.set(pt0.modelPos[0], pt0.modelPos[1], pt0.modelPos[2]);
-  const norm0 = new THREE.Vector3(pt0.surfaceNormal[0], pt0.surfaceNormal[1], pt0.surfaceNormal[2]).normalize();
-  assembly.setRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), norm0));
-
-  // Needle Tool on Body
-  const needleGroup = new THREE.Group();
-  assembly.add(needleGroup);
-
-  // Shaft Group (penetrates into the body along negative Y axis!)
-  const needleShaftGroup = new THREE.Group();
-  needleGroup.add(needleShaftGroup);
-
-  const shaftMesh = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0009, 0.0006, 0.048, 12),
-    new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.98, roughness: 0.08 })
-  );
-  shaftMesh.position.y = 0.024;
-  needleShaftGroup.add(shaftMesh);
-
-  const tipMesh = new THREE.Mesh(
-    new THREE.ConeGeometry(0.0009, 0.004, 12),
-    new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
-  );
-  tipMesh.rotation.x = Math.PI;
-  tipMesh.position.y = 0.002;
-  needleShaftGroup.add(tipMesh);
-
-  const handleCurve = new SpiralHandleCurve(0.0028, 0.028, 14);
-  const handleGeo = new THREE.TubeGeometry(handleCurve, 36, 0.0009, 6, false);
-  const handleMesh = new THREE.Mesh(
-    handleGeo,
-    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.92, roughness: 0.20 })
-  );
-  handleMesh.position.y = 0.062;
-  needleShaftGroup.add(handleMesh);
-
-  const guideTube = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0035, 0.0035, 0.038, 16, 1, true),
-    new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.1, transmission: 0.88 })
-  );
-  guideTube.position.y = 0.019;
-  needleGroup.add(guideTube);
-
-  const deqiRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.003, 0.008, 24),
-    new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
-  );
-  deqiRing.rotation.x = -Math.PI / 2;
-  deqiRing.position.y = 0.001;
-  needleGroup.add(deqiRing);
-
-  const holoTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('needle', 0, pt0.depthTarget, false, pt0.painName));
-  const holoSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: holoTex }));
-  holoSprite.position.set(0.022, 0.068, 0.0);
-  holoSprite.scale.set(0.065, 0.018, 1.0);
-  needleShaftGroup.add(holoSprite);
-
-  const stabHit = new THREE.Mesh(
-    new THREE.SphereGeometry(0.038, 16, 16),
-    new THREE.MeshBasicMaterial({ visible: false })
-  );
-  stabHit.position.y = 0.055;
-  stabHit.userData = { isNeedleStabHandle: true, toolId: 'needle' };
-  needleShaftGroup.add(stabHit);
-  needleHandleHitboxes.push(stabHit);
-
-  // Also enable direct grabbing and stabbing on holographic badge
-  holoSprite.userData = { isNeedleStabHandle: true, toolId: 'needle' };
-  needleHandleHitboxes.push(holoSprite);
-
-  // Cupping Tool on Body
-  const cupGroup = new THREE.Group();
-  cupGroup.visible = false;
-  assembly.add(cupGroup);
-
-  const bodyCupDome = new THREE.Mesh(
-    new THREE.SphereGeometry(0.018, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.70, roughness: 0.12, metalness: 0.15 })
-  );
-  bodyCupDome.rotation.x = Math.PI;
-  bodyCupDome.position.y = 0.018;
-  bodyCupDome.userData = { isNeedleStabHandle: true, toolId: 'cup' };
-  cupGroup.add(bodyCupDome);
-  needleHandleHitboxes.push(bodyCupDome);
-
-  const bodyCupValve = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0025, 0.003, 0.007, 14),
-    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
-  );
-  bodyCupValve.position.y = 0.021;
-  cupGroup.add(bodyCupValve);
-
-  const fleshBulge = new THREE.Mesh(
-    new THREE.SphereGeometry(0.013, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color: 0xf2d0be, roughness: 0.4 })
-  );
-  fleshBulge.position.y = 0.001;
-  fleshBulge.scale.set(1.0, 0.2, 1.0);
-  cupGroup.add(fleshBulge);
-
-  // Therapeutic Petechial Erythema Ring under Cup
-  const cupErythemaRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.003, 0.017, 24),
-    new THREE.MeshBasicMaterial({ color: 0x9f1239, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
-  );
-  cupErythemaRing.rotation.x = -Math.PI / 2;
-  cupErythemaRing.position.y = 0.001;
-  cupGroup.add(cupErythemaRing);
-
-  // Cupping In-Scene Holographic Gauge
-  const cupHoloTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('cup', 0, 6.0, false, pt0.painName));
-  const cupHoloSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: cupHoloTex }));
-  cupHoloSprite.position.set(0.022, 0.048, 0.0);
-  cupHoloSprite.scale.set(0.065, 0.018, 1.0);
-  cupHoloSprite.userData = { isNeedleStabHandle: true, toolId: 'cup' };
-  cupGroup.add(cupHoloSprite);
-  needleHandleHitboxes.push(cupHoloSprite);
-
-  // Moxa Tool on Body
-  const moxaGroup = new THREE.Group();
-  moxaGroup.visible = false;
-  assembly.add(moxaGroup);
-
-  const bodyMoxaStick = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.006, 0.006, 0.05, 16),
-    new THREE.MeshStandardMaterial({ color: 0x543310, roughness: 0.85 })
-  );
-  bodyMoxaStick.position.y = 0.055;
-  bodyMoxaStick.userData = { isNeedleStabHandle: true, toolId: 'moxa' };
-  moxaGroup.add(bodyMoxaStick);
-  needleHandleHitboxes.push(bodyMoxaStick);
-
-  const bodyMoxaEmber = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.0062, 0.0062, 0.008, 16),
-    new THREE.MeshBasicMaterial({ color: 0xff3b00 })
-  );
-  bodyMoxaEmber.position.y = 0.027;
-  moxaGroup.add(bodyMoxaEmber);
-
-  const thermalLight = new THREE.PointLight(0xff4500, 0.0, 0.20);
-  thermalLight.position.y = 0.025;
-  moxaGroup.add(thermalLight);
-
-  // Infrared Radiating Ring under Moxa
-  const moxaThermalRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.004, 0.025, 24),
-    new THREE.MeshBasicMaterial({ color: 0xff6b00, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
-  );
-  moxaThermalRing.rotation.x = -Math.PI / 2;
-  moxaThermalRing.position.y = 0.001;
-  moxaGroup.add(moxaThermalRing);
-
-  // Moxa In-Scene Holographic Gauge
-  const moxaHoloTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('moxa', 20, 43.0, false, pt0.painName));
-  const moxaHoloSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: moxaHoloTex }));
-  moxaHoloSprite.position.set(0.022, 0.065, 0.0);
-  moxaHoloSprite.scale.set(0.065, 0.018, 1.0);
-  moxaHoloSprite.userData = { isNeedleStabHandle: true, toolId: 'moxa' };
-  moxaGroup.add(moxaHoloSprite);
-  needleHandleHitboxes.push(moxaHoloSprite);
-
-  // Body Thanos Snap Ash Particles System (Localized at Acupoint)
-  const bodyPCount = 2000;
-  const bodyPGeo = new THREE.BufferGeometry();
-  const bodyPPos = new Float32Array(bodyPCount * 3);
-  const bodyPVel = new Float32Array(bodyPCount * 3);
-  for (let i = 0; i < bodyPCount; i++) {
-    bodyPPos[i * 3] = (Math.random() - 0.5) * 0.015;
-    bodyPPos[i * 3 + 1] = Math.random() * 0.010;
-    bodyPPos[i * 3 + 2] = (Math.random() - 0.5) * 0.015;
-    bodyPVel[i * 3] = (Math.random() - 0.5) * 0.0018;
-    bodyPVel[i * 3 + 1] = 0.0015 + Math.random() * 0.0035;
-    bodyPVel[i * 3 + 2] = (Math.random() - 0.5) * 0.0018;
-  }
-  bodyPGeo.setAttribute('position', new THREE.BufferAttribute(bodyPPos, 3));
-  const bodyPMat = new THREE.PointsMaterial({
-    color: 0xe02868,
-    size: 0.0038,
-    transparent: true,
-    opacity: 0.0,
-    blending: THREE.AdditiveBlending
-  });
-  const bodyParticles = new THREE.Points(bodyPGeo, bodyPMat);
-  assembly.add(bodyParticles);
-
-  return {
-    assembly,
-    needleGroup,
-    needleShaftGroup,
-    holoSprite,
-    deqiRing,
-    cupGroup,
-    fleshBulge,
-    cupErythemaRing,
-    cupHoloSprite,
-    moxaGroup,
-    moxaThermalRing,
-    moxaHoloSprite,
-    thermalLight,
-    bodyParticles,
-    bodyPData: { points: bodyParticles, geo: bodyPGeo, mat: bodyPMat, vel: bodyPVel, active: false, timer: 0 }
-  };
 }
 
 export default function TissueDepthSimulator({ onOpenBooking }) {
@@ -1520,25 +1109,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     triggerAcupointCloseUp(idx);
   }, [handleReset, isMuted, triggerAcupointCloseUp]);
 
-  // Update active 3D badges when selected acupoint changes (100% English)
+  // Update active 3D badges when selected acupoint or activeRegion changes (100% English with Region Name)
   useEffect(() => {
     if (badgesRef.current) {
       badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing }) => {
         const isSel = (idx === selectedAcupointIdx);
+        const isInActiveRegion = (activeRegion !== 'full' && pt.region === activeRegion);
+        const shouldShowBadge = isSel || isInActiveRegion;
+
         if (selRing) selRing.visible = isSel;
-        if (leaderLine) leaderLine.visible = isSel;
+        if (leaderLine) leaderLine.visible = shouldShowBadge;
         if (sprite) {
-          sprite.visible = isSel;
-          if (isSel && sprite.material) {
+          sprite.visible = shouldShowBadge;
+          if (sprite.material) {
+            const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
             sprite.material.map = new THREE.CanvasTexture(
-              createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, true)
+              createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, isSel, regLabel)
             );
             sprite.material.needsUpdate = true;
           }
         }
       });
     }
-  }, [selectedAcupointIdx]);
+  }, [selectedAcupointIdx, activeRegion]);
 
   // Select tool on Floating Tray without forcing camera away
   const handleSelectTool = useCallback((toolId) => {
@@ -1799,14 +1392,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           leaderLine.visible = (idx === selectedAcupointIdx);
           pinGroup.add(leaderLine);
 
-          // 3D Canvas Callout Badge in 100% English (Visible on Active Acupoint, eliminating card collision)
+          // 3D Canvas Callout Badge in 100% English with Region Tag
+          const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
           const badgeTex = new THREE.CanvasTexture(
-            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, idx === selectedAcupointIdx)
+            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, idx === selectedAcupointIdx, regLabel)
           );
           const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.02);
-          badgeSprite.scale.set(0.09, 0.026, 1.0);
+          badgeSprite.scale.set(0.098, 0.028, 1.0);
           badgeSprite.visible = (idx === selectedAcupointIdx);
           pinGroup.add(badgeSprite);
 
@@ -2595,11 +2189,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className="relative w-full h-full min-h-[680px] overflow-hidden bg-[#f8fafc] font-sans select-none"
+      className="relative w-full h-full overflow-hidden bg-[#f8fafc] font-sans select-none"
     >
       {/* 1. FULL-STAGE 3D TISSUE STRATA & PHYSICAL SURGICAL TRAY VIEW (Rendered as absolute full overlay) */}
       {viewMode === 'tissue' && (
-        <div className="absolute inset-0 z-30 w-full h-full min-h-[700px] bg-[#f8fafc]">
+        <div className="absolute inset-0 z-30 w-full h-full bg-[#f8fafc] overflow-hidden">
           <SkinLayersPip
             fullStage={true}
             activeTool={activeTool}
