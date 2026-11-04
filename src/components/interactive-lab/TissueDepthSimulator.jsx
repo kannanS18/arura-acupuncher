@@ -955,6 +955,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isDisintegrated, setIsDisintegrated] = useState(false);
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [viewMode, setViewMode] = useState('body'); // 'body' | 'tissue'
 
   // Guarantee document scrolling is completely untampered and clean
   useEffect(() => {
@@ -1083,6 +1084,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (!pt || !bodyToolAssemblyRef.current) return;
 
     const assembly = bodyToolAssemblyRef.current;
+    assembly.visible = false; // Zero tools on the 3D man model!
     assembly.position.set(pt.modelPos[0], pt.modelPos[1], pt.modelPos[2]);
 
     const normalVec = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
@@ -1466,6 +1468,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setActiveRegion(pt.region || 'close');
     setFilterRegion(pt.region || 'all');
     setShowStrataPip(true);
+    setViewMode('tissue');
     isCameraAnimatingRef.current = true;
 
     const mScale = 1.55 / 1.90;
@@ -1828,6 +1831,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
         // Build Physical 3D Tools directly on Body Mesh!
         const toolAssemblyData = buildBodyToolAssembly(bodyMesh, needleHandleHitboxesRef.current);
+        toolAssemblyData.assembly.visible = false; // Zero tools on the 3D man model!
         bodyToolAssemblyRef.current = toolAssemblyData.assembly;
         needleBodyToolRef.current = toolAssemblyData.needleGroup;
         needleShaftGroupRef.current = toolAssemblyData.needleShaftGroup;
@@ -2022,10 +2026,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           }
 
           console.log('[AcuClick] Detected Region:', targetRegion);
-          const ptIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === targetRegion);
-          if (ptIdx !== -1) {
-            triggerAcupointCloseUp(ptIdx);
-          }
+          triggerRegionPresentation(targetRegion);
         }
       }
     };
@@ -2680,11 +2681,42 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     return 'Deep Striated Muscle (Knot Target)';
   };
 
+  const handleBackToBody = useCallback(() => {
+    setViewMode('body');
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 50);
+  }, []);
+
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className="relative w-full h-full flex flex-col lg:flex-row overflow-hidden bg-[#f8fafc] font-sans select-none"
+      className="relative w-full h-full min-h-[680px] overflow-hidden bg-[#f8fafc] font-sans select-none"
     >
+      {/* 1. FULL-STAGE 3D TISSUE STRATA & PHYSICAL SURGICAL TRAY VIEW */}
+      <div className={`relative w-full h-full ${viewMode === 'tissue' ? 'block' : 'hidden'}`}>
+        <SkinLayersPip
+          fullStage={true}
+          activeTool={activeTool}
+          depth={interactiveDepth}
+          maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
+          targetDepth={activeAcupoint.depthTarget || 12.0}
+          pointCode={activeAcupoint.code}
+          pointName={activeAcupoint.translation}
+          painName={activeAcupoint.painName}
+          isDisintegrated={isDisintegrated}
+          isSnapping={isSnapping}
+          onDepthChange={handleInteractiveChange}
+          onReset={handleReset}
+          onBackToBody={handleBackToBody}
+          onSelectTool={handleSelectTool}
+          isMuted={isMuted}
+          playAcuSound={playAcuSound}
+        />
+      </div>
+
+      {/* 2. WHOLE BODY 3D CLINICAL ANATOMY VIEW */}
+      <div className={`relative w-full h-full flex flex-col lg:flex-row ${viewMode === 'body' ? 'flex' : 'hidden'}`}>
       {/* ===================================================================== */}
       {/* 1. LEFT COLUMN (65% width): MAIN 3D ANATOMY VIEWPORT                  */}
       {/* ===================================================================== */}
@@ -2937,6 +2969,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             })}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

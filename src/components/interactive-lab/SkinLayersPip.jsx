@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { buildPhysical3DTray } from './physicalTray';
+import { ArrowLeft } from 'lucide-react';
 import { 
   Sparkles, 
   RotateCcw, 
@@ -32,6 +34,9 @@ export default function SkinLayersPip({
   isMuted = false,
   playAcuSound,
   embedded = false,
+  fullStage = false,
+  onBackToBody = null,
+  onSelectTool = null,
   className = ''
 }) {
   const containerRef = useRef(null);
@@ -48,6 +53,17 @@ export default function SkinLayersPip({
   const knotMeshRef = useRef(null);
   const particlesRef = useRef(null);
   const thermalLightRef = useRef(null);
+  const trayToolHitboxesRef = useRef([]);
+  const trayHaloMeshesRef = useRef({});
+  const trayLabelSpritesRef = useRef({});
+  const onSelectToolRef = useRef(null);
+  onSelectToolRef.current = onSelectTool;
+  const depthRef = useRef(depth);
+  depthRef.current = depth;
+  const onDepthChangeRef = useRef(onDepthChange);
+  onDepthChangeRef.current = onDepthChange;
+  const activeToolRef = useRef(activeTool);
+  activeToolRef.current = activeTool;
   const suctionBulgeRef = useRef(null);
 
   const [isMinimized, setIsMinimized] = useState(false);
@@ -87,8 +103,13 @@ export default function SkinLayersPip({
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
-    camera.position.set(2.0, 1.4, 2.2);
-    camera.lookAt(0, 0.05, 0);
+    if (fullStage) {
+      camera.position.set(0.18, 1.35, 2.35);
+      camera.lookAt(0.15, 0.05, 0);
+    } else {
+      camera.position.set(2.0, 1.4, 2.2);
+      camera.lookAt(0, 0.05, 0);
+    }
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -107,7 +128,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(0, 0.05, 0);
+    controls.target.set(fullStage ? 0.15 : 0, 0.05, 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -130,6 +151,9 @@ export default function SkinLayersPip({
 
     // 3. Load Meshy AI Skin Layers GLB Model
     const skinGroup = new THREE.Group();
+    if (fullStage) {
+      skinGroup.position.set(-0.45, 0.0, 0.0);
+    }
     scene.add(skinGroup);
 
     const loader = new GLTFLoader();
@@ -175,9 +199,11 @@ export default function SkinLayersPip({
     );
 
     // 4. Surgical 3D Tools Operating on Top of the Skin Model
+    const offsetX = fullStage ? -0.45 : 0.0;
+
     // A. 3D Needle Assembly
     const needleAssembly = new THREE.Group();
-    needleAssembly.position.set(0.0, 0.65, 0.0); // Above epidermis surface (surface ~0.42)
+    needleAssembly.position.set(offsetX, 0.65, 0.0); // Above epidermis surface (surface ~0.42)
     scene.add(needleAssembly);
     needleGroupRef.current = needleAssembly;
 
@@ -220,7 +246,7 @@ export default function SkinLayersPip({
 
     // B. 3D Glass Vacuum Cup
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(0.0, 0.50, 0.0);
+    cupGroup.position.set(offsetX, 0.50, 0.0);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
@@ -265,7 +291,7 @@ export default function SkinLayersPip({
 
     // C. 3D Moxa Herbal Warmer
     const moxaGroup = new THREE.Group();
-    moxaGroup.position.set(0.0, 0.72, 0.0);
+    moxaGroup.position.set(offsetX, 0.72, 0.0);
     moxaGroup.visible = (activeTool === 'moxa');
     scene.add(moxaGroup);
     moxaGroupRef.current = moxaGroup;
@@ -312,7 +338,7 @@ export default function SkinLayersPip({
       roughness: 0.45
     });
     const knot = new THREE.Mesh(knotGeo, knotMat);
-    knot.position.set(0.0, -0.12, 0.0); // Inside deep muscle layer!
+    knot.position.set(offsetX, -0.12, 0.0); // Inside deep muscle layer!
     knot.castShadow = true;
     scene.add(knot);
     knotMeshRef.current = knot;
@@ -324,7 +350,7 @@ export default function SkinLayersPip({
     const pVel = new Float32Array(pCount * 3);
 
     for (let i = 0; i < pCount; i++) {
-      pPos[i * 3] = (Math.random() - 0.5) * 0.12;
+      pPos[i * 3] = offsetX + (Math.random() - 0.5) * 0.12;
       pPos[i * 3 + 1] = -0.12 + (Math.random() - 0.5) * 0.08;
       pPos[i * 3 + 2] = (Math.random() - 0.5) * 0.12;
       pVel[i * 3] = (Math.random() - 0.5) * 0.008;
@@ -351,6 +377,21 @@ export default function SkinLayersPip({
       active: false,
       timer: 0
     };
+
+    // 6B. Mount Physical 3D Surgical Instrument Tray with 3 Aligned Tools
+    if (fullStage) {
+      const trayMount = new THREE.Group();
+      trayMount.position.set(0.78, -0.16, 0.08);
+      trayMount.rotation.y = -0.22;
+      scene.add(trayMount);
+
+      buildPhysical3DTray(
+        trayMount,
+        trayToolHitboxesRef.current,
+        trayHaloMeshesRef.current,
+        trayLabelSpritesRef.current
+      );
+    }
 
     // 7. Animation Loop
     const clock = new THREE.Clock();
@@ -408,6 +449,88 @@ export default function SkinLayersPip({
     };
     animate();
 
+    // Raycast click on physical tray tools
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let downPos = { x: 0, y: 0 };
+
+    const onPointerDown = (e) => {
+      downPos = { x: e.clientX, y: e.clientY };
+    };
+
+    const onClickCanvas = (e) => {
+      const dist = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
+      if (dist > 8) return; // Dragged
+
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      if (fullStage) {
+        const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+        if (trayHits.length > 0) {
+          let hitSlot = trayHits[0].object;
+          while (hitSlot && (!hitSlot.userData || !hitSlot.userData.toolId)) {
+            hitSlot = hitSlot.parent;
+          }
+          if (hitSlot && hitSlot.userData && hitSlot.userData.toolId) {
+            if (onSelectToolRef.current) {
+              onSelectToolRef.current(hitSlot.userData.toolId);
+            }
+            return;
+          }
+        }
+      }
+    };
+
+    let isDraggingTool = false;
+    let dragStartY = 0;
+    let dragStartDepth = 0;
+
+    const onPointerDownCustom = (e) => {
+      onPointerDown(e);
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      const toolHits = raycaster.intersectObjects([needleAssembly, cupGroup, moxaGroup, skinGroup], true);
+      if (toolHits.length > 0) {
+        isDraggingTool = true;
+        dragStartY = e.clientY;
+        dragStartDepth = depthRef.current;
+        controls.enabled = false;
+        renderer.domElement.style.cursor = 'ns-resize';
+      }
+    };
+
+    const onPointerMove = (e) => {
+      if (isDraggingTool) {
+        const deltaY = e.clientY - dragStartY;
+        const change = deltaY * 0.08;
+        const currentTool = activeToolRef.current;
+        const maxD = currentTool === 'needle' ? 15.0 : currentTool === 'cup' ? 6.0 : 43.0;
+        const newD = Math.max(0, Math.min(maxD, dragStartDepth + change));
+        if (onDepthChangeRef.current) {
+          onDepthChangeRef.current(newD);
+        }
+      }
+    };
+
+    const onPointerUp = () => {
+      if (isDraggingTool) {
+        isDraggingTool = false;
+        controls.enabled = true;
+        renderer.domElement.style.cursor = 'grab';
+      }
+    };
+
+    renderer.domElement.addEventListener('pointerdown', onPointerDownCustom);
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    renderer.domElement.addEventListener('click', onClickCanvas);
+
     const handleResize = () => {
       if (!container) return;
       const nw = container.clientWidth;
@@ -420,6 +543,10 @@ export default function SkinLayersPip({
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      renderer.domElement.removeEventListener('pointerdown', onPointerDownCustom);
+      renderer.domElement.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      renderer.domElement.removeEventListener('click', onClickCanvas);
       cancelAnimationFrame(animIdRef.current);
       renderer.dispose();
     };
@@ -427,6 +554,12 @@ export default function SkinLayersPip({
 
   // Sync Active Tool Visibility & Physics Depth
   useEffect(() => {
+    Object.keys(trayHaloMeshesRef.current).forEach((key) => {
+      if (trayHaloMeshesRef.current[key]) {
+        trayHaloMeshesRef.current[key].material.opacity = (key === activeTool) ? 0.85 : 0.0;
+      }
+    });
+
     if (needleGroupRef.current) needleGroupRef.current.visible = (activeTool === 'needle');
     if (cupGroupRef.current) cupGroupRef.current.visible = (activeTool === 'cup');
     if (moxaGroupRef.current) moxaGroupRef.current.visible = (activeTool === 'moxa');
@@ -460,6 +593,139 @@ export default function SkinLayersPip({
       if (knotMeshRef.current) knotMeshRef.current.visible = false;
     }
   }, [isSnapping]);
+
+  if (fullStage) {
+    return (
+      <div className={`relative w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
+        {/* Main 3D Canvas */}
+        <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+
+        {/* Top Header Bar */}
+        <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+          <div className="flex items-center gap-2 pointer-events-auto">
+            {onBackToBody && (
+              <button
+                type="button"
+                onClick={onBackToBody}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold shadow-md transition"
+                title="Return to Whole Human Body Model"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 text-[#e02868]" />
+                <span>← Back to 3D Anatomy</span>
+              </button>
+            )}
+
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
+              <span>Treating: {pointCode} • {pointName}</span>
+              <span className="text-[10px] font-mono text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
+                Target: {targetDepth}mm
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <button
+              type="button"
+              onClick={onReset}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
+              title="Reset Treatment Depth"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Interactive Surgical Controls & Tool Dock */}
+        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl animate-in fade-in slide-in-from-bottom-2">
+          <div className="flex items-center gap-1 pr-2 border-r border-neutral-200/80">
+            {[
+              { id: 'needle', name: '01 Needle', icon: Zap, sub: '0.18mm Guide-Tube Needle' },
+              { id: 'cup', name: '02 Cup', icon: Flame, sub: 'Negative Pressure Fire Cup' },
+              { id: 'moxa', name: '03 Moxa', icon: Flame, sub: 'Artemisia Thermal Stick' }
+            ].map(t => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => onSelectTool && onSelectTool(t.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                  activeTool === t.id
+                    ? 'bg-[#e02868] text-white shadow-sm'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
+                }`}
+                title={t.sub}
+              >
+                <t.icon className="w-3.5 h-3.5" />
+                <span>{t.name}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 px-2">
+            <span className="text-[11px] font-bold text-neutral-700 whitespace-nowrap">
+              {activeTool === 'needle' && `Depth: ${depth.toFixed(1)} / 15mm`}
+              {activeTool === 'cup' && `Suction: ${depth.toFixed(1)} / 6mm`}
+              {activeTool === 'moxa' && `Heat: ${depth.toFixed(0)} / 43°C`}
+            </span>
+            <input
+              type="range"
+              min="0"
+              max={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
+              step="0.5"
+              value={depth}
+              onChange={(e) => onDepthChange && onDepthChange(parseFloat(e.target.value))}
+              className="w-24 sm:w-28 accent-[#e02868] cursor-pointer"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              const targetVal = activeTool === 'needle' ? (targetDepth || 12.0) : activeTool === 'cup' ? 6.0 : 43.0;
+              if (onDepthChange) onDepthChange(targetVal);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md transition"
+          >
+            <Zap className="w-3.5 h-3.5 animate-pulse" />
+            <span>
+              {activeTool === 'needle' && `Insert Needle (${targetDepth || 12}mm)`}
+              {activeTool === 'cup' && 'Apply Full Suction (6mm)'}
+              {activeTool === 'moxa' && 'Apply Moxa Warmth (43°C)'}
+            </span>
+          </button>
+        </div>
+
+        {/* Orbit Hint Pill */}
+        <div className="absolute bottom-4 right-4 z-20 pointer-events-none flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm text-xs font-medium text-neutral-600">
+          <Eye className="w-3.5 h-3.5 text-[#e02868]" />
+          <span>Tissue Strata on Left • Physical Surgical Tray on Right</span>
+        </div>
+
+        {/* Thanos Disintegration Floating Toast */}
+        {isDisintegrated && (
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
+              <div className="text-xs">
+                <span className="font-bold text-emerald-400">{pointCode} ({pointName}):</span>{' '}
+                <span className="text-neutral-200">{painName}</span>{' '}
+                <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onReset}
+              className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   const asideClass = embedded
     ? `w-full bg-white/95 border-b border-neutral-200/80 overflow-hidden flex flex-col ${className}`
