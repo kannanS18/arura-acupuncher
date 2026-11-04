@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip from './SkinLayersPip';
-import ClinicalInstrumentTray from './ClinicalInstrumentTray';
 import { 
   Maximize2, 
   Minimize2, 
@@ -20,9 +19,9 @@ import {
   Zap, 
   ShieldCheck, 
   Hand,
-  Disc,
   Boxes,
-  RefreshCw
+  RefreshCw,
+  X
 } from 'lucide-react';
 
 // ============================================================================
@@ -47,6 +46,7 @@ export const CLINICAL_ACUPOINTS = [
     isArmPoint: true,
     orderIndex: 0,
     modelPos: [0.257, 0.238, -0.072],
+    surfaceNormal: [0.85, 0.25, -0.45],
     badgeOffset: [0.070, 0.035, 0.040],
     nerves: 'Radial Nerve & Post. Cutaneous Nerve',
     vessels: 'Radial Recurrent Artery',
@@ -71,6 +71,7 @@ export const CLINICAL_ACUPOINTS = [
     isArmPoint: true,
     orderIndex: 1,
     modelPos: [0.269, -0.010, 0.053],
+    surfaceNormal: [0.92, 0.10, 0.38],
     badgeOffset: [0.075, 0.030, 0.040],
     nerves: 'Lateral Antebrachial Cutaneous Nerve',
     vessels: 'Radial Artery & Cephalic Vein',
@@ -95,6 +96,7 @@ export const CLINICAL_ACUPOINTS = [
     isArmPoint: true,
     orderIndex: 2,
     modelPos: [0.228, -0.014, 0.102],
+    surfaceNormal: [0.15, 0.10, 0.98],
     badgeOffset: [-0.070, 0.030, 0.040],
     nerves: 'Median Nerve Trunk',
     vessels: 'Median Antebrachial Vein & Radial Artery',
@@ -119,6 +121,7 @@ export const CLINICAL_ACUPOINTS = [
     isArmPoint: true,
     orderIndex: 3,
     modelPos: [0.226, 0.008, -0.019],
+    surfaceNormal: [0.25, 0.10, -0.96],
     badgeOffset: [-0.065, -0.030, 0.035],
     nerves: 'Ulnar Nerve & Medial Antebrachial Cutaneous Nerve',
     vessels: 'Ulnar Artery',
@@ -143,6 +146,7 @@ export const CLINICAL_ACUPOINTS = [
     isArmPoint: true,
     orderIndex: 4,
     modelPos: [0.260, -0.043, 0.068],
+    surfaceNormal: [0.35, 0.25, 0.90],
     badgeOffset: [0.070, -0.025, 0.035],
     nerves: 'Superficial Radial Nerve',
     vessels: 'First Dorsal Metacarpal Artery',
@@ -168,6 +172,7 @@ export const CLINICAL_ACUPOINTS = [
     depthTarget: 12.0,
     depthCun: '0.8–1.2 cun',
     modelPos: [0.026, 0.665, -0.089],
+    surfaceNormal: [0.20, 0.15, -0.97],
     badgeOffset: [0.045, 0.025, -0.045],
     nerves: 'Greater Occipital Nerve (C2)',
     vessels: 'Occipital Artery & Venous Plexus',
@@ -191,6 +196,7 @@ export const CLINICAL_ACUPOINTS = [
     depthTarget: 6.0,
     depthCun: '0.3–0.5 cun',
     modelPos: [0.001, 0.948, -0.001],
+    surfaceNormal: [0.0, 1.0, 0.0],
     badgeOffset: [0.0, 0.065, 0.030],
     nerves: 'Supraorbital & Greater Occipital Anastomosis',
     vessels: 'Superficial Temporal Artery Network',
@@ -214,6 +220,7 @@ export const CLINICAL_ACUPOINTS = [
     depthTarget: 10.0,
     depthCun: '0.5–0.8 cun',
     modelPos: [0.041, 0.611, -0.125],
+    surfaceNormal: [0.25, 0.05, -0.97],
     badgeOffset: [0.040, -0.020, -0.045],
     nerves: 'Lesser Occipital Nerve (C2-C3)',
     vessels: 'Deep Cervical Artery',
@@ -234,6 +241,7 @@ export const CLINICAL_ACUPOINTS = [
     facing: 'front',
     orderIndex: 0,
     modelPos: [0.115, -0.391, 0.034],
+    surfaceNormal: [0.30, 0.05, 0.95],
     badgeOffset: [0.050, 0.025, 0.040],
     meridian: 'Stomach Meridian',
     depthTarget: 15.0,
@@ -257,6 +265,7 @@ export const CLINICAL_ACUPOINTS = [
     facing: 'front',
     orderIndex: 1,
     modelPos: [0.089, -0.612, -0.037],
+    surfaceNormal: [-0.95, 0.05, 0.30],
     badgeOffset: [-0.045, 0.020, 0.035],
     meridian: 'Spleen Meridian',
     depthTarget: 14.0,
@@ -283,6 +292,7 @@ export const CLINICAL_ACUPOINTS = [
     depthTarget: 14.0,
     depthCun: '0.8–1.2 cun',
     modelPos: [0.039, 0.086, -0.139],
+    surfaceNormal: [0.25, 0.00, -0.97],
     badgeOffset: [0.045, 0.020, -0.045],
     nerves: 'Lumbar Spinal Nerve Dorsal Ramus (L2)',
     vessels: 'Lumbar Arteries & Paraspinal Plexus',
@@ -696,6 +706,426 @@ function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected) {
   return canvas;
 }
 
+// ============================================================================
+// HOLOGRAPHIC NEEDLE DEPTH GAUGE & PHYSICAL SURGICAL INSTRUMENT TRAY HELPERS
+// ============================================================================
+
+// 3D In-Scene Holographic Gauge Mounted Directly on Needle Handle
+function createNeedleDepthBadgeCanvas(depth, targetDepth, isCured) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 72;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = isCured ? 'rgba(6, 78, 59, 0.94)' : 'rgba(15, 23, 42, 0.92)';
+  ctx.strokeStyle = isCured ? '#10b981' : '#e02868';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(4, 4, 248, 64, 16);
+  } else {
+    ctx.rect(4, 4, 248, 64);
+  }
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  if (isCured) {
+    ctx.fillStyle = '#6ee7b7';
+    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('✓ KNOT CURED (DE-QI)', 128, 25);
+    ctx.font = '13px monospace';
+    ctx.fillStyle = '#a7f3d0';
+    ctx.fillText(`${depth.toFixed(1)}mm Striated Muscle`, 128, 48);
+  } else if (depth <= 0.1) {
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('↕ DRAG TO STAB', 128, 25);
+    ctx.font = 'bold 13px monospace';
+    ctx.fillStyle = '#fb7185';
+    ctx.fillText(`Target: ${targetDepth}mm`, 128, 47);
+  } else {
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px monospace';
+    ctx.fillText(`${depth.toFixed(1)} mm`, 128, 26);
+    ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#fda4af';
+    ctx.fillText(`Target: ${targetDepth}mm`, 128, 48);
+  }
+
+  return canvas;
+}
+
+// 3D Floating Tool Label Sprite on Physical Instrument Tray
+function createTrayToolLabelCanvas(title, subtitle, isActive) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 220;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = isActive ? 'rgba(224, 40, 104, 0.95)' : 'rgba(255, 255, 255, 0.92)';
+  ctx.strokeStyle = isActive ? '#ffffff' : 'rgba(203, 213, 225, 0.9)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(4, 4, 212, 56, 12);
+  } else {
+    ctx.rect(4, 4, 212, 56);
+  }
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = isActive ? '#ffffff' : '#0f172a';
+  ctx.font = 'bold 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText(title, 110, 22);
+
+  ctx.fillStyle = isActive ? 'rgba(255, 255, 255, 0.88)' : '#64748b';
+  ctx.font = '600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText(subtitle, 110, 42);
+
+  return canvas;
+}
+
+// Build 3D Surgical Instrument Tray on Mayo Stand in WebGL Scene
+function buildPhysical3DTray(scene, trayToolHitboxes, trayHaloMeshes, trayLabelSprites) {
+  const trayGroup = new THREE.Group();
+  trayGroup.position.set(0.40, -0.22, 0.28);
+  trayGroup.rotation.y = -0.35;
+  scene.add(trayGroup);
+
+  const steelMat = new THREE.MeshStandardMaterial({
+    color: 0xf1f5f9,
+    metalness: 0.95,
+    roughness: 0.16
+  });
+
+  // Stainless Steel Surgical Mayo Tray
+  const trayBase = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.015, 0.22), steelMat);
+  trayBase.castShadow = true;
+  trayBase.receiveShadow = true;
+  trayGroup.add(trayBase);
+
+  // Beveled Tray Rims
+  const rimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.98, roughness: 0.12 });
+  const rimH = 0.016;
+  const rimT = 0.010;
+  const rimL = new THREE.Mesh(new THREE.BoxGeometry(rimT, rimH, 0.22), rimMat);
+  rimL.position.set(-0.16 + rimT / 2, rimH / 2, 0);
+  trayGroup.add(rimL);
+  const rimR = new THREE.Mesh(new THREE.BoxGeometry(rimT, rimH, 0.22), rimMat);
+  rimR.position.set(0.16 - rimT / 2, rimH / 2, 0);
+  trayGroup.add(rimR);
+  const rimB = new THREE.Mesh(new THREE.BoxGeometry(0.32, rimH, rimT), rimMat);
+  rimB.position.set(0, rimH / 2, -0.11 + rimT / 2);
+  trayGroup.add(rimB);
+  const rimF = new THREE.Mesh(new THREE.BoxGeometry(0.32, rimH, rimT), rimMat);
+  rimF.position.set(0, rimH / 2, 0.11 - rimT / 2);
+  trayGroup.add(rimF);
+
+  // Sterile Medical Drape
+  const drapeMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.88, metalness: 0.05 });
+  const drape = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.003, 0.20), drapeMat);
+  drape.position.y = 0.009;
+  trayGroup.add(drape);
+
+  // Mayo Stand Chrome Column & Base
+  const standPole = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.65, 20), steelMat);
+  standPole.position.set(0, -0.33, 0);
+  trayGroup.add(standPole);
+
+  const standBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.02, 32), steelMat);
+  standBase.position.set(0, -0.65, 0);
+  standBase.receiveShadow = true;
+  trayGroup.add(standBase);
+
+  // 1. Tool Slot: 0.18mm Needle
+  const needleSlot = new THREE.Group();
+  needleSlot.position.set(-0.095, 0.014, 0.0);
+  trayGroup.add(needleSlot);
+
+  const needleHalo = new THREE.Mesh(
+    new THREE.RingGeometry(0.025, 0.055, 32),
+    new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide, transparent: true, opacity: 0.75 })
+  );
+  needleHalo.rotation.x = -Math.PI / 2;
+  needleHalo.position.y = 0.001;
+  needleSlot.add(needleHalo);
+  trayHaloMeshes.needle = needleHalo;
+
+  const nShaft = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0015, 0.0015, 0.11, 12),
+    new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.98, roughness: 0.08 })
+  );
+  nShaft.rotation.x = Math.PI / 2;
+  nShaft.position.set(0, 0.005, 0.01);
+  needleSlot.add(nShaft);
+
+  const nHandleCurve = new SpiralHandleCurve(0.0035, 0.040, 14);
+  const nHandleGeo = new THREE.TubeGeometry(nHandleCurve, 40, 0.0012, 6, false);
+  const nHandle = new THREE.Mesh(
+    nHandleGeo,
+    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.92, roughness: 0.22 })
+  );
+  nHandle.rotation.x = Math.PI / 2;
+  nHandle.position.set(0, 0.005, -0.055);
+  needleSlot.add(nHandle);
+
+  const nGuide = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0045, 0.0045, 0.085, 16, 1, true),
+    new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.1, transmission: 0.88 })
+  );
+  nGuide.rotation.x = Math.PI / 2;
+  nGuide.position.set(0.012, 0.005, 0.015);
+  needleSlot.add(nGuide);
+
+  const nLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('0.18mm Needle', 'Solid Seirin', true));
+  const nLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: nLabelTex }));
+  nLabelSprite.position.set(0, 0.035, 0.075);
+  nLabelSprite.scale.set(0.075, 0.022, 1.0);
+  nLabelSprite.userData = { isToolSlot: true, toolId: 'needle' };
+  needleSlot.add(nLabelSprite);
+  trayLabelSprites.needle = nLabelSprite;
+  trayToolHitboxes.push(nLabelSprite);
+
+  const nHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.05, 0.17), new THREE.MeshBasicMaterial({ visible: false }));
+  nHit.position.y = 0.02;
+  nHit.userData = { isToolSlot: true, toolId: 'needle' };
+  needleSlot.add(nHit);
+  trayToolHitboxes.push(nHit);
+
+  // 2. Tool Slot: Glass Cupping Jar
+  const cupSlot = new THREE.Group();
+  cupSlot.position.set(0.0, 0.014, 0.0);
+  trayGroup.add(cupSlot);
+
+  const cupHalo = new THREE.Mesh(
+    new THREE.RingGeometry(0.025, 0.055, 32),
+    new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
+  );
+  cupHalo.rotation.x = -Math.PI / 2;
+  cupHalo.position.y = 0.001;
+  cupSlot.add(cupHalo);
+  trayHaloMeshes.cup = cupHalo;
+
+  const cupGlassMat = new THREE.MeshPhysicalMaterial({
+    color: 0xe0f2fe,
+    transparent: true,
+    opacity: 0.55,
+    roughness: 0.08,
+    transmission: 0.92,
+    ior: 1.5
+  });
+  const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.028, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
+  cupDome.rotation.x = Math.PI;
+  cupDome.position.y = 0.028;
+  cupSlot.add(cupDome);
+
+  const cupValve = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.004, 0.005, 0.010, 14),
+    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
+  );
+  cupValve.position.y = 0.033;
+  cupSlot.add(cupValve);
+
+  const cupLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('Glass Cup', 'Vacuum Fire', false));
+  const cupLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: cupLabelTex }));
+  cupLabelSprite.position.set(0, 0.045, 0.075);
+  cupLabelSprite.scale.set(0.075, 0.022, 1.0);
+  cupLabelSprite.userData = { isToolSlot: true, toolId: 'cup' };
+  cupSlot.add(cupLabelSprite);
+  trayLabelSprites.cup = cupLabelSprite;
+  trayToolHitboxes.push(cupLabelSprite);
+
+  const cupHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.06, 0.09), new THREE.MeshBasicMaterial({ visible: false }));
+  cupHit.position.y = 0.025;
+  cupHit.userData = { isToolSlot: true, toolId: 'cup' };
+  cupSlot.add(cupHit);
+  trayToolHitboxes.push(cupHit);
+
+  // 3. Tool Slot: Herbal Moxa Roll
+  const moxaSlot = new THREE.Group();
+  moxaSlot.position.set(0.095, 0.014, 0.0);
+  trayGroup.add(moxaSlot);
+
+  const moxaHalo = new THREE.Mesh(
+    new THREE.RingGeometry(0.025, 0.055, 32),
+    new THREE.MeshBasicMaterial({ color: 0xf97316, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
+  );
+  moxaHalo.rotation.x = -Math.PI / 2;
+  moxaHalo.position.y = 0.001;
+  moxaSlot.add(moxaHalo);
+  trayHaloMeshes.moxa = moxaHalo;
+
+  const moxaStick = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.008, 0.008, 0.11, 16),
+    new THREE.MeshStandardMaterial({ color: 0x543310, roughness: 0.88 })
+  );
+  moxaStick.rotation.x = Math.PI / 2;
+  moxaStick.position.set(0, 0.009, 0.0);
+  moxaSlot.add(moxaStick);
+
+  const moxaEmber = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0082, 0.0082, 0.014, 16),
+    new THREE.MeshBasicMaterial({ color: 0xff3b00 })
+  );
+  moxaEmber.rotation.x = Math.PI / 2;
+  moxaEmber.position.set(0, 0.009, 0.062);
+  moxaSlot.add(moxaEmber);
+
+  const moxaLabelTex = new THREE.CanvasTexture(createTrayToolLabelCanvas('Herbal Moxa', 'Warm Artemisia', false));
+  const moxaLabelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: moxaLabelTex }));
+  moxaLabelSprite.position.set(0, 0.035, 0.075);
+  moxaLabelSprite.scale.set(0.075, 0.022, 1.0);
+  moxaLabelSprite.userData = { isToolSlot: true, toolId: 'moxa' };
+  moxaSlot.add(moxaLabelSprite);
+  trayLabelSprites.moxa = moxaLabelSprite;
+  trayToolHitboxes.push(moxaLabelSprite);
+
+  const moxaHit = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.05, 0.17), new THREE.MeshBasicMaterial({ visible: false }));
+  moxaHit.position.y = 0.02;
+  moxaHit.userData = { isToolSlot: true, toolId: 'moxa' };
+  moxaSlot.add(moxaHit);
+  trayToolHitboxes.push(moxaHit);
+
+  return trayGroup;
+}
+
+// Build 3D Surgical Tools Directly on the Human Body Mesh
+function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
+  const assembly = new THREE.Group();
+  bodyMesh.add(assembly);
+
+  const pt0 = CLINICAL_ACUPOINTS[0];
+  assembly.position.set(pt0.modelPos[0], pt0.modelPos[1], pt0.modelPos[2]);
+  const norm0 = new THREE.Vector3(pt0.surfaceNormal[0], pt0.surfaceNormal[1], pt0.surfaceNormal[2]).normalize();
+  assembly.setRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), norm0));
+
+  // Needle Tool on Body
+  const needleGroup = new THREE.Group();
+  assembly.add(needleGroup);
+
+  // Shaft Group (penetrates into the body along negative Y axis!)
+  const needleShaftGroup = new THREE.Group();
+  needleGroup.add(needleShaftGroup);
+
+  const shaftMesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0009, 0.0006, 0.048, 12),
+    new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.98, roughness: 0.08 })
+  );
+  shaftMesh.position.y = 0.024;
+  needleShaftGroup.add(shaftMesh);
+
+  const tipMesh = new THREE.Mesh(
+    new THREE.ConeGeometry(0.0009, 0.004, 12),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.98, roughness: 0.05 })
+  );
+  tipMesh.rotation.x = Math.PI;
+  tipMesh.position.y = 0.002;
+  needleShaftGroup.add(tipMesh);
+
+  const handleCurve = new SpiralHandleCurve(0.0028, 0.028, 14);
+  const handleGeo = new THREE.TubeGeometry(handleCurve, 36, 0.0009, 6, false);
+  const handleMesh = new THREE.Mesh(
+    handleGeo,
+    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.92, roughness: 0.20 })
+  );
+  handleMesh.position.y = 0.062;
+  needleShaftGroup.add(handleMesh);
+
+  const guideTube = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0035, 0.0035, 0.038, 16, 1, true),
+    new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.1, transmission: 0.88 })
+  );
+  guideTube.position.y = 0.019;
+  needleGroup.add(guideTube);
+
+  const deqiRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.003, 0.008, 24),
+    new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
+  );
+  deqiRing.rotation.x = -Math.PI / 2;
+  deqiRing.position.y = 0.001;
+  needleGroup.add(deqiRing);
+
+  const holoTex = new THREE.CanvasTexture(createNeedleDepthBadgeCanvas(0, pt0.depthTarget, false));
+  const holoSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: holoTex }));
+  holoSprite.position.set(0.022, 0.068, 0.0);
+  holoSprite.scale.set(0.065, 0.018, 1.0);
+  needleShaftGroup.add(holoSprite);
+
+  const stabHit = new THREE.Mesh(
+    new THREE.SphereGeometry(0.038, 16, 16),
+    new THREE.MeshBasicMaterial({ visible: false })
+  );
+  stabHit.position.y = 0.055;
+  stabHit.userData = { isNeedleStabHandle: true };
+  needleShaftGroup.add(stabHit);
+  needleHandleHitboxes.push(stabHit);
+
+  // Also enable direct grabbing and stabbing on holographic badge
+  holoSprite.userData = { isNeedleStabHandle: true };
+  needleHandleHitboxes.push(holoSprite);
+
+  // Cupping Tool on Body
+  const cupGroup = new THREE.Group();
+  cupGroup.visible = false;
+  assembly.add(cupGroup);
+
+  const bodyCupDome = new THREE.Mesh(
+    new THREE.SphereGeometry(0.018, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2),
+    new THREE.MeshPhysicalMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.55, roughness: 0.08, transmission: 0.92 })
+  );
+  bodyCupDome.rotation.x = Math.PI;
+  bodyCupDome.position.y = 0.018;
+  cupGroup.add(bodyCupDome);
+
+  const fleshBulge = new THREE.Mesh(
+    new THREE.SphereGeometry(0.013, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color: 0xf2d0be, roughness: 0.4 })
+  );
+  fleshBulge.position.y = 0.001;
+  fleshBulge.scale.set(1.0, 0.2, 1.0);
+  cupGroup.add(fleshBulge);
+
+  // Moxa Tool on Body
+  const moxaGroup = new THREE.Group();
+  moxaGroup.visible = false;
+  assembly.add(moxaGroup);
+
+  const bodyMoxaStick = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.006, 0.006, 0.05, 16),
+    new THREE.MeshStandardMaterial({ color: 0x543310, roughness: 0.85 })
+  );
+  bodyMoxaStick.position.y = 0.055;
+  moxaGroup.add(bodyMoxaStick);
+
+  const bodyMoxaEmber = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0062, 0.0062, 0.008, 16),
+    new THREE.MeshBasicMaterial({ color: 0xff3b00 })
+  );
+  bodyMoxaEmber.position.y = 0.027;
+  moxaGroup.add(bodyMoxaEmber);
+
+  const thermalLight = new THREE.PointLight(0xff4500, 0.0, 0.15);
+  thermalLight.position.y = 0.025;
+  moxaGroup.add(thermalLight);
+
+  return {
+    assembly,
+    needleGroup,
+    needleShaftGroup,
+    holoSprite,
+    deqiRing,
+    cupGroup,
+    fleshBulge,
+    moxaGroup,
+    thermalLight
+  };
+}
+
 export default function TissueDepthSimulator({ onOpenBooking }) {
   const mountRef = useRef(null);
   const [selectedAcupointIdx, setSelectedAcupointIdx] = useState(0);
@@ -713,10 +1143,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   }, []);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!
+  const activeRegionRef = useRef('full');
+  useEffect(() => {
+    activeRegionRef.current = activeRegion;
+  }, [activeRegion]);
+
+  const activeToolRef = useRef('needle');
+  useEffect(() => {
+    activeToolRef.current = activeTool;
+  }, [activeTool]);
+
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
   const [bodyFacing, setBodyFacing] = useState('back'); // 'front' or 'back'
   const [showStrataPip, setShowStrataPip] = useState(true);
-  const [showInstrumentTray, setShowInstrumentTray] = useState(true);
 
   const isHoldingRef = useRef(false);
   const holdTimerRef = useRef(null);
@@ -729,6 +1168,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
   const isCameraAnimatingRef = useRef(false);
+  const camStartPosRef = useRef(new THREE.Vector3(0.0, 0.34, 4.2));
+  const camStartLookAtRef = useRef(new THREE.Vector3(0.0, 0.34, 0.0));
+  const camAnimProgressRef = useRef(1.0);
   const targetCamPosRef = useRef(new THREE.Vector3(0.0, 0.34, 4.2));
   const targetLookAtRef = useRef(new THREE.Vector3(0.0, 0.34, 0.0));
 
@@ -760,6 +1202,33 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const activeMoxaRef = useRef(null);
   const guideTubeRef = useRef(null);
 
+  // Physical 3D Tool Assembly on Human Body Refs
+  const bodyToolAssemblyRef = useRef(null);
+  const needleBodyToolRef = useRef(null);
+  const needleShaftGroupRef = useRef(null);
+  const needleHoloBadgeRef = useRef(null);
+  const needleHandleHitboxesRef = useRef([]);
+  const cupBodyToolRef = useRef(null);
+  const cupFleshBulgeRef = useRef(null);
+  const moxaBodyToolRef = useRef(null);
+  const moxaThermalLightRef = useRef(null);
+  const deqiWaveRingRef = useRef(null);
+
+  // Physical 3D Surgical Tray Refs
+  const physicalTrayGroupRef = useRef(null);
+  const trayToolHitboxesRef = useRef([]);
+  const trayHaloMeshesRef = useRef({});
+  const trayLabelSpritesRef = useRef({});
+
+  // Direct Stabbing Pointer State
+  const isStabbingRef = useRef(false);
+  const stabStartYRef = useRef(0);
+  const stabStartDepthRef = useRef(0);
+  const interactiveDepthRef = useRef(0);
+  useEffect(() => {
+    interactiveDepthRef.current = interactiveDepth;
+  }, [interactiveDepth]);
+
   // 3D Thanos Particles
   const particlesRef = useRef(null);
 
@@ -778,8 +1247,81 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     });
   }, []);
 
+  // Update Body Tool Placement & Physical Tray Selection
+  const updateBodyToolPlacement = useCallback((acupointIdx, toolId) => {
+    const pt = CLINICAL_ACUPOINTS[acupointIdx];
+    if (!pt || !bodyToolAssemblyRef.current) return;
+
+    const assembly = bodyToolAssemblyRef.current;
+    assembly.position.set(pt.modelPos[0], pt.modelPos[1], pt.modelPos[2]);
+
+    const normalVec = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
+    const defaultUp = new THREE.Vector3(0, 1, 0);
+    const quat = new THREE.Quaternion().setFromUnitVectors(defaultUp, normalVec);
+    assembly.setRotationFromQuaternion(quat);
+
+    if (needleBodyToolRef.current) {
+      needleBodyToolRef.current.visible = (toolId === 'needle');
+    }
+    if (cupBodyToolRef.current) {
+      cupBodyToolRef.current.visible = (toolId === 'cup');
+    }
+    if (moxaBodyToolRef.current) {
+      moxaBodyToolRef.current.visible = (toolId === 'moxa');
+    }
+
+    // Update highlights on Physical 3D Tray
+    const halos = trayHaloMeshesRef.current;
+    if (halos.needle) halos.needle.material.opacity = (toolId === 'needle' ? 0.85 : 0.0);
+    if (halos.cup) halos.cup.material.opacity = (toolId === 'cup' ? 0.85 : 0.0);
+    if (halos.moxa) halos.moxa.material.opacity = (toolId === 'moxa' ? 0.85 : 0.0);
+
+    const labels = trayLabelSpritesRef.current;
+    if (labels.needle) {
+      labels.needle.material.map.image = createTrayToolLabelCanvas('0.18mm Needle', 'Solid Seirin', toolId === 'needle');
+      labels.needle.material.map.needsUpdate = true;
+    }
+    if (labels.cup) {
+      labels.cup.material.map.image = createTrayToolLabelCanvas('Glass Cup', 'Vacuum Fire', toolId === 'cup');
+      labels.cup.material.map.needsUpdate = true;
+    }
+    if (labels.moxa) {
+      labels.moxa.material.map.image = createTrayToolLabelCanvas('Herbal Moxa', 'Warm Artemisia', toolId === 'moxa');
+      labels.moxa.material.map.needsUpdate = true;
+    }
+  }, []);
+
   // Apply Needle Depth & Skin Physics
   const applySkinPhysicsAndToolHeight = useCallback((val) => {
+    // 1. Synchronize 3D Needle on Human Body Mesh (Visible entry into flesh)
+    if (needleShaftGroupRef.current) {
+      // Penetration travels in local -Y direction (into body)
+      const maxPenetration = 0.024;
+      const pen = (val / 15.0) * maxPenetration;
+      needleShaftGroupRef.current.position.y = -pen;
+    }
+    if (needleHoloBadgeRef.current && needleHoloBadgeRef.current.material && needleHoloBadgeRef.current.material.map) {
+      needleHoloBadgeRef.current.material.map.image = createNeedleDepthBadgeCanvas(val, currentProb.depthTarget, isDisintegrated);
+      needleHoloBadgeRef.current.material.map.needsUpdate = true;
+    }
+    if (deqiWaveRingRef.current) {
+      if (val >= 11.8) {
+        deqiWaveRingRef.current.visible = true;
+        deqiWaveRingRef.current.material.opacity = 0.85;
+      } else {
+        deqiWaveRingRef.current.visible = false;
+      }
+    }
+    if (cupFleshBulgeRef.current) {
+      const suctionRatio = Math.min(1.0, val / 6.0);
+      cupFleshBulgeRef.current.scale.y = 0.2 + suctionRatio * 0.9;
+    }
+    if (moxaThermalLightRef.current) {
+      const heatRatio = Math.min(1.0, Math.max(0, (val - 35.0) / 8.0));
+      moxaThermalLightRef.current.intensity = heatRatio * 1.5;
+    }
+
+    // 2. Strata Block meshes (if visible)
     const skinMesh = skinMeshRef.current;
     const origPos = originalSkinPositionsRef.current;
     if (!skinMesh || !origPos) return;
@@ -851,7 +1393,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       }
       posAttr.needsUpdate = true;
     }
-  }, [activeTool]);
+  }, [activeTool, currentProb.depthTarget, isDisintegrated]);
 
   // Trigger Thanos Ash Particle Disintegration
   const triggerThanosDisintegration = useCallback(() => {
@@ -982,9 +1524,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetFacing = 'front';
     }
 
+    // Set initial look target
     if (bodyModelMeshRef.current) {
       bodyModelMeshRef.current.rotation.y = targetFacing === 'front' ? 0 : Math.PI;
       setBodyFacing(targetFacing);
+    }
+
+    if (cameraRef.current && controlsRef.current) {
+      camStartPosRef.current.copy(cameraRef.current.position);
+      camStartLookAtRef.current.copy(controlsRef.current.target);
+      camAnimProgressRef.current = 0.0;
+      isCameraAnimatingRef.current = true;
     }
 
     // Sequentially pop up the acupoint pins for THIS region one-by-one with crystalline chimes
@@ -1012,14 +1562,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     triggerRegionPresentation(regionKey, ptIdx !== -1 ? ptIdx : undefined);
   }, [triggerRegionPresentation]);
 
-  // Dedicated Point Close-Up Presentation (As requested: "proper close up", tray appears, skin blob on top right)
+  // Dedicated Point Close-Up Presentation (As requested: "proper close up", physical tray on Mayo stand, skin blob on top right)
   const triggerAcupointCloseUp = useCallback((idx) => {
     const pt = CLINICAL_ACUPOINTS[idx];
     if (!pt) return;
 
     setSelectedAcupointIdx(idx);
+    setActiveRegion(pt.region || 'close');
     setShowStrataPip(true);
-    setShowInstrumentTray(true);
     isCameraAnimatingRef.current = true;
 
     const closeUp = ACUPOINT_CLOSEUPS[pt.id];
@@ -1032,6 +1582,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       }
     }
 
+    if (cameraRef.current && controlsRef.current) {
+      camStartPosRef.current.copy(cameraRef.current.position);
+      camStartLookAtRef.current.copy(controlsRef.current.target);
+      camAnimProgressRef.current = 0.0;
+      isCameraAnimatingRef.current = true;
+    }
+
     // Highlight and scale up this active pin, fold down other distant pins
     if (allPinObjectsRef.current) {
       allPinObjectsRef.current.forEach((pin, i) => {
@@ -1039,7 +1596,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       });
       playAcuSound('popup', isMuted);
     }
-  }, [isMuted]);
+
+    updateBodyToolPlacement(idx, activeTool);
+  }, [isMuted, activeTool, updateBodyToolPlacement]);
 
   // Select Acupoint from Catalog and fly into close-up with 3D Strata & Tray
   const handleSelectAcupoint = useCallback((idx) => {
@@ -1078,8 +1637,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     if (activeRegion === 'full') {
       triggerAcupointCloseUp(selectedAcupointIdx);
+    } else {
+      updateBodyToolPlacement(selectedAcupointIdx, toolId);
     }
-  }, [activeRegion, handleReset, isMuted, selectedAcupointIdx, triggerAcupointCloseUp]);
+  }, [activeRegion, handleReset, isMuted, selectedAcupointIdx, triggerAcupointCloseUp, updateBodyToolPlacement]);
 
   // Click & Hold to Plunge Needle into Acupoint
   const startHoldPlunge = useCallback(() => {
@@ -1196,11 +1757,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.target.set(0.0, 0.34, 0.0);
     controlsRef.current = controls;
 
-    // Allow user to freely orbit/turn the 3D model with mouse drag without camera fighting or auto-resetting
-    controls.addEventListener('start', () => {
-      isCameraAnimatingRef.current = false;
-    });
-
     // Clean Studio Lighting for Light Theme
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
     scene.add(ambientLight);
@@ -1254,6 +1810,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     bodyGroup.add(ringLed);
 
     const interactiveAcupointMeshes = [];
+
+    // Build Physical 3D Surgical Instrument Tray in Scene (Mayo Stand)
+    const trayGroup = buildPhysical3DTray(
+      scene,
+      trayToolHitboxesRef.current,
+      trayHaloMeshesRef.current,
+      trayLabelSpritesRef.current
+    );
+    physicalTrayGroupRef.current = trayGroup;
 
     // Load Whole Human Body GLB Model (Sized to fit in 60% of screen)
     const gltfLoader = new GLTFLoader();
@@ -1359,6 +1924,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing });
         });
 
+        // Build 3D Surgical Tool Assembly directly on Human Body Mesh!
+        const toolAssemblyData = buildBodyToolAssembly(bodyMesh, needleHandleHitboxesRef.current);
+        bodyToolAssemblyRef.current = toolAssemblyData.assembly;
+        needleBodyToolRef.current = toolAssemblyData.needleGroup;
+        needleShaftGroupRef.current = toolAssemblyData.needleShaftGroup;
+        needleHoloBadgeRef.current = toolAssemblyData.holoSprite;
+        deqiWaveRingRef.current = toolAssemblyData.deqiRing;
+        cupBodyToolRef.current = toolAssemblyData.cupGroup;
+        cupFleshBulgeRef.current = toolAssemblyData.fleshBulge;
+        moxaBodyToolRef.current = toolAssemblyData.moxaGroup;
+        moxaThermalLightRef.current = toolAssemblyData.thermalLight;
+
+        // Position on initially active acupoint
+        updateBodyToolPlacement(selectedAcupointIdx, activeTool);
+
         bodyGroup.add(bodyMesh);
 
         // Initially reveal all pins across whole body view after mount
@@ -1374,17 +1954,86 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       (err) => console.error('Failed to load human_body.glb:', err)
     );
 
-    // Raycaster for Direct Acupoint Dot Clicking & Anatomical Region Interactivity
+    // Raycaster for Direct Acupoint Dot Clicking, Tool Tray Picking, & Needle Stabbing
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks
+    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks & direct stabbing
     let pointerDownPos = { x: 0, y: 0, hasDown: false };
     const handlePointerDown = (e) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      // Priority 1: Did user grab the 3D Needle Drag Handle on the human body to stab?
+      const handleHits = raycaster.intersectObjects(needleHandleHitboxesRef.current, true);
+      if (handleHits.length > 0) {
+        isStabbingRef.current = true;
+        stabStartYRef.current = e.clientY;
+        stabStartDepthRef.current = interactiveDepthRef.current;
+        controls.enabled = false; // Freeze OrbitControls so model doesn't rotate while stabbing!
+        renderer.domElement.style.cursor = 'grabbing';
+        pointerDownPos.hasDown = false;
+        e.preventDefault();
+        return;
+      }
+
+      // Priority 2: Did user click on a tool slot on the Physical 3D Surgical Tray?
+      const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+      if (trayHits.length > 0) {
+        const toolId = trayHits[0].object.userData.toolId;
+        if (toolId) {
+          handleSelectTool(toolId);
+          pointerDownPos.hasDown = false;
+          e.preventDefault();
+          return;
+        }
+      }
+
       pointerDownPos = { x: e.clientX, y: e.clientY, hasDown: true };
     };
 
+    const handlePointerMove = (e) => {
+      if (isStabbingRef.current) {
+        const deltaY = e.clientY - stabStartYRef.current;
+        const depthChange = deltaY * 0.085;
+        const currentTool = activeToolRef.current;
+        const maxD = currentTool === 'needle' ? 15.0 : currentTool === 'cup' ? 6.0 : 43.0;
+        const newDepth = Math.max(0, Math.min(maxD, stabStartDepthRef.current + depthChange));
+        handleInteractiveChange(newDepth);
+        return;
+      }
+
+      // Cursor hover feedback
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      const handleHover = raycaster.intersectObjects(needleHandleHitboxesRef.current, true);
+      if (handleHover.length > 0) {
+        renderer.domElement.style.cursor = 'grab';
+        return;
+      }
+      const trayHover = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+      if (trayHover.length > 0) {
+        renderer.domElement.style.cursor = 'pointer';
+        return;
+      }
+      renderer.domElement.style.cursor = 'default';
+    };
+
+    const handlePointerUp = () => {
+      if (isStabbingRef.current) {
+        isStabbingRef.current = false;
+        controls.enabled = true; // Re-enable OrbitControls!
+        renderer.domElement.style.cursor = 'default';
+      }
+    };
+
     const handleCanvasClick = (e) => {
+      if (isStabbingRef.current) return;
       // If user moved/dragged more than 8px while holding down, it was an orbit/turn drag!
       // In that case, ABORT immediately so turning/orbiting NEVER triggers a body part zoom!
       if (pointerDownPos.hasDown) {
@@ -1402,6 +2051,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
+
+      // Check physical tray tools
+      const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+      if (trayHits.length > 0) {
+        const toolId = trayHits[0].object.userData.toolId;
+        if (toolId) {
+          handleSelectTool(toolId);
+          return;
+        }
+      }
 
       // 1. Highest Priority: Direct click on an Acupoint Pin Dot or Callout Badge
       // Only consider hitboxes whose parent pin is visibly scaled up (> 0.2)
@@ -2001,23 +2660,59 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
       }
 
-      // Smooth Camera & Controls Interpolation towards Target Framing (Only during active tweens!)
+      // Smooth Camera & Controls Interpolation towards Target Framing (Cubic Ease-Out)
       if (isCameraAnimatingRef.current) {
-        camera.position.lerp(targetCamPosRef.current, 0.07);
-        controls.target.lerp(targetLookAtRef.current, 0.07);
-        if (
-          camera.position.distanceTo(targetCamPosRef.current) < 0.005 &&
-          controls.target.distanceTo(targetLookAtRef.current) < 0.005
-        ) {
+        camAnimProgressRef.current += 0.045; // ~22 frames (0.36s smooth flight)
+        const progress = Math.min(1.0, camAnimProgressRef.current);
+        const t = 1 - Math.pow(1 - progress, 3);
+        camera.position.lerpVectors(camStartPosRef.current, targetCamPosRef.current, t);
+        controls.target.lerpVectors(camStartLookAtRef.current, targetLookAtRef.current, t);
+        if (progress >= 1.0) {
           camera.position.copy(targetCamPosRef.current);
           controls.target.copy(targetLookAtRef.current);
           isCameraAnimatingRef.current = false;
         }
       }
+      // Smoothly reposition the Physical 3D Surgical Tray on Mayo stand
+      if (physicalTrayGroupRef.current) {
+        const tray = physicalTrayGroupRef.current;
+        let targetTrayPos;
+        let targetTrayRotY;
+        let targetTrayScale = 1.0;
+
+        if (activeRegionRef.current === 'full') {
+          targetTrayPos = new THREE.Vector3(0.38, -0.22, 0.28);
+          targetTrayRotY = -0.35;
+          targetTrayScale = 1.0;
+        } else {
+          // In close-up view, position Mayo stand into lower foreground, nicely scaled and within easy click reach
+          const lookAt = controls.target || new THREE.Vector3(0, 0.34, 0);
+          const camDir = camera.position.clone().sub(lookAt).normalize();
+          const rightDir = new THREE.Vector3().crossVectors(camDir, new THREE.Vector3(0, 1, 0)).normalize();
+          targetTrayPos = lookAt.clone()
+            .add(rightDir.clone().multiplyScalar(-0.14))
+            .add(new THREE.Vector3(0, -0.05, 0))
+            .add(camDir.clone().multiplyScalar(0.19));
+          targetTrayRotY = camera.rotation.y + 0.15;
+          targetTrayScale = 0.65;
+        }
+        tray.position.lerp(targetTrayPos, 0.08);
+        tray.rotation.y = THREE.MathUtils.lerp(tray.rotation.y, targetTrayRotY, 0.08);
+        const curScale = tray.scale.x;
+        const nextScale = THREE.MathUtils.lerp(curScale, targetTrayScale, 0.08);
+        tray.scale.set(nextScale, nextScale, nextScale);
+      }
+
       controls.update();
       renderer.render(scene, camera);
     };
     animate();
+
+    // Event Listeners for Direct Needle Stabbing, Tool Tray, & Freely Orbiting
+    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+    renderer.domElement.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    renderer.domElement.addEventListener('click', handleCanvasClick);
 
     // Resize Handler
     const handleResize = () => {
@@ -2033,14 +2728,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     return () => {
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
+      renderer.domElement.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
       renderer.domElement.removeEventListener('click', handleCanvasClick);
       cancelAnimationFrame(animId);
       renderer.dispose();
     };
   }, []); // Run once on mount
 
-  // Tool Switching Sync
+  // Tool & Acupoint Switching Sync on Human Body
   useEffect(() => {
+    updateBodyToolPlacement(selectedAcupointIdx, activeTool);
     if (activeNeedleRef.current) activeNeedleRef.current.visible = (activeTool === 'needle');
     if (guideTubeRef.current) guideTubeRef.current.visible = (activeTool === 'needle');
     if (activeCupRef.current) activeCupRef.current.visible = (activeTool === 'cup');
@@ -2049,7 +2747,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (knotMeshRef.current) knotMeshRef.current.visible = (selectedProblemIdx === 0 && !isDisintegrated);
     if (adhesionMeshRef.current) adhesionMeshRef.current.visible = (selectedProblemIdx === 1 && !isDisintegrated);
     if (stasisMeshRef.current) stasisMeshRef.current.visible = (selectedProblemIdx === 2 && !isDisintegrated);
-  }, [activeTool, selectedProblemIdx, isDisintegrated]);
+  }, [activeTool, selectedAcupointIdx, selectedProblemIdx, isDisintegrated, updateBodyToolPlacement]);
 
   // Determine current active anatomical layer for live feedback
   const getActiveLayerName = (depth) => {
@@ -2103,19 +2801,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           >
             <Layers className="w-3.5 h-3.5 text-[#e02868]" />
             <span className="hidden sm:inline">3D Strata</span>
-          </button>
-
-          {/* Instrument Tray Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowInstrumentTray(!showInstrumentTray)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm ${
-              showInstrumentTray ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white'
-            }`}
-            title="Toggle Clinical Instrument Tray"
-          >
-            <Disc className="w-3.5 h-3.5 text-[#e02868]" />
-            <span className="hidden sm:inline">Tool Tray</span>
           </button>
 
           <button
@@ -2276,20 +2961,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           onClose={() => setShowStrataPip(false)}
           isMuted={isMuted}
           playAcuSound={playAcuSound}
-        />
-      )}
-
-      {/* Bottom-Center: Sterile Clinical Instrument Tray */}
-      {showInstrumentTray && (
-        <ClinicalInstrumentTray
-          activeTool={activeTool}
-          onSelectTool={handleSelectTool}
-          depth={interactiveDepth}
-          onDepthChange={handleInteractiveChange}
-          isDisintegrated={isDisintegrated}
-          onReset={handleReset}
-          pointCode={activeAcupoint.code}
-          pointName={activeAcupoint.translation}
         />
       )}
 

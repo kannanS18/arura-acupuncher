@@ -561,30 +561,31 @@ export default function SkinLayersPip({
             </div>
           </div>
 
-          {/* Clinical Insertion & Treatment Controller */}
+          {/* Clinical Insertion & Real-Time Histological Readout (Direct 3D Stabbing) */}
           <div className="space-y-1.5 pt-1 border-t border-neutral-200/80">
             <div className="flex items-center justify-between text-xs font-bold text-neutral-800">
               <span className="text-[10px] text-neutral-600 font-mono">
-                {activeTool === 'needle' && 'Penetration Depth (0–15mm):'}
-                {activeTool === 'cup' && 'Negative Pressure Suction (0–6mm):'}
-                {activeTool === 'moxa' && 'Thermal Warming (35–43°C):'}
+                {activeTool === 'needle' && 'Penetration Depth (Direct 3D Drag):'}
+                {activeTool === 'cup' && 'Negative Pressure Lift:'}
+                {activeTool === 'moxa' && 'Thermal Radiance:'}
               </span>
-              <span className="text-[10px] font-mono text-[#e02868]">
+              <span className="text-[10px] font-mono text-[#e02868] font-bold">
                 {depth.toFixed(1)} {activeTool === 'moxa' ? '°C' : 'mm'}
               </span>
             </div>
 
-            <input
-              type="range"
-              min={activeTool === 'moxa' ? 35 : 0}
-              max={maxDepth}
-              step={0.1}
-              value={depth}
-              onChange={(e) => onDepthChange && onDepthChange(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-[#e02868]"
-            />
+            {/* Direct Physical Stabbing Indicator Tag */}
+            <div className="p-2 rounded-xl bg-neutral-900/5 border border-neutral-200/80 flex items-center justify-between text-[10px] font-medium text-neutral-600">
+              <span className="flex items-center gap-1.5 font-bold text-[#e02868]">
+                <Zap className="w-3.5 h-3.5 animate-pulse" />
+                <span>{activeTool === 'needle' ? 'Drag 3D Needle on Body to Stab' : activeTool === 'cup' ? 'Drag 3D Cup to Decompress' : 'Hover 3D Moxa to Radiate'}</span>
+              </span>
+              <span className="font-mono text-[9px] text-neutral-500">
+                {activeTool === 'needle' ? 'Target: 12mm' : activeTool === 'cup' ? 'Target: 6mm' : 'Target: 43°C'}
+              </span>
+            </div>
 
-            {/* Quick Action Button */}
+            {/* Quick Action Buttons */}
             <div className="flex items-center gap-2 pt-1">
               <button
                 type="button"
@@ -593,7 +594,7 @@ export default function SkinLayersPip({
               >
                 <Zap className="w-3.5 h-3.5" />
                 <span>
-                  {activeTool === 'needle' && `Reach Knot (${targetDepth}mm)`}
+                  {activeTool === 'needle' && `Insert to Knot (${targetDepth}mm)`}
                   {activeTool === 'cup' && 'Apply Full Suction'}
                   {activeTool === 'moxa' && 'Full Heat (43°C)'}
                 </span>
@@ -603,7 +604,7 @@ export default function SkinLayersPip({
                 type="button"
                 onClick={onReset}
                 className="p-1.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-neutral-600 transition"
-                title="Reset Treatment"
+                title="Reset Needle & Pathology"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
