@@ -328,56 +328,48 @@ function playAcuSound(type, isMuted) {
   } catch (_) {}
 }
 
-// Procedural Razor-Sharp 2D Pinpoint Skin Dot Texture (High DPI, Solid Vibrant Arura Rose Core)
+// Procedural Razor-Sharp 2D Pinpoint Skin Dot Texture (Compact, High-Precision, No Oversized Halos)
 function createSkinDotTexture(color = '#e02868', isSelected = false) {
   const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 128;
+  canvas.width = 64;
+  canvas.height = 64;
   const ctx = canvas.getContext('2d');
-  const cx = 64;
-  const cy = 64;
+  const cx = 32;
+  const cy = 32;
 
   if (isSelected) {
-    const aura = ctx.createRadialGradient(cx, cy, 24, cx, cy, 62);
-    aura.addColorStop(0, 'rgba(224, 40, 104, 0.95)');
-    aura.addColorStop(0.5, 'rgba(244, 63, 94, 0.60)');
+    // Clean, crisp selection pulse aura
+    const aura = ctx.createRadialGradient(cx, cy, 14, cx, cy, 30);
+    aura.addColorStop(0, 'rgba(224, 40, 104, 0.75)');
     aura.addColorStop(1, 'rgba(224, 40, 104, 0.0)');
     ctx.fillStyle = aura;
     ctx.beginPath();
-    ctx.arc(cx, cy, 62, 0, Math.PI * 2);
-    ctx.fill();
-  } else {
-    const softGlow = ctx.createRadialGradient(cx, cy, 20, cx, cy, 58);
-    softGlow.addColorStop(0, 'rgba(224, 40, 104, 0.70)');
-    softGlow.addColorStop(1, 'rgba(224, 40, 104, 0.0)');
-    ctx.fillStyle = softGlow;
-    ctx.beginPath();
-    ctx.arc(cx, cy, 58, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 30, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // 1. Solid Outer Shadow Border (High-contrast separation against white mannequin)
+  // 1. Solid Outer Shadow Border for contrast against porcelain mannequin
   ctx.beginPath();
-  ctx.arc(cx, cy, 46, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
   ctx.fillStyle = '#881337';
   ctx.fill();
 
-  // 2. Vibrant Solid Arura Rose Disc (Full saturated color foundation)
+  // 2. Vibrant Solid Arura Rose Disc Foundation
   ctx.beginPath();
-  ctx.arc(cx, cy, 42, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 19, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
 
-  // 3. Crisp Concentric White Contrast Ring (Guarantees optical definition)
+  // 3. Thin Crisp White Contrast Ring
   ctx.beginPath();
-  ctx.arc(cx, cy, 26, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 12, 0, Math.PI * 2);
   ctx.strokeStyle = '#ffffff';
-  ctx.lineWidth = 6;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   // 4. Center Micro-Glint Highlight (Pinpoint center)
   ctx.beginPath();
-  ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
   ctx.fillStyle = '#ffffff';
   ctx.fill();
 
@@ -1399,14 +1391,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite, depthTest: false so it never clips)
           const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
           const dotSprite = new THREE.Sprite(dotMat);
-          dotSprite.scale.set(0.052, 0.052, 1.0);
+          dotSprite.scale.set(0.024, 0.024, 1.0);
           dotSprite.renderOrder = 9999;
           pinGroup.add(dotSprite);
 
           // Active Selection Aura Ring
           const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
           const selRing = new THREE.Sprite(selRingMat);
-          selRing.scale.set(0.082, 0.082, 1.0);
+          selRing.scale.set(0.036, 0.036, 1.0);
           selRing.visible = (idx === selectedAcupointIdx);
           selRing.renderOrder = 9998;
           pinGroup.add(selRing);
@@ -2132,12 +2124,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       }
 
       // Smooth Spring Scale Interpolation for Popping Up Acupoints Sequentially Across All Regions
+      const pinWorldPos = new THREE.Vector3();
       if (allPinObjectsRef.current) {
         allPinObjectsRef.current.forEach(pin => {
           const ts = pin.userData.targetScale ?? 0.0;
           pin.userData.currentScale = (pin.userData.currentScale ?? 0.0) + (ts - (pin.userData.currentScale ?? 0.0)) * 0.14;
           const s = Math.max(0, pin.userData.currentScale);
           pin.scale.set(s, s, s);
+
+          // Dynamic scale based on distance to camera so dots NEVER get too big on close up!
+          pin.getWorldPosition(pinWorldPos);
+          const dist = camera.position.distanceTo(pinWorldPos);
+          // On full body (dist ≈ 2.7m): scale ≈ 0.024
+          // On close-up limbs (dist ≈ 0.5 - 0.8m): scale ≈ 0.009 - 0.012 (dainty, never overlapping!)
+          const dynamicScale = Math.max(0.009, Math.min(0.025, dist * 0.0092));
+
+          const dot = pin.children[0];
+          if (dot && dot.isSprite) {
+            dot.scale.set(dynamicScale, dynamicScale, 1.0);
+          }
+          const ring = pin.children[1];
+          if (ring && ring.isSprite) {
+            ring.scale.set(dynamicScale * 1.5, dynamicScale * 1.5, 1.0);
+          }
         });
       }
 
