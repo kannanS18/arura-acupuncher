@@ -1478,9 +1478,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             badgeSprite.scale.set(0.12, 0.035, 1.0);
             pinGroup.add(badgeSprite);
 
-            // Clickable HitBox for Raycaster
+            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
             const hitBox = new THREE.Mesh(
-              new THREE.SphereGeometry(0.035, 8, 8),
+              new THREE.SphereGeometry(0.016, 8, 8),
               new THREE.MeshBasicMaterial({ visible: false })
             );
             hitBox.userData = { acupointIdx: idx };
@@ -1544,9 +1544,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             badgeSprite.scale.set(0.12, 0.035, 1.0);
             pinGroup.add(badgeSprite);
 
-            // Clickable HitBox for Raycaster
+            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
             const hitBox = new THREE.Mesh(
-              new THREE.SphereGeometry(0.035, 8, 8),
+              new THREE.SphereGeometry(0.016, 8, 8),
               new THREE.MeshBasicMaterial({ visible: false })
             );
             hitBox.userData = { acupointIdx: idx };
@@ -1617,9 +1617,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           badgeSprite.scale.set(0.12, 0.035, 1.0);
           pinGroup.add(badgeSprite);
 
-          // Clickable HitBox for Raycaster
+          // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
           const hitBox = new THREE.Mesh(
-            new THREE.SphereGeometry(0.035, 8, 8),
+            new THREE.SphereGeometry(0.016, 8, 8),
             new THREE.MeshBasicMaterial({ visible: false })
           );
           hitBox.userData = { acupointIdx: idx };
@@ -1664,51 +1664,100 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
+    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks
+    let pointerDownPos = { x: 0, y: 0, hasDown: false };
+    const handlePointerDown = (e) => {
+      pointerDownPos = { x: e.clientX, y: e.clientY, hasDown: true };
+    };
+
     const handleCanvasClick = (e) => {
+      // If user moved/dragged more than 8px while holding down, it was an orbit/turn drag!
+      // In that case, ABORT immediately so turning/orbiting NEVER triggers a body part zoom!
+      if (pointerDownPos.hasDown) {
+        const dx = e.clientX - pointerDownPos.x;
+        const dy = e.clientY - pointerDownPos.y;
+        const dragDist = Math.hypot(dx, dy);
+        pointerDownPos.hasDown = false;
+        if (dragDist > 8) {
+          return; // User was freely turning/orbiting the 3D model
+        }
+      }
+
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(interactiveAcupointMeshes, true);
 
+      // 1. Highest Priority: Direct click on an Acupoint Pin Dot or Callout Badge
+      // Only consider hitboxes whose parent pin is visibly scaled up (> 0.2)
+      const visibleHitboxes = interactiveAcupointMeshes.filter(m => {
+        let parent = m.parent;
+        while (parent) {
+          if (parent.scale && parent.scale.x < 0.2) return false;
+          parent = parent.parent;
+        }
+        return true;
+      });
+      const intersects = raycaster.intersectObjects(visibleHitboxes, true);
       if (intersects.length > 0) {
         const hitIdx = intersects[0].object.userData.acupointIdx;
+        console.log('[AcuClick] Hit pin hitbox idx:', hitIdx, CLINICAL_ACUPOINTS[hitIdx]?.code);
         if (typeof hitIdx === 'number') {
           const hitPt = CLINICAL_ACUPOINTS[hitIdx];
           if (hitPt) {
             triggerRegionPresentation(hitPt.region, hitIdx);
+            return;
           }
         }
-      } else if (bodyModelMeshRef.current) {
-        // Direct click on 3D Human Body Anatomy: Arms, Legs, Neck, Back, Crown
-        const bodyHits = raycaster.intersectObject(bodyModelMeshRef.current, true);
+      }
+
+      // 2. Second Priority: Direct click on the 3D Human Body Anatomy
+      // ONLY test against the skinned mesh itself (recursive = false), NEVER against child lines/sprites!
+      if (bodyModelMeshRef.current) {
+        const bodyHits = raycaster.intersectObject(bodyModelMeshRef.current, false);
         if (bodyHits.length > 0) {
-          const hit = bodyHits[0].point;
-          if (Math.abs(hit.x) > 0.15 && hit.y > -0.10 && hit.y < 0.65) {
-            // Clicked Arm
-            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'hand');
-            triggerRegionPresentation('hand', armPtIdx !== -1 ? armPtIdx : 0);
-          } else if (hit.y < 0.0 && Math.abs(hit.x) < 0.20) {
-            // Clicked Leg
-            const legPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'leg');
-            triggerRegionPresentation('leg', legPtIdx !== -1 ? legPtIdx : 0);
-          } else if (hit.y > 0.74) {
-            // Clicked Head / Crown
+          const hitObj = bodyHits[0].object;
+          const worldPt = bodyHits[0].point;
+          const localHit = bodyModelMeshRef.current.worldToLocal(worldPt.clone());
+          const ly = localHit.y;
+          const lz = localHit.z;
+          console.log('[AcuClick] HitObj:', hitObj.name || hitObj.type, 'WorldPt:', { x: Number(worldPt.x.toFixed(3)), y: Number(worldPt.y.toFixed(3)), z: Number(worldPt.z.toFixed(3)) }, 'LocalHit:', { ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
+
+          // 1. Head / Cranial Crown (local Y > 0.44)
+          if (ly > 0.44) {
+            console.log('[AcuClick] -> Region: crown');
             const crownPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'crown');
             triggerRegionPresentation('crown', crownPtIdx !== -1 ? crownPtIdx : 0);
-          } else if (hit.y >= 0.56 && hit.y <= 0.74) {
-            // Clicked Neck / Occiput
+          }
+          // 2. Neck / Occipital Cervical Region (local Y between 0.28 and 0.44, medial |Z| < 0.08)
+          else if (ly >= 0.28 && Math.abs(lz) < 0.08) {
+            console.log('[AcuClick] -> Region: neck');
             const neckPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'neck');
             triggerRegionPresentation('neck', neckPtIdx !== -1 ? neckPtIdx : 0);
-          } else if (hit.y < 0.56 && hit.y >= 0.0) {
-            // Clicked Back / Spine
+          }
+          // 3. Lower Limbs / Legs (local Y < -0.06, medial |Z| <= 0.085)
+          else if (ly < -0.06 && Math.abs(lz) <= 0.085) {
+            console.log('[AcuClick] -> Region: leg');
+            const legPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'leg');
+            triggerRegionPresentation('leg', legPtIdx !== -1 ? legPtIdx : 0);
+          }
+          // 4. Arms / Forearms / Hands (lateral |Z| > 0.080 and below shoulder ly < 0.32)
+          else if (Math.abs(lz) > 0.080 && ly < 0.32) {
+            console.log('[AcuClick] -> Region: hand');
+            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'hand');
+            triggerRegionPresentation('hand', armPtIdx !== -1 ? armPtIdx : 0);
+          }
+          // 5. Torso / Back / Spine (local Y between -0.06 and 0.28, |Z| <= 0.080)
+          else {
+            console.log('[AcuClick] -> Region: back');
             const backPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'back');
             triggerRegionPresentation('back', backPtIdx !== -1 ? backPtIdx : 0);
           }
         }
       }
     };
+    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
     renderer.domElement.addEventListener('click', handleCanvasClick);
 
     // =========================================================================
@@ -2287,6 +2336,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
       renderer.domElement.removeEventListener('click', handleCanvasClick);
       cancelAnimationFrame(animId);
       renderer.dispose();
