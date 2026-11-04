@@ -30,7 +30,9 @@ export default function SkinLayersPip({
   onReset,
   onClose,
   isMuted = false,
-  playAcuSound
+  playAcuSound,
+  embedded = false,
+  className = ''
 }) {
   const containerRef = useRef(null);
   const rendererRef = useRef(null);
@@ -223,13 +225,12 @@ export default function SkinLayersPip({
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
 
-    const cupGlassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x93c5fd,
+    const cupGlassMat = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
       transparent: true,
-      opacity: 0.45,
-      roughness: 0.08,
-      transmission: 0.92,
-      thickness: 0.05
+      opacity: 0.70,
+      roughness: 0.15,
+      metalness: 0.1
     });
     const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
     cupDome.rotation.x = Math.PI;
@@ -254,12 +255,24 @@ export default function SkinLayersPip({
     cupGroup.add(suctionBulge);
     suctionBulgeRef.current = suctionBulge;
 
+    // Brass vacuum release valve on top of cup
+    const cupValve = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.018, 0.022, 0.045, 16),
+      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
+    );
+    cupValve.position.y = 0.20;
+    cupGroup.add(cupValve);
+
     // C. 3D Moxa Herbal Warmer
     const moxaGroup = new THREE.Group();
     moxaGroup.position.set(0.0, 0.72, 0.0);
-    moxaGroup.visible = false;
+    moxaGroup.visible = (activeTool === 'moxa');
     scene.add(moxaGroup);
     moxaGroupRef.current = moxaGroup;
+
+    // Ensure initial tool visibilities match activeTool prop on mount
+    if (needleGroupRef.current) needleGroupRef.current.visible = (activeTool === 'needle');
+    if (cupGroupRef.current) cupGroupRef.current.visible = (activeTool === 'cup');
 
     const moxaBody = new THREE.Mesh(
       new THREE.CylinderGeometry(0.035, 0.035, 0.28, 18),
@@ -448,10 +461,14 @@ export default function SkinLayersPip({
     }
   }, [isSnapping]);
 
+  const asideClass = embedded
+    ? `w-full bg-white/95 border-b border-neutral-200/80 overflow-hidden flex flex-col ${className}`
+    : `absolute top-14 right-3 z-30 pointer-events-auto w-[330px] md:w-[360px] bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${className}`;
+
   return (
     <aside 
       aria-label="3D Anatomical Tissue Strata Viewport"
-      className="absolute top-14 right-3 z-30 pointer-events-auto w-[330px] md:w-[360px] bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300"
+      className={asideClass}
     >
       {/* Header Bar */}
       <div className="flex items-center justify-between px-3.5 py-2.5 bg-neutral-50/90 border-b border-neutral-200/80">

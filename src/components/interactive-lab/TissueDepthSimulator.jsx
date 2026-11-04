@@ -23,6 +23,7 @@ import {
   Hand,
   Boxes,
   RefreshCw,
+  Flame,
   X
 } from 'lucide-react';
 
@@ -653,13 +654,12 @@ function buildPhysical3DTray(scene, trayToolHitboxes, trayHaloMeshes, trayLabelS
   cupSlot.add(cupHalo);
   trayHaloMeshes.cup = cupHalo;
 
-  const cupGlassMat = new THREE.MeshPhysicalMaterial({
-    color: 0xe0f2fe,
+  const cupGlassMat = new THREE.MeshStandardMaterial({
+    color: 0x38bdf8,
     transparent: true,
-    opacity: 0.55,
-    roughness: 0.08,
-    transmission: 0.92,
-    ior: 1.5
+    opacity: 0.70,
+    roughness: 0.15,
+    metalness: 0.15
   });
   const cupDome = new THREE.Mesh(new THREE.SphereGeometry(0.028, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2), cupGlassMat);
   cupDome.rotation.x = Math.PI;
@@ -819,13 +819,20 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
 
   const bodyCupDome = new THREE.Mesh(
     new THREE.SphereGeometry(0.018, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshPhysicalMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.55, roughness: 0.08, transmission: 0.92 })
+    new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.70, roughness: 0.12, metalness: 0.15 })
   );
   bodyCupDome.rotation.x = Math.PI;
   bodyCupDome.position.y = 0.018;
   bodyCupDome.userData = { isNeedleStabHandle: true, toolId: 'cup' };
   cupGroup.add(bodyCupDome);
   needleHandleHitboxes.push(bodyCupDome);
+
+  const bodyCupValve = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.0025, 0.003, 0.007, 14),
+    new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
+  );
+  bodyCupValve.position.y = 0.021;
+  cupGroup.add(bodyCupValve);
 
   const fleshBulge = new THREE.Mesh(
     new THREE.SphereGeometry(0.013, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2),
@@ -956,15 +963,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   }, []);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!
+  const filteredAcupoints = activeRegion === 'full' 
+    ? CLINICAL_ACUPOINTS 
+    : CLINICAL_ACUPOINTS.filter(p => p.region === activeRegion); // Start centered on Whole Body!
   const activeRegionRef = useRef('full');
   useEffect(() => {
     activeRegionRef.current = activeRegion;
   }, [activeRegion]);
 
   const activeToolRef = useRef('needle');
-  useEffect(() => {
-    activeToolRef.current = activeTool;
-  }, [activeTool]);
+  activeToolRef.current = activeTool;
+  const triggerAcupointCloseUpRef = useRef(null);
+  const handleSelectToolRef = useRef(null);
+  const navigateCameraToRegionRef = useRef(null);
 
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
   const [bodyFacing, setBodyFacing] = useState('back'); // 'front' or 'back'
@@ -1378,32 +1389,32 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     let targetFacing = 'front';
     if (regionKey === 'face' || regionKey === 'crown') {
-      targetCamPosRef.current.set(0.0, 0.95, 0.52);
-      targetLookAtRef.current.set(0.0, 0.82, 0.05);
+      targetCamPosRef.current.set(0.0, 1.05, 0.44);
+      targetLookAtRef.current.set(0.0, 0.98, 0.04);
       targetFacing = 'front';
     } else if (regionKey === 'neck') {
-      targetCamPosRef.current.set(0.0, 0.85, 0.58);
-      targetLookAtRef.current.set(0.0, 0.65, 0.0);
+      targetCamPosRef.current.set(0.0, 0.92, -0.42);
+      targetLookAtRef.current.set(0.0, 0.85, -0.02);
       targetFacing = 'back';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      targetCamPosRef.current.set(0.25, 0.28, 0.50);
-      targetLookAtRef.current.set(0.20, 0.12, 0.04);
+      targetCamPosRef.current.set(0.32, 0.38, 0.42);
+      targetLookAtRef.current.set(0.19, 0.34, 0.03);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
-      targetCamPosRef.current.set(-0.25, 0.28, 0.50);
-      targetLookAtRef.current.set(-0.20, 0.12, 0.04);
+      targetCamPosRef.current.set(-0.30, 0.38, 0.46);
+      targetLookAtRef.current.set(-0.16, 0.34, 0.12);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
-      targetCamPosRef.current.set(0.0, 0.35, 0.65);
-      targetLookAtRef.current.set(0.0, 0.25, 0.0);
+      targetCamPosRef.current.set(0.0, 0.58, -0.58);
+      targetLookAtRef.current.set(0.0, 0.50, -0.05);
       targetFacing = 'back';
     } else if (regionKey === 'leg_left' || regionKey === 'leg') {
-      targetCamPosRef.current.set(0.12, -0.40, 0.68);
-      targetLookAtRef.current.set(0.10, -0.55, 0.0);
+      targetCamPosRef.current.set(0.14, -0.08, 0.55);
+      targetLookAtRef.current.set(0.09, -0.14, 0.0);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
-      targetCamPosRef.current.set(-0.12, -0.40, 0.68);
-      targetLookAtRef.current.set(-0.10, -0.55, 0.0);
+      targetCamPosRef.current.set(-0.14, -0.08, 0.55);
+      targetLookAtRef.current.set(-0.09, -0.14, 0.0);
       targetFacing = 'front';
     }
 
@@ -1444,6 +1455,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const ptIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === regionKey);
     triggerRegionPresentation(regionKey, ptIdx !== -1 ? ptIdx : undefined);
   }, [triggerRegionPresentation]);
+  navigateCameraToRegionRef.current = navigateCameraToRegion;
 
   // Dedicated Point Close-Up Presentation (As requested: "proper close up", physical tray on Mayo stand, skin blob on top right)
   const triggerAcupointCloseUp = useCallback((idx) => {
@@ -1456,14 +1468,22 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setShowStrataPip(true);
     isCameraAnimatingRef.current = true;
 
-    const closeUp = ACUPOINT_CLOSEUPS[pt.id];
-    if (closeUp) {
-      targetCamPosRef.current.set(...closeUp.cam);
-      targetLookAtRef.current.set(...closeUp.lookAt);
-      if (bodyModelMeshRef.current) {
-        bodyModelMeshRef.current.rotation.y = closeUp.facing === 'front' ? 0 : Math.PI;
-        setBodyFacing(closeUp.facing);
-      }
+    const mScale = 1.55 / 1.90;
+    const worldPt = new THREE.Vector3(
+      pt.modelPos[0] * mScale,
+      0.32 + pt.modelPos[1] * mScale,
+      pt.modelPos[2] * mScale
+    );
+
+    targetLookAtRef.current.copy(worldPt);
+    const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
+    targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.32);
+    targetCamPosRef.current.y += 0.04;
+
+    const targetFacing = pt.facing || 'front';
+    if (bodyModelMeshRef.current) {
+      bodyModelMeshRef.current.rotation.y = targetFacing === 'front' ? 0 : Math.PI;
+      setBodyFacing(targetFacing);
     }
 
     if (cameraRef.current && controlsRef.current) {
@@ -1481,8 +1501,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       playAcuSound('popup', isMuted);
     }
 
-    updateBodyToolPlacement(idx, activeTool);
-  }, [isMuted, activeTool, updateBodyToolPlacement]);
+    const toolToKeep = activeToolRef.current || 'needle';
+    updateBodyToolPlacement(idx, toolToKeep);
+  }, [isMuted, updateBodyToolPlacement]);
+  triggerAcupointCloseUpRef.current = triggerAcupointCloseUp;
 
   // Select Acupoint from Catalog and fly into close-up with 3D Strata & Tray
   const handleSelectAcupoint = useCallback((idx) => {
@@ -1520,6 +1542,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     playAcuSound('pickup', isMuted);
     updateBodyToolPlacement(selectedAcupointIdx, toolId);
   }, [handleReset, isMuted, selectedAcupointIdx, updateBodyToolPlacement]);
+  handleSelectToolRef.current = handleSelectTool;
 
   // Click & Hold to Plunge Needle into Acupoint
   const startHoldPlunge = useCallback(() => {
@@ -2660,205 +2683,195 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   return (
     <div 
       data-testid="tissue-depth-simulator"
-      className="relative w-full h-full overflow-hidden bg-[#f8fafc] select-none font-sans"
+      className="relative w-full h-full flex flex-col lg:flex-row overflow-hidden bg-[#f8fafc] font-sans select-none"
     >
-      {/* 3D WebGL Canvas */}
-      <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
-
       {/* ===================================================================== */}
-      {/* HUD OVERLAY INTERFACE (LIGHT LUXURY CLINICAL THEME)                    */}
+      {/* 1. LEFT COLUMN (65% width): MAIN 3D ANATOMY VIEWPORT                  */}
       {/* ===================================================================== */}
+      <div className="relative flex-1 h-[55vh] lg:h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
+        {/* 3D WebGL Canvas */}
+        <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-      {/* Top Header Bar: Clean & Minimalist */}
-      <div className="absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-none gap-2">
-        <div className="flex items-center gap-2.5 pointer-events-auto">
-          <div className="flex items-center gap-2 p-2 px-3.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm font-display">
-            <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
-            <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigateCameraToRegion('full')}
-            className="px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
-            title="Reset Camera to Whole Body"
-          >
-            <User className="w-3.5 h-3.5 text-[#e02868]" />
-            <span>Reset View</span>
-          </button>
-        </div>
-
-        {/* Top Right Action: Toggles & Flip Front/Back */}
-        <div className="flex items-center gap-2 pointer-events-auto">
-          {/* Strata Viewport Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowStrataPip(!showStrataPip)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm ${
-              showStrataPip ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white'
-            }`}
-            title="Toggle 3D Skin Layers Microscopy"
-          >
-            <Layers className="w-3.5 h-3.5 text-[#e02868]" />
-            <span className="hidden sm:inline">3D Strata</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={toggleBodyFacing}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
-            title="Turn Body 180°"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
-            <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Left Panel: Acupoints & Anatomical Regions (w-64) */}
-      <div className="absolute top-14 left-3 z-30 flex flex-col space-y-2 pointer-events-auto w-64 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {/* Acupoints Grid with Region Selector Tabs */}
-        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
-          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
-              <User className="w-3 h-3 text-[#e02868]" />
-              <span>3D Clinical Acupoints (39)</span>
-            </span>
-            <span className="text-[9px] text-[#e02868] font-mono font-bold">
-              All Limbs
-            </span>
+        {/* Top Header Bar: Clean & Minimalist inside Viewport */}
+        <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm font-display">
+              <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
+              <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigateCameraToRegion('full')}
+              className="px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
+              title="Reset Camera to Whole Body"
+            >
+              <User className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>Reset View</span>
+            </button>
           </div>
 
-          {/* Anatomical Region Filter Tabs */}
-          <div className="flex flex-wrap gap-1 pb-1 border-b border-neutral-100">
+          {/* Quick Region Pills Bar */}
+          <div className="hidden sm:flex items-center gap-1 p-1 rounded-xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm pointer-events-auto overflow-x-auto max-w-[50vw]">
             {[
-              { id: 'all', label: 'All (39)' },
+              { id: 'full', label: 'All Limbs' },
               { id: 'face', label: 'Face' },
               { id: 'neck', label: 'Neck' },
-              { id: 'arm_left', label: 'L-Arm' },
               { id: 'arm_right', label: 'R-Arm' },
+              { id: 'arm_left', label: 'L-Arm' },
               { id: 'back', label: 'Back' },
-              { id: 'leg_left', label: 'L-Leg' },
-              { id: 'leg_right', label: 'R-Leg' }
-            ].map(tab => {
-              const isActive = filterRegion === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => {
-                    setFilterRegion(tab.id);
-                    if (tab.id === 'all') {
-                      triggerRegionPresentation('full');
-                    } else {
-                      navigateCameraToRegion(tab.id);
-                    }
-                  }}
-                  className={`px-2 py-0.5 rounded-lg text-[9px] font-bold transition ${
-                    isActive
-                      ? 'bg-neutral-900 text-white shadow-sm'
-                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+              { id: 'leg_right', label: 'R-Leg' },
+              { id: 'leg_left', label: 'L-Leg' }
+            ].map(r => (
+              <button
+                key={r.id}
+                type="button"
+                onClick={() => navigateCameraToRegion(r.id)}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
+                  activeRegion === r.id
+                    ? 'bg-[#e02868] text-white shadow-xs'
+                    : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                }`}
+              >
+                {r.label}
+              </button>
+            ))}
           </div>
 
-          {/* Filtered Acupoints List */}
-          <div className="grid grid-cols-2 gap-1.5 max-h-44 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {CLINICAL_ACUPOINTS.map((pt, idx) => {
-              if (filterRegion !== 'all' && pt.region !== filterRegion) return null;
-              const isSelected = selectedAcupointIdx === idx;
-              return (
-                <button
-                  key={pt.id}
-                  type="button"
-                  onClick={() => handleSelectAcupoint(idx)}
-                  className={`p-2 rounded-xl text-left border transition ${
-                    isSelected
-                      ? 'bg-[#e02868] text-white border-[#e02868] font-bold shadow-md'
-                      : 'bg-neutral-50/80 text-neutral-700 border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold">{pt.code}</span>
-                    <span className={`text-[8px] font-mono ${isSelected ? 'text-white/80' : 'text-[#e02868] font-semibold'}`}>{pt.depthTarget}mm</span>
-                  </div>
-                  <div className="text-[9px] opacity-80 truncate">{pt.translation}</div>
-                  <div className={`text-[8px] truncate mt-0.5 font-medium ${isSelected ? 'text-white/90' : 'text-neutral-500'}`} title={pt.painName}>
-                    {pt.painName}
-                  </div>
-                </button>
-              );
-            })}
+          {/* Viewport Toggles (3D Strata & Facing Flip) */}
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <button
+              type="button"
+              onClick={() => setShowStrataPip(!showStrataPip)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm ${
+                showStrataPip ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white'
+              }`}
+              title="Toggle 3D Skin Layers Microscopy"
+            >
+              <Layers className="w-3.5 h-3.5 text-[#e02868]" />
+              <span className="hidden sm:inline">3D Strata</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleBodyFacing}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
+              title="Turn Body 180°"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
+            </button>
           </div>
         </div>
 
-        {/* Pathology Selector / Clinical Modalities */}
-        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
-          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
-              <Layers className="w-3 h-3 text-amber-500" />
-              <span>Modalities & Modifiers</span>
-            </span>
-            <span className="text-[9px] text-amber-600 font-mono font-bold">
-              3D Physics
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            {CLINICAL_PROBLEMS.map((prob, idx) => {
-              const isSelected = selectedProblemIdx === idx;
-              return (
-                <button
-                  key={prob.id}
-                  type="button"
-                  onClick={() => {
-                    handleSelectTool(prob.toolId);
-                  }}
-                  className={`flex items-center justify-between p-2 rounded-xl text-left border transition ${
-                    isSelected
-                      ? 'bg-[#e02868] text-white border-[#e02868] font-bold shadow-md'
-                      : 'bg-neutral-50/80 text-neutral-700 border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-100'
-                  }`}
-                >
-                  <div>
-                    <div className="text-xs font-bold">{prob.name}</div>
-                    <div className="text-[9px] opacity-80">{prob.layer.split(' ')[0]}</div>
-                  </div>
-                  <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                    isSelected ? 'bg-white/20 text-white' : 'bg-neutral-200/60 text-neutral-700'
-                  }`}>
-                    {prob.depthTarget}{prob.depthUnit.split(' ')[0]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        {/* Bottom Floating Physical Tool Dock */}
+        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-1.5 p-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-lg">
+          <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500 pl-2 pr-1 flex items-center gap-1">
+            <Sparkles className="w-3 h-3 text-[#e02868]" />
+            <span className="hidden sm:inline">Tool:</span>
+          </span>
+          {[
+            { id: 'needle', name: '01 Needle', icon: Zap, sub: '0.18mm Guide-Tube' },
+            { id: 'cup', name: '02 Cup', icon: Flame, sub: 'Vacuum Fire Cup' },
+            { id: 'moxa', name: '03 Moxa', icon: Flame, sub: 'Herbal Warmth' }
+          ].map(t => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => handleSelectTool(t.id)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                activeTool === t.id
+                  ? 'bg-[#e02868] text-white shadow-sm'
+                  : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
+              }`}
+              title={t.sub}
+            >
+              <t.icon className="w-3.5 h-3.5" />
+              <span>{t.name}</span>
+            </button>
+          ))}
         </div>
+
+        {/* Thanos Disintegration Ash Floating Toast */}
+        {isDisintegrated && (
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
+              <div className="text-xs">
+                <span className="font-bold text-emerald-400">{activeAcupoint.code} ({activeAcupoint.translation}):</span>{' '}
+                <span className="text-neutral-200">{activeAcupoint.painName}</span>{' '}
+                <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Bottom Clinical Anatomy Intelligence Card (Docked on Left) */}
-      <div className="absolute bottom-3 left-3 z-20 pointer-events-auto max-w-xs hidden lg:block">
-        <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-xl space-y-2 text-[#09090b]">
-          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
+      {/* ===================================================================== */}
+      {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR (380px)        */}
+      {/* ===================================================================== */}
+      <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 h-[45vh] lg:h-full border-t lg:border-t-0 lg:border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
+        {/* 1. 3D Tissue Strata Microscopy PiP (Embedded seamlessly at top of sidebar) */}
+        {showStrataPip && (
+          <div className="p-3 border-b border-neutral-200/80 bg-neutral-50/50">
+            <SkinLayersPip
+              embedded={true}
+              activeTool={activeTool}
+              depth={interactiveDepth}
+              maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
+              targetDepth={activeAcupoint.depthTarget || 12.0}
+              pointCode={activeAcupoint.code}
+              pointName={activeAcupoint.translation}
+              painName={activeAcupoint.painName}
+              isDisintegrated={isDisintegrated}
+              isSnapping={isSnapping}
+              onDepthChange={handleInteractiveChange}
+              onReset={handleReset}
+              onClose={() => setShowStrataPip(false)}
+              isMuted={isMuted}
+              playAcuSound={playAcuSound}
+            />
+          </div>
+        )}
+
+        {/* 2. Target Acupoint Clinical Intelligence */}
+        <div className="p-4 border-b border-neutral-200/80 space-y-2.5">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
-              <h4 className="text-xs font-bold text-[#09090b]">
-                {activeAcupoint.translation} — {activeAcupoint.fullName}
-              </h4>
+              <h3 className="text-sm font-bold text-[#09090b]">
+                {activeAcupoint.code} • {activeAcupoint.translation}
+              </h3>
             </div>
-            <span className="text-[10px] font-mono text-[#e02868] font-bold">
+            <span className="text-[10px] font-mono font-bold text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
               Target: {activeAcupoint.depthTarget}mm
             </span>
+          </div>
+
+          <div className="text-xs text-neutral-600 font-medium">
+            <span className="font-semibold text-neutral-800">{activeAcupoint.fullName}</span> ({activeAcupoint.meridian})
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs">
+            <div className="font-bold text-amber-800 flex items-center gap-1.5 mb-0.5">
+              <Zap className="w-3.5 h-3.5 text-amber-600" />
+              <span>Target Pathology & Knot</span>
+            </div>
+            <div className="text-neutral-700 font-medium">{activeAcupoint.painName}</div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
               <div className="text-[10px] font-bold text-amber-600 flex items-center gap-1">
                 <Zap className="w-3 h-3" />
-                <span>Nerve:</span>
+                <span>Nerve Innervation:</span>
               </div>
               <div className="text-neutral-700 text-[10px] font-medium leading-tight truncate" title={activeAcupoint.nerves}>
                 {activeAcupoint.nerves}
@@ -2868,7 +2881,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
               <div className="text-[10px] font-bold text-red-600 flex items-center gap-1">
                 <Activity className="w-3 h-3" />
-                <span>Vessel:</span>
+                <span>Vascular Supply:</span>
               </div>
               <div className="text-neutral-700 text-[10px] font-medium leading-tight truncate" title={activeAcupoint.vessels}>
                 {activeAcupoint.vessels}
@@ -2876,53 +2889,55 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </div>
           </div>
 
-          <div className="text-[10px] text-neutral-600 flex items-center gap-1.5 pt-1.5 border-t border-neutral-200/80">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0" />
-            <span className="truncate"><strong>Relief:</strong> {activeAcupoint.relief}</span>
+          <div className="text-[11px] text-neutral-600 flex items-start gap-1.5 pt-2 border-t border-neutral-200/80">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0 mt-0.5" />
+            <span><strong>Clinical Relief:</strong> {activeAcupoint.relief}</span>
+          </div>
+        </div>
+
+        {/* 3. Acupoints Directory for Active Region */}
+        <div className="p-4 flex-1 overflow-y-auto space-y-2 [scrollbar-width:thin]">
+          <div className="flex items-center justify-between pb-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
+              {activeRegion === 'full' ? 'All Acupoints (39)' : `${activeRegion.toUpperCase()} Acupoints`}
+            </span>
+            <span className="text-[10px] font-bold text-[#e02868]">
+              {filteredAcupoints.length} Points
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 gap-1.5">
+            {filteredAcupoints.map((pt) => {
+              const isSelected = pt.code === activeAcupoint.code;
+              const originalIdx = CLINICAL_ACUPOINTS.findIndex(p => p.id === pt.id);
+              return (
+                <button
+                  key={pt.id}
+                  type="button"
+                  onClick={() => triggerAcupointCloseUp(originalIdx)}
+                  className={`flex items-center justify-between p-2.5 rounded-xl border text-left transition ${
+                    isSelected
+                      ? 'bg-[#e02868] text-white border-[#e02868] shadow-sm font-bold'
+                      : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200/80'
+                  }`}
+                >
+                  <div>
+                    <div className="text-xs font-bold">{pt.code} • {pt.translation}</div>
+                    <div className={`text-[10px] truncate max-w-[200px] ${isSelected ? 'text-white/80' : 'text-neutral-500'}`}>
+                      {pt.painName}
+                    </div>
+                  </div>
+                  <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-600'
+                  }`}>
+                    {pt.depthTarget}mm
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
-
-      {/* Top-Right: 3D Tissue Strata Microscopy PiP (Meshy AI Skin Layers Model) */}
-      {showStrataPip && (
-        <SkinLayersPip
-          activeTool={activeTool}
-          depth={interactiveDepth}
-          maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
-          targetDepth={activeAcupoint.depthTarget || 12.0}
-          pointCode={activeAcupoint.code}
-          pointName={activeAcupoint.translation}
-          isDisintegrated={isDisintegrated}
-          isSnapping={isSnapping}
-          onDepthChange={handleInteractiveChange}
-          onReset={handleReset}
-          onClose={() => setShowStrataPip(false)}
-          isMuted={isMuted}
-          playAcuSound={playAcuSound}
-        />
-      )}
-
-      {/* Sleek Floating Toast (No generic modal popup card - Thanos snap disintegrated pain badge directly on body & strata) */}
-      {isDisintegrated && (
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
-          <div className="flex items-center gap-2.5">
-            <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
-            <div className="text-xs">
-              <span className="font-bold text-emerald-400">{activeAcupoint.code} ({activeAcupoint.translation}):</span>{' '}
-              <span className="text-neutral-200">{activeAcupoint.painName}</span>{' '}
-              <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span>Reset</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 }
