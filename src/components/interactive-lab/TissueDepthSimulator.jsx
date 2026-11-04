@@ -645,6 +645,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
+  const isCameraAnimatingRef = useRef(false);
   const targetCamPosRef = useRef(new THREE.Vector3(0.0, 0.34, 4.2));
   const targetLookAtRef = useRef(new THREE.Vector3(0.0, 0.34, 0.0));
 
@@ -849,6 +850,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setActiveRegion('hand');
     targetLimbAnglesRef.current.arm = 1.0;
     targetLimbAnglesRef.current.leg = 0.0;
+    isCameraAnimatingRef.current = true;
 
     // Precise camera framing: tightly focused directly on the presented left forearm and hand, shifted into the open central space clear of left HUD cards
     targetCamPosRef.current.set(-0.28, 0.54, 1.15);
@@ -895,6 +897,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
 
     setActiveRegion(regionKey);
+    isCameraAnimatingRef.current = true;
 
     // Restore visibility of standard body pins
     if (limbPinGroupsRef.current) {
@@ -1116,6 +1119,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     controls.minDistance = 1.0;
     controls.target.set(0.0, 0.34, 0.0);
     controlsRef.current = controls;
+
+    // Allow user to freely orbit/turn the 3D model with mouse drag without camera fighting or auto-resetting
+    controls.addEventListener('start', () => {
+      isCameraAnimatingRef.current = false;
+    });
 
     // Clean Studio Lighting for Light Theme
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
@@ -2149,9 +2157,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
       }
 
-      // Smooth Camera & Controls Interpolation towards Target Framing
-      camera.position.lerp(targetCamPosRef.current, 0.07);
-      controls.target.lerp(targetLookAtRef.current, 0.07);
+      // Smooth Camera & Controls Interpolation towards Target Framing (Only during active tweens!)
+      if (isCameraAnimatingRef.current) {
+        camera.position.lerp(targetCamPosRef.current, 0.07);
+        controls.target.lerp(targetLookAtRef.current, 0.07);
+        if (
+          camera.position.distanceTo(targetCamPosRef.current) < 0.005 &&
+          controls.target.distanceTo(targetLookAtRef.current) < 0.005
+        ) {
+          camera.position.copy(targetCamPosRef.current);
+          controls.target.copy(targetLookAtRef.current);
+          isCameraAnimatingRef.current = false;
+        }
+      }
       controls.update();
       renderer.render(scene, camera);
     };
