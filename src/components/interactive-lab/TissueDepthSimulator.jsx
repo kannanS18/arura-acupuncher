@@ -44,8 +44,8 @@ export const CLINICAL_ACUPOINTS = [
     depthCun: '1.0–1.5 cun',
     isArmPoint: true,
     orderIndex: 0,
-    armLocalPos: [0.015, -0.015, 0.02],
-    badgeOffset: [0, 0.028, 0.075],
+    armLocalPos: [0.020, -0.010, 0.020],
+    badgeOffset: [0.035, 0.035, 0.045],
     bodyPosition: [-0.24, 0.22, 0.05],
     nerves: 'Radial Nerve & Post. Cutaneous Nerve',
     vessels: 'Radial Recurrent Artery',
@@ -69,8 +69,8 @@ export const CLINICAL_ACUPOINTS = [
     depthCun: '0.5–0.8 cun',
     isArmPoint: true,
     orderIndex: 1,
-    armLocalPos: [0.020, -0.100, -0.005],
-    badgeOffset: [0, 0.012, 0.085],
+    armLocalPos: [0.045, -0.107, 0.028],
+    badgeOffset: [0.045, 0.015, 0.055],
     bodyPosition: [-0.27, 0.16, 0.04],
     nerves: 'Lateral Antebrachial Cutaneous Nerve',
     vessels: 'Radial Artery & Cephalic Vein',
@@ -94,8 +94,8 @@ export const CLINICAL_ACUPOINTS = [
     depthCun: '0.5–0.8 cun',
     isArmPoint: true,
     orderIndex: 2,
-    armLocalPos: [0.005, -0.130, 0.025],
-    badgeOffset: [0, -0.008, 0.075],
+    armLocalPos: [0.062, -0.099, 0.002],
+    badgeOffset: [0.065, 0.025, 0.015],
     bodyPosition: [-0.28, 0.14, 0.04],
     nerves: 'Median Nerve Trunk',
     vessels: 'Median Antebrachial Vein & Radial Artery',
@@ -119,8 +119,8 @@ export const CLINICAL_ACUPOINTS = [
     depthCun: '0.3–0.5 cun',
     isArmPoint: true,
     orderIndex: 3,
-    armLocalPos: [-0.010, -0.165, 0.020],
-    badgeOffset: [0, -0.028, 0.085],
+    armLocalPos: [0.059, -0.124, -0.054],
+    badgeOffset: [0.055, -0.020, -0.055],
     bodyPosition: [-0.29, 0.10, 0.04],
     nerves: 'Ulnar Nerve & Medial Antebrachial Cutaneous Nerve',
     vessels: 'Ulnar Artery',
@@ -144,8 +144,8 @@ export const CLINICAL_ACUPOINTS = [
     depthCun: '0.5–1.0 cun',
     isArmPoint: true,
     orderIndex: 4,
-    armLocalPos: [0.022, -0.205, -0.005],
-    badgeOffset: [0, -0.065, 0.075],
+    armLocalPos: [0.014, -0.144, 0.022],
+    badgeOffset: [0.025, -0.035, 0.055],
     bodyPosition: [-0.34, 0.04, 0.04],
     nerves: 'Superficial Radial Nerve',
     vessels: 'First Dorsal Metacarpal Artery',
@@ -170,6 +170,8 @@ export const CLINICAL_ACUPOINTS = [
     meridian: 'Gallbladder Meridian',
     depthTarget: 12.0,
     depthCun: '0.8–1.2 cun',
+    meshPos: [-0.038, 0.376, 0.023],
+    badgeOffset: [-0.045, 0.020, 0.035],
     bodyPosition: [-0.06, 0.68, -0.07],
     nerves: 'Greater Occipital Nerve (C2)',
     vessels: 'Occipital Artery & Venous Plexus',
@@ -192,6 +194,8 @@ export const CLINICAL_ACUPOINTS = [
     meridian: 'Governing Vessel (Du Mai)',
     depthTarget: 6.0,
     depthCun: '0.3–0.5 cun',
+    meshPos: [-0.001, 0.501, 0.000],
+    badgeOffset: [0.0, 0.050, 0.0],
     bodyPosition: [0.0, 0.83, 0.0],
     nerves: 'Supraorbital & Greater Occipital Anastomosis',
     vessels: 'Superficial Temporal Artery Network',
@@ -214,6 +218,8 @@ export const CLINICAL_ACUPOINTS = [
     meridian: 'Bladder Meridian',
     depthTarget: 10.0,
     depthCun: '0.5–0.8 cun',
+    meshPos: [-0.045, 0.370, 0.012],
+    badgeOffset: [-0.045, -0.015, 0.035],
     bodyPosition: [-0.035, 0.63, -0.075],
     nerves: 'Lesser Occipital Nerve (C2-C3)',
     vessels: 'Deep Cervical Artery',
@@ -233,8 +239,8 @@ export const CLINICAL_ACUPOINTS = [
     regionLabel: 'Anterior Leg',
     facing: 'front',
     orderIndex: 0,
-    legLocalPos: [0.030, -0.037, 0.024],
-    badgeOffset: [-0.04, 0.015, 0.06],
+    legLocalPos: [0.029, -0.048, 0.034],
+    badgeOffset: [0.040, 0.015, 0.050],
     meridian: 'Stomach Meridian',
     depthTarget: 15.0,
     depthCun: '1.0–1.5 cun',
@@ -257,8 +263,8 @@ export const CLINICAL_ACUPOINTS = [
     regionLabel: 'Inner Ankle',
     facing: 'front',
     orderIndex: 1,
-    legLocalPos: [0.007, -0.172, 0.005],
-    badgeOffset: [-0.04, 0.015, 0.06],
+    legLocalPos: [-0.005, -0.164, 0.006],
+    badgeOffset: [-0.035, 0.015, -0.045],
     meridian: 'Spleen Meridian',
     depthTarget: 14.0,
     depthCun: '1.0–1.5 cun',
@@ -284,6 +290,8 @@ export const CLINICAL_ACUPOINTS = [
     meridian: 'Bladder Meridian',
     depthTarget: 14.0,
     depthCun: '0.8–1.2 cun',
+    meshPos: [-0.051, 0.098, 0.018],
+    badgeOffset: [-0.045, 0.015, 0.035],
     bodyPosition: [-0.05, 0.14, -0.07],
     nerves: 'Lumbar Spinal Nerve Dorsal Ramus (L2)',
     vessels: 'Lumbar Arteries & Paraspinal Plexus',
@@ -1445,14 +1453,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             // Crisp 2D Pinpoint Dot flush on skin (Camera-facing sprite, depthTest: false so it never clips or sticks out)
             const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
             const dotSprite = new THREE.Sprite(dotMat);
-            dotSprite.scale.set(0.015, 0.015, 1.0);
+            dotSprite.scale.set(0.010, 0.010, 1.0);
             dotSprite.renderOrder = 999;
             pinGroup.add(dotSprite);
 
             // Active Selection Aura Ring
             const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
             const selRing = new THREE.Sprite(selRingMat);
-            selRing.scale.set(0.030, 0.030, 1.0);
+            selRing.scale.set(0.018, 0.018, 1.0);
             selRing.visible = (idx === selectedAcupointIdx);
             selRing.renderOrder = 998;
             pinGroup.add(selRing);
@@ -1474,13 +1482,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             );
             const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
             const badgeSprite = new THREE.Sprite(badgeMat);
-            badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.04);
-            badgeSprite.scale.set(0.12, 0.035, 1.0);
+            badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.03);
+            badgeSprite.scale.set(0.075, 0.022, 1.0);
             pinGroup.add(badgeSprite);
 
-            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
+            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.010)
             const hitBox = new THREE.Mesh(
-              new THREE.SphereGeometry(0.016, 8, 8),
+              new THREE.SphereGeometry(0.010, 8, 8),
               new THREE.MeshBasicMaterial({ visible: false })
             );
             hitBox.userData = { acupointIdx: idx };
@@ -1511,14 +1519,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             // Crisp 2D Pinpoint Dot flush on skin
             const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
             const dotSprite = new THREE.Sprite(dotMat);
-            dotSprite.scale.set(0.015, 0.015, 1.0);
+            dotSprite.scale.set(0.010, 0.010, 1.0);
             dotSprite.renderOrder = 999;
             pinGroup.add(dotSprite);
 
             // Active Selection Aura Ring
             const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
             const selRing = new THREE.Sprite(selRingMat);
-            selRing.scale.set(0.030, 0.030, 1.0);
+            selRing.scale.set(0.018, 0.018, 1.0);
             selRing.visible = (idx === selectedAcupointIdx);
             selRing.renderOrder = 998;
             pinGroup.add(selRing);
@@ -1540,13 +1548,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             );
             const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
             const badgeSprite = new THREE.Sprite(badgeMat);
-            badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.04);
-            badgeSprite.scale.set(0.12, 0.035, 1.0);
+            badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.03);
+            badgeSprite.scale.set(0.075, 0.022, 1.0);
             pinGroup.add(badgeSprite);
 
-            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
+            // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.010)
             const hitBox = new THREE.Mesh(
-              new THREE.SphereGeometry(0.016, 8, 8),
+              new THREE.SphereGeometry(0.010, 8, 8),
               new THREE.MeshBasicMaterial({ visible: false })
             );
             hitBox.userData = { acupointIdx: idx };
@@ -1559,16 +1567,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           }
         });
 
-        // 3. HEAD, NECK & BACK ACUPOINTS ATTACHED TO bodyGroup
+        // 3. HEAD, NECK & BACK ACUPOINTS DIRECTLY ATTACHED TO skinnedMesh!
         CLINICAL_ACUPOINTS.forEach((pt, idx) => {
           if (pt.isArmPoint || pt.region === 'leg') return; // Hand and Leg attached to respective bones!
 
           const pinGroup = new THREE.Group();
-          pinGroup.position.set(
-            pt.bodyPosition[0] * scaleFactor,
-            pt.bodyPosition[1] * scaleFactor + 0.34,
-            pt.bodyPosition[2] * scaleFactor
-          );
+          const mp = pt.meshPos || [0, 0, 0];
+          pinGroup.position.set(mp[0], mp[1], mp[2]);
           pinGroup.scale.set(0, 0, 0);
           pinGroup.userData = {
             targetScale: 0.0,
@@ -1581,29 +1586,26 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           // Crisp 2D Pinpoint Dot flush on skin
           const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
           const dotSprite = new THREE.Sprite(dotMat);
-          dotSprite.scale.set(0.015, 0.015, 1.0);
+          dotSprite.scale.set(0.010, 0.010, 1.0);
           dotSprite.renderOrder = 999;
           pinGroup.add(dotSprite);
 
           // Active Selection Aura Ring
           const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
           const selRing = new THREE.Sprite(selRingMat);
-          selRing.scale.set(0.030, 0.030, 1.0);
+          selRing.scale.set(0.018, 0.018, 1.0);
           selRing.visible = (idx === selectedAcupointIdx);
           selRing.renderOrder = 998;
           pinGroup.add(selRing);
 
           // Leader Line
-          const isLeft = pt.bodyPosition[0] < 0;
-          const leaderOffsetX = isLeft ? -0.065 : 0.065;
-          const leaderOffsetY = 0.032;
-
+          const bo = pt.badgeOffset || [0, 0.040, 0.040];
           const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
             new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(leaderOffsetX * 0.7, leaderOffsetY, 0),
-            new THREE.Vector3(leaderOffsetX, leaderOffsetY, 0)
+            new THREE.Vector3(bo[0] * 0.5, bo[1] * 0.5, bo[2] * 0.5),
+            new THREE.Vector3(bo[0], bo[1], bo[2] * 0.8)
           ]);
-          const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.65 });
+          const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.75 });
           const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
           pinGroup.add(leaderLine);
 
@@ -1613,20 +1615,20 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           );
           const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
           const badgeSprite = new THREE.Sprite(badgeMat);
-          badgeSprite.position.set(leaderOffsetX * 1.35, leaderOffsetY, 0);
-          badgeSprite.scale.set(0.12, 0.035, 1.0);
+          badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.03);
+          badgeSprite.scale.set(0.075, 0.022, 1.0);
           pinGroup.add(badgeSprite);
 
-          // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.016)
+          // Clickable HitBox for Raycaster (Tightly sized to the 2D dot, radius 0.010)
           const hitBox = new THREE.Mesh(
-            new THREE.SphereGeometry(0.016, 8, 8),
+            new THREE.SphereGeometry(0.010, 8, 8),
             new THREE.MeshBasicMaterial({ visible: false })
           );
           hitBox.userData = { acupointIdx: idx };
           pinGroup.add(hitBox);
           interactiveAcupointMeshes.push(hitBox);
 
-          bodyGroup.add(pinGroup);
+          skinnedMesh.add(pinGroup);
           allPinObjectsRef.current.push(pinGroup);
           badgesRef.current.push({ idx, pt, sprite: badgeSprite, selRing });
         });
