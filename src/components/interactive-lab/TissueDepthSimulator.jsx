@@ -27,6 +27,124 @@ import {
 // CLINICAL ACUPOINTS CATALOG WITH REGIONAL ZOOM MAPPINGS
 // ============================================================================
 export const CLINICAL_ACUPOINTS = [
+  // --- 5 TRUE CLINICAL ARM ACUPOINTS (Physically Anchored to Forearm Bone) ---
+  {
+    id: 'li11',
+    code: 'LI-11',
+    fullName: 'LI-11 (Quchi)',
+    hanzi: '曲池',
+    translation: 'Pool at the Bend',
+    region: 'hand',
+    regionLabel: 'Lateral Elbow',
+    facing: 'front',
+    meridian: 'Large Intestine Meridian',
+    depthTarget: 15.0,
+    depthCun: '1.0–1.5 cun',
+    isArmPoint: true,
+    orderIndex: 0,
+    armLocalPos: [0.015, -0.015, 0.02],
+    badgeOffset: [0, 0.028, 0.075],
+    bodyPosition: [-0.24, 0.22, 0.05],
+    nerves: 'Radial Nerve & Post. Cutaneous Nerve',
+    vessels: 'Radial Recurrent Artery',
+    relief: 'Hypertension, Elbow Tendinopathy, Skin Clear, Fever Dissipation',
+    deqi: 'Clear penetrating warmth radiating down extensor muscles of forearm.',
+    colorHex: 0x06b6d4
+  },
+  {
+    id: 'lu7',
+    code: 'LU-7',
+    fullName: 'LU-7 (Lieque)',
+    hanzi: '列缺',
+    translation: 'Broken Sequence',
+    region: 'hand',
+    regionLabel: 'Radial Forearm',
+    facing: 'front',
+    meridian: 'Lung Meridian',
+    depthTarget: 8.0,
+    depthCun: '0.5–0.8 cun',
+    isArmPoint: true,
+    orderIndex: 1,
+    armLocalPos: [0.018, -0.075, 0.01],
+    badgeOffset: [0, 0.012, 0.085],
+    bodyPosition: [-0.27, 0.16, 0.04],
+    nerves: 'Lateral Antebrachial Cutaneous Nerve',
+    vessels: 'Radial Artery & Cephalic Vein',
+    relief: 'Headaches, Migraines, Neck Stiffness, Cough & Diaphragmatic Ease',
+    deqi: 'Fine energetic pulse coursing up radial margin to the thumb.',
+    colorHex: 0x3b82f6
+  },
+  {
+    id: 'pc6',
+    code: 'PC-6',
+    fullName: 'PC-6 (Neiguan)',
+    hanzi: '内关',
+    translation: 'Inner Gate',
+    region: 'hand',
+    regionLabel: 'Inner Forearm',
+    facing: 'front',
+    meridian: 'Pericardium Meridian',
+    depthTarget: 10.0,
+    depthCun: '0.5–0.8 cun',
+    isArmPoint: true,
+    orderIndex: 2,
+    armLocalPos: [0.005, -0.095, 0.025],
+    badgeOffset: [0, -0.008, 0.075],
+    bodyPosition: [-0.28, 0.14, 0.04],
+    nerves: 'Median Nerve Trunk',
+    vessels: 'Median Antebrachial Vein & Radial Artery',
+    relief: 'Nausea, Cardiac Palpitations, Panic, Diaphragmatic Tightness',
+    deqi: 'Subtle electric sensation gliding smoothly along forearm midline.',
+    colorHex: 0xc084fc
+  },
+  {
+    id: 'ht7',
+    code: 'HT-7',
+    fullName: 'HT-7 (Shenmen)',
+    hanzi: '神门',
+    translation: 'Spirit Gate',
+    region: 'hand',
+    regionLabel: 'Wrist Crease',
+    facing: 'front',
+    meridian: 'Heart Meridian',
+    depthTarget: 8.0,
+    depthCun: '0.3–0.5 cun',
+    isArmPoint: true,
+    orderIndex: 3,
+    armLocalPos: [-0.008, -0.115, 0.02],
+    badgeOffset: [0, -0.028, 0.085],
+    bodyPosition: [-0.29, 0.10, 0.04],
+    nerves: 'Ulnar Nerve & Medial Antebrachial Cutaneous Nerve',
+    vessels: 'Ulnar Artery',
+    relief: 'Insomnia, Severe Anxiety, Palpitations, Emotional Grounding',
+    deqi: 'Deep settling calm wave flowing into palm and chest.',
+    colorHex: 0xf43f5e
+  },
+  {
+    id: 'li4',
+    code: 'LI-4',
+    fullName: 'LI-4 (Hegu)',
+    hanzi: '合谷',
+    translation: 'Joining Valley',
+    region: 'hand',
+    regionLabel: 'Dorsal Hand',
+    facing: 'front',
+    meridian: 'Large Intestine Meridian',
+    depthTarget: 12.0,
+    depthCun: '0.5–1.0 cun',
+    isArmPoint: true,
+    orderIndex: 4,
+    armLocalPos: [0.020, -0.145, 0.005],
+    badgeOffset: [0, -0.065, 0.075],
+    bodyPosition: [-0.34, 0.04, 0.04],
+    nerves: 'Superficial Radial Nerve',
+    vessels: 'First Dorsal Metacarpal Artery',
+    relief: 'Frontal Migraines, TMJ Jaw Clenching, Toothache, Systemic Analgesia',
+    deqi: 'Pronounced heavy warm ache spreading through palm into forearm.',
+    colorHex: 0xe02868
+  },
+
+  // --- HEAD, SPINE & LEG ANCHORED ACUPOINTS ---
   {
     id: 'gb20',
     code: 'GB-20',
@@ -85,44 +203,6 @@ export const CLINICAL_ACUPOINTS = [
     colorHex: 0xf59e0b
   },
   {
-    id: 'li4',
-    code: 'LI-4',
-    fullName: 'LI-4 (Hegu)',
-    hanzi: '合谷',
-    translation: 'Joining Valley',
-    region: 'hand',
-    regionLabel: 'Dorsal Hand',
-    facing: 'front',
-    meridian: 'Large Intestine Meridian',
-    depthTarget: 12.0,
-    depthCun: '0.5–1.0 cun',
-    bodyPosition: [-0.34, 0.04, 0.04],
-    nerves: 'Superficial Radial Nerve',
-    vessels: 'First Dorsal Metacarpal Artery',
-    relief: 'Frontal Migraines, TMJ Jaw Clenching, Toothache, Systemic Analgesia',
-    deqi: 'Pronounced heavy warm ache spreading through palm into forearm.',
-    colorHex: 0xe02868
-  },
-  {
-    id: 'pc6',
-    code: 'PC-6',
-    fullName: 'PC-6 (Neiguan)',
-    hanzi: '内关',
-    translation: 'Inner Pass',
-    region: 'hand',
-    regionLabel: 'Inner Forearm',
-    facing: 'front',
-    meridian: 'Pericardium Meridian',
-    depthTarget: 10.0,
-    depthCun: '0.5–0.8 cun',
-    bodyPosition: [-0.28, 0.14, 0.04],
-    nerves: 'Median Nerve Trunk',
-    vessels: 'Median Antebrachial Vein & Radial Artery',
-    relief: 'Nausea, Cardiac Palpitations, Panic, Diaphragmatic Tightness',
-    deqi: 'Subtle electric sensation gliding smoothly along forearm midline.',
-    colorHex: 0xc084fc
-  },
-  {
     id: 'st36',
     code: 'ST-36',
     fullName: 'ST-36 (Zusanli)',
@@ -139,6 +219,25 @@ export const CLINICAL_ACUPOINTS = [
     vessels: 'Anterior Tibial Artery',
     relief: 'Chronic Fatigue, Acid Reflux, Immune Depletion, Leg Weakness',
     deqi: 'Rich traveling warmth and rhythmic muscular pulsing downward into foot.',
+    colorHex: 0xec4899
+  },
+  {
+    id: 'sp6',
+    code: 'SP-6',
+    fullName: 'SP-6 (Sanyinjiao)',
+    hanzi: '三阴交',
+    translation: 'Three Yin Intersection',
+    region: 'leg',
+    regionLabel: 'Inner Ankle',
+    facing: 'front',
+    meridian: 'Spleen Meridian',
+    depthTarget: 14.0,
+    depthCun: '1.0–1.5 cun',
+    bodyPosition: [-0.04, -0.52, 0.02],
+    nerves: 'Tibial Nerve & Saphenous Nerve',
+    vessels: 'Posterior Tibial Artery',
+    relief: 'Pelvic Circulation, Insomnia, Leg Cramping, Hormonal Balance',
+    deqi: 'Steady rhythmic warmth coursing up the inner calf.',
     colorHex: 0xec4899
   },
   {
@@ -159,82 +258,6 @@ export const CLINICAL_ACUPOINTS = [
     relief: 'Chronic Lower Back Pain, Sciatica, Core Instability, Disc Fatigue',
     deqi: 'Deep, comforting heat diffusing through sacrum and lumbar spine.',
     colorHex: 0x8b5cf6
-  },
-  {
-    id: 'gv16',
-    code: 'GV-16',
-    fullName: 'GV-16 (Fengfu)',
-    hanzi: '风府',
-    translation: 'Palace of Wind',
-    region: 'neck',
-    regionLabel: 'Occipital Center',
-    facing: 'back',
-    meridian: 'Governing Vessel',
-    depthTarget: 10.0,
-    depthCun: '0.5–0.8 cun',
-    bodyPosition: [0.0, 0.69, -0.072],
-    nerves: 'Third Occipital Nerve',
-    vessels: 'Occipital Arterial Anastomosis',
-    relief: 'Central Nervous Calm, Nuchal Rigidity, Mental Clarity',
-    deqi: 'Cool clarity descending down paraspinal columns.',
-    colorHex: 0x38bdf8
-  },
-  {
-    id: 'te17',
-    code: 'TE-17',
-    fullName: 'TE-17 (Yifeng)',
-    hanzi: '翳风',
-    translation: 'Wind Screen',
-    region: 'neck',
-    regionLabel: 'Behind Ear',
-    facing: 'back',
-    meridian: 'Triple Energizer',
-    depthTarget: 12.0,
-    depthCun: '0.8–1.2 cun',
-    bodyPosition: [-0.068, 0.64, -0.032],
-    nerves: 'Great Auricular & Facial Nerve Branch',
-    vessels: 'Posterior Auricular Artery',
-    relief: 'Tinnitus, Ear Fullness, TMJ Spasm, Facial Nerve Reset',
-    deqi: 'Warm releasing tingling along the jaw and mastoid process.',
-    colorHex: 0xf59e0b
-  },
-  {
-    id: 'gb14',
-    code: 'GB-14',
-    fullName: 'GB-14 (Yangbai)',
-    hanzi: '阳白',
-    translation: 'Yang White',
-    region: 'crown',
-    regionLabel: 'Forehead',
-    facing: 'front',
-    meridian: 'Gallbladder Meridian',
-    depthTarget: 8.0,
-    depthCun: '0.3–0.5 cun',
-    bodyPosition: [-0.04, 0.73, 0.072],
-    nerves: 'Supraorbital Nerve Branch',
-    vessels: 'Frontal Arteriole Plexus',
-    relief: 'Frontal Sinus Pressure, Forehead Tension, Orbital Fatigue',
-    deqi: 'Light clearing vibration releasing ocular strain.',
-    colorHex: 0xe02868
-  },
-  {
-    id: 'sp6',
-    code: 'SP-6',
-    fullName: 'SP-6 (Sanyinjiao)',
-    hanzi: '三阴交',
-    translation: 'Three Yin Intersection',
-    region: 'leg',
-    regionLabel: 'Inner Ankle',
-    facing: 'front',
-    meridian: 'Spleen Meridian',
-    depthTarget: 14.0,
-    depthCun: '1.0–1.5 cun',
-    bodyPosition: [-0.04, -0.52, 0.02],
-    nerves: 'Tibial Nerve & Saphenous Nerve',
-    vessels: 'Posterior Tibial Artery',
-    relief: 'Pelvic Circulation, Insomnia, Leg Cramping, Hormonal Balance',
-    deqi: 'Steady rhythmic warmth coursing up the inner calf.',
-    colorHex: 0xec4899
   }
 ];
 
@@ -522,36 +545,72 @@ function playAcuSound(type, isMuted) {
       gain.connect(ctx.destination);
       osc.start();
       osc.stop(ctx.currentTime + 0.08);
+    } else if (type === 'popup') {
+      // Gentle crystalline chime for sequential arm acupoint pop-up
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(1174.66, ctx.currentTime + 0.09); // D6
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.12);
     }
   } catch (_) {}
 }
 
-
-// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts (Matching media_1793707544443_f2fee650.png)
-function createCalloutBadgeCanvas(code, isSelected) {
+// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts with Full Name and Needle Target Depth
+function createCalloutBadgeCanvas(code, name, depth, isSelected) {
   const canvas = document.createElement('canvas');
-  canvas.width = 160;
-  canvas.height = 64;
+  canvas.width = 240;
+  canvas.height = 70;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = isSelected ? '#e02868' : 'rgba(255, 255, 255, 0.96)';
+  // Pill card background
+  ctx.fillStyle = isSelected ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 152, 56, 12);
+    ctx.roundRect(4, 4, 232, 62, 14);
   } else {
-    ctx.rect(4, 4, 152, 56);
+    ctx.rect(4, 4, 232, 62);
   }
   ctx.fill();
 
-  ctx.strokeStyle = isSelected ? '#c21e54' : 'rgba(224, 40, 104, 0.35)';
-  ctx.lineWidth = 3;
+  // Arura Rose accent border
+  ctx.strokeStyle = isSelected ? '#e02868' : 'rgba(224, 40, 104, 0.40)';
+  ctx.lineWidth = isSelected ? 3.5 : 2;
   ctx.stroke();
 
-  ctx.fillStyle = isSelected ? '#ffffff' : '#09090b';
-  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+  // Left Code Pill
+  ctx.fillStyle = '#e02868';
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(12, 14, 62, 42, 8);
+  } else {
+    ctx.rect(12, 14, 62, 42);
+  }
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 80, 32);
+  ctx.fillText(code, 43, 35);
+
+  // Name & Translation with Chinese characters
+  ctx.fillStyle = '#09090b';
+  ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText(name || code, 82, 33);
+
+  // Target Needle Depth
+  ctx.fillStyle = '#64748b';
+  ctx.font = '600 12px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.fillText(depth ? `Target: ${depth}` : 'Clinical Target', 82, 51);
 
   return canvas;
 }
@@ -586,6 +645,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
+  const targetCamPosRef = useRef(new THREE.Vector3(0.0, 0.34, 4.2));
+  const targetLookAtRef = useRef(new THREE.Vector3(0.0, 0.34, 0.0));
 
   // 3D Groups
   const bodyGroupRef = useRef(null);
@@ -593,6 +654,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const bonesRef = useRef(null);
   const targetLimbAnglesRef = useRef({ arm: 0.0, leg: 0.0 });
   const limbPinGroupsRef = useRef({});
+  const armPinObjectsRef = useRef([]);
+  const badgesRef = useRef([]);
   const strataGroupRef = useRef(null);
   const strataLayersRef = useRef({});
 
@@ -781,15 +844,64 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (thermalRingRef.current) thermalRingRef.current.material.opacity = 0;
   }, [selectedProblemIdx, applySkinPhysicsAndToolHeight]);
 
+  // Trigger Arm Presentation Swing, Close-up Zoom & Sequential Acupoint Pop-up
+  const triggerArmZoomAndPopups = useCallback((selectedIdx) => {
+    setActiveRegion('hand');
+    targetLimbAnglesRef.current.arm = 1.0;
+    targetLimbAnglesRef.current.leg = 0.0;
+
+    // Precise camera framing: tightly focused directly on the presented left forearm and hand, shifted into the open central space clear of left HUD cards
+    targetCamPosRef.current.set(-0.28, 0.54, 1.15);
+    targetLookAtRef.current.set(-0.32, 0.51, 0.28);
+
+    // Fade/hide non-arm pins so focus is solely on arm anatomy
+    if (limbPinGroupsRef.current) {
+      Object.values(limbPinGroupsRef.current).forEach(pin => {
+        if (pin) pin.visible = false;
+      });
+    }
+
+    // Sequentially pop up arm acupoints one-by-one with crystalline chimes
+    if (armPinObjectsRef.current && armPinObjectsRef.current.length > 0) {
+      // First fold all arm pins down
+      armPinObjectsRef.current.forEach(pin => {
+        pin.userData.targetScale = 0.0;
+      });
+
+      // Sort by anatomical order (elbow -> radial forearm -> inner forearm -> wrist -> hand)
+      const sortedPins = [...armPinObjectsRef.current].sort(
+        (a, b) => (a.userData.orderIndex ?? 0) - (b.userData.orderIndex ?? 0)
+      );
+
+      sortedPins.forEach((pin, i) => {
+        setTimeout(() => {
+          pin.userData.targetScale = 1.0;
+          playAcuSound('popup', isMuted);
+        }, 280 + i * 260);
+      });
+    }
+
+    if (typeof selectedIdx === 'number') {
+      setSelectedAcupointIdx(selectedIdx);
+    }
+  }, [isMuted]);
+
   // Smooth Camera Tween to any Perspective or Anatomical Region
   const navigateCameraToRegion = useCallback((regionKey) => {
-    setActiveRegion(regionKey);
-    const camera = cameraRef.current;
-    const controls = controlsRef.current;
-    if (!camera || !controls) return;
+    if (regionKey === 'hand') {
+      const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.id === 'li4');
+      triggerArmZoomAndPopups(armPtIdx !== -1 ? armPtIdx : 0);
+      return;
+    }
 
-    let targetCamPos;
-    let targetLookAt;
+    setActiveRegion(regionKey);
+
+    // Restore visibility of standard body pins
+    if (limbPinGroupsRef.current) {
+      Object.values(limbPinGroupsRef.current).forEach(pin => {
+        if (pin) pin.visible = true;
+      });
+    }
 
     // Keep human body prominently centered and heroic
     if (bodyGroupRef.current) bodyGroupRef.current.position.set(0.0, -0.18, 0.0);
@@ -798,62 +910,46 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (regionKey === 'full') {
       targetLimbAnglesRef.current.arm = 0.0;
       targetLimbAnglesRef.current.leg = 0.0;
-      targetCamPos = new THREE.Vector3(0.0, 0.34, 4.2);
-      targetLookAt = new THREE.Vector3(0.0, 0.34, 0.0);
+      // Fold down arm pins on reset
+      if (armPinObjectsRef.current) {
+        armPinObjectsRef.current.forEach(pin => {
+          pin.userData.targetScale = 0.0;
+        });
+      }
+      targetCamPosRef.current.set(0.0, 0.34, 4.2);
+      targetLookAtRef.current.set(0.0, 0.34, 0.0);
     } else {
       switch (regionKey) {
         case 'neck':
-          targetCamPos = new THREE.Vector3(0.0, 0.70, 2.4);
-          targetLookAt = new THREE.Vector3(0.0, 0.60, 0.0);
-          break;
-        case 'hand':
-          // Focused on raised arm & hand
-          targetLimbAnglesRef.current.arm = 1.0;
-          targetLimbAnglesRef.current.leg = 0.0;
-          targetCamPos = new THREE.Vector3(-0.25, 0.35, 2.5);
-          targetLookAt = new THREE.Vector3(-0.25, 0.28, 0.0);
+          targetCamPosRef.current.set(0.0, 0.70, 2.4);
+          targetLookAtRef.current.set(0.0, 0.60, 0.0);
           break;
         case 'crown':
-          targetCamPos = new THREE.Vector3(0.0, 0.85, 2.4);
-          targetLookAt = new THREE.Vector3(0.0, 0.75, 0.0);
+          targetCamPosRef.current.set(0.0, 0.85, 2.4);
+          targetLookAtRef.current.set(0.0, 0.75, 0.0);
           break;
         case 'leg':
-          // Focused on slightly lifted leg
           targetLimbAnglesRef.current.leg = 1.0;
           targetLimbAnglesRef.current.arm = 0.0;
-          targetCamPos = new THREE.Vector3(-0.10, -0.05, 2.5);
-          targetLookAt = new THREE.Vector3(-0.10, -0.15, 0.0);
+          if (armPinObjectsRef.current) {
+            armPinObjectsRef.current.forEach(pin => {
+              pin.userData.targetScale = 0.0;
+            });
+          }
+          targetCamPosRef.current.set(-0.10, -0.05, 2.5);
+          targetLookAtRef.current.set(-0.10, -0.15, 0.0);
           break;
         case 'back':
-          targetCamPos = new THREE.Vector3(0.0, 0.45, 2.6);
-          targetLookAt = new THREE.Vector3(0.0, 0.38, 0.0);
+          targetCamPosRef.current.set(0.0, 0.45, 2.6);
+          targetLookAtRef.current.set(0.0, 0.38, 0.0);
           break;
         default:
-          targetCamPos = new THREE.Vector3(0.0, 0.34, 4.2);
-          targetLookAt = new THREE.Vector3(0.0, 0.34, 0.0);
+          targetCamPosRef.current.set(0.0, 0.34, 4.2);
+          targetLookAtRef.current.set(0.0, 0.34, 0.0);
           break;
       }
     }
-
-    const startPos = camera.position.clone();
-    const startTarget = controls.target.clone();
-    let progress = 0;
-
-    const animateCamera = () => {
-      progress += 0.07;
-      if (progress <= 1.0) {
-        camera.position.lerpVectors(startPos, targetCamPos, progress);
-        controls.target.lerpVectors(startTarget, targetLookAt, progress);
-        controls.update();
-        requestAnimationFrame(animateCamera);
-      } else {
-        camera.position.copy(targetCamPos);
-        controls.target.copy(targetLookAt);
-        controls.update();
-      }
-    };
-    animateCamera();
-  }, []);
+  }, [triggerArmZoomAndPopups]);
 
   // Select Acupoint from Catalog and auto-zoom to that region
   const handleSelectAcupoint = useCallback((idx) => {
@@ -867,20 +963,31 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         bodyModelMeshRef.current.rotation.y = pt.facing === 'front' ? -Math.PI / 2 : Math.PI / 2;
         setBodyFacing(pt.facing);
       }
-      if (pt.region) {
+      if (pt.isArmPoint || pt.region === 'hand') {
+        triggerArmZoomAndPopups(idx);
+      } else if (pt.region) {
         navigateCameraToRegion(pt.region);
       } else {
         navigateCameraToRegion('dual');
       }
     }
+  }, [handleReset, isMuted, navigateCameraToRegion, triggerArmZoomAndPopups]);
 
-    // Update active highlight on 3D dots
-    if (dotHalosRef.current) {
-      dotHalosRef.current.forEach((halo, i) => {
-        if (halo) halo.visible = (i === idx);
+  // Update active 3D badges when selected acupoint changes
+  useEffect(() => {
+    if (badgesRef.current) {
+      badgesRef.current.forEach(({ idx, pt, sprite, selRing }) => {
+        const isSel = (idx === selectedAcupointIdx);
+        if (selRing) selRing.visible = isSel;
+        if (sprite && sprite.material) {
+          sprite.material.map = new THREE.CanvasTexture(
+            createCalloutBadgeCanvas(pt.code, `${pt.hanzi} • ${pt.translation}`, `${pt.depthTarget}mm`, isSel)
+          );
+          sprite.material.needsUpdate = true;
+        }
       });
     }
-  }, [handleReset, isMuted, navigateCameraToRegion]);
+  }, [selectedAcupointIdx]);
 
   // Select tool
   const handleSelectTool = useCallback((toolId) => {
@@ -1268,13 +1375,88 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           rightThigh, rightCalf
         };
 
+        // CLINICAL ARM ACUPOINTS DIRECTLY ATTACHED TO leftForearm BONE!
+        // This guarantees 100% mathematical lockstep with forearm and hand skin.
+        CLINICAL_ACUPOINTS.forEach((pt, idx) => {
+          if (pt.isArmPoint && pt.armLocalPos) {
+            const pinGroup = new THREE.Group();
+            pinGroup.position.set(pt.armLocalPos[0], pt.armLocalPos[1], pt.armLocalPos[2]);
+            pinGroup.scale.set(0, 0, 0); // Initially hidden! Pops up sequentially on arm presentation!
+            pinGroup.userData = {
+              targetScale: 0.0,
+              currentScale: 0.0,
+              acupointIdx: idx,
+              isArmPin: true,
+              orderIndex: pt.orderIndex ?? 0
+            };
+
+            // Crisp Pinpoint Dot flush on skin
+            const dotMesh = new THREE.Mesh(
+              new THREE.SphereGeometry(0.0055, 12, 12),
+              new THREE.MeshBasicMaterial({ color: 0xe02868 })
+            );
+            pinGroup.add(dotMesh);
+
+            // Subtle Luminous Ring
+            const ringMesh = new THREE.Mesh(
+              new THREE.RingGeometry(0.0065, 0.011, 16),
+              new THREE.MeshBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.85, side: THREE.DoubleSide })
+            );
+            ringMesh.rotation.x = -Math.PI / 2;
+            pinGroup.add(ringMesh);
+
+            // Active Selection Ring
+            const selRing = new THREE.Mesh(
+              new THREE.RingGeometry(0.011, 0.016, 16),
+              new THREE.MeshBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.95, side: THREE.DoubleSide })
+            );
+            selRing.rotation.x = -Math.PI / 2;
+            selRing.visible = (idx === selectedAcupointIdx);
+            pinGroup.add(selRing);
+
+            // Leader Line pointing outward away from torso with staggered offsets
+            const bo = pt.badgeOffset || [0, 0.015, 0.075];
+            const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
+              new THREE.Vector3(0, 0, 0),
+              new THREE.Vector3(bo[0] * 0.5, bo[1] * 0.5, bo[2] * 0.5),
+              new THREE.Vector3(bo[0], bo[1], bo[2] * 0.8)
+            ]);
+            const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.75 });
+            const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
+            pinGroup.add(leaderLine);
+
+            // 3D Canvas Callout Badge with Actual Name and Target Depth
+            const badgeTex = new THREE.CanvasTexture(
+              createCalloutBadgeCanvas(pt.code, `${pt.hanzi} • ${pt.translation}`, `${pt.depthTarget}mm`, idx === selectedAcupointIdx)
+            );
+            const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
+            const badgeSprite = new THREE.Sprite(badgeMat);
+            badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.04);
+            badgeSprite.scale.set(0.12, 0.035, 1.0);
+            pinGroup.add(badgeSprite);
+
+            // Clickable HitBox for Raycaster
+            const hitBox = new THREE.Mesh(
+              new THREE.SphereGeometry(0.035, 8, 8),
+              new THREE.MeshBasicMaterial({ visible: false })
+            );
+            hitBox.userData = { acupointIdx: idx };
+            pinGroup.add(hitBox);
+            interactiveAcupointMeshes.push(hitBox);
+
+            leftForearm.add(pinGroup);
+            armPinObjectsRef.current.push(pinGroup);
+            badgesRef.current.push({ idx, pt, sprite: badgeSprite, selRing });
+          }
+        });
+
         bodyGroup.add(skinnedMesh);
       },
       undefined,
       (err) => console.error('Failed to load human_body.glb:', err)
     );
 
-        // Glowing Acupuncture Meridian Pathway (Du Mai Line)
+    // Glowing Acupuncture Meridian Pathway (Du Mai Line)
     const meridianMat = new THREE.LineBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.65 });
     const spineMeridian = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0.85 * scaleFactor, 0),
@@ -1287,12 +1469,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     bodyGroup.add(meridianLine);
 
     // =========================================================================
-    // 3. 3D ANATOMICAL PINPOINT DOTS (Clean Dots - NOT Giant Spheres!)
+    // 3. 3D ANATOMICAL PINPOINT DOTS (For Non-Arm Acupoints)
     // =========================================================================
     const dotHalos = [];
     const interactiveAcupointMeshes = [];
 
     CLINICAL_ACUPOINTS.forEach((pt, idx) => {
+      if (pt.isArmPoint) return; // Arm points are attached directly to leftForearm bone above!
+
       const pinGroup = new THREE.Group();
       pinGroup.position.set(
         pt.bodyPosition[0] * scaleFactor,
@@ -1330,7 +1514,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       const leaderOffsetX = isLeft ? -0.065 : 0.065;
       const leaderOffsetY = 0.032;
 
-      // Darker subtle leader line visible on light background
       const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(leaderOffsetX * 0.7, leaderOffsetY, 0),
@@ -1341,14 +1524,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       pinGroup.add(leaderLine);
 
       // 3D Canvas Sprite Badge
-      const badgeTex = new THREE.CanvasTexture(createCalloutBadgeCanvas(pt.code, idx === selectedAcupointIdx));
+      const badgeTex = new THREE.CanvasTexture(
+        createCalloutBadgeCanvas(pt.code, `${pt.hanzi} • ${pt.translation}`, `${pt.depthTarget}mm`, idx === selectedAcupointIdx)
+      );
       const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
       const badgeSprite = new THREE.Sprite(badgeMat);
-      badgeSprite.position.set(leaderOffsetX * 1.15, leaderOffsetY, 0);
-      badgeSprite.scale.set(0.065, 0.026, 1.0);
+      badgeSprite.position.set(leaderOffsetX * 1.35, leaderOffsetY, 0);
+      badgeSprite.scale.set(0.12, 0.035, 1.0);
       pinGroup.add(badgeSprite);
 
-      // Clickable Raycasting Hitbox for both Dot and Badge
+      // Clickable Raycasting Hitbox
       const hitBox = new THREE.Mesh(
         new THREE.SphereGeometry(0.035, 8, 8),
         new THREE.MeshBasicMaterial({ visible: false })
@@ -1359,11 +1544,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
       bodyGroup.add(pinGroup);
       limbPinGroupsRef.current[pt.id] = pinGroup;
-      pinGroup.userData.basePos = {
-        x: pinGroup.position.x,
-        y: pinGroup.position.y,
-        z: pinGroup.position.z
-      };
+      badgesRef.current.push({ idx, pt, sprite: badgeSprite, selRing });
     });
     dotHalosRef.current = dotHalos;
 
@@ -1382,7 +1563,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       if (intersects.length > 0) {
         const hitIdx = intersects[0].object.userData.acupointIdx;
         if (typeof hitIdx === 'number') {
-          handleSelectAcupoint(hitIdx);
+          const hitPt = CLINICAL_ACUPOINTS[hitIdx];
+          if (hitPt && (hitPt.isArmPoint || hitPt.region === 'hand')) {
+            triggerArmZoomAndPopups(hitIdx);
+          } else {
+            handleSelectAcupoint(hitIdx);
+          }
         }
       } else if (bodyModelMeshRef.current) {
         // Direct click on 3D Human Body Anatomy (Arms or Legs)
@@ -1390,11 +1576,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         if (bodyHits.length > 0) {
           const hit = bodyHits[0].point;
           // Clicked Arm: lateral region
-          if (Math.abs(hit.x) > 0.18 && hit.y > -0.15 && hit.y < 0.65) {
-            targetLimbAnglesRef.current.arm = targetLimbAnglesRef.current.arm > 0.1 ? 0.0 : 0.68;
-            targetLimbAnglesRef.current.leg = 0.0;
-            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'hand');
-            if (armPtIdx !== -1) handleSelectAcupoint(armPtIdx);
+          if (Math.abs(hit.x) > 0.16 && hit.y > -0.15 && hit.y < 0.70) {
+            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.id === 'li4');
+            triggerArmZoomAndPopups(armPtIdx !== -1 ? armPtIdx : 0);
           } else if (hit.y < 0.15 && Math.abs(hit.x) < 0.22) {
             // Clicked Leg: lower region
             targetLimbAnglesRef.current.leg = targetLimbAnglesRef.current.leg > 0.1 ? 0.0 : 0.32;
@@ -1941,18 +2125,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         b.leftThigh.rotation.z += (targetLeg * 0.40 - b.leftThigh.rotation.z) * 0.08;
         b.leftCalf.rotation.z += (-targetLeg * 0.28 - b.leftCalf.rotation.z) * 0.08;
 
-        // Synchronize arm acupoint beacons (LI-4, PC-6)
-        const currentArmSwing = b.leftUpperArm.rotation.z;
-        ['li4', 'pc6'].forEach(id => {
-          const pin = limbPinGroupsRef.current[id];
-          if (pin && pin.userData.basePos) {
-            const bPos = pin.userData.basePos;
-            const shoulderY = 0.34 + 0.308 * targetHeight;
-            const dY = bPos.y - shoulderY;
-            pin.position.y = shoulderY + dY * Math.cos(currentArmSwing * 0.6);
-            pin.position.z = bPos.z + Math.sin(currentArmSwing) * 0.14;
-          }
-        });
+        // Smooth Spring Scale Interpolation for Popping Up Arm Acupoints Sequentially
+        if (armPinObjectsRef.current) {
+          armPinObjectsRef.current.forEach(pin => {
+            const ts = pin.userData.targetScale || 0.0;
+            pin.userData.currentScale = (pin.userData.currentScale || 0.0) + (ts - (pin.userData.currentScale || 0.0)) * 0.14;
+            const s = Math.max(0, pin.userData.currentScale);
+            pin.scale.set(s, s, s);
+          });
+        }
 
         // Synchronize leg acupoint beacons (ST-36, SP-6)
         const currentLegLift = b.leftThigh.rotation.z;
@@ -1968,6 +2149,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
       }
 
+      // Smooth Camera & Controls Interpolation towards Target Framing
+      camera.position.lerp(targetCamPosRef.current, 0.07);
+      controls.target.lerp(targetLookAtRef.current, 0.07);
       controls.update();
       renderer.render(scene, camera);
     };
