@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip from './SkinLayersPip';
+import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS } from './acupointsData';
+export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
   Maximize2, 
   Minimize2, 
@@ -23,299 +25,6 @@ import {
   RefreshCw,
   X
 } from 'lucide-react';
-
-// ============================================================================
-// CLINICAL ACUPOINTS CATALOG WITH REGIONAL ZOOM MAPPINGS (100% ENGLISH)
-// ============================================================================
-export const CLINICAL_ACUPOINTS = [
-  // --- 5 TRUE CLINICAL ARM ACUPOINTS (Physically Anchored to Skin Surface) ---
-  {
-    id: 'li11',
-    code: 'LI-11',
-    fullName: 'LI-11 (Quchi)',
-    pinyin: 'Quchi',
-    hanzi: '曲池',
-    translation: 'Pool at the Bend',
-    englishTitle: 'Pool at the Bend',
-    region: 'hand',
-    regionLabel: 'Lateral Elbow',
-    facing: 'front',
-    meridian: 'Large Intestine Meridian',
-    depthTarget: 15.0,
-    depthCun: '1.0–1.5 cun',
-    isArmPoint: true,
-    orderIndex: 0,
-    modelPos: [0.257, 0.238, -0.072],
-    surfaceNormal: [0.85, 0.25, -0.45],
-    badgeOffset: [0.070, 0.035, 0.040],
-    nerves: 'Radial Nerve & Post. Cutaneous Nerve',
-    vessels: 'Radial Recurrent Artery',
-    relief: 'Hypertension, Elbow Tendinopathy, Skin Clear, Fever Dissipation',
-    deqi: 'Clear penetrating warmth radiating down extensor muscles of forearm.',
-    colorHex: 0x06b6d4
-  },
-  {
-    id: 'lu7',
-    code: 'LU-7',
-    fullName: 'LU-7 (Lieque)',
-    pinyin: 'Lieque',
-    hanzi: '列缺',
-    translation: 'Broken Sequence',
-    englishTitle: 'Broken Sequence',
-    region: 'hand',
-    regionLabel: 'Radial Forearm',
-    facing: 'front',
-    meridian: 'Lung Meridian',
-    depthTarget: 8.0,
-    depthCun: '0.5–0.8 cun',
-    isArmPoint: true,
-    orderIndex: 1,
-    modelPos: [0.269, -0.010, 0.053],
-    surfaceNormal: [0.92, 0.10, 0.38],
-    badgeOffset: [0.075, 0.030, 0.040],
-    nerves: 'Lateral Antebrachial Cutaneous Nerve',
-    vessels: 'Radial Artery & Cephalic Vein',
-    relief: 'Headaches, Migraines, Neck Stiffness, Cough & Diaphragmatic Ease',
-    deqi: 'Fine energetic pulse coursing up radial margin to the thumb.',
-    colorHex: 0x3b82f6
-  },
-  {
-    id: 'pc6',
-    code: 'PC-6',
-    fullName: 'PC-6 (Neiguan)',
-    pinyin: 'Neiguan',
-    hanzi: '内关',
-    translation: 'Inner Gate',
-    englishTitle: 'Inner Gate',
-    region: 'hand',
-    regionLabel: 'Inner Forearm',
-    facing: 'front',
-    meridian: 'Pericardium Meridian',
-    depthTarget: 10.0,
-    depthCun: '0.5–0.8 cun',
-    isArmPoint: true,
-    orderIndex: 2,
-    modelPos: [0.228, -0.014, 0.102],
-    surfaceNormal: [0.15, 0.10, 0.98],
-    badgeOffset: [-0.070, 0.030, 0.040],
-    nerves: 'Median Nerve Trunk',
-    vessels: 'Median Antebrachial Vein & Radial Artery',
-    relief: 'Nausea, Cardiac Palpitations, Panic, Diaphragmatic Tightness',
-    deqi: 'Subtle electric sensation gliding smoothly along forearm midline.',
-    colorHex: 0xc084fc
-  },
-  {
-    id: 'ht7',
-    code: 'HT-7',
-    fullName: 'HT-7 (Shenmen)',
-    pinyin: 'Shenmen',
-    hanzi: '神门',
-    translation: 'Spirit Gate',
-    englishTitle: 'Spirit Gate',
-    region: 'hand',
-    regionLabel: 'Wrist Crease',
-    facing: 'front',
-    meridian: 'Heart Meridian',
-    depthTarget: 8.0,
-    depthCun: '0.3–0.5 cun',
-    isArmPoint: true,
-    orderIndex: 3,
-    modelPos: [0.226, 0.008, -0.019],
-    surfaceNormal: [0.25, 0.10, -0.96],
-    badgeOffset: [-0.065, -0.030, 0.035],
-    nerves: 'Ulnar Nerve & Medial Antebrachial Cutaneous Nerve',
-    vessels: 'Ulnar Artery',
-    relief: 'Insomnia, Severe Anxiety, Palpitations, Emotional Grounding',
-    deqi: 'Deep settling calm wave flowing into palm and chest.',
-    colorHex: 0xf43f5e
-  },
-  {
-    id: 'li4',
-    code: 'LI-4',
-    fullName: 'LI-4 (Hegu)',
-    pinyin: 'Hegu',
-    hanzi: '合谷',
-    translation: 'Joining Valley',
-    englishTitle: 'Joining Valley',
-    region: 'hand',
-    regionLabel: 'Dorsal Hand',
-    facing: 'front',
-    meridian: 'Large Intestine Meridian',
-    depthTarget: 12.0,
-    depthCun: '0.5–1.0 cun',
-    isArmPoint: true,
-    orderIndex: 4,
-    modelPos: [0.260, -0.043, 0.068],
-    surfaceNormal: [0.35, 0.25, 0.90],
-    badgeOffset: [0.070, -0.025, 0.035],
-    nerves: 'Superficial Radial Nerve',
-    vessels: 'First Dorsal Metacarpal Artery',
-    relief: 'Frontal Migraines, TMJ Jaw Clenching, Toothache, Systemic Analgesia',
-    deqi: 'Pronounced heavy warm ache spreading through palm into forearm.',
-    colorHex: 0xe02868
-  },
-
-  // --- HEAD, SPINE & LEG ANCHORED ACUPOINTS ---
-  {
-    id: 'gb20',
-    code: 'GB-20',
-    fullName: 'GB-20 (Fengchi)',
-    pinyin: 'Fengchi',
-    hanzi: '风池',
-    translation: 'Wind Pool',
-    englishTitle: 'Wind Pool',
-    region: 'neck',
-    regionLabel: 'Occipital Neck',
-    facing: 'back',
-    orderIndex: 0,
-    meridian: 'Gallbladder Meridian',
-    depthTarget: 12.0,
-    depthCun: '0.8–1.2 cun',
-    modelPos: [0.026, 0.665, -0.089],
-    surfaceNormal: [0.20, 0.15, -0.97],
-    badgeOffset: [0.045, 0.025, -0.045],
-    nerves: 'Greater Occipital Nerve (C2)',
-    vessels: 'Occipital Artery & Venous Plexus',
-    relief: 'Chronic Migraines, Severe Cervical Stiffness, Occipital Neuralgia',
-    deqi: 'Deep spreading warm distention radiating toward retro-orbital space.',
-    colorHex: 0xff1e46
-  },
-  {
-    id: 'gv20',
-    code: 'GV-20',
-    fullName: 'GV-20 (Baihui)',
-    pinyin: 'Baihui',
-    hanzi: '百会',
-    translation: 'Hundred Convergences',
-    englishTitle: 'Hundred Convergences',
-    region: 'crown',
-    regionLabel: 'Cranial Crown',
-    facing: 'front',
-    orderIndex: 0,
-    meridian: 'Governing Vessel (Du Mai)',
-    depthTarget: 6.0,
-    depthCun: '0.3–0.5 cun',
-    modelPos: [0.001, 0.948, -0.001],
-    surfaceNormal: [0.0, 1.0, 0.0],
-    badgeOffset: [0.0, 0.065, 0.030],
-    nerves: 'Supraorbital & Greater Occipital Anastomosis',
-    vessels: 'Superficial Temporal Artery Network',
-    relief: 'Anxiety Reset, Severe Insomnia, Brain Fog, Tension Headaches',
-    deqi: 'Gentle buoyant pulsation, waves of calming coolness descending through spine.',
-    colorHex: 0x38bdf8
-  },
-  {
-    id: 'bl10',
-    code: 'BL-10',
-    fullName: 'BL-10 (Tianzhu)',
-    pinyin: 'Tianzhu',
-    hanzi: '天柱',
-    translation: 'Celestial Pillar',
-    englishTitle: 'Celestial Pillar',
-    region: 'neck',
-    regionLabel: 'Upper Neck',
-    facing: 'back',
-    orderIndex: 1,
-    meridian: 'Bladder Meridian',
-    depthTarget: 10.0,
-    depthCun: '0.5–0.8 cun',
-    modelPos: [0.041, 0.611, -0.125],
-    surfaceNormal: [0.25, 0.05, -0.97],
-    badgeOffset: [0.040, -0.020, -0.045],
-    nerves: 'Lesser Occipital Nerve (C2-C3)',
-    vessels: 'Deep Cervical Artery',
-    relief: 'Forward-Head Posture Strain, Blurred Vision, Stiff Neck Spasm',
-    deqi: 'Warm electric tingling radiating down paraspinal muscles.',
-    colorHex: 0xf59e0b
-  },
-  {
-    id: 'st36',
-    code: 'ST-36',
-    fullName: 'ST-36 (Zusanli)',
-    pinyin: 'Zusanli',
-    hanzi: '足三里',
-    translation: 'Leg Three Miles',
-    englishTitle: 'Leg Three Miles',
-    region: 'leg',
-    regionLabel: 'Anterior Leg',
-    facing: 'front',
-    orderIndex: 0,
-    modelPos: [0.115, -0.391, 0.034],
-    surfaceNormal: [0.30, 0.05, 0.95],
-    badgeOffset: [0.050, 0.025, 0.040],
-    meridian: 'Stomach Meridian',
-    depthTarget: 15.0,
-    depthCun: '1.0–1.5 cun',
-    nerves: 'Deep Peroneal (Fibular) Nerve',
-    vessels: 'Anterior Tibial Artery',
-    relief: 'Chronic Fatigue, Acid Reflux, Immune Depletion, Leg Weakness',
-    deqi: 'Rich traveling warmth and rhythmic muscular pulsing downward into foot.',
-    colorHex: 0xec4899
-  },
-  {
-    id: 'sp6',
-    code: 'SP-6',
-    fullName: 'SP-6 (Sanyinjiao)',
-    pinyin: 'Sanyinjiao',
-    hanzi: '三阴交',
-    translation: 'Three Yin Intersection',
-    englishTitle: 'Three Yin Intersection',
-    region: 'leg',
-    regionLabel: 'Inner Ankle',
-    facing: 'front',
-    orderIndex: 1,
-    modelPos: [0.089, -0.612, -0.037],
-    surfaceNormal: [-0.95, 0.05, 0.30],
-    badgeOffset: [-0.045, 0.020, 0.035],
-    meridian: 'Spleen Meridian',
-    depthTarget: 14.0,
-    depthCun: '1.0–1.5 cun',
-    nerves: 'Tibial Nerve & Saphenous Nerve',
-    vessels: 'Posterior Tibial Artery',
-    relief: 'Pelvic Circulation, Insomnia, Leg Cramping, Hormonal Balance',
-    deqi: 'Steady rhythmic warmth coursing up the inner calf.',
-    colorHex: 0xec4899
-  },
-  {
-    id: 'bl23',
-    code: 'BL-23',
-    fullName: 'BL-23 (Shenshu)',
-    pinyin: 'Shenshu',
-    hanzi: '肾俞',
-    translation: 'Kidney Shu',
-    englishTitle: 'Kidney Shu',
-    region: 'back',
-    regionLabel: 'Lumbar Spine',
-    facing: 'back',
-    orderIndex: 0,
-    meridian: 'Bladder Meridian',
-    depthTarget: 14.0,
-    depthCun: '0.8–1.2 cun',
-    modelPos: [0.039, 0.086, -0.139],
-    surfaceNormal: [0.25, 0.00, -0.97],
-    badgeOffset: [0.045, 0.020, -0.045],
-    nerves: 'Lumbar Spinal Nerve Dorsal Ramus (L2)',
-    vessels: 'Lumbar Arteries & Paraspinal Plexus',
-    relief: 'Chronic Lower Back Pain, Sciatica, Core Instability, Disc Fatigue',
-    deqi: 'Deep, comforting heat diffusing through sacrum and lumbar spine.',
-    colorHex: 0x8b5cf6
-  }
-];
-
-// Precise Medical Close-Up Framing for Each Acupoint (Exact Skin Alignment)
-export const ACUPOINT_CLOSEUPS = {
-  li11: { cam: [0.210, 0.544, 0.301], lookAt: [0.210, 0.514, -0.059], facing: 'front' },
-  pc6:  { cam: [0.186, 0.339, 0.443], lookAt: [0.186, 0.309, 0.083],  facing: 'front' },
-  lu7:  { cam: [0.219, 0.342, 0.403], lookAt: [0.219, 0.312, 0.043],  facing: 'front' },
-  ht7:  { cam: [0.184, 0.357, 0.344], lookAt: [0.184, 0.327, -0.016], facing: 'front' },
-  li4:  { cam: [0.212, 0.315, 0.415], lookAt: [0.212, 0.285, 0.055],  facing: 'front' },
-  gv20: { cam: [0.001, 1.293, 0.319], lookAt: [0.001, 1.093, -0.001], facing: 'front' },
-  gb20: { cam: [-0.021, 0.893, 0.433], lookAt: [-0.021, 0.863, 0.073], facing: 'back' },
-  bl10: { cam: [-0.033, 0.848, 0.462], lookAt: [-0.033, 0.818, 0.102], facing: 'back' },
-  bl23: { cam: [-0.032, 0.420, 0.473], lookAt: [-0.032, 0.390, 0.113], facing: 'back' },
-  st36: { cam: [0.094, 0.031, 0.388], lookAt: [0.094, 0.001, 0.028],  facing: 'front' },
-  sp6:  { cam: [0.073, -0.149, 0.330], lookAt: [0.073, -0.179, -0.030], facing: 'front' }
-};
 
 // Compatibility definitions for pathology treatment selection
 const CLINICAL_PROBLEMS = [
@@ -710,21 +419,21 @@ function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected) {
 // HOLOGRAPHIC NEEDLE DEPTH GAUGE & PHYSICAL SURGICAL INSTRUMENT TRAY HELPERS
 // ============================================================================
 
-// 3D In-Scene Holographic Gauge Mounted Directly on Needle Handle
-function createNeedleDepthBadgeCanvas(depth, targetDepth, isCured) {
+// 3D In-Scene Holographic Gauge Mounted Directly on Tool Handle (Needle, Cup, Moxa)
+function createToolDepthBadgeCanvas(toolId, value, targetValue, isCured, painName) {
   const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 72;
+  canvas.width = 280;
+  canvas.height = 76;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = isCured ? 'rgba(6, 78, 59, 0.94)' : 'rgba(15, 23, 42, 0.92)';
+  ctx.fillStyle = isCured ? 'rgba(6, 78, 59, 0.95)' : 'rgba(15, 23, 42, 0.93)';
   ctx.strokeStyle = isCured ? '#10b981' : '#e02868';
   ctx.lineWidth = 3;
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 248, 64, 16);
+    ctx.roundRect(4, 4, 272, 68, 16);
   } else {
-    ctx.rect(4, 4, 248, 64);
+    ctx.rect(4, 4, 272, 68);
   }
   ctx.fill();
   ctx.stroke();
@@ -733,25 +442,60 @@ function createNeedleDepthBadgeCanvas(depth, targetDepth, isCured) {
   ctx.textBaseline = 'middle';
   if (isCured) {
     ctx.fillStyle = '#6ee7b7';
-    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('✓ KNOT CURED (DE-QI)', 128, 25);
-    ctx.font = '13px monospace';
+    ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('✓ PAIN DISSOLVED', 140, 24);
+    ctx.font = '600 12px monospace';
     ctx.fillStyle = '#a7f3d0';
-    ctx.fillText(`${depth.toFixed(1)}mm Striated Muscle`, 128, 48);
-  } else if (depth <= 0.1) {
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('↕ DRAG TO STAB', 128, 25);
-    ctx.font = 'bold 13px monospace';
-    ctx.fillStyle = '#fb7185';
-    ctx.fillText(`Target: ${targetDepth}mm`, 128, 47);
+    ctx.fillText(painName ? `${painName.slice(0, 32)}` : 'Spasm Vanished • De-Qi', 140, 50);
+  } else if (toolId === 'cup') {
+    if (value <= 0.1) {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText('↕ DRAG TO SUCTION', 140, 24);
+      ctx.font = 'bold 12px monospace';
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText(`Target: 6.0mm Lift • Vacuum`, 140, 50);
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`${value.toFixed(1)} mm lift`, 140, 26);
+      ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillStyle = '#7dd3fc';
+      ctx.fillText(`Fascial Decompression`, 140, 50);
+    }
+  } else if (toolId === 'moxa') {
+    if (value <= 22) {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText('↕ DRAG TO WARM', 140, 24);
+      ctx.font = 'bold 12px monospace';
+      ctx.fillStyle = '#fb923c';
+      ctx.fillText(`Target: 43°C • Herbal Moxa`, 140, 50);
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`${value.toFixed(0)} °C`, 140, 26);
+      ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillStyle = '#fdba74';
+      ctx.fillText(`Infrared Thermogenesis`, 140, 50);
+    }
   } else {
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 22px monospace';
-    ctx.fillText(`${depth.toFixed(1)} mm`, 128, 26);
-    ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillStyle = '#fda4af';
-    ctx.fillText(`Target: ${targetDepth}mm`, 128, 48);
+    // Needle
+    if (value <= 0.1) {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText('↕ DRAG TO STAB', 140, 24);
+      ctx.font = 'bold 12px monospace';
+      ctx.fillStyle = '#fb7185';
+      ctx.fillText(`Target: ${targetValue}mm • Needle`, 140, 50);
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText(`${value.toFixed(1)} mm`, 140, 26);
+      ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillStyle = '#fda4af';
+      ctx.fillText(`Target: ${targetValue}mm • Motor Endplate`, 140, 50);
+    }
   }
 
   return canvas;
@@ -831,15 +575,14 @@ function buildPhysical3DTray(scene, trayToolHitboxes, trayHaloMeshes, trayLabelS
   drape.position.y = 0.009;
   trayGroup.add(drape);
 
-  // Mayo Stand Chrome Column & Base
-  const standPole = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.65, 20), steelMat);
-  standPole.position.set(0, -0.33, 0);
-  trayGroup.add(standPole);
-
-  const standBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.02, 32), steelMat);
-  standBase.position.set(0, -0.65, 0);
-  standBase.receiveShadow = true;
-  trayGroup.add(standBase);
+  // Floating Instrument Tray Hover Halo Underglow (Completely Stand-Free!)
+  const underglow = new THREE.Mesh(
+    new THREE.RingGeometry(0.04, 0.16, 32),
+    new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.35 })
+  );
+  underglow.rotation.x = -Math.PI / 2;
+  underglow.position.y = -0.012;
+  trayGroup.add(underglow);
 
   // 1. Tool Slot: 0.18mm Needle
   const needleSlot = new THREE.Group();
@@ -1050,7 +793,7 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
   deqiRing.position.y = 0.001;
   needleGroup.add(deqiRing);
 
-  const holoTex = new THREE.CanvasTexture(createNeedleDepthBadgeCanvas(0, pt0.depthTarget, false));
+  const holoTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('needle', 0, pt0.depthTarget, false, pt0.painName));
   const holoSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: holoTex }));
   holoSprite.position.set(0.022, 0.068, 0.0);
   holoSprite.scale.set(0.065, 0.018, 1.0);
@@ -1061,12 +804,12 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
     new THREE.MeshBasicMaterial({ visible: false })
   );
   stabHit.position.y = 0.055;
-  stabHit.userData = { isNeedleStabHandle: true };
+  stabHit.userData = { isNeedleStabHandle: true, toolId: 'needle' };
   needleShaftGroup.add(stabHit);
   needleHandleHitboxes.push(stabHit);
 
   // Also enable direct grabbing and stabbing on holographic badge
-  holoSprite.userData = { isNeedleStabHandle: true };
+  holoSprite.userData = { isNeedleStabHandle: true, toolId: 'needle' };
   needleHandleHitboxes.push(holoSprite);
 
   // Cupping Tool on Body
@@ -1080,7 +823,9 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
   );
   bodyCupDome.rotation.x = Math.PI;
   bodyCupDome.position.y = 0.018;
+  bodyCupDome.userData = { isNeedleStabHandle: true, toolId: 'cup' };
   cupGroup.add(bodyCupDome);
+  needleHandleHitboxes.push(bodyCupDome);
 
   const fleshBulge = new THREE.Mesh(
     new THREE.SphereGeometry(0.013, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2),
@@ -1089,6 +834,24 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
   fleshBulge.position.y = 0.001;
   fleshBulge.scale.set(1.0, 0.2, 1.0);
   cupGroup.add(fleshBulge);
+
+  // Therapeutic Petechial Erythema Ring under Cup
+  const cupErythemaRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.003, 0.017, 24),
+    new THREE.MeshBasicMaterial({ color: 0x9f1239, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
+  );
+  cupErythemaRing.rotation.x = -Math.PI / 2;
+  cupErythemaRing.position.y = 0.001;
+  cupGroup.add(cupErythemaRing);
+
+  // Cupping In-Scene Holographic Gauge
+  const cupHoloTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('cup', 0, 6.0, false, pt0.painName));
+  const cupHoloSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: cupHoloTex }));
+  cupHoloSprite.position.set(0.022, 0.048, 0.0);
+  cupHoloSprite.scale.set(0.065, 0.018, 1.0);
+  cupHoloSprite.userData = { isNeedleStabHandle: true, toolId: 'cup' };
+  cupGroup.add(cupHoloSprite);
+  needleHandleHitboxes.push(cupHoloSprite);
 
   // Moxa Tool on Body
   const moxaGroup = new THREE.Group();
@@ -1100,7 +863,9 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
     new THREE.MeshStandardMaterial({ color: 0x543310, roughness: 0.85 })
   );
   bodyMoxaStick.position.y = 0.055;
+  bodyMoxaStick.userData = { isNeedleStabHandle: true, toolId: 'moxa' };
   moxaGroup.add(bodyMoxaStick);
+  needleHandleHitboxes.push(bodyMoxaStick);
 
   const bodyMoxaEmber = new THREE.Mesh(
     new THREE.CylinderGeometry(0.0062, 0.0062, 0.008, 16),
@@ -1109,9 +874,51 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
   bodyMoxaEmber.position.y = 0.027;
   moxaGroup.add(bodyMoxaEmber);
 
-  const thermalLight = new THREE.PointLight(0xff4500, 0.0, 0.15);
+  const thermalLight = new THREE.PointLight(0xff4500, 0.0, 0.20);
   thermalLight.position.y = 0.025;
   moxaGroup.add(thermalLight);
+
+  // Infrared Radiating Ring under Moxa
+  const moxaThermalRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.004, 0.025, 24),
+    new THREE.MeshBasicMaterial({ color: 0xff6b00, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
+  );
+  moxaThermalRing.rotation.x = -Math.PI / 2;
+  moxaThermalRing.position.y = 0.001;
+  moxaGroup.add(moxaThermalRing);
+
+  // Moxa In-Scene Holographic Gauge
+  const moxaHoloTex = new THREE.CanvasTexture(createToolDepthBadgeCanvas('moxa', 20, 43.0, false, pt0.painName));
+  const moxaHoloSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: moxaHoloTex }));
+  moxaHoloSprite.position.set(0.022, 0.065, 0.0);
+  moxaHoloSprite.scale.set(0.065, 0.018, 1.0);
+  moxaHoloSprite.userData = { isNeedleStabHandle: true, toolId: 'moxa' };
+  moxaGroup.add(moxaHoloSprite);
+  needleHandleHitboxes.push(moxaHoloSprite);
+
+  // Body Thanos Snap Ash Particles System (Localized at Acupoint)
+  const bodyPCount = 2000;
+  const bodyPGeo = new THREE.BufferGeometry();
+  const bodyPPos = new Float32Array(bodyPCount * 3);
+  const bodyPVel = new Float32Array(bodyPCount * 3);
+  for (let i = 0; i < bodyPCount; i++) {
+    bodyPPos[i * 3] = (Math.random() - 0.5) * 0.015;
+    bodyPPos[i * 3 + 1] = Math.random() * 0.010;
+    bodyPPos[i * 3 + 2] = (Math.random() - 0.5) * 0.015;
+    bodyPVel[i * 3] = (Math.random() - 0.5) * 0.0018;
+    bodyPVel[i * 3 + 1] = 0.0015 + Math.random() * 0.0035;
+    bodyPVel[i * 3 + 2] = (Math.random() - 0.5) * 0.0018;
+  }
+  bodyPGeo.setAttribute('position', new THREE.BufferAttribute(bodyPPos, 3));
+  const bodyPMat = new THREE.PointsMaterial({
+    color: 0xe02868,
+    size: 0.0038,
+    transparent: true,
+    opacity: 0.0,
+    blending: THREE.AdditiveBlending
+  });
+  const bodyParticles = new THREE.Points(bodyPGeo, bodyPMat);
+  assembly.add(bodyParticles);
 
   return {
     assembly,
@@ -1121,8 +928,14 @@ function buildBodyToolAssembly(bodyMesh, needleHandleHitboxes) {
     deqiRing,
     cupGroup,
     fleshBulge,
+    cupErythemaRing,
+    cupHoloSprite,
     moxaGroup,
-    thermalLight
+    moxaThermalRing,
+    moxaHoloSprite,
+    thermalLight,
+    bodyParticles,
+    bodyPData: { points: bodyParticles, geo: bodyPGeo, mat: bodyPMat, vel: bodyPVel, active: false, timer: 0 }
   };
 }
 
@@ -1210,9 +1023,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const needleHandleHitboxesRef = useRef([]);
   const cupBodyToolRef = useRef(null);
   const cupFleshBulgeRef = useRef(null);
+  const cupErythemaRingRef = useRef(null);
+  const cupHoloSpriteRef = useRef(null);
   const moxaBodyToolRef = useRef(null);
+  const moxaThermalRingRef = useRef(null);
+  const moxaHoloSpriteRef = useRef(null);
   const moxaThermalLightRef = useRef(null);
   const deqiWaveRingRef = useRef(null);
+  const bodyThanosParticlesRef = useRef(null);
+  const [filterRegion, setFilterRegion] = useState('all');
 
   // Physical 3D Surgical Tray Refs
   const physicalTrayGroupRef = useRef(null);
@@ -1270,6 +1089,23 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       moxaBodyToolRef.current.visible = (toolId === 'moxa');
     }
 
+    // Refresh gauges with this acupoint's authentic pain name
+    if (needleHoloBadgeRef.current && needleHoloBadgeRef.current.material) {
+      needleHoloBadgeRef.current.material.map = new THREE.CanvasTexture(
+        createToolDepthBadgeCanvas('needle', 0, pt.depthTarget, false, pt.painName)
+      );
+    }
+    if (cupHoloSpriteRef.current && cupHoloSpriteRef.current.material) {
+      cupHoloSpriteRef.current.material.map = new THREE.CanvasTexture(
+        createToolDepthBadgeCanvas('cup', 0, 6.0, false, pt.painName)
+      );
+    }
+    if (moxaHoloSpriteRef.current && moxaHoloSpriteRef.current.material) {
+      moxaHoloSpriteRef.current.material.map = new THREE.CanvasTexture(
+        createToolDepthBadgeCanvas('moxa', 20, 43.0, false, pt.painName)
+      );
+    }
+
     // Update highlights on Physical 3D Tray
     const halos = trayHaloMeshesRef.current;
     if (halos.needle) halos.needle.material.opacity = (toolId === 'needle' ? 0.85 : 0.0);
@@ -1291,34 +1127,49 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
   }, []);
 
-  // Apply Needle Depth & Skin Physics
+  // Apply Needle Depth & Skin Physics across all tools
   const applySkinPhysicsAndToolHeight = useCallback((val) => {
-    // 1. Synchronize 3D Needle on Human Body Mesh (Visible entry into flesh)
-    if (needleShaftGroupRef.current) {
-      // Penetration travels in local -Y direction (into body)
-      const maxPenetration = 0.024;
-      const pen = (val / 15.0) * maxPenetration;
-      needleShaftGroupRef.current.position.y = -pen;
-    }
-    if (needleHoloBadgeRef.current && needleHoloBadgeRef.current.material && needleHoloBadgeRef.current.material.map) {
-      needleHoloBadgeRef.current.material.map.image = createNeedleDepthBadgeCanvas(val, currentProb.depthTarget, isDisintegrated);
-      needleHoloBadgeRef.current.material.map.needsUpdate = true;
-    }
-    if (deqiWaveRingRef.current) {
-      if (val >= 11.8) {
-        deqiWaveRingRef.current.visible = true;
-        deqiWaveRingRef.current.material.opacity = 0.85;
-      } else {
-        deqiWaveRingRef.current.visible = false;
+    const curPt = CLINICAL_ACUPOINTS[selectedAcupointIdx] || CLINICAL_ACUPOINTS[0];
+    const curTool = activeToolRef.current;
+
+    // 1. Synchronize 3D Tools on Human Body Mesh with distinct visual effects
+    if (curTool === 'needle') {
+      if (needleShaftGroupRef.current) {
+        const pen = (val / 15.0) * 0.024;
+        needleShaftGroupRef.current.position.y = -pen;
       }
-    }
-    if (cupFleshBulgeRef.current) {
+      if (needleHoloBadgeRef.current && needleHoloBadgeRef.current.material) {
+        needleHoloBadgeRef.current.material.map.image = createToolDepthBadgeCanvas('needle', val, curPt.depthTarget, isDisintegrated, curPt.painName);
+        needleHoloBadgeRef.current.material.map.needsUpdate = true;
+      }
+      if (deqiWaveRingRef.current) {
+        deqiWaveRingRef.current.visible = (val >= (curPt.depthTarget - 0.5));
+        deqiWaveRingRef.current.material.opacity = 0.85;
+      }
+    } else if (curTool === 'cup') {
       const suctionRatio = Math.min(1.0, val / 6.0);
-      cupFleshBulgeRef.current.scale.y = 0.2 + suctionRatio * 0.9;
-    }
-    if (moxaThermalLightRef.current) {
-      const heatRatio = Math.min(1.0, Math.max(0, (val - 35.0) / 8.0));
-      moxaThermalLightRef.current.intensity = heatRatio * 1.5;
+      if (cupFleshBulgeRef.current) {
+        cupFleshBulgeRef.current.scale.y = 0.2 + suctionRatio * 1.8;
+      }
+      if (cupErythemaRingRef.current) {
+        cupErythemaRingRef.current.material.opacity = suctionRatio * 0.85;
+      }
+      if (cupHoloSpriteRef.current && cupHoloSpriteRef.current.material) {
+        cupHoloSpriteRef.current.material.map.image = createToolDepthBadgeCanvas('cup', val, 6.0, isDisintegrated, curPt.painName);
+        cupHoloSpriteRef.current.material.map.needsUpdate = true;
+      }
+    } else if (curTool === 'moxa') {
+      const heatRatio = Math.min(1.0, Math.max(0, (val - 20.0) / 23.0));
+      if (moxaThermalLightRef.current) {
+        moxaThermalLightRef.current.intensity = heatRatio * 2.5;
+      }
+      if (moxaThermalRingRef.current) {
+        moxaThermalRingRef.current.material.opacity = heatRatio * 0.80;
+      }
+      if (moxaHoloSpriteRef.current && moxaHoloSpriteRef.current.material) {
+        moxaHoloSpriteRef.current.material.map.image = createToolDepthBadgeCanvas('moxa', val, 43.0, isDisintegrated, curPt.painName);
+        moxaHoloSpriteRef.current.material.map.needsUpdate = true;
+      }
     }
 
     // 2. Strata Block meshes (if visible)
@@ -1413,7 +1264,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (adhesionMeshRef.current) adhesionMeshRef.current.visible = false;
     if (stasisMeshRef.current) stasisMeshRef.current.visible = false;
 
-    // Spawn 5,000 Thanos 3D Particles at target location
+    // Spawn 5,000 Thanos 3D Particles at target location in strata
     const pData = particlesRef.current;
     if (pData) {
       pData.active = true;
@@ -1431,6 +1282,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         posArr[i * 3 + 2] = targetZ + (Math.random() - 0.5) * 0.30;
       }
       posAttr.needsUpdate = true;
+    }
+
+    // Spawn 2,000 Thanos 3D Ash Particles directly on the Human Body Mesh!
+    const bPData = bodyThanosParticlesRef.current;
+    if (bPData) {
+      bPData.active = true;
+      bPData.timer = 0;
+      bPData.mat.opacity = 1.0;
+    }
+
+    // Update in-scene gauges to display CURED / DISSOLVED state
+    const curPt = CLINICAL_ACUPOINTS[selectedAcupointIdx] || CLINICAL_ACUPOINTS[0];
+    if (needleHoloBadgeRef.current && needleHoloBadgeRef.current.material) {
+      needleHoloBadgeRef.current.material.map.image = createToolDepthBadgeCanvas('needle', 15.0, curPt.depthTarget, true, curPt.painName);
+      needleHoloBadgeRef.current.material.map.needsUpdate = true;
+    }
+    if (cupHoloSpriteRef.current && cupHoloSpriteRef.current.material) {
+      cupHoloSpriteRef.current.material.map.image = createToolDepthBadgeCanvas('cup', 6.0, 6.0, true, curPt.painName);
+      cupHoloSpriteRef.current.material.map.needsUpdate = true;
+    }
+    if (moxaHoloSpriteRef.current && moxaHoloSpriteRef.current.material) {
+      moxaHoloSpriteRef.current.material.map.image = createToolDepthBadgeCanvas('moxa', 43.0, 43.0, true, curPt.painName);
+      moxaHoloSpriteRef.current.material.map.needsUpdate = true;
     }
 
     setTimeout(() => {
@@ -1474,6 +1348,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // Unified Regional Presentation: Natural Articulation, Close Zoom & Sequential Acupoint Pop-up
   const triggerRegionPresentation = useCallback((regionKey, selectedIdx) => {
     setActiveRegion(regionKey);
+    setFilterRegion(regionKey === 'full' ? 'all' : regionKey);
     isCameraAnimatingRef.current = true;
 
     // First fold down all pins
@@ -1502,25 +1377,33 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
 
     let targetFacing = 'front';
-    if (regionKey === 'hand') {
-      targetCamPosRef.current.set(0.22, 0.36, 0.72);
-      targetLookAtRef.current.set(0.20, 0.34, 0.04);
-      targetFacing = 'front';
-    } else if (regionKey === 'leg') {
-      targetCamPosRef.current.set(0.10, -0.12, 0.82);
-      targetLookAtRef.current.set(0.09, -0.15, 0.02);
+    if (regionKey === 'face' || regionKey === 'crown') {
+      targetCamPosRef.current.set(0.0, 0.95, 0.52);
+      targetLookAtRef.current.set(0.0, 0.82, 0.05);
       targetFacing = 'front';
     } else if (regionKey === 'neck') {
-      targetCamPosRef.current.set(0.0, 0.88, 0.78);
-      targetLookAtRef.current.set(0.0, 0.86, 0.0);
+      targetCamPosRef.current.set(0.0, 0.85, 0.58);
+      targetLookAtRef.current.set(0.0, 0.65, 0.0);
       targetFacing = 'back';
+    } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
+      targetCamPosRef.current.set(0.25, 0.28, 0.50);
+      targetLookAtRef.current.set(0.20, 0.12, 0.04);
+      targetFacing = 'front';
+    } else if (regionKey === 'arm_right') {
+      targetCamPosRef.current.set(-0.25, 0.28, 0.50);
+      targetLookAtRef.current.set(-0.20, 0.12, 0.04);
+      targetFacing = 'front';
     } else if (regionKey === 'back') {
-      targetCamPosRef.current.set(0.0, 0.42, 0.88);
-      targetLookAtRef.current.set(0.0, 0.40, 0.0);
+      targetCamPosRef.current.set(0.0, 0.35, 0.65);
+      targetLookAtRef.current.set(0.0, 0.25, 0.0);
       targetFacing = 'back';
-    } else if (regionKey === 'crown') {
-      targetCamPosRef.current.set(0.0, 1.25, 0.75);
-      targetLookAtRef.current.set(0.0, 1.05, 0.0);
+    } else if (regionKey === 'leg_left' || regionKey === 'leg') {
+      targetCamPosRef.current.set(0.12, -0.40, 0.68);
+      targetLookAtRef.current.set(0.10, -0.55, 0.0);
+      targetFacing = 'front';
+    } else if (regionKey === 'leg_right') {
+      targetCamPosRef.current.set(-0.12, -0.40, 0.68);
+      targetLookAtRef.current.set(-0.10, -0.55, 0.0);
       targetFacing = 'front';
     }
 
@@ -1569,6 +1452,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     setSelectedAcupointIdx(idx);
     setActiveRegion(pt.region || 'close');
+    setFilterRegion(pt.region || 'all');
     setShowStrataPip(true);
     isCameraAnimatingRef.current = true;
 
@@ -1627,20 +1511,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     }
   }, [selectedAcupointIdx]);
 
-  // Select tool
+  // Select tool on Floating Tray without forcing camera away
   const handleSelectTool = useCallback((toolId) => {
     setActiveTool(toolId);
     const probIdx = toolId === 'needle' ? 0 : toolId === 'cup' ? 1 : 2;
     setSelectedProblemIdx(probIdx);
     handleReset();
     playAcuSound('pickup', isMuted);
-
-    if (activeRegion === 'full') {
-      triggerAcupointCloseUp(selectedAcupointIdx);
-    } else {
-      updateBodyToolPlacement(selectedAcupointIdx, toolId);
-    }
-  }, [activeRegion, handleReset, isMuted, selectedAcupointIdx, triggerAcupointCloseUp, updateBodyToolPlacement]);
+    updateBodyToolPlacement(selectedAcupointIdx, toolId);
+  }, [handleReset, isMuted, selectedAcupointIdx, updateBodyToolPlacement]);
 
   // Click & Hold to Plunge Needle into Acupoint
   const startHoldPlunge = useCallback(() => {
@@ -1924,7 +1803,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing });
         });
 
-        // Build 3D Surgical Tool Assembly directly on Human Body Mesh!
+        // Build Physical 3D Tools directly on Body Mesh!
         const toolAssemblyData = buildBodyToolAssembly(bodyMesh, needleHandleHitboxesRef.current);
         bodyToolAssemblyRef.current = toolAssemblyData.assembly;
         needleBodyToolRef.current = toolAssemblyData.needleGroup;
@@ -1933,8 +1812,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         deqiWaveRingRef.current = toolAssemblyData.deqiRing;
         cupBodyToolRef.current = toolAssemblyData.cupGroup;
         cupFleshBulgeRef.current = toolAssemblyData.fleshBulge;
+        cupErythemaRingRef.current = toolAssemblyData.cupErythemaRing;
+        cupHoloSpriteRef.current = toolAssemblyData.cupHoloSprite;
         moxaBodyToolRef.current = toolAssemblyData.moxaGroup;
+        moxaThermalRingRef.current = toolAssemblyData.moxaThermalRing;
+        moxaHoloSpriteRef.current = toolAssemblyData.moxaHoloSprite;
         moxaThermalLightRef.current = toolAssemblyData.thermalLight;
+        bodyThanosParticlesRef.current = toolAssemblyData.bodyPData;
 
         // Position on initially active acupoint
         updateBodyToolPlacement(selectedAcupointIdx, activeTool);
@@ -2095,35 +1979,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const lz = localHit.z;
           console.log('[AcuClick] HitObj:', hitObj.name || hitObj.type, 'WorldPt:', { x: Number(worldPt.x.toFixed(3)), y: Number(worldPt.y.toFixed(3)), z: Number(worldPt.z.toFixed(3)) }, 'LocalHit:', { lx: Number(lx.toFixed(3)), ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
 
-          // 1. Head / Cranial Crown (local Y > 0.80)
-          if (ly > 0.80) {
-            console.log('[AcuClick] -> Region: crown');
-            const crownPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'crown');
-            triggerAcupointCloseUp(crownPtIdx !== -1 ? crownPtIdx : 0);
+          let targetRegion = 'face';
+          if (ly > 0.72) {
+            targetRegion = 'face';
+          } else if (ly >= 0.55 && ly <= 0.72) {
+            targetRegion = 'neck';
+          } else if (lz < -0.03 && ly > -0.20 && ly < 0.55 && Math.abs(lx) < 0.14) {
+            targetRegion = 'back';
+          } else if (lx > 0.12 && ly < 0.55) {
+            targetRegion = 'arm_left';
+          } else if (lx < -0.12 && ly < 0.55) {
+            targetRegion = 'arm_right';
+          } else if (lx > 0.015 && ly < -0.20) {
+            targetRegion = 'leg_left';
+          } else if (lx < -0.015 && ly < -0.20) {
+            targetRegion = 'leg_right';
+          } else {
+            targetRegion = 'face';
           }
-          // 2. Neck / Occipital Cervical Region (local Y between 0.58 and 0.80, medial |X| < 0.12)
-          else if (ly >= 0.58 && Math.abs(lx) < 0.12) {
-            console.log('[AcuClick] -> Region: neck');
-            const neckPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'neck');
-            triggerAcupointCloseUp(neckPtIdx !== -1 ? neckPtIdx : 0);
-          }
-          // 3. Arms / Forearms / Hands (|X| > 0.15 and ly < 0.42)
-          else if (Math.abs(lx) > 0.15 && ly < 0.42) {
-            console.log('[AcuClick] -> Region: hand');
-            const armPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'hand');
-            triggerAcupointCloseUp(armPtIdx !== -1 ? armPtIdx : 0);
-          }
-          // 4. Lower Limbs / Legs (local Y < -0.05, medial |X| <= 0.15)
-          else if (ly < -0.05 && Math.abs(lx) <= 0.15) {
-            console.log('[AcuClick] -> Region: leg');
-            const legPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'leg');
-            triggerAcupointCloseUp(legPtIdx !== -1 ? legPtIdx : 0);
-          }
-          // 5. Torso / Back / Spine (local Y between -0.05 and 0.58, |X| <= 0.15)
-          else {
-            console.log('[AcuClick] -> Region: back');
-            const backPtIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === 'back');
-            triggerAcupointCloseUp(backPtIdx !== -1 ? backPtIdx : 0);
+
+          console.log('[AcuClick] Detected Region:', targetRegion);
+          const ptIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === targetRegion);
+          if (ptIdx !== -1) {
+            triggerAcupointCloseUp(ptIdx);
           }
         }
       }
@@ -2624,7 +2502,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       // Diagnostic LED rotation
       ringLed.rotation.z += 0.004;
 
-      // Thanos Particles Physics
+      // Thanos Particles Physics (Tissue Block)
       const pData = particlesRef.current;
       if (pData && pData.active) {
         pData.timer += 0.016;
@@ -2642,6 +2520,27 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
         if (pData.timer >= 2.2) {
           pData.active = false;
+        }
+      }
+
+      // Body Model In-Scene Thanos Particle Ash Physics (On Man Mesh)
+      const bPData = bodyThanosParticlesRef.current;
+      if (bPData && bPData.active) {
+        bPData.timer += 0.016;
+        const bPos = bPData.geo.attributes.position.array;
+        const bVel = bPData.vel;
+
+        for (let i = 0; i < 2000; i++) {
+          bPos[i * 3] += bVel[i * 3];
+          bPos[i * 3 + 1] += bVel[i * 3 + 1];
+          bPos[i * 3 + 2] += bVel[i * 3 + 2];
+          bVel[i * 3 + 1] += 0.0001;
+        }
+        bPData.geo.attributes.position.needsUpdate = true;
+        bPData.mat.opacity = Math.max(0, 1.0 - bPData.timer / 1.8);
+
+        if (bPData.timer >= 1.8) {
+          bPData.active = false;
         }
       }
 
@@ -2815,22 +2714,61 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         </div>
       </div>
 
-      {/* Left Panel: Acupoints & Strata Pathology (w-56) */}
-      <div className="absolute top-14 left-3 z-30 flex flex-col space-y-2 pointer-events-auto w-56 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {/* Acupoints Grid */}
+      {/* Left Panel: Acupoints & Anatomical Regions (w-64) */}
+      <div className="absolute top-14 left-3 z-30 flex flex-col space-y-2 pointer-events-auto w-64 max-h-[calc(100%-140px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Acupoints Grid with Region Selector Tabs */}
         <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
               <User className="w-3 h-3 text-[#e02868]" />
-              <span>3D Body Acupoints</span>
+              <span>3D Clinical Acupoints (39)</span>
             </span>
             <span className="text-[9px] text-[#e02868] font-mono font-bold">
-              Click to Zoom
+              All Limbs
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 max-h-36 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {/* Anatomical Region Filter Tabs */}
+          <div className="flex flex-wrap gap-1 pb-1 border-b border-neutral-100">
+            {[
+              { id: 'all', label: 'All (39)' },
+              { id: 'face', label: 'Face' },
+              { id: 'neck', label: 'Neck' },
+              { id: 'arm_left', label: 'L-Arm' },
+              { id: 'arm_right', label: 'R-Arm' },
+              { id: 'back', label: 'Back' },
+              { id: 'leg_left', label: 'L-Leg' },
+              { id: 'leg_right', label: 'R-Leg' }
+            ].map(tab => {
+              const isActive = filterRegion === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setFilterRegion(tab.id);
+                    if (tab.id === 'all') {
+                      triggerRegionPresentation('full');
+                    } else {
+                      navigateCameraToRegion(tab.id);
+                    }
+                  }}
+                  className={`px-2 py-0.5 rounded-lg text-[9px] font-bold transition ${
+                    isActive
+                      ? 'bg-neutral-900 text-white shadow-sm'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Filtered Acupoints List */}
+          <div className="grid grid-cols-2 gap-1.5 max-h-44 overflow-y-auto pr-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CLINICAL_ACUPOINTS.map((pt, idx) => {
+              if (filterRegion !== 'all' && pt.region !== filterRegion) return null;
               const isSelected = selectedAcupointIdx === idx;
               return (
                 <button
@@ -2843,23 +2781,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                       : 'bg-neutral-50/80 text-neutral-700 border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900'
                   }`}
                 >
-                  <div className="text-xs font-bold">{pt.code}</div>
-                  <div className="text-[9px] opacity-80 truncate">{pt.translation} • {pt.depthTarget}mm</div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold">{pt.code}</span>
+                    <span className={`text-[8px] font-mono ${isSelected ? 'text-white/80' : 'text-[#e02868] font-semibold'}`}>{pt.depthTarget}mm</span>
+                  </div>
+                  <div className="text-[9px] opacity-80 truncate">{pt.translation}</div>
+                  <div className={`text-[8px] truncate mt-0.5 font-medium ${isSelected ? 'text-white/90' : 'text-neutral-500'}`} title={pt.painName}>
+                    {pt.painName}
+                  </div>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Pathology Selector */}
+        {/* Pathology Selector / Clinical Modalities */}
         <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 p-3 rounded-2xl shadow-md space-y-2">
           <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
               <Layers className="w-3 h-3 text-amber-500" />
-              <span>Strata Pathology</span>
+              <span>Modalities & Modifiers</span>
             </span>
             <span className="text-[9px] text-amber-600 font-mono font-bold">
-              Tissue Target
+              3D Physics
             </span>
           </div>
 
@@ -2871,13 +2815,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
                   key={prob.id}
                   type="button"
                   onClick={() => {
-                    setSelectedProblemIdx(idx);
-                    setActiveTool(prob.toolId);
-                    handleReset();
-                    playAcuSound('pickup', isMuted);
-                    if (activeRegion === 'full') {
-                      triggerAcupointCloseUp(selectedAcupointIdx);
-                    }
+                    handleSelectTool(prob.toolId);
                   }}
                   className={`flex items-center justify-between p-2 rounded-xl text-left border transition ${
                     isSelected
@@ -2964,76 +2902,25 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         />
       )}
 
-      {/* POST-TREATMENT SUCCESS CARD (Thanos Disintegration Complete - Non-blocking floating banner) */}
+      {/* Sleek Floating Toast (No generic modal popup card - Thanos snap disintegrated pain badge directly on body & strata) */}
       {isDisintegrated && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 max-w-md w-[92%] sm:w-auto bg-white/95 backdrop-blur-md border border-[#e02868]/40 p-4 rounded-2xl shadow-2xl space-y-3 animate-in fade-in slide-in-from-top-4 pointer-events-auto">
-          <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2">
-            <div className="flex items-center gap-2 text-[#e02868]">
-              <Sparkles className="w-4 h-4 animate-spin" />
-              <span className="text-[11px] font-bold tracking-wider uppercase font-mono">
-                {activeTool === 'needle' ? 'De-Qi Resonance • Motor Knot Cured' : activeTool === 'cup' ? 'Fascia Decompressed' : 'Cold Stasis Dispelled'}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="text-neutral-400 hover:text-neutral-700 p-1 rounded-lg transition"
-              title="Dismiss Notification"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="text-left space-y-1">
-            <h4 className="text-sm font-black text-neutral-900">
-              {currentProb.reliefTitle}
-            </h4>
-            <p className="text-xs text-neutral-600 leading-relaxed">
-              {currentProb.reliefText}
-            </p>
-          </div>
-
-          {/* Test Compatibility: Myofascial Adhesion Unlocked indicator */}
-          {selectedProblemIdx === 1 && (
-            <div className="text-xs text-purple-600 font-bold">
-              Myofascial Adhesion Unlocked
-            </div>
-          )}
-
-          <div className="grid grid-cols-3 gap-2 py-2 border-y border-neutral-200/80 text-center">
-            <div>
-              <div className="text-[9px] text-neutral-500 uppercase font-mono">Myofascial Knot</div>
-              <div className="text-xs font-bold text-[#e02868]">0% Restored</div>
-            </div>
-            <div>
-              <div className="text-[9px] text-neutral-500 uppercase font-mono">De-Qi Pulse</div>
-              <div className="text-xs font-bold text-[#e02868]">+380% Active</div>
-            </div>
-            <div>
-              <div className="text-[9px] text-neutral-500 uppercase font-mono">Endorphins</div>
-              <div className="text-xs font-bold text-[#e02868]">Vagal Tone</div>
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
+            <div className="text-xs">
+              <span className="font-bold text-emerald-400">{activeAcupoint.code} ({activeAcupoint.translation}):</span>{' '}
+              <span className="text-neutral-200">{activeAcupoint.painName}</span>{' '}
+              <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
             </div>
           </div>
-
-          <div className="flex items-center justify-end gap-2 pt-1">
-            <button
-              type="button"
-              onClick={handleReset}
-              className="py-1.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-xs font-bold text-neutral-700 transition flex items-center gap-1.5"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Treat Another 3D Pathology</span>
-            </button>
-            {onOpenBooking && (
-              <button
-                type="button"
-                onClick={onOpenBooking}
-                className="py-1.5 px-3 rounded-xl bg-[#e02868] hover:bg-[#c21e54] text-white text-xs font-bold transition shadow-sm"
-              >
-                Book In-Clinic Care
-              </button>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset</span>
+          </button>
         </div>
       )}
     </div>

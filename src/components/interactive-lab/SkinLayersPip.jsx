@@ -23,6 +23,7 @@ export default function SkinLayersPip({
   targetDepth = 12.0,
   pointCode = 'PC-6',
   pointName = 'Inner Gate',
+  painName = 'Spastic Motor Endplate Knot',
   isDisintegrated = false,
   isSnapping = false,
   onDepthChange,
@@ -460,9 +461,14 @@ export default function SkinLayersPip({
             <h4 className="text-xs font-bold text-neutral-900 leading-none">
               3D Tissue Strata Microscopy
             </h4>
-            <span className="text-[9px] text-neutral-500 font-mono">
-              {pointCode} • {pointName}
-            </span>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="text-[9px] text-neutral-500 font-mono">
+                {pointCode} • {pointName}
+              </span>
+              <span className="text-[9px] text-[#e02868] font-bold truncate max-w-[170px]">
+                • {painName}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -612,9 +618,11 @@ export default function SkinLayersPip({
 
             {/* Cure feedback */}
             {isDisintegrated && (
-              <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5 animate-in fade-in">
+              <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5 animate-in fade-in shadow-xs">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-[11px]">Motor Endplate Knot Vaporized! De-Qi Active.</span>
+                <span className="text-[11px] leading-tight">
+                  ✓ {painName} Disintegrated into Ash! Spasm Relieved.
+                </span>
               </div>
             )}
           </div>
