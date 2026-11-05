@@ -1091,16 +1091,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.24, 0.48, 0.76);
-      targetLookAtRef.current.set(0.22, 0.46, 0.38);
+      targetCamPosRef.current.set(0.32, 0.54, 0.82);
+      targetLookAtRef.current.set(0.24, 0.52, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
       targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.24, 0.48, 0.76);
-      targetLookAtRef.current.set(-0.22, 0.46, 0.38);
+      targetCamPosRef.current.set(-0.32, 0.54, 0.82);
+      targetLookAtRef.current.set(-0.24, 0.52, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1189,7 +1189,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       pt.modelPos[2] * mScale
     );
 
-    // If point is on articulated arm, track the CURRENT LIFTED POSITION in 3D world space!
     if (pt.region === 'arm_left') {
       const pLeftShoulder = leftShoulderPivotRef.current;
       const shoulderAng = -1.38;
@@ -1199,6 +1198,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       worldPt.x = pt.modelPos[0] * mScale;
       worldPt.y = 0.32 + (pLeftShoulder.y + (dyS * cS - dzS * sS)) * mScale;
       worldPt.z = (pLeftShoulder.z + (dyS * sS + dzS * cS)) * mScale;
+      targetLookAtRef.current.copy(worldPt);
+      targetCamPosRef.current.set(worldPt.x + 0.06, worldPt.y + 0.02, worldPt.z + 0.45);
     } else if (pt.region === 'arm_right') {
       const pRightShoulder = rightShoulderPivotRef.current;
       const shoulderAng = -1.38;
@@ -1208,12 +1209,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       worldPt.x = pt.modelPos[0] * mScale;
       worldPt.y = 0.32 + (pRightShoulder.y + (dyS * cS - dzS * sS)) * mScale;
       worldPt.z = (pRightShoulder.z + (dyS * sS + dzS * cS)) * mScale;
+      targetLookAtRef.current.copy(worldPt);
+      targetCamPosRef.current.set(worldPt.x - 0.06, worldPt.y + 0.02, worldPt.z + 0.45);
+    } else {
+      targetLookAtRef.current.copy(worldPt);
+      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
+      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.32);
+      targetCamPosRef.current.y += 0.04;
     }
-
-    targetLookAtRef.current.copy(worldPt);
-    const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
-    targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.32);
-    targetCamPosRef.current.y += 0.04;
 
     const targetFacing = pt.facing || 'front';
     if (bodyModelMeshRef.current) {

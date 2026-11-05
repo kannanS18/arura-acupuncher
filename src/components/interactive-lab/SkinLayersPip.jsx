@@ -139,8 +139,8 @@ export default function SkinLayersPip({
 
     const camera = new THREE.PerspectiveCamera(40, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.15, 0.58, 2.45);
-      camera.lookAt(0.15, 0.22, 0.15);
+      camera.position.set(-0.16, 0.32, 2.65);
+      camera.lookAt(-0.24, 0.06, 0.0);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -171,7 +171,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? 0.15 : 0, fullStage ? 0.22 : 0.05, fullStage ? 0.15 : 0);
+    controls.target.set(fullStage ? -0.24 : 0, fullStage ? 0.20 : 0.05, fullStage ? 0.05 : 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
