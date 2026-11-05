@@ -55,12 +55,21 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
     setSelectedPointCode(pointCode);
   };
 
+  const handleStageChange = (stage) => {
+    setCurrentStage(stage);
+    if (stage === 1) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 30);
+    }
+  };
+
   const handleNextStage = () => {
-    if (currentStage < 3) setCurrentStage(prev => prev + 1);
+    if (currentStage < 3) handleStageChange(currentStage + 1);
   };
 
   const handlePrevStage = () => {
-    if (currentStage > 1) setCurrentStage(prev => prev - 1);
+    if (currentStage > 1) handleStageChange(currentStage - 1);
   };
 
   const handleApplyTherapy = (targetVal) => {
@@ -111,8 +120,8 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
         <div className="flex items-center gap-1.5 sm:gap-3 bg-neutral-100/80 p-1 rounded-xl border border-neutral-200/60">
           <button
             type="button"
-            onClick={() => setCurrentStage(1)}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition ${
+            onClick={() => handleStageChange(1)}
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
               currentStage === 1
                 ? 'bg-white text-[#e02868] shadow-xs'
                 : 'text-neutral-500 hover:text-neutral-900'
@@ -126,8 +135,8 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
 
           <button
             type="button"
-            onClick={() => setCurrentStage(2)}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition ${
+            onClick={() => handleStageChange(2)}
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
               currentStage === 2
                 ? 'bg-white text-amber-600 shadow-xs'
                 : 'text-neutral-500 hover:text-neutral-900'
@@ -141,8 +150,8 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
 
           <button
             type="button"
-            onClick={() => setCurrentStage(3)}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition ${
+            onClick={() => handleStageChange(3)}
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
               currentStage === 3
                 ? 'bg-white text-emerald-600 shadow-xs'
                 : 'text-neutral-500 hover:text-neutral-900'
@@ -155,22 +164,32 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
 
         {/* Right: Direct Clinical Booking Bridge */}
         <div className="flex items-center gap-2">
-          {currentStage < 3 && (
+          {currentStage < 3 ? (
             <button
               type="button"
               onClick={handleNextStage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold shadow-sm transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold shadow-sm transition cursor-pointer"
               title="Proceed to Next Clinical Stage"
             >
               <span>{currentStage === 1 ? 'Next: Neural Science' : 'Next: 3D Strata'}</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#e02868]" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => handleStageChange(1)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold transition cursor-pointer"
+              title="Return to Whole Body Anatomy"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>Back to Macro Body</span>
             </button>
           )}
           {onOpenBooking && (
             <button
               type="button"
               onClick={() => onOpenBooking(`Acupuncture Treatment for ${activeAcupoint.painName}`)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md shadow-[#e02868]/20 transition"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md shadow-[#e02868]/20 transition cursor-pointer"
             >
               <Calendar className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Book Session</span>
@@ -186,18 +205,18 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
         
         {/* ======================================================================= */}
         {/* STAGE 1: MACRO WHOLE HUMAN ANATOMY & CONDITION PICKER                   */}
+        {/* Preserves 3D WebGL context and 60 FPS state across stage transitions    */}
         {/* ======================================================================= */}
-        {currentStage === 1 && (
-          <div className="relative w-full h-full flex flex-col">
-            
-            
-
-            {/* Whole Body 3D Mannequin Component */}
-            <div className="relative flex-1 w-full h-full">
-              <TissueDepthSimulator onOpenBooking={onOpenBooking} />
-            </div>
+        <div className={`relative w-full h-full flex flex-col ${currentStage === 1 ? 'block' : 'hidden'}`}>
+          <div className="relative flex-1 w-full h-full">
+            <TissueDepthSimulator 
+              onOpenBooking={onOpenBooking} 
+              selectedPointCode={selectedPointCode}
+              onSelectAcupointCode={(code) => setSelectedPointCode(code)}
+              onNavigateToStage={(stage) => handleStageChange(stage)}
+            />
           </div>
-        )}
+        </div>
 
         {/* ======================================================================= */}
         {/* STAGE 2: THE NEUROLOGICAL BRIDGE & SCIENCE MECHANICS                    */}
@@ -344,7 +363,7 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
                 }
               }}
               onReset={handleResetTherapy}
-              onBackToBody={() => setCurrentStage(1)}
+              onBackToBody={() => handleStageChange(1)}
               onSelectTool={(toolId) => {
                 setActiveTool(toolId);
                 setDepth(0);

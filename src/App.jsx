@@ -31,6 +31,77 @@ function ScrollToTop() {
   return null;
 }
 
+function AppLayout({ onOpenBooking, isBookingOpen, onCloseBooking, selectedService, selectedPrice }) {
+  const location = useLocation();
+  const isLabPage = location.pathname.includes('how-acupuncture-works') || location.pathname.includes('3d-lab');
+
+  return (
+    <div className="min-h-screen bg-white text-[#09090b] flex flex-col font-sans selection:bg-[#e02868] selection:text-white relative">
+      {/* Navigation Bar strictly showing Home, About Us, Doctor, Clinic, Blog, Booking (hidden on dedicated 3D lab) */}
+      {!isLabPage && <Navbar onOpenBooking={onOpenBooking} />}
+
+      {/* Dynamic Multi-Page Router Outlet */}
+      <main className="flex-1">
+        <PageTransition>
+          <Routes>
+            {/* The 6 Core Pages strictly requested */}
+            <Route path="/" element={<HomePage onOpenBooking={onOpenBooking} />} />
+            <Route path="/about" element={<AboutPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/doctor" element={<DoctorPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/clinic" element={<ClinicPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/blog" element={<BlogPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/blog/:id" element={<BlogPostPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/booking" element={<BookingPage onOpenBooking={onOpenBooking} />} />
+
+            {/* Dedicated Fullscreen 3D Science Lab Experience */}
+            <Route 
+              path="/how-acupuncture-works" 
+              element={
+                <React.Suspense fallback={
+                  <div className="h-screen w-full flex items-center justify-center bg-white">
+                    <div className="flex items-center gap-2 text-sm font-bold text-neutral-600 animate-pulse">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#e02868] animate-ping" />
+                      <span>Initializing 3D Clinical Anatomy Lab...</span>
+                    </div>
+                  </div>
+                }>
+                  <HowAcupunctureWorksPage onOpenBooking={onOpenBooking} />
+                </React.Suspense>
+              } 
+            />
+            <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
+
+            {/* Seamless redirects for legacy paths to consolidated pages */}
+            <Route path="/therapist" element={<Navigate to="/doctor" replace />} />
+            <Route path="/pricing" element={<Navigate to="/clinic" replace />} />
+            <Route path="/acupuncture" element={<Navigate to="/clinic" replace />} />
+            <Route path="/disorders" element={<Navigate to="/about" replace />} />
+            <Route path="/counselling" element={<Navigate to="/clinic" replace />} />
+            <Route path="/safety" element={<Navigate to="/clinic" replace />} />
+            <Route path="/faqs" element={<Navigate to="/clinic" replace />} />
+            <Route path="/contact" element={<Navigate to="/booking" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </PageTransition>
+      </main>
+
+      {/* Persistent Minimalist Footer (hidden on dedicated 3D lab) */}
+      {!isLabPage && <Footer />}
+
+      {/* Mobile Sticky Booking Bar */}
+      {!isLabPage && <MobileStickyBar onOpenBooking={onOpenBooking} />}
+
+      {/* Concierge Booking Modal */}
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={onCloseBooking}
+        preselectedService={selectedService}
+        preselectedPrice={selectedPrice}
+      />
+    </div>
+  );
+}
+
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
@@ -49,72 +120,13 @@ export default function App() {
   return (
     <HashRouter>
       <ScrollToTop />
-      {/* Pink (#e02868) text selection highlight as strictly requested */}
-      <div className="min-h-screen bg-white text-[#09090b] flex flex-col font-sans selection:bg-[#e02868] selection:text-white relative">
-        
-        {/* Navigation Bar strictly showing Home, About Us, Doctor, Clinic, Blog, Booking */}
-        <Navbar onOpenBooking={handleOpenBooking} />
-
-        {/* Dynamic Multi-Page Router Outlet */}
-        <main className="flex-1">
-          <PageTransition>
-            <Routes>
-              {/* The 6 Core Pages strictly requested */}
-              <Route path="/" element={<HomePage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/about" element={<AboutPage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/doctor" element={<DoctorPage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/clinic" element={<ClinicPage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/blog" element={<BlogPage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/blog/:id" element={<BlogPostPage onOpenBooking={handleOpenBooking} />} />
-              <Route path="/booking" element={<BookingPage onOpenBooking={handleOpenBooking} />} />
-
-              {/* Dedicated Fullscreen 3D Science Lab Experience */}
-              <Route 
-                path="/how-acupuncture-works" 
-                element={
-                  <React.Suspense fallback={
-                    <div className="h-screen w-full flex items-center justify-center bg-white">
-                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-600 animate-pulse">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#e02868] animate-ping" />
-                        <span>Initializing 3D Clinical Anatomy Lab...</span>
-                      </div>
-                    </div>
-                  }>
-                    <HowAcupunctureWorksPage onOpenBooking={handleOpenBooking} />
-                  </React.Suspense>
-                } 
-              />
-              <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
-
-              {/* Seamless redirects for legacy paths to consolidated pages */}
-              <Route path="/therapist" element={<Navigate to="/doctor" replace />} />
-              <Route path="/pricing" element={<Navigate to="/clinic" replace />} />
-              <Route path="/acupuncture" element={<Navigate to="/clinic" replace />} />
-              <Route path="/disorders" element={<Navigate to="/about" replace />} />
-              <Route path="/counselling" element={<Navigate to="/clinic" replace />} />
-              <Route path="/safety" element={<Navigate to="/clinic" replace />} />
-              <Route path="/faqs" element={<Navigate to="/clinic" replace />} />
-              <Route path="/contact" element={<Navigate to="/booking" replace />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </PageTransition>
-        </main>
-
-        {/* Persistent Minimalist Footer */}
-        <Footer />
-
-        {/* Mobile Sticky Booking Bar */}
-        <MobileStickyBar onOpenBooking={handleOpenBooking} />
-
-        {/* Concierge Booking Modal */}
-        <BookingModal
-          isOpen={isBookingOpen}
-          onClose={handleCloseBooking}
-          preselectedService={selectedService}
-          preselectedPrice={selectedPrice}
-        />
-
-      </div>
+      <AppLayout
+        onOpenBooking={handleOpenBooking}
+        isBookingOpen={isBookingOpen}
+        onCloseBooking={handleCloseBooking}
+        selectedService={selectedService}
+        selectedPrice={selectedPrice}
+      />
     </HashRouter>
   );
 }

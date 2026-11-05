@@ -580,9 +580,9 @@ export const CLINICAL_ACUPOINTS = [
       0.366
     ],
     "badgeOffset": [
-      0.04,
       0.08,
-      0.04
+      0.03,
+      0.03
     ],
     "painName": "Median Nerve Compression & Chest Angina",
     "nerves": "Median Nerve Trunk",

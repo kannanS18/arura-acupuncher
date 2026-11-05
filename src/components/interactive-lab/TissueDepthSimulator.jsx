@@ -392,6 +392,55 @@ const REGION_DISPLAY_NAMES = {
   full: 'BODY'
 };
 
+// Compact 3D Canvas Pill Badge for Acupoints (100% English, High-Legibility, Anti-Collision)
+function createCompactBadgeCanvas(code, englishName) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 360;
+  canvas.height = 90;
+  const ctx = canvas.getContext('2d');
+
+  // Pill card background
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.96)';
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(4, 4, 352, 82, 24);
+  } else {
+    ctx.rect(4, 4, 352, 82);
+  }
+  ctx.fill();
+
+  // Vibrant Arura Rose accent border
+  ctx.strokeStyle = '#e02868';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Left Code Pill (High-contrast, bold, centered)
+  ctx.fillStyle = '#e02868';
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(10, 10, 110, 70, 18);
+  } else {
+    ctx.rect(10, 10, 110, 70);
+  }
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(code, 65, 45);
+
+  // Right English Name in bold black
+  ctx.fillStyle = '#09090b';
+  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  const nameToRender = englishName || code;
+  ctx.fillText(nameToRender, 132, 45);
+
+  return canvas;
+}
+
 // Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts with Region Tag (100% English)
 function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected, regionLabel) {
   const canvas = document.createElement('canvas');
@@ -540,7 +589,7 @@ function createToolDepthBadgeCanvas(toolId, value, targetValue, isCured, painNam
   return canvas;
 }
 
-export default function TissueDepthSimulator({ onOpenBooking }) {
+export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode, onSelectAcupointCode, onNavigateToStage }) {
   const mountRef = useRef(null);
   const [selectedAcupointIdx, setSelectedAcupointIdx] = useState(0);
   const [selectedProblemIdx, setSelectedProblemIdx] = useState(0);
@@ -566,6 +615,27 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     ? CLINICAL_ACUPOINTS 
     : CLINICAL_ACUPOINTS.filter(p => p.region === activeRegion); // Start centered on Whole Body!
   const activeRegionRef = useRef('full');
+  // Sync with parent selectedPointCode if provided
+  useEffect(() => {
+    if (selectedPointCode) {
+      const idx = CLINICAL_ACUPOINTS.findIndex(p => p.code === selectedPointCode);
+      if (idx !== -1 && idx !== selectedAcupointIdx) {
+        setSelectedAcupointIdx(idx);
+        const pt = CLINICAL_ACUPOINTS[idx];
+        if (pt?.region && pt.region !== activeRegionRef.current) {
+          setActiveRegion(pt.region);
+          activeRegionRef.current = pt.region;
+          setFilterRegion(pt.region);
+        }
+      }
+    }
+  }, [selectedPointCode]);
+
+  const onSelectAcupointCodeRef = useRef(onSelectAcupointCode);
+  useEffect(() => {
+    onSelectAcupointCodeRef.current = onSelectAcupointCode;
+  }, [onSelectAcupointCode]);
+
   useEffect(() => {
     activeRegionRef.current = activeRegion;
   }, [activeRegion]);
@@ -1137,6 +1207,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       isCameraAnimatingRef.current = true;
     }
 
+    // Resolve target acupoint index: use provided, or default to first point in this region
+    let targetIdx = selectedIdx;
+    if (typeof targetIdx !== 'number' && regionKey !== 'full') {
+      const pIdx = CLINICAL_ACUPOINTS.findIndex(p => p.region === regionKey);
+      if (pIdx !== -1) targetIdx = pIdx;
+    }
+
     // Sequentially pop up the acupoint pins for THIS region one-by-one WITH NAMES and crystalline chimes
     if (allPinObjectsRef.current) {
       const regionPins = allPinObjectsRef.current
@@ -1146,16 +1223,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       regionPins.forEach((pin, i) => {
         setTimeout(() => {
           pin.userData.targetScale = 1.0;
-          const isThisSel = (pin.userData.acupointIdx === selectedIdx);
-          if (pin.userData.badge) pin.userData.badge.visible = isThisSel;
+          const isThisSel = (pin.userData.acupointIdx === targetIdx);
+          if (pin.userData.badge) pin.userData.badge.visible = true; // Names ALWAYS visible in active region!
           if (pin.userData.leaderLine) pin.userData.leaderLine.visible = isThisSel;
           playAcuSound('popup', isMuted);
         }, 180 + i * 160);
       });
     }
 
-    if (typeof selectedIdx === 'number') {
-      setSelectedAcupointIdx(selectedIdx);
+    if (typeof targetIdx === 'number') {
+      setSelectedAcupointIdx(targetIdx);
+      if (onSelectAcupointCodeRef.current) {
+        onSelectAcupointCodeRef.current(CLINICAL_ACUPOINTS[targetIdx]?.code);
+      }
     }
   }, [isMuted]);
 
@@ -1175,7 +1255,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setActiveRegion(pt.region || 'close');
     setFilterRegion(pt.region || 'all');
     setShowStrataPip(true);
-    setViewMode('tissue');
+    if (!onNavigateToStage) {
+      // Standalone mode only
+      setViewMode('body');
+    }
+    if (onSelectAcupointCodeRef.current) {
+      onSelectAcupointCodeRef.current(pt.code);
+    }
     isCameraAnimatingRef.current = true;
 
     const mScale = 1.55 / 1.90;
@@ -1280,21 +1366,28 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // Update active 3D badges when selected acupoint or activeRegion changes (100% English with Region Name)
   useEffect(() => {
     if (badgesRef.current) {
-      badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, normalTex, selTex }) => {
+      badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, compactTex, selTex }) => {
         const isSel = (idx === selectedAcupointIdx);
-        // ONLY the active selected acupoint displays the expanded callout card to prevent overlapping clutter!
-        const shouldShowBadge = isSel;
+        const isInActiveRegion = (pt.region === activeRegion);
+        // In active region (e.g. left arm), ALL points show names!
+        // In full body view, selected point + key landmark points show names
+        const shouldShowBadge = isSel || (activeRegion !== 'full' ? isInActiveRegion : (pt.orderIndex === 0));
 
         if (selRing) selRing.visible = isSel;
-        if (leaderLine) leaderLine.visible = shouldShowBadge;
+        if (leaderLine) leaderLine.visible = isSel;
         if (sprite) {
           sprite.visible = shouldShowBadge;
           if (sprite.material) {
-            const targetMap = isSel ? selTex : normalTex;
+            const targetMap = isSel ? selTex : compactTex;
             if (targetMap && sprite.material.map !== targetMap) {
               sprite.material.map = targetMap;
               sprite.material.needsUpdate = true;
             }
+          }
+          if (isSel) {
+            sprite.scale.set(0.320, 0.089, 1.0);
+          } else {
+            sprite.scale.set(0.180, 0.045, 1.0);
           }
         }
       });
@@ -1854,12 +1947,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
           // 3D Canvas Callout Badge in 100% English with Region Tag (Cached textures for zero-lag switching)
           const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
-          const normalTex = new THREE.CanvasTexture(
-            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, false, regLabel)
+          const compactTex = new THREE.CanvasTexture(
+            createCompactBadgeCanvas(pt.code, pt.translation)
           );
-          normalTex.colorSpace = THREE.SRGBColorSpace;
-          normalTex.minFilter = THREE.LinearFilter;
-          normalTex.magFilter = THREE.LinearFilter;
+          compactTex.colorSpace = THREE.SRGBColorSpace;
+          compactTex.minFilter = THREE.LinearFilter;
+          compactTex.magFilter = THREE.LinearFilter;
 
           const selTex = new THREE.CanvasTexture(
             createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, true, regLabel)
@@ -1870,14 +1963,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
           const isInitiallySel = (idx === selectedAcupointIdx);
           const badgeMat = new THREE.SpriteMaterial({ 
-            map: isInitiallySel ? selTex : normalTex, 
+            map: isInitiallySel ? selTex : compactTex, 
             depthTest: false, 
             depthWrite: false,
             toneMapped: false // 100% color fidelity, pure white background & razor-sharp text
           });
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.02);
-          badgeSprite.scale.set(0.320, 0.089, 1.0); // Perfectly proportioned high-DPI badge
+          badgeSprite.scale.set(isInitiallySel ? 0.320 : 0.180, isInitiallySel ? 0.089 : 0.045, 1.0);
           badgeSprite.visible = isInitiallySel;
           badgeSprite.renderOrder = 999;
           pinGroup.add(badgeSprite);
@@ -1896,7 +1989,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
           bodyMesh.add(pinGroup);
           allPinObjectsRef.current.push(pinGroup);
-          badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing, normalTex, selTex });
+          badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing, compactTex, selTex });
         });
 
         // Human Body Model Added to Scene (Pure anatomy: zero tools on man model)
@@ -3028,11 +3121,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             <button
               type="button"
               onClick={() => {
-                setViewMode('tissue');
-                window.dispatchEvent(new Event('resize'));
+                if (onNavigateToStage) {
+                  onNavigateToStage(3);
+                } else {
+                  setViewMode('tissue');
+                  window.dispatchEvent(new Event('resize'));
+                }
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition shadow-sm bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white hover:text-neutral-900"
-              title="Open 3D Tissue Strata & Surgical Instrument Tray"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-sm bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white hover:text-[#e02868] cursor-pointer"
+              title="Enter 3D Microscopic Tissue Strata Surgery"
             >
               <Layers className="w-3.5 h-3.5 text-[#e02868]" />
               <span className="hidden sm:inline">3D Strata</span>
@@ -3125,6 +3222,34 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <div className="text-[11px] text-neutral-600 flex items-start gap-1.5 pt-2 border-t border-neutral-200/80">
             <ShieldCheck className="w-3.5 h-3.5 text-[#e02868] shrink-0 mt-0.5" />
             <span><strong>Clinical Relief:</strong> {activeAcupoint.relief}</span>
+          </div>
+
+          {/* Quick Stage Transitions */}
+          <div className="pt-2 space-y-1.5">
+            <button
+              type="button"
+              onClick={() => {
+                if (onNavigateToStage) {
+                  onNavigateToStage(3);
+                } else {
+                  setViewMode('tissue');
+                }
+              }}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-sm transition cursor-pointer"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Enter 3D Tissue Strata Surgery →</span>
+            </button>
+            {onNavigateToStage && (
+              <button
+                type="button"
+                onClick={() => onNavigateToStage(2)}
+                className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-semibold transition cursor-pointer"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-600" />
+                <span>View Neural Science Mechanism →</span>
+              </button>
+            )}
           </div>
         </div>
 
