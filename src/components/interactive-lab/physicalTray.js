@@ -36,97 +36,78 @@ export function createAuthenticMoxaTexture() {
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
 
-  // 1. Handmade Xuan / Washi rice paper background
+  // 1. Handmade warm mulberry / kraft paper background
   const paperGrad = ctx.createLinearGradient(0, 0, 512, 0);
-  paperGrad.addColorStop(0, '#fbf3df');
-  paperGrad.addColorStop(0.5, '#fffbeb');
-  paperGrad.addColorStop(1, '#fbf3df');
+  paperGrad.addColorStop(0, '#e5d5be');
+  paperGrad.addColorStop(0.5, '#f2e8dc');
+  paperGrad.addColorStop(1, '#e5d5be');
   ctx.fillStyle = paperGrad;
   ctx.fillRect(0, 0, 512, 256);
 
   // Micro organic herbal fiber flecks
-  ctx.fillStyle = 'rgba(180, 83, 9, 0.16)';
-  for (let i = 0; i < 350; i++) {
+  ctx.fillStyle = 'rgba(120, 53, 15, 0.14)';
+  for (let i = 0; i < 260; i++) {
     const fx = Math.random() * 512;
     const fy = Math.random() * 256;
-    ctx.fillRect(fx, fy, Math.random() * 2 + 1, Math.random() * 1.5 + 0.5);
+    ctx.fillRect(fx, fy, Math.random() * 2.5 + 1, Math.random() * 1.5 + 0.5);
   }
 
-  // 2. Ornate gold foil geometric borders
+  // Elegant gold foil line borders (thin, refined)
   const drawGoldBand = (y, h) => {
     const goldGrad = ctx.createLinearGradient(0, y, 512, y);
-    goldGrad.addColorStop(0, '#b45309');
-    goldGrad.addColorStop(0.25, '#f59e0b');
-    goldGrad.addColorStop(0.5, '#fef08a');
-    goldGrad.addColorStop(0.75, '#f59e0b');
-    goldGrad.addColorStop(1, '#b45309');
+    goldGrad.addColorStop(0, '#92400e');
+    goldGrad.addColorStop(0.5, '#f59e0b');
+    goldGrad.addColorStop(1, '#92400e');
     ctx.fillStyle = goldGrad;
     ctx.fillRect(0, y, 512, h);
   };
+  drawGoldBand(12, 3);
+  drawGoldBand(240, 3);
 
-  drawGoldBand(6, 8);
-  drawGoldBand(242, 8);
-
-  // 3. Imperial Jade Green Header Banner
-  ctx.fillStyle = '#064e3b';
-  ctx.fillRect(0, 24, 512, 48);
-  drawGoldBand(72, 4);
-
-  // Chinese Calligraphy text on Header
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 22px "Noto Serif SC", "PingFang SC", "Songti SC", serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('極品純艾條 • 傳統神灸', 256, 56);
-
-  // 4. Traditional Red Cinnabar Seal Stamp (Square)
+  // Traditional Red Cinnabar Seal Stamp (Square)
   ctx.fillStyle = '#991b1b';
   ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(35, 96, 76, 76, 8);
-  else ctx.rect(35, 96, 76, 76);
+  if (ctx.roundRect) ctx.roundRect(40, 60, 68, 68, 6);
+  else ctx.rect(40, 60, 68, 68);
   ctx.fill();
 
   ctx.strokeStyle = '#fef2f2';
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth = 1.5;
   ctx.stroke();
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 20px "Noto Serif SC", "Songti SC", serif';
-  ctx.fillText('神灸', 73, 130);
-  ctx.font = 'bold 16px "Noto Serif SC", "Songti SC", serif';
-  ctx.fillText('純陽', 73, 154);
+  ctx.font = 'bold 18px "Noto Serif SC", "Songti SC", serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('神灸', 74, 98);
+  ctx.font = 'bold 13px "Noto Serif SC", "Songti SC", serif';
+  ctx.fillText('純艾', 74, 118);
 
-  // 5. Clinical Grade English Typography
+  // Clinical English Typography
   ctx.textAlign = 'left';
-  ctx.fillStyle = '#1c1917';
-  ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText('ARURA PURE ARTEMISIA MOXA', 130, 120);
+  ctx.fillStyle = '#292524';
+  ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('ARURA AGED MUGWORT MOXA', 130, 88);
 
-  ctx.fillStyle = '#b45309';
-  ctx.font = '700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText('10:1 AGED WILD MUGWORT (ARTEMISIA ARGYI)', 130, 140);
-
-  ctx.fillStyle = '#44403c';
+  ctx.fillStyle = '#78350f';
   ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText('Pure Thermal Yang Radiance • Deep Meridian Warmth', 130, 158);
+  ctx.fillText('10:1 ARTEMISIA ARGYI • CLINICAL HERBAL ROLL', 130, 108);
 
-  // 6. Secondary Traditional Stamp
+  ctx.fillStyle = '#57534e';
+  ctx.font = '500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText('Traditional Infrared Thermal Meridian Therapy', 130, 126);
+
+  // Secondary Traditional Stamp
   ctx.strokeStyle = '#991b1b';
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.arc(460, 134, 30, 0, Math.PI * 2);
+  ctx.arc(450, 94, 24, 0, Math.PI * 2);
   ctx.stroke();
 
   ctx.fillStyle = '#991b1b';
-  ctx.font = 'bold 13px "Noto Serif SC", serif';
+  ctx.font = 'bold 11px "Noto Serif SC", serif';
   ctx.textAlign = 'center';
-  ctx.fillText('三年陳艾', 460, 131);
-  ctx.fillText('上品', 460, 146);
-
-  // Gold footer band
-  drawGoldBand(210, 4);
-  ctx.fillStyle = '#78350f';
-  ctx.font = '700 10px monospace';
-  ctx.fillText('GRADE AAA+ • AUTHENTIC CLINICAL TCM ARTIFACT', 256, 230);
+  ctx.fillText('陳年', 450, 92);
+  ctx.fillText('艾條', 450, 106);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
@@ -134,7 +115,6 @@ export function createAuthenticMoxaTexture() {
   return texture;
 }
 
-// Procedural Burning Ash & Fiery Ember Texture for Moxa Tip
 export function createMoxaEmberTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 128;

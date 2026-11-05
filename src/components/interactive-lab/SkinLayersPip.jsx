@@ -140,7 +140,7 @@ export default function SkinLayersPip({
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(initW, initH);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -236,49 +236,33 @@ export default function SkinLayersPip({
     const offsetX = fullStage ? -0.38 : 0.0;
     const skinSurfaceY = 0.550; // Exact top skin surface height of skin_layers.glb!
 
-    // Helper: 3D Pathology Callout Badge on Cut Strata Face
-    const createPathologyBadge = (title, subtitle, colorHex) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 340;
-      canvas.height = 80;
-      const ctx = canvas.getContext('2d');
+    // Helper: Sleek Minimalist 3D Anatomical Pinpoint Reticle on Cut Strata Face
+    const createPathologyReticle = (colorHex) => {
+      const g = new THREE.Group();
+      // Outer target reticle ring
+      const ringGeo = new THREE.RingGeometry(0.016, 0.022, 24);
+      const ringMat = new THREE.MeshBasicMaterial({ color: colorHex, side: THREE.DoubleSide, transparent: true, opacity: 0.95 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      g.add(ring);
 
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
-      ctx.strokeStyle = colorHex;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      if (ctx.roundRect) ctx.roundRect(4, 4, 332, 72, 14);
-      else ctx.rect(4, 4, 332, 72);
-      ctx.fill();
-      ctx.stroke();
+      // Center pinpoint core dot
+      const dotGeo = new THREE.CircleGeometry(0.006, 16);
+      const dotMat = new THREE.MeshBasicMaterial({ color: colorHex, side: THREE.DoubleSide });
+      const dot = new THREE.Mesh(dotGeo, dotMat);
+      dot.position.z = 0.001;
+      g.add(dot);
 
-      // Left warning indicator dot
-      ctx.fillStyle = colorHex;
-      ctx.beginPath();
-      ctx.arc(28, 40, 9, 0, Math.PI * 2);
-      ctx.fill();
+      // Slender anatomical pointer line
+      const lineMat = new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.85 });
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0.022, 0, 0),
+        new THREE.Vector3(0.08, 0.025, 0),
+        new THREE.Vector3(0.18, 0.025, 0)
+      ]);
+      const line = new THREE.Line(lineGeo, lineMat);
+      g.add(line);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(28, 40, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Primary title
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText(title, 48, 34);
-
-      // Subtitle
-      ctx.fillStyle = '#cbd5e1';
-      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.fillText(subtitle, 48, 54);
-
-      const tex = new THREE.CanvasTexture(canvas);
-      const spriteMat = new THREE.SpriteMaterial({ map: tex, depthTest: false, depthWrite: false });
-      const sprite = new THREE.Sprite(spriteMat);
-      sprite.scale.set(0.40, 0.095, 1.0);
-      return sprite;
+      return g;
     };
 
     // A. 3D Needle Assembly (Operates along the visible front cut face at z = 0.410)
@@ -427,235 +411,240 @@ export default function SkinLayersPip({
     if (needleGroupRef.current) needleGroupRef.current.visible = (activeTool === 'needle');
     if (cupGroupRef.current) cupGroupRef.current.visible = (activeTool === 'cup');
 
-    // 1. Moxa Roll Body with Artisanal Xuan Rice Paper & Gold Calligraphy Texture
+    // 1. Slender Traditional Artemisia Moxa Roll (1:12 Authentic Clinical Ratio)
     const moxaTex = createAuthenticMoxaTexture();
     const moxaPaperMat = new THREE.MeshStandardMaterial({
       map: moxaTex,
-      roughness: 0.75,
-      metalness: 0.15
+      roughness: 0.82,
+      metalness: 0.04
     });
+    // Slender, elegant, realistic moxa roll (radius 0.024, length 0.44)
     const moxaBody = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.038, 0.038, 0.28, 24),
+      new THREE.CylinderGeometry(0.024, 0.024, 0.44, 24),
       moxaPaperMat
     );
-    moxaBody.position.y = 0.14;
+    moxaBody.position.y = 0.22;
     moxaGroup.add(moxaBody);
 
-    // 2. Burning Ash Ember Tip with Radial Incandescent Glowing Fissures
+    // 2. Burning Ash Ember Tip with Incandescent Glowing Fissures
     const emberTex = createMoxaEmberTexture();
     const emberMat = new THREE.MeshStandardMaterial({
       map: emberTex,
       color: 0xff3b00,
       emissive: 0xff2200,
-      emissiveIntensity: 2.2,
-      roughness: 0.35
+      emissiveIntensity: 1.8,
+      roughness: 0.55
     });
     const ember = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.036, 0.038, 0.035, 24),
+      new THREE.CylinderGeometry(0.022, 0.024, 0.038, 24),
       emberMat
     );
     ember.position.y = 0.0;
     moxaGroup.add(ember);
 
-    // 3. Turned Dark Walnut Wood Handle Cap on Rear End (Eliminates cigarette look!)
+    // 3. Turned Dark Walnut Wood Handle Cap on Rear End
     const woodCapMat = new THREE.MeshStandardMaterial({
       color: 0x27170e,
-      roughness: 0.35,
-      metalness: 0.1
+      roughness: 0.45,
+      metalness: 0.08
     });
     const woodCap = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.040, 0.040, 0.032, 24),
+      new THREE.CylinderGeometry(0.026, 0.026, 0.032, 24),
       woodCapMat
     );
-    woodCap.position.y = 0.296;
+    woodCap.position.y = 0.456;
     moxaGroup.add(woodCap);
 
     // Polished brass ferrule ring
     const ferrule = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.0405, 0.0405, 0.008, 24),
-      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 })
+      new THREE.CylinderGeometry(0.0265, 0.0265, 0.008, 24),
+      new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.25 })
     );
-    ferrule.position.y = 0.280;
+    ferrule.position.y = 0.440;
     moxaGroup.add(ferrule);
 
-    // Concentric thermal infrared radiation ring
+    // Concentric thermal infrared radiation ring (soft warm falloff)
     const thermalRing = new THREE.Mesh(
-      new THREE.RingGeometry(0.08, 0.22, 32),
-      new THREE.MeshBasicMaterial({ color: 0xff6b00, transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+      new THREE.RingGeometry(0.03, 0.16, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff5500, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
     );
     thermalRing.rotation.x = -Math.PI / 2;
     thermalRing.position.y = -0.11;
     moxaGroup.add(thermalRing);
 
-    // 5. 3 Distinct Clinical Pathologies DIRECTLY ON THE VISIBLE FRONT CUT FACE (z = 0.430)
-    // 100% VISIBLE TO USER WITH 3D CALLOUT BADGES & PULSATING RETICLES!
+    // 5. 3 Authentic Biological Clinical Pathologies ON CUT TISSUE FACE (z = 0.430)
 
-    // A. Needle Target: Authentic Taut Band Myofascial Trigger Point (Deep Striated Muscle, y = -0.04, z = 0.430)
-    // Realistic anatomical spindle of hypercontracted skeletal muscle sarcomeres & ischemic motor endplate
+    // A. Needle Target: Authentic Taut Band Myofascial Trigger Point Knot (Striated Muscle, y = -0.04)
     const knotGroup = new THREE.Group();
     knotGroup.position.set(offsetX, -0.04, 0.430);
     knotGroup.visible = (activeTool === 'needle');
     scene.add(knotGroup);
 
-    // 1. Hypercontracted Myoglobin-Congested Central Nodule (Spindle core)
-    const knotCoreMat = new THREE.MeshStandardMaterial({
-      color: 0x881337,
-      emissive: 0x4c0519,
-      emissiveIntensity: 0.6,
-      roughness: 0.32,
-      metalness: 0.08
+    // 1. Interwoven Striated Muscle Fascicles forming an organic contractile spindle
+    const muscleFiberMat = new THREE.MeshStandardMaterial({
+      color: 0x6e0e18,
+      roughness: 0.85,
+      metalness: 0.04
     });
-    const knotMesh = new THREE.Mesh(new THREE.SphereGeometry(0.065, 24, 20), knotCoreMat);
-    knotMesh.scale.set(1.4, 0.85, 0.85);
-    knotGroup.add(knotMesh);
-    knotMeshRef.current = knotMesh;
+    const knotFibers = new THREE.Group();
+    knotGroup.add(knotFibers);
+    knotMeshRef.current = knotFibers; // Animated on needle contact
 
-    // 2. Taut Contractile Fiber Cords (Radiating along striated muscle fascicles)
-    const fiberMat = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.35, metalness: 0.1 });
-    for (let f = -3; f <= 3; f++) {
-      const fy = f * 0.018;
+    for (let f = -4; f <= 4; f++) {
+      const fy = f * 0.012;
+      const fz = (f % 2 === 0 ? 0.006 : -0.004);
+      const bulge = Math.cos((f / 4) * (Math.PI / 2)) * 0.024;
       const fCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.16, fy * 0.6, 0),
-        new THREE.Vector3(-0.05, fy * 1.3, 0.008),
-        new THREE.Vector3(0.05, fy * 1.3, 0.008),
-        new THREE.Vector3(0.16, fy * 0.6, 0)
+        new THREE.Vector3(-0.16, fy * 0.5, fz),
+        new THREE.Vector3(-0.06, fy + bulge, fz + 0.008),
+        new THREE.Vector3(0.06, fy + bulge, fz + 0.008),
+        new THREE.Vector3(0.16, fy * 0.5, fz)
       ]);
-      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 16, 0.0055, 6, false), fiberMat);
-      knotGroup.add(fiber);
+      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 12, 0.0045, 6, false), muscleFiberMat);
+      knotFibers.add(fiber);
     }
 
-    // 3. Focal Ischemic Blanching Core (Microvascular compression at center)
-    const ischemicCenter = new THREE.Mesh(
-      new THREE.SphereGeometry(0.024, 16, 12),
-      new THREE.MeshStandardMaterial({ color: 0xfca5a5, roughness: 0.4 })
+    // 2. Hypercontracted Sarcomere Core Spindle (Darkened myoglobin-dense nodule)
+    const spindleCoreMat = new THREE.MeshStandardMaterial({
+      color: 0x540b12,
+      roughness: 0.88,
+      metalness: 0.02
+    });
+    const spindleCore = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.024, 0.024, 0.10, 16),
+      spindleCoreMat
     );
-    ischemicCenter.position.z = 0.012;
-    knotGroup.add(ischemicCenter);
+    spindleCore.rotation.z = Math.PI / 2;
+    knotGroup.add(spindleCore);
+
+    // 3. Focal Micro-Ischemic Blanching Striations (pale contracted fibers)
+    const ischemicMat = new THREE.MeshStandardMaterial({
+      color: 0x9f1239,
+      roughness: 0.80,
+      metalness: 0.02
+    });
+    const ischemicNodule = new THREE.Mesh(
+      new THREE.SphereGeometry(0.018, 12, 10),
+      ischemicMat
+    );
+    ischemicNodule.scale.set(1.6, 0.8, 0.8);
+    ischemicNodule.position.z = 0.008;
+    knotGroup.add(ischemicNodule);
 
     // 4. Branching Golden Motor Endplate Axon Innervating the Spindle
     const axonCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.10, 0.12, 0.01),
-      new THREE.Vector3(0.04, 0.05, 0.012),
-      new THREE.Vector3(0.0, 0.0, 0.015)
+      new THREE.Vector3(0.11, 0.12, 0.008),
+      new THREE.Vector3(0.05, 0.05, 0.010),
+      new THREE.Vector3(0.0, 0.01, 0.012)
     ]);
     const axon = new THREE.Mesh(
-      new THREE.TubeGeometry(axonCurve, 12, 0.004, 6, false),
-      new THREE.MeshStandardMaterial({ color: 0xfacc15, emissive: 0xeab308, emissiveIntensity: 1.2 })
+      new THREE.TubeGeometry(axonCurve, 10, 0.0032, 6, false),
+      new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.55, metalness: 0.1 })
     );
     knotGroup.add(axon);
 
-    // Floating 3D Pathology Badge on Cut Face
-    const knotBadge = createPathologyBadge('⚡ TAUT BAND TRIGGER POINT • 12mm', 'Hypercontracted Sarcomeres & Motor Endplate', '#e02868');
-    knotBadge.position.set(offsetX + 0.30, -0.04, 0.445);
-    knotBadge.visible = (activeTool === 'needle');
-    scene.add(knotBadge);
-    knotBadgeRef.current = knotBadge;
+    // Sleek 3D Reticle Pinpoint Marker
+    const knotReticle = createPathologyReticle(0xe11d48);
+    knotReticle.position.set(0, 0, 0.016);
+    knotGroup.add(knotReticle);
+    knotBadgeRef.current = knotReticle;
 
-    // B. Cupping Target: Authentic Densified Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22, z = 0.430)
-    // Dense cross-linked collagenous septa tethering the subcutaneous adipose to deep fascia
+    // B. Cupping Target: Authentic Densified Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22)
     const adhesionGroup = new THREE.Group();
     adhesionGroup.position.set(offsetX, 0.22, 0.430);
     adhesionGroup.visible = (activeTool === 'cup');
     scene.add(adhesionGroup);
 
-    // 1. Pearlescent Collagenous Dense Plaque
+    // 1. Pearlescent Wavy Collagenous Plaque Sheath
     const collagenMat = new THREE.MeshStandardMaterial({
-      color: 0xf8fafc,
-      roughness: 0.24,
-      metalness: 0.15,
+      color: 0xe2e8f0,
+      roughness: 0.65,
+      metalness: 0.08,
       transparent: true,
-      opacity: 0.94
+      opacity: 0.90
     });
-    const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.09, 0.038, 24), collagenMat);
+    const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.085, 0.024, 20), collagenMat);
     adhesionMesh.rotation.x = Math.PI / 2;
     adhesionGroup.add(adhesionMesh);
     adhesionMeshRef.current = adhesionMesh;
 
-    // 2. Interwoven Retinacula Cutis Tethering Bands (Spider-web collagen strands)
-    const bandMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.28, transparent: true, opacity: 0.90 });
-    for (let b = 0; b < 8; b++) {
-      const angle = (b / 8) * Math.PI * 2;
+    // 2. Retinacula Cutis Collagen Strands (anchoring into adjacent yellow adipocyte matrix)
+    const bandMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, roughness: 0.60, transparent: true, opacity: 0.85 });
+    for (let b = 0; b < 7; b++) {
+      const angle = (b / 7) * Math.PI * 2;
       const bCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(Math.cos(angle) * 0.06, Math.sin(angle) * 0.06, 0.015),
-        new THREE.Vector3(Math.cos(angle) * 0.12, Math.sin(angle) * 0.12, (b % 2 === 0 ? 0.02 : -0.01))
+        new THREE.Vector3(Math.cos(angle) * 0.05, Math.sin(angle) * 0.05, 0.010),
+        new THREE.Vector3(Math.cos(angle) * 0.10, Math.sin(angle) * 0.10, 0.004)
       ]);
-      const band = new THREE.Mesh(new THREE.TubeGeometry(bCurve, 12, 0.0045, 6, false), bandMat);
+      const band = new THREE.Mesh(new THREE.TubeGeometry(bCurve, 10, 0.0032, 6, false), bandMat);
       adhesionGroup.add(band);
     }
 
-    // 3. Entrapped Sluggish Micro-Venules (Hypoxic purple capillaries)
-    const venuleMat = new THREE.MeshStandardMaterial({ color: 0x4338ca, roughness: 0.35 });
+    // 3. Entrapped Sluggish Micro-Venules (dark plum hypoxic capillaries)
+    const venuleMat = new THREE.MeshStandardMaterial({ color: 0x4a044e, roughness: 0.60 });
     for (let v = 0; v < 3; v++) {
       const vCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.06 + v * 0.05, -0.04, 0.008),
-        new THREE.Vector3(-0.04 + v * 0.05, 0.02, 0.012),
-        new THREE.Vector3(-0.01 + v * 0.05, 0.05, 0.008)
+        new THREE.Vector3(-0.05 + v * 0.04, -0.03, 0.008),
+        new THREE.Vector3(-0.03 + v * 0.04, 0.01, 0.010),
+        new THREE.Vector3(-0.01 + v * 0.04, 0.04, 0.006)
       ]);
-      const venule = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 10, 0.0035, 6, false), venuleMat);
+      const venule = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 8, 0.0028, 6, false), venuleMat);
       adhesionGroup.add(venule);
     }
 
-    // Floating 3D Pathology Badge on Cut Face
-    const adhesionBadge = createPathologyBadge('🧬 FIBROTIC FASCIAL ADHESION • 6mm', 'Cross-Linked Collagen Tethering Retinacula', '#8b5cf6');
-    adhesionBadge.position.set(offsetX + 0.30, 0.22, 0.445);
-    adhesionBadge.visible = (activeTool === 'cup');
-    scene.add(adhesionBadge);
-    adhesionBadgeRef.current = adhesionBadge;
+    // Sleek 3D Reticle Pinpoint Marker
+    const adhesionReticle = createPathologyReticle(0x8b5cf6);
+    adhesionReticle.position.set(0, 0, 0.016);
+    adhesionGroup.add(adhesionReticle);
+    adhesionBadgeRef.current = adhesionReticle;
 
-    // C. Moxa Target: Authentic Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44, z = 0.430)
-    // Hypoxic capillary vasoconstriction, sluggish venous pooling & interstitial micro-edema
+    // C. Moxa Target: Authentic Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44)
     const stasisGroup = new THREE.Group();
     stasisGroup.position.set(offsetX, 0.44, 0.430);
     stasisGroup.visible = (activeTool === 'moxa');
     scene.add(stasisGroup);
 
-    // 1. Branching Stagnant Cyanic Capillary Plexus
+    // 1. Sluggish Deoxygenated Dermal Micro-Capillaries
     const stasisCapMat = new THREE.MeshStandardMaterial({
-      color: 0x1d4ed8, // Hypoxic cyanic blue
-      emissive: 0x1e3a8a,
-      emissiveIntensity: 0.8,
-      roughness: 0.25,
-      transparent: true
+      color: 0x1e293b, // Sluggish venous deoxygenated blue-gray
+      roughness: 0.65,
+      metalness: 0.05
     });
     const stasisMesh = new THREE.Group();
     stasisGroup.add(stasisMesh);
     stasisMeshRef.current = stasisMesh;
 
-    for (let c = 0; c < 8; c++) {
-      const angle = (c / 8) * Math.PI * 2;
+    for (let c = 0; c < 5; c++) {
+      const angle = (c / 5) * Math.PI * 2;
       const cCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(0, 0, 0.01),
-        new THREE.Vector3(Math.cos(angle) * 0.05, Math.sin(angle) * 0.04, 0.015),
-        new THREE.Vector3(Math.cos(angle + 0.3) * 0.10, Math.sin(angle + 0.3) * 0.08, 0.01)
+        new THREE.Vector3(-0.06 + c * 0.028, -0.02, 0.008),
+        new THREE.Vector3(-0.04 + c * 0.028 + Math.cos(angle) * 0.02, 0.01, 0.012),
+        new THREE.Vector3(-0.02 + c * 0.028, 0.03, 0.008)
       ]);
-      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 12, 0.004, 6, false), stasisCapMat);
+      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 10, 0.0028, 6, false), stasisCapMat);
       stasisMesh.add(cap);
     }
 
-    // 2. Interstitial Micro-Edema Pearls (Translucent fluid pooling)
-    const edemaMat = new THREE.MeshStandardMaterial({
-      color: 0x93c5fd,
+    // 2. Localized Dusky Interstitial Cyanosis Blush
+    const stasisBlushMat = new THREE.MeshBasicMaterial({
+      color: 0x1e3a8a,
       transparent: true,
-      opacity: 0.65,
-      roughness: 0.15
+      opacity: 0.28,
+      side: THREE.DoubleSide
     });
-    for (let e = 0; e < 6; e++) {
-      const pearl = new THREE.Mesh(new THREE.SphereGeometry(0.016, 10, 10), edemaMat);
-      const ang = (e / 6) * Math.PI * 2;
-      pearl.position.set(Math.cos(ang) * 0.06, Math.sin(ang) * 0.05, 0.015);
-      stasisMesh.add(pearl);
-    }
+    const stasisBlush = new THREE.Mesh(new THREE.RingGeometry(0.01, 0.08, 24), stasisBlushMat);
+    stasisBlush.position.z = 0.006;
+    stasisMesh.add(stasisBlush);
 
-    // Floating 3D Pathology Badge on Cut Face
-    const stasisBadge = createPathologyBadge('❄️ COLD-DAMP VASCULAR STASIS • 43°C', 'Capillary Vasoconstriction & Venous Pooling', '#0284c7');
-    stasisBadge.position.set(offsetX + 0.30, 0.44, 0.445);
-    stasisBadge.visible = (activeTool === 'moxa');
-    scene.add(stasisBadge);
-    stasisBadgeRef.current = stasisBadge;
+    // Sleek 3D Reticle Pinpoint Marker
+    const stasisReticle = createPathologyReticle(0xf97316);
+    stasisReticle.position.set(0, 0, 0.016);
+    stasisGroup.add(stasisReticle);
+    stasisBadgeRef.current = stasisReticle;
 
     // 6. Thanos Particle Ash System for Disintegration
-    const pCount = 3000;
+    const pCount = 180;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
     const pVel = new Float32Array(pCount * 3);
@@ -713,30 +702,34 @@ export default function SkinLayersPip({
       const elapsedTime = clock.getElapsedTime();
 
       const curD = depthRef.current;
-      // Live electric bio-pulse on muscle knot
+      // Subtle organic twitch fasciculation on muscle knot when needle reaches trigger point
       if (knotMeshRef.current && knotMeshRef.current.visible) {
         if (curD >= 11.5) {
-          const pulse = Math.sin(elapsedTime * 12) * 0.5 + 0.5;
-          knotMeshRef.current.material.emissiveIntensity = 1.2 + pulse * 1.5;
-          knotMeshRef.current.material.emissive.setHex(0xe02868);
-          knotMeshRef.current.scale.setScalar(1.0 + pulse * 0.12);
+          const twitch = Math.sin(elapsedTime * 14) * 0.04;
+          knotMeshRef.current.scale.set(1.0 + twitch, 1.0 - twitch * 0.5, 1.0 + twitch);
         } else {
-          knotMeshRef.current.material.emissiveIntensity = 0.5;
-          knotMeshRef.current.material.emissive.setHex(0x9f1239);
           knotMeshRef.current.scale.set(1, 1, 1);
         }
       }
 
-      // Live fascial adhesion tension feedback
+      // Dynamic fascial decompression lift under suction
       if (adhesionMeshRef.current && adhesionMeshRef.current.visible) {
-        const pulse = Math.sin(elapsedTime * 6) * 0.5 + 0.5;
-        adhesionMeshRef.current.material.emissiveIntensity = 0.6 + (curD / 6.0) * 1.4 + pulse * 0.3;
+        const lift = Math.min(1.0, curD / 6.0) * 0.06;
+        adhesionMeshRef.current.position.y = lift;
       }
 
-      // Live cold stasis thermal dispersion feedback
+      // Dynamic microvascular vasodilation and hyperemia under moxa heat
       if (stasisMeshRef.current && stasisMeshRef.current.visible) {
-        const tempFraction = Math.max(0, (curD - 20) / 23);
-        stasisMeshRef.current.traverse(child => { if (child.isMesh && child.material) { child.material.opacity = Math.max(0.1, 0.85 - tempFraction * 0.6); } });
+        const heatFraction = Math.max(0, Math.min(1.0, (curD - 20) / 23));
+        stasisMeshRef.current.traverse(child => {
+          if (child.isMesh && child.material) {
+            if (child.geometry instanceof THREE.TubeGeometry) {
+              child.material.color.lerpColors(new THREE.Color(0x1e293b), new THREE.Color(0xdc2626), heatFraction);
+            } else if (child.geometry instanceof THREE.RingGeometry) {
+              child.material.opacity = Math.max(0, 0.28 * (1.0 - heatFraction));
+            }
+          }
+        });
       }
 
       // Thanos disintegration ash physics
@@ -995,7 +988,48 @@ export default function SkinLayersPip({
         {/* Main 3D Canvas */}
         <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 
-        {/* Top Header Bar */}
+                {/* Dedicated Crystal-Clear Vector-Sharp Pathology & Histology Card */}
+        <div className="absolute top-14 left-4 z-20 pointer-events-auto max-w-sm w-[90%] sm:w-[360px] p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl space-y-2.5 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="text-base">{activeTool === 'needle' ? '⚡' : activeTool === 'cup' ? '🔥' : '🌿'}</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                {activeTool === 'needle' && 'Filiform Needle • Deep Striated Muscle'}
+                {activeTool === 'cup' && 'Glass Fire Cupping • Deep Fascial Sheath'}
+                {activeTool === 'moxa' && 'Artemisia Moxa • Reticular Dermis'}
+              </span>
+            </div>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+              isDisintegrated
+                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                : 'bg-rose-50 text-rose-700 border border-rose-200'
+            }`}>
+              {isDisintegrated ? '✓ Released & Restored' : '● Active Pathology'}
+            </span>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold text-neutral-900 leading-tight">
+              {activeTool === 'needle' && 'Taut Band Myofascial Trigger Point Knot (12mm)'}
+              {activeTool === 'cup' && 'Fibrotic Fascial Restriction & Adhesion (6mm)'}
+              {activeTool === 'moxa' && 'Cold-Damp Microvascular Stasis & Vasoconstriction (43°C)'}
+            </h4>
+            <p className="text-[11px] text-neutral-600 font-medium leading-relaxed mt-1">
+              {activeTool === 'needle' && 'Histology: Hypercontracted sarcomere cluster with microvascular ischemia and localized motor endplate tension.'}
+              {activeTool === 'cup' && 'Histology: Dense cross-linked collagen bundles tethering subcutaneous adipose to deep epimysium with stagnant venules.'}
+              {activeTool === 'moxa' && 'Histology: Hypoxic capillary vasoconstriction with sluggish venous pooling and interstitial micro-edema.'}
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-neutral-200/80 text-[10px] text-neutral-600 leading-relaxed">
+            <span className="font-bold text-neutral-800">Clinical Mechanism: </span>
+            {activeTool === 'needle' && 'Mechanical filiform stimulation triggers a local twitch fasciculation, resetting spastic motor loop and restoring blood flow.'}
+            {activeTool === 'cup' && 'Negative pressure (-35 kPa) lifts skin & fascia upward into glass jar, breaking adhesions and restoring +300% perfusion.'}
+            {activeTool === 'moxa' && 'Deep infrared radiation (43°C) dilates microvascular capillary loops, expelling cold stasis and restoring vitality.'}
+          </div>
+        </div>
+
+{/* Top Header Bar */}
         <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
           <div className="flex items-center gap-2 pointer-events-auto">
             {onBackToBody && (
@@ -1251,6 +1285,30 @@ export default function SkinLayersPip({
                 );
               })}
             </div>
+          </div>
+
+          {/* Prominent High-Contrast Pathology Description Card */}
+          <div className="p-2.5 rounded-xl bg-white border border-neutral-200/90 shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[11px] font-bold text-neutral-900">
+              <span className="flex items-center gap-1.5">
+                <span>{activeTool === 'needle' ? '⚡' : activeTool === 'cup' ? '🔥' : '🌿'}</span>
+                <span>
+                  {activeTool === 'needle' && 'Taut Band Trigger Point (12mm)'}
+                  {activeTool === 'cup' && 'Fibrotic Fascial Restriction (6mm)'}
+                  {activeTool === 'moxa' && 'Cold-Damp Microvascular Stasis (43°C)'}
+                </span>
+              </span>
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                isDisintegrated ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
+              }`}>
+                {isDisintegrated ? '✓ Released' : '● Active'}
+              </span>
+            </div>
+            <p className="text-[10px] text-neutral-600 leading-tight">
+              {activeTool === 'needle' && 'Hypercontracted sarcomere knot with localized motor endplate ischemia.'}
+              {activeTool === 'cup' && 'Dense cross-linked collagen bundles tethering subcutaneous fascia.'}
+              {activeTool === 'moxa' && 'Sluggish deoxygenated capillary loops with localized cold pooling.'}
+            </p>
           </div>
 
           {/* Clinical Insertion & Real-Time Histological Readout (Direct 3D Stabbing) */}

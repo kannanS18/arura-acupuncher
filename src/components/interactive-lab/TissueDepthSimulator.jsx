@@ -2348,20 +2348,52 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     neuroVascularGroup.add(veinMesh);
 
     // -------------------------------------------------------------------------
-    // 5. 3D PATHOLOGIES (Spastic Knot, Fascial Adhesion, Cold Damp Stasis)
+    // -------------------------------------------------------------------------
+    // 5. 3D AUTHENTIC CLINICAL PATHOLOGIES (Striated Knot, Fascial Sheath, Capillaries)
     // -------------------------------------------------------------------------
     const knot3DGroup = new THREE.Group();
     knot3DGroup.position.set(0.0, -0.30, 0.20);
     strataGroup.add(knot3DGroup);
     knotMeshRef.current = knot3DGroup;
 
-    const knotCore = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(0.08, 0.026, 48, 14, 2, 3),
-      new THREE.MeshStandardMaterial({ color: 0xff1e46, emissive: 0x9f1239, emissiveIntensity: 1.8, roughness: 0.25 })
+    // Organic Striated Muscle Fascicles
+    const muscleFiberMat = new THREE.MeshStandardMaterial({
+      color: 0x6e0e18,
+      roughness: 0.85,
+      metalness: 0.04
+    });
+    for (let f = -3; f <= 3; f++) {
+      const fy = f * 0.016;
+      const bulge = Math.cos((f / 3) * (Math.PI / 2)) * 0.035;
+      const fCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.20, fy * 0.6, 0),
+        new THREE.Vector3(-0.07, fy + bulge, 0.012),
+        new THREE.Vector3(0.07, fy + bulge, 0.012),
+        new THREE.Vector3(0.20, fy * 0.6, 0)
+      ]);
+      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 12, 0.006, 6, false), muscleFiberMat);
+      knot3DGroup.add(fiber);
+    }
+    const spindleNodule = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.032, 0.032, 0.14, 16),
+      new THREE.MeshStandardMaterial({ color: 0x540b12, roughness: 0.88, metalness: 0.02 })
     );
-    knot3DGroup.add(knotCore);
+    spindleNodule.rotation.z = Math.PI / 2;
+    knot3DGroup.add(spindleNodule);
 
-    // Fascial Adhesion (Problem 2)
+    // Motor Endplate Axon
+    const axonCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0.12, 0.14, 0.01),
+      new THREE.Vector3(0.06, 0.06, 0.015),
+      new THREE.Vector3(0.0, 0.01, 0.02)
+    ]);
+    const axon = new THREE.Mesh(
+      new THREE.TubeGeometry(axonCurve, 10, 0.004, 6, false),
+      new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.55, metalness: 0.1 })
+    );
+    knot3DGroup.add(axon);
+
+    // Fascial Adhesion (Problem 2: Pearlescent Collagenous Sheath)
     const adhesion3DGroup = new THREE.Group();
     adhesion3DGroup.position.set(0.0, -0.11, 0.20);
     adhesion3DGroup.visible = false;
@@ -2369,23 +2401,49 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     adhesionMeshRef.current = adhesion3DGroup;
 
     const adhesionCore = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.07, 2),
-      new THREE.MeshStandardMaterial({ color: 0xc084fc, roughness: 0.4, transparent: true, opacity: 0.85 })
+      new THREE.CylinderGeometry(0.12, 0.14, 0.032, 24),
+      new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.65, metalness: 0.08, transparent: true, opacity: 0.90 })
     );
+    adhesionCore.rotation.x = Math.PI / 2;
     adhesion3DGroup.add(adhesionCore);
 
-    // Cold Damp Stasis (Problem 3)
+    // Retinacula Cutis Strands
+    const retinaculaMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, roughness: 0.60, transparent: true, opacity: 0.85 });
+    for (let r = 0; r < 6; r++) {
+      const angle = (r / 6) * Math.PI * 2;
+      const rCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(Math.cos(angle) * 0.07, Math.sin(angle) * 0.07, 0.014),
+        new THREE.Vector3(Math.cos(angle) * 0.14, Math.sin(angle) * 0.14, 0.006)
+      ]);
+      const strand = new THREE.Mesh(new THREE.TubeGeometry(rCurve, 8, 0.004, 6, false), retinaculaMat);
+      adhesion3DGroup.add(strand);
+    }
+
+    // Cold Damp Stasis (Problem 3: Winding Dermal Capillaries & Blush)
     const stasis3DGroup = new THREE.Group();
     stasis3DGroup.position.set(0.0, 0.26, 0.20);
     stasis3DGroup.visible = false;
     strataGroup.add(stasis3DGroup);
     stasisMeshRef.current = stasis3DGroup;
 
-    const stasisCore = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.14, 0.14, 0.04, 24),
-      new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2, transparent: true, opacity: 0.75 })
+    const capMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.65, metalness: 0.05 });
+    for (let c = 0; c < 5; c++) {
+      const angle = (c / 5) * Math.PI * 2;
+      const cCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.08 + c * 0.038, -0.03, 0.01),
+        new THREE.Vector3(-0.05 + c * 0.038 + Math.cos(angle) * 0.025, 0.015, 0.018),
+        new THREE.Vector3(-0.02 + c * 0.038, 0.04, 0.01)
+      ]);
+      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 8, 0.0035, 6, false), capMat);
+      stasis3DGroup.add(cap);
+    }
+    const stasisBlush = new THREE.Mesh(
+      new THREE.RingGeometry(0.02, 0.12, 24),
+      new THREE.MeshBasicMaterial({ color: 0x1e3a8a, transparent: true, opacity: 0.30, side: THREE.DoubleSide })
     );
-    stasis3DGroup.add(stasisCore);
+    stasisBlush.position.z = 0.008;
+    stasis3DGroup.add(stasisBlush);
 
     // =========================================================================
     // 6. 3D SURGICAL TOOLS (Needle, Glass Cup, Moxa Roll)
