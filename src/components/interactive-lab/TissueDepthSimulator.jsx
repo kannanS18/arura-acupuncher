@@ -1062,8 +1062,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.50, 1.35);
-      targetLookAtRef.current.set(0.0, 0.48, 0.06);
+      targetCamPosRef.current.set(0.0, 0.60, 1.35);
+      targetLookAtRef.current.set(0.0, 0.56, 0.06);
       targetFacing = 'front';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
       // Articulate Left Arm FORWARD by ~84 deg (almost 90 deg!), extending toward viewer!
@@ -1849,23 +1849,24 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const lz = localHit.z;
           console.log('[AcuClick] Body Hit Local:', { lx: Number(lx.toFixed(3)), ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
 
-          let targetRegion = 'face';
+          let targetRegion = 'chest';
           if (ly > 0.72) {
             targetRegion = 'face';
-          } else if (ly >= 0.55 && ly <= 0.72) {
+          } else if (ly >= 0.54 && ly <= 0.72) {
             targetRegion = 'neck';
-          } else if (lz < -0.03 && ly > -0.20 && ly < 0.55 && Math.abs(lx) < 0.14) {
-            targetRegion = 'back';
-          } else if (lx > 0.12 && ly < 0.55) {
+          } else if (lx > 0.13 && ly < 0.54 && ly > -0.15) {
             targetRegion = 'arm_left';
-          } else if (lx < -0.12 && ly < 0.55) {
+          } else if (lx < -0.13 && ly < 0.54 && ly > -0.15) {
             targetRegion = 'arm_right';
-          } else if (lx > 0.015 && ly < -0.20) {
-            targetRegion = 'leg_left';
-          } else if (lx < -0.015 && ly < -0.20) {
-            targetRegion = 'leg_right';
+          } else if (ly <= 0.02) {
+            targetRegion = lx > 0 ? 'leg_left' : 'leg_right';
           } else {
-            targetRegion = 'face';
+            // Torso region (0.02 < ly < 0.54 and Math.abs(lx) <= 0.13)
+            if (lz < -0.02) {
+              targetRegion = 'back';
+            } else {
+              targetRegion = 'chest';
+            }
           }
 
           console.log('[AcuClick] Articulating Limb & Presenting Region:', targetRegion);

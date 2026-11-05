@@ -1451,25 +1451,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Chest Center",
     "englishTitle": "Sea of Qi & Emotional Center",
     "region": "chest",
-    "regionLabel": "Sternum Midline",
+    "regionLabel": "Sternal Midline (4th Intercostal Space)",
     "facing": "front",
     "orderIndex": 0,
     "meridian": "Conception Vessel (Ren Mai)",
     "depthTarget": 5,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      0.0099,
-      0.3626,
-      0.0944
+      -0.0026,
+      0.4535,
+      0.0914
     ],
     "surfaceNormal": [
-      -0.071,
-      0.063,
-      0.995
+      0,
+      0.05,
+      0.99
     ],
     "badgeOffset": [
       0,
-      0.07,
+      0.065,
       0.03
     ],
     "painName": "Chest Tightness, Dyspnea & Emotional Grief Knot",
@@ -1488,25 +1488,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Central Treasury",
     "englishTitle": "Left Infraclavicular Fossa",
     "region": "chest",
-    "regionLabel": "Left Upper Chest",
+    "regionLabel": "Left Infraclavicular Fossa",
     "facing": "front",
     "orderIndex": 1,
     "meridian": "Lung Meridian (LU)",
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.0881,
-      0.4396,
-      0.0757
+      0.1005,
+      0.5046,
+      0.0552
     ],
     "surfaceNormal": [
-      0.373,
-      0.038,
-      0.927
+      0.513,
+      0.299,
+      0.804
     ],
     "badgeOffset": [
-      0.07,
-      0.05,
+      0.08,
+      0.04,
       0.03
     ],
     "painName": "Bronchial Constriction & Left Pectoral Adhesion",
@@ -1525,25 +1525,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Central Treasury",
     "englishTitle": "Right Infraclavicular Fossa",
     "region": "chest",
-    "regionLabel": "Right Upper Chest",
+    "regionLabel": "Right Infraclavicular Fossa",
     "facing": "front",
     "orderIndex": 2,
     "meridian": "Lung Meridian (LU)",
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      -0.0896,
-      0.432,
-      0.0982
+      -0.1014,
+      0.5133,
+      0.0755
     ],
     "surfaceNormal": [
-      -0.197,
-      0.042,
-      0.98
+      -0.422,
+      0.323,
+      0.847
     ],
     "badgeOffset": [
-      -0.07,
-      0.05,
+      -0.08,
+      0.04,
       0.03
     ],
     "painName": "Bronchial Constriction & Right Pectoral Adhesion",
@@ -1562,25 +1562,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Middle Cavity",
     "englishTitle": "Stomach Front-Mu Center",
     "region": "chest",
-    "regionLabel": "Upper Epigastrium",
+    "regionLabel": "Upper Epigastrium (Stomach Mu)",
     "facing": "front",
     "orderIndex": 3,
     "meridian": "Conception Vessel (Ren Mai)",
     "depthTarget": 12,
     "depthCun": "0.8–1.2 cun",
     "modelPos": [
-      -0.0011,
-      0.1996,
-      0.0805
+      -0.0058,
+      0.3286,
+      0.104
     ],
     "surfaceNormal": [
-      0.13,
-      0.112,
-      0.985
+      0,
+      -0.1,
+      0.99
     ],
     "badgeOffset": [
-      0,
-      0.06,
+      -0.08,
+      0.01,
       0.03
     ],
     "painName": "Epigastric Spasm, Acid Reflux & Gastric Tension",
@@ -1599,25 +1599,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Celestial Pivot",
     "englishTitle": "Left Large Intestine Mu",
     "region": "chest",
-    "regionLabel": "Left Abdomen",
+    "regionLabel": "Left Abdomen (Navel Level)",
     "facing": "front",
     "orderIndex": 4,
     "meridian": "Stomach Meridian (ST)",
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      0.0313,
-      0.1018,
-      0.0895
+      0.0387,
+      0.224,
+      0.0873
     ],
     "surfaceNormal": [
-      0.228,
-      0.061,
-      0.972
+      0.35,
+      -0.1,
+      0.93
     ],
     "badgeOffset": [
-      0.07,
-      0.03,
+      0.08,
+      0.02,
       0.03
     ],
     "painName": "Intestinal Motility Dysregulation & Colonic Spasm",
@@ -1636,25 +1636,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Celestial Pivot",
     "englishTitle": "Right Large Intestine Mu",
     "region": "chest",
-    "regionLabel": "Right Abdomen",
+    "regionLabel": "Right Abdomen (Navel Level)",
     "facing": "front",
     "orderIndex": 5,
     "meridian": "Stomach Meridian (ST)",
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.0419,
-      0.0902,
-      0.0915
+      -0.0431,
+      0.218,
+      0.0821
     ],
     "surfaceNormal": [
-      -0.12,
-      0.03,
-      0.992
+      -0.35,
+      -0.1,
+      0.93
     ],
     "badgeOffset": [
-      -0.07,
-      0.03,
+      -0.08,
+      0.02,
       0.03
     ],
     "painName": "Intestinal Motility Dysregulation & Colonic Spasm",
@@ -1673,25 +1673,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Sea of Qi",
     "englishTitle": "Lower Dantian Vital Energy Center",
     "region": "chest",
-    "regionLabel": "Lower Abdomen",
+    "regionLabel": "Lower Abdomen (Sea of Qi)",
     "facing": "front",
     "orderIndex": 6,
     "meridian": "Conception Vessel (Ren Mai)",
     "depthTarget": 12,
     "depthCun": "0.8–1.2 cun",
     "modelPos": [
-      -0.0067,
-      0.0513,
-      0.0926
+      -0.0021,
+      0.1495,
+      0.0888
     ],
     "surfaceNormal": [
-      0.001,
-      -0.137,
-      0.991
+      0,
+      0.1,
+      0.99
     ],
     "badgeOffset": [
-      0,
-      -0.06,
+      0.075,
+      -0.03,
       0.03
     ],
     "painName": "Core Exhaustion, Lower Abdominal Cold & Pelvic Fatigue",
@@ -1710,25 +1710,25 @@ export const CLINICAL_ACUPOINTS = [
     "translation": "Gate of Origin",
     "englishTitle": "Primordial Source Center",
     "region": "chest",
-    "regionLabel": "Hypogastrium",
+    "regionLabel": "Hypogastrium (Gate of Origin)",
     "facing": "front",
     "orderIndex": 7,
     "meridian": "Conception Vessel (Ren Mai)",
     "depthTarget": 12,
     "depthCun": "0.8–1.2 cun",
     "modelPos": [
-      0.0088,
-      0.0006,
-      0.0797
+      0.0031,
+      0.0894,
+      0.0941
     ],
     "surfaceNormal": [
-      0.058,
-      -0.382,
-      0.922
+      0,
+      0.05,
+      0.99
     ],
     "badgeOffset": [
-      0,
-      -0.08,
+      -0.075,
+      -0.04,
       0.03
     ],
     "painName": "Deep Vitality Depletion & Primordial Essence Weakness",
