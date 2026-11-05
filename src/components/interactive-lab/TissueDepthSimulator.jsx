@@ -1091,16 +1091,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.32, 0.54, 0.82);
-      targetLookAtRef.current.set(0.24, 0.52, 0.20);
+      targetCamPosRef.current.set(0.268, 0.49, 0.88);
+      targetLookAtRef.current.set(0.268, 0.47, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
       targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.32, 0.54, 0.82);
-      targetLookAtRef.current.set(-0.24, 0.52, 0.20);
+      targetCamPosRef.current.set(-0.268, 0.49, 0.88);
+      targetLookAtRef.current.set(-0.268, 0.47, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
