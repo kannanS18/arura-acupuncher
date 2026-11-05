@@ -130,8 +130,8 @@ export default function SkinLayersPip({
 
     const camera = new THREE.PerspectiveCamera(40, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(0.18, 1.62, 3.10);
-      camera.lookAt(0.18, 0.28, 0.15);
+      camera.position.set(0.15, 0.58, 2.45);
+      camera.lookAt(0.15, 0.22, 0.15);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -162,7 +162,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? 0.18 : 0, fullStage ? 0.28 : 0.05, fullStage ? 0.15 : 0);
+    controls.target.set(fullStage ? 0.15 : 0, fullStage ? 0.22 : 0.05, fullStage ? 0.15 : 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -236,34 +236,108 @@ export default function SkinLayersPip({
     const offsetX = fullStage ? -0.38 : 0.0;
     const skinSurfaceY = 0.550; // Exact top skin surface height of skin_layers.glb!
 
-    // Helper: Sleek Minimalist 3D Anatomical Pinpoint Reticle on Cut Strata Face
-    const createPathologyReticle = (colorHex) => {
-      const g = new THREE.Group();
-      // Outer target reticle ring
-      const ringGeo = new THREE.RingGeometry(0.016, 0.022, 24);
+    // Helper: High-Definition Retina-Sharp 3D Floating Callout Badge + Reticle + Leader Line
+    const createUltraCrispBadge = (icon, title, subtitle, colorHex) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 256;
+      const ctx = canvas.getContext('2d');
+
+      // Semi-transparent sleek dark background with rounded corners
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+      ctx.strokeStyle = colorHex;
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(8, 8, 1008, 240, 36);
+      else ctx.rect(8, 8, 1008, 240);
+      ctx.fill();
+      ctx.stroke();
+
+      // Subtle inner gradient sheen
+      const sheen = ctx.createLinearGradient(0, 0, 1024, 0);
+      sheen.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+      sheen.addColorStop(0.5, 'rgba(255, 255, 255, 0.0)');
+      sheen.addColorStop(1, 'rgba(255, 255, 255, 0.04)');
+      ctx.fillStyle = sheen;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(8, 8, 1008, 240, 36);
+      else ctx.rect(8, 8, 1008, 240);
+      ctx.fill();
+
+      // Status icon circle
+      ctx.fillStyle = colorHex;
+      ctx.beginPath();
+      ctx.arc(80, 128, 30, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 32px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(icon, 80, 128);
+
+      // Title text (Large, bold, high-contrast, razor sharp)
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText(title, 135, 102);
+
+      // Subtitle text (Crisp, light slate gray)
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '600 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText(subtitle, 135, 168);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.generateMipmaps = false;
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
+
+      const spriteMat = new THREE.SpriteMaterial({
+        map: tex,
+        depthTest: false,
+        depthWrite: false
+      });
+      const sprite = new THREE.Sprite(spriteMat);
+      sprite.scale.set(0.56, 0.14, 1.0);
+
+      // Group containing the sprite, the reticle ring, and the angled leader line
+      const container = new THREE.Group();
+
+      // 1. Glowing reticle ring on the pathology
+      const ringGeo = new THREE.RingGeometry(0.016, 0.024, 32);
       const ringMat = new THREE.MeshBasicMaterial({ color: colorHex, side: THREE.DoubleSide, transparent: true, opacity: 0.95 });
       const ring = new THREE.Mesh(ringGeo, ringMat);
-      g.add(ring);
+      container.add(ring);
 
-      // Center pinpoint core dot
-      const dotGeo = new THREE.CircleGeometry(0.006, 16);
-      const dotMat = new THREE.MeshBasicMaterial({ color: colorHex, side: THREE.DoubleSide });
-      const dot = new THREE.Mesh(dotGeo, dotMat);
+      const dot = new THREE.Mesh(
+        new THREE.CircleGeometry(0.007, 16),
+        new THREE.MeshBasicMaterial({ color: colorHex, side: THREE.DoubleSide })
+      );
       dot.position.z = 0.001;
-      g.add(dot);
+      container.add(dot);
 
-      // Slender anatomical pointer line
-      const lineMat = new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.85 });
+      // 2. Angled leader line from reticle (0, 0, 0) to badge left edge
+      const lineMat = new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.90 });
       const lineGeo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0.022, 0, 0),
-        new THREE.Vector3(0.08, 0.025, 0),
-        new THREE.Vector3(0.18, 0.025, 0)
+        new THREE.Vector3(0.024, 0, 0.002),
+        new THREE.Vector3(0.07, 0.035, 0.002),
+        new THREE.Vector3(0.12, 0.035, 0.002)
       ]);
       const line = new THREE.Line(lineGeo, lineMat);
-      g.add(line);
+      container.add(line);
 
-      return g;
+      // 3. Position the sprite badge right beside the leader line
+      sprite.position.set(0.40, 0.035, 0.015);
+      container.add(sprite);
+
+      return container;
     };
+
+    // Dedicated Pathology Showcase Spotlight (Illuminates the cut face and pathologies directly)
+    const showcaseLight = new THREE.PointLight(0xfff8ed, 2.4, 3.2);
+    showcaseLight.position.set(offsetX + 0.15, 0.20, 0.95);
+    scene.add(showcaseLight);
 
     // A. 3D Needle Assembly (Operates along the visible front cut face at z = 0.410)
     const needleAssembly = new THREE.Group();
@@ -472,176 +546,218 @@ export default function SkinLayersPip({
     thermalRing.position.y = -0.11;
     moxaGroup.add(thermalRing);
 
-    // 5. 3 Authentic Biological Clinical Pathologies ON CUT TISSUE FACE (z = 0.430)
+    // 5. 3 Vibrant, High-Contrast Authentic Clinical Pathologies on Cut Face (z = 0.430)
 
-    // A. Needle Target: Authentic Taut Band Myofascial Trigger Point Knot (Striated Muscle, y = -0.04)
+    // A. Needle Target: Highly Defined Taut Band Myofascial Trigger Point Knot (Striated Muscle, y = -0.04)
     const knotGroup = new THREE.Group();
     knotGroup.position.set(offsetX, -0.04, 0.430);
     knotGroup.visible = (activeTool === 'needle');
     scene.add(knotGroup);
 
-    // 1. Interwoven Striated Muscle Fascicles forming an organic contractile spindle
+    // 1. Inflamed Hyperemic Striated Muscle Fascicles (Vibrant Ruby-Crimson with Specular Sheen)
     const muscleFiberMat = new THREE.MeshStandardMaterial({
-      color: 0x6e0e18,
-      roughness: 0.85,
-      metalness: 0.04
+      color: 0xdc2626, // Bright, distinct arterial muscle red for high visibility
+      roughness: 0.35,
+      metalness: 0.08
     });
     const knotFibers = new THREE.Group();
     knotGroup.add(knotFibers);
-    knotMeshRef.current = knotFibers; // Animated on needle contact
+    knotMeshRef.current = knotFibers; // Animated twitch fasciculation on contact
 
     for (let f = -4; f <= 4; f++) {
-      const fy = f * 0.012;
-      const fz = (f % 2 === 0 ? 0.006 : -0.004);
-      const bulge = Math.cos((f / 4) * (Math.PI / 2)) * 0.024;
+      const fy = f * 0.013;
+      const fz = (f % 2 === 0 ? 0.008 : -0.004);
+      const bulge = Math.cos((f / 4) * (Math.PI / 2)) * 0.028;
       const fCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(-0.16, fy * 0.5, fz),
-        new THREE.Vector3(-0.06, fy + bulge, fz + 0.008),
-        new THREE.Vector3(0.06, fy + bulge, fz + 0.008),
+        new THREE.Vector3(-0.06, fy + bulge, fz + 0.010),
+        new THREE.Vector3(0.06, fy + bulge, fz + 0.010),
         new THREE.Vector3(0.16, fy * 0.5, fz)
       ]);
-      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 12, 0.0045, 6, false), muscleFiberMat);
+      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 14, 0.0055, 8, false), muscleFiberMat);
       knotFibers.add(fiber);
     }
 
-    // 2. Hypercontracted Sarcomere Core Spindle (Darkened myoglobin-dense nodule)
+    // 2. Central Hypercontracted Sarcomere Core Spindle (Deep Warm Crimson with Internal Bio-Glow)
     const spindleCoreMat = new THREE.MeshStandardMaterial({
-      color: 0x540b12,
-      roughness: 0.88,
-      metalness: 0.02
+      color: 0xb91c1c,
+      emissive: 0x991b1b,
+      emissiveIntensity: 0.65,
+      roughness: 0.40,
+      metalness: 0.05
     });
     const spindleCore = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.024, 0.024, 0.10, 16),
+      new THREE.CylinderGeometry(0.026, 0.026, 0.12, 20),
       spindleCoreMat
     );
     spindleCore.rotation.z = Math.PI / 2;
     knotGroup.add(spindleCore);
 
-    // 3. Focal Micro-Ischemic Blanching Striations (pale contracted fibers)
+    // 3. Focal Ischemic Blanching Striations (pale contractile center)
     const ischemicMat = new THREE.MeshStandardMaterial({
-      color: 0x9f1239,
-      roughness: 0.80,
+      color: 0xf87171,
+      roughness: 0.45,
       metalness: 0.02
     });
     const ischemicNodule = new THREE.Mesh(
-      new THREE.SphereGeometry(0.018, 12, 10),
+      new THREE.SphereGeometry(0.019, 14, 12),
       ischemicMat
     );
     ischemicNodule.scale.set(1.6, 0.8, 0.8);
-    ischemicNodule.position.z = 0.008;
+    ischemicNodule.position.z = 0.010;
     knotGroup.add(ischemicNodule);
 
-    // 4. Branching Golden Motor Endplate Axon Innervating the Spindle
+    // 4. Branching Golden Motor Endplate Axon (Bio-Electric Nerve Terminal)
     const axonCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.11, 0.12, 0.008),
-      new THREE.Vector3(0.05, 0.05, 0.010),
-      new THREE.Vector3(0.0, 0.01, 0.012)
+      new THREE.Vector3(0.12, 0.13, 0.010),
+      new THREE.Vector3(0.06, 0.06, 0.012),
+      new THREE.Vector3(0.0, 0.01, 0.015)
     ]);
     const axon = new THREE.Mesh(
-      new THREE.TubeGeometry(axonCurve, 10, 0.0032, 6, false),
-      new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.55, metalness: 0.1 })
+      new THREE.TubeGeometry(axonCurve, 12, 0.004, 6, false),
+      new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 1.5 })
     );
     knotGroup.add(axon);
 
-    // Sleek 3D Reticle Pinpoint Marker
-    const knotReticle = createPathologyReticle(0xe11d48);
-    knotReticle.position.set(0, 0, 0.016);
-    knotGroup.add(knotReticle);
-    knotBadgeRef.current = knotReticle;
+    // 5. Localized Hyperemic Inflammatory Halo (Translucent Warm Red Aura)
+    const hyperemicHalo = new THREE.Mesh(
+      new THREE.RingGeometry(0.02, 0.09, 32),
+      new THREE.MeshBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.28, side: THREE.DoubleSide })
+    );
+    hyperemicHalo.position.z = 0.002;
+    knotGroup.add(hyperemicHalo);
 
-    // B. Cupping Target: Authentic Densified Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22)
+    // 6. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
+    const knotBadge = createUltraCrispBadge(
+      '⚡',
+      'TAUT BAND TRIGGER POINT • 12mm',
+      'Hypercontracted Sarcomere Spindle • Motor Endplate',
+      '#f43f5e'
+    );
+    knotBadge.position.set(0, 0, 0.016);
+    knotGroup.add(knotBadge);
+    knotBadgeRef.current = knotBadge;
+
+    // B. Cupping Target: Highly Defined Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22)
     const adhesionGroup = new THREE.Group();
     adhesionGroup.position.set(offsetX, 0.22, 0.430);
     adhesionGroup.visible = (activeTool === 'cup');
     scene.add(adhesionGroup);
 
-    // 1. Pearlescent Wavy Collagenous Plaque Sheath
+    // 1. Radiant Pearlescent Collagenous Plaque Sheath (Glistening White-Lilac)
     const collagenMat = new THREE.MeshStandardMaterial({
-      color: 0xe2e8f0,
-      roughness: 0.65,
-      metalness: 0.08,
+      color: 0xffffff,
+      emissive: 0xddd6fe,
+      emissiveIntensity: 0.45,
+      roughness: 0.25,
+      metalness: 0.20,
       transparent: true,
-      opacity: 0.90
+      opacity: 0.95
     });
-    const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.085, 0.024, 20), collagenMat);
+    const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.095, 0.026, 24), collagenMat);
     adhesionMesh.rotation.x = Math.PI / 2;
     adhesionGroup.add(adhesionMesh);
     adhesionMeshRef.current = adhesionMesh;
 
-    // 2. Retinacula Cutis Collagen Strands (anchoring into adjacent yellow adipocyte matrix)
-    const bandMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, roughness: 0.60, transparent: true, opacity: 0.85 });
-    for (let b = 0; b < 7; b++) {
-      const angle = (b / 7) * Math.PI * 2;
+    // 2. Interwoven Retinacula Cutis Collagen Strands (Wavy Lilac Connective Bands)
+    const bandMat = new THREE.MeshStandardMaterial({
+      color: 0xc084fc,
+      roughness: 0.32,
+      transparent: true,
+      opacity: 0.90
+    });
+    for (let b = 0; b < 8; b++) {
+      const angle = (b / 8) * Math.PI * 2;
       const bCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(Math.cos(angle) * 0.05, Math.sin(angle) * 0.05, 0.010),
-        new THREE.Vector3(Math.cos(angle) * 0.10, Math.sin(angle) * 0.10, 0.004)
+        new THREE.Vector3(Math.cos(angle) * 0.06, Math.sin(angle) * 0.06, 0.012),
+        new THREE.Vector3(Math.cos(angle) * 0.11, Math.sin(angle) * 0.11, 0.005)
       ]);
-      const band = new THREE.Mesh(new THREE.TubeGeometry(bCurve, 10, 0.0032, 6, false), bandMat);
+      const band = new THREE.Mesh(new THREE.TubeGeometry(bCurve, 12, 0.004, 6, false), bandMat);
       adhesionGroup.add(band);
     }
 
-    // 3. Entrapped Sluggish Micro-Venules (dark plum hypoxic capillaries)
-    const venuleMat = new THREE.MeshStandardMaterial({ color: 0x4a044e, roughness: 0.60 });
+    // 3. Entrapped Hypoxic Micro-Venules (Deep Plum/Purple Capillaries)
+    const venuleMat = new THREE.MeshStandardMaterial({ color: 0x7e22ce, emissive: 0x581c87, emissiveIntensity: 0.8 });
     for (let v = 0; v < 3; v++) {
       const vCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.05 + v * 0.04, -0.03, 0.008),
-        new THREE.Vector3(-0.03 + v * 0.04, 0.01, 0.010),
-        new THREE.Vector3(-0.01 + v * 0.04, 0.04, 0.006)
+        new THREE.Vector3(-0.06 + v * 0.05, -0.035, 0.009),
+        new THREE.Vector3(-0.03 + v * 0.05, 0.012, 0.012),
+        new THREE.Vector3(-0.01 + v * 0.05, 0.045, 0.007)
       ]);
-      const venule = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 8, 0.0028, 6, false), venuleMat);
+      const venule = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 10, 0.0035, 6, false), venuleMat);
       adhesionGroup.add(venule);
     }
 
-    // Sleek 3D Reticle Pinpoint Marker
-    const adhesionReticle = createPathologyReticle(0x8b5cf6);
-    adhesionReticle.position.set(0, 0, 0.016);
-    adhesionGroup.add(adhesionReticle);
-    adhesionBadgeRef.current = adhesionReticle;
+    // 4. Soft Violet Decompression Aura
+    const adhesionHalo = new THREE.Mesh(
+      new THREE.RingGeometry(0.03, 0.12, 32),
+      new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+    );
+    adhesionHalo.position.z = 0.002;
+    adhesionGroup.add(adhesionHalo);
 
-    // C. Moxa Target: Authentic Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44)
+    // 5. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
+    const adhesionBadge = createUltraCrispBadge(
+      '🧬',
+      'FIBROTIC FASCIAL ADHESION • 6mm',
+      'Dense Cross-Linked Collagen • Retinacula Restriction',
+      '#a855f7'
+    );
+    adhesionBadge.position.set(0, 0, 0.016);
+    adhesionGroup.add(adhesionBadge);
+    adhesionBadgeRef.current = adhesionBadge;
+
+    // C. Moxa Target: Highly Defined Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44)
     const stasisGroup = new THREE.Group();
     stasisGroup.position.set(offsetX, 0.44, 0.430);
     stasisGroup.visible = (activeTool === 'moxa');
     scene.add(stasisGroup);
 
-    // 1. Sluggish Deoxygenated Dermal Micro-Capillaries
+    // 1. Winding Hypoxic Capillary Loops (Luminous Cyan-Cobalt Plexus)
     const stasisCapMat = new THREE.MeshStandardMaterial({
-      color: 0x1e293b, // Sluggish venous deoxygenated blue-gray
-      roughness: 0.65,
-      metalness: 0.05
+      color: 0x38bdf8,
+      emissive: 0x0284c7,
+      emissiveIntensity: 1.2,
+      roughness: 0.40,
+      metalness: 0.10
     });
     const stasisMesh = new THREE.Group();
     stasisGroup.add(stasisMesh);
     stasisMeshRef.current = stasisMesh;
 
-    for (let c = 0; c < 5; c++) {
-      const angle = (c / 5) * Math.PI * 2;
+    for (let c = 0; c < 6; c++) {
+      const angle = (c / 6) * Math.PI * 2;
       const cCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.06 + c * 0.028, -0.02, 0.008),
-        new THREE.Vector3(-0.04 + c * 0.028 + Math.cos(angle) * 0.02, 0.01, 0.012),
-        new THREE.Vector3(-0.02 + c * 0.028, 0.03, 0.008)
+        new THREE.Vector3(-0.06 + c * 0.024, -0.025, 0.010),
+        new THREE.Vector3(-0.04 + c * 0.024 + Math.cos(angle) * 0.025, 0.015, 0.015),
+        new THREE.Vector3(-0.01 + c * 0.024, 0.035, 0.010)
       ]);
-      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 10, 0.0028, 6, false), stasisCapMat);
+      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 12, 0.0038, 6, false), stasisCapMat);
       stasisMesh.add(cap);
     }
 
-    // 2. Localized Dusky Interstitial Cyanosis Blush
+    // 2. Glowing Cyanic Interstitial Fluid Pooling Aura
     const stasisBlushMat = new THREE.MeshBasicMaterial({
-      color: 0x1e3a8a,
+      color: 0x0284c7,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.38,
       side: THREE.DoubleSide
     });
-    const stasisBlush = new THREE.Mesh(new THREE.RingGeometry(0.01, 0.08, 24), stasisBlushMat);
+    const stasisBlush = new THREE.Mesh(new THREE.RingGeometry(0.015, 0.09, 32), stasisBlushMat);
     stasisBlush.position.z = 0.006;
     stasisMesh.add(stasisBlush);
 
-    // Sleek 3D Reticle Pinpoint Marker
-    const stasisReticle = createPathologyReticle(0xf97316);
-    stasisReticle.position.set(0, 0, 0.016);
-    stasisGroup.add(stasisReticle);
-    stasisBadgeRef.current = stasisReticle;
+    // 3. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
+    const stasisBadge = createUltraCrispBadge(
+      '❄️',
+      'COLD-DAMP VASCULAR STASIS • 43°C',
+      'Capillary Vasoconstriction • Sluggish Venous Pooling',
+      '#38bdf8'
+    );
+    stasisBadge.position.set(0, 0, 0.016);
+    stasisGroup.add(stasisBadge);
+    stasisBadgeRef.current = stasisBadge;
 
     // 6. Thanos Particle Ash System for Disintegration
     const pCount = 180;
