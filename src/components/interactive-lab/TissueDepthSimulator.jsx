@@ -609,18 +609,26 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const targetLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
   const currentLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
   const leftShoulderPivotRef = useRef(new THREE.Vector3(0.196, 0.376, -0.097));
-  const rightShoulderPivotRef = useRef(new THREE.Vector3(-0.218, 0.378, -0.009));
-  const leftHipPivotRef = useRef(new THREE.Vector3(0.100, -0.250, 0.000));
-  const rightHipPivotRef = useRef(new THREE.Vector3(-0.100, -0.250, 0.000));
+  const rightShoulderPivotRef = useRef(new THREE.Vector3(-0.196, 0.376, -0.020));
+  const leftElbowPivotRef = useRef(new THREE.Vector3(0.220, 0.151, -0.042));
+  const rightElbowPivotRef = useRef(new THREE.Vector3(-0.210, 0.150, 0.037));
+  const leftHipPivotRef = useRef(new THREE.Vector3(0.090, -0.054, -0.024));
+  const rightHipPivotRef = useRef(new THREE.Vector3(-0.090, -0.054, -0.024));
+  const leftKneePivotRef = useRef(new THREE.Vector3(0.115, -0.444, -0.038));
+  const rightKneePivotRef = useRef(new THREE.Vector3(-0.115, -0.442, -0.038));
   const limbUniformsRef = useRef({
     uArmLAngle: { value: 0.0 },
     uArmRAngle: { value: 0.0 },
     uLegLAngle: { value: 0.0 },
     uLegRAngle: { value: 0.0 },
     uLeftShoulderPivot: { value: new THREE.Vector3(0.196, 0.376, -0.097) },
-    uRightShoulderPivot: { value: new THREE.Vector3(-0.218, 0.378, -0.009) },
-    uLeftHipPivot: { value: new THREE.Vector3(0.100, -0.250, 0.000) },
-    uRightHipPivot: { value: new THREE.Vector3(-0.100, -0.250, 0.000) }
+    uRightShoulderPivot: { value: new THREE.Vector3(-0.196, 0.376, -0.020) },
+    uLeftElbowPivot: { value: new THREE.Vector3(0.220, 0.151, -0.042) },
+    uRightElbowPivot: { value: new THREE.Vector3(-0.210, 0.150, 0.037) },
+    uLeftHipPivot: { value: new THREE.Vector3(0.090, -0.054, -0.024) },
+    uRightHipPivot: { value: new THREE.Vector3(-0.090, -0.054, -0.024) },
+    uLeftKneePivot: { value: new THREE.Vector3(0.115, -0.444, -0.038) },
+    uRightKneePivot: { value: new THREE.Vector3(-0.115, -0.442, -0.038) }
   });
   const limbPinGroupsRef = useRef({});
   const armPinObjectsRef = useRef([]);
@@ -1066,23 +1074,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLookAtRef.current.set(0.0, 0.56, 0.06);
       targetFacing = 'front';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      // Articulate Left Arm FORWARD by ~84 deg (almost 90 deg!), extending toward viewer!
-      targetLimbAnglesRef.current.armL = 1.46;
+      // Articulate Left Arm: shoulder flexion ~45 deg + elbow flexion ~38 deg
+      targetLimbAnglesRef.current.armL = 1.0;
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      // Frame the horizontally extended arm and hand right in front of the viewer
-      targetCamPosRef.current.set(0.38, 0.74, 0.62);
-      targetLookAtRef.current.set(0.20, 0.70, 0.14);
+      targetCamPosRef.current.set(0.85, 0.42, 1.25);
+      targetLookAtRef.current.set(0.20, 0.35, 0.16);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
-      // Articulate Right Arm FORWARD by ~84 deg!
-      targetLimbAnglesRef.current.armR = 1.46;
+      targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.38, 0.74, 0.62);
-      targetLookAtRef.current.set(-0.20, 0.70, 0.14);
+      targetCamPosRef.current.set(-0.85, 0.42, 1.25);
+      targetLookAtRef.current.set(-0.20, 0.35, 0.16);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1093,21 +1099,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLookAtRef.current.set(0.0, 0.55, -0.06);
       targetFacing = 'back';
     } else if (regionKey === 'leg_left' || regionKey === 'leg') {
-      // Articulate Left Leg forward by ~35 deg!
-      targetLimbAnglesRef.current.legL = 0.62;
+      // Articulate Left Leg: Thigh rises forward & knee flexes backward (knee rises up first!)
+      targetLimbAnglesRef.current.legL = 1.0;
       targetLimbAnglesRef.current.legR = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(0.16, -0.10, 0.68);
-      targetLookAtRef.current.set(0.10, -0.18, 0.16);
+      targetCamPosRef.current.set(0.95, -0.20, 1.65);
+      targetLookAtRef.current.set(0.12, -0.36, 0.14);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
-      targetLimbAnglesRef.current.legR = 0.62;
+      targetLimbAnglesRef.current.legR = 1.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(-0.16, -0.10, 0.68);
-      targetLookAtRef.current.set(-0.10, -0.18, 0.16);
+      targetCamPosRef.current.set(-0.95, -0.20, 1.65);
+      targetLookAtRef.current.set(-0.12, -0.36, 0.14);
       targetFacing = 'front';
     }
 
@@ -1582,14 +1588,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             }
           }
 
-          // Left Leg (strictly below pelvis y < -0.25, x > 0.02)
+          // Leg weights: smoothly bind thigh from hip crease (y = -0.04) down past knee to foot soles
           for (let i = 0; i < vCount; i++) {
             const x = pos[i * 3], y = pos[i * 3 + 1];
-            if (x > 0.02 && y < -0.25) {
-              legLWeights[i] = y < -0.29 ? 1.0 : ((-0.25 - y) / 0.04);
-            }
-            if (x < -0.02 && y < -0.25) {
-              legRWeights[i] = y < -0.29 ? 1.0 : ((-0.25 - y) / 0.04);
+            const isHand = Math.abs(x) > 0.17 && y > -0.26;
+            if (!isHand) {
+              if (x > 0.015 && y < -0.04) {
+                legLWeights[i] = y < -0.10 ? 1.0 : Math.max(0.0, Math.min(1.0, (-0.04 - y) / 0.06));
+              }
+              if (x < -0.015 && y < -0.04) {
+                legRWeights[i] = y < -0.10 ? 1.0 : Math.max(0.0, Math.min(1.0, (-0.04 - y) / 0.06));
+              }
             }
           }
         }
@@ -1607,7 +1616,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
 
         const uniforms = limbUniformsRef.current;
-        bodyMat.customProgramCacheKey = () => 'limb-kinematics-90deg-v4';
+        bodyMat.customProgramCacheKey = () => 'limb-kinematics-human-v8';
         bodyMat.onBeforeCompile = (shader) => {
           bodyMat.userData.compiledShader = shader;
           shader.uniforms.uArmLAngle = uniforms.uArmLAngle;
@@ -1616,8 +1625,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           shader.uniforms.uLegRAngle = uniforms.uLegRAngle;
           shader.uniforms.uLeftShoulderPivot = uniforms.uLeftShoulderPivot;
           shader.uniforms.uRightShoulderPivot = uniforms.uRightShoulderPivot;
+          shader.uniforms.uLeftElbowPivot = uniforms.uLeftElbowPivot;
+          shader.uniforms.uRightElbowPivot = uniforms.uRightElbowPivot;
           shader.uniforms.uLeftHipPivot = uniforms.uLeftHipPivot;
           shader.uniforms.uRightHipPivot = uniforms.uRightHipPivot;
+          shader.uniforms.uLeftKneePivot = uniforms.uLeftKneePivot;
+          shader.uniforms.uRightKneePivot = uniforms.uRightKneePivot;
 
           shader.vertexShader = shader.vertexShader.replace(
             '#include <common>',
@@ -1632,8 +1645,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             uniform float uLegRAngle;
             uniform vec3 uLeftShoulderPivot;
             uniform vec3 uRightShoulderPivot;
+            uniform vec3 uLeftElbowPivot;
+            uniform vec3 uRightElbowPivot;
             uniform vec3 uLeftHipPivot;
             uniform vec3 uRightHipPivot;
+            uniform vec3 uLeftKneePivot;
+            uniform vec3 uRightKneePivot;
 
             mat3 rotateX(float angle) {
               float s = sin(angle);
@@ -1652,44 +1669,92 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             `
             #include <begin_vertex>
 
-            // LEFT ARM: rotates almost 90 deg forward (shoulder flexion ~85 deg)
+            // LEFT ARM: Organic 2-joint human biomechanics (Shoulder forward + Elbow bend)
             if (aArmLWeight > 0.0 && uArmLAngle > 0.0001) {
-              float ang = -uArmLAngle * aArmLWeight;
-              mat3 rot = rotateX(ang);
-              transformed = rot * (transformed - uLeftShoulderPivot) + uLeftShoulderPivot;
-              #ifdef USE_NORMAL
-              objectNormal = rot * objectNormal;
-              #endif
+              float shoulderAng = -uArmLAngle * 0.78 * aArmLWeight;
+              float elbowAng = -uArmLAngle * 0.82 * aArmLWeight;
+              mat3 rotS = rotateX(shoulderAng);
+              vec3 transElbow = rotS * (uLeftElbowPivot - uLeftShoulderPivot) + uLeftShoulderPivot;
+              vec3 p = rotS * (transformed - uLeftShoulderPivot) + uLeftShoulderPivot;
+              float wElbow = 1.0 - smoothstep(0.12, 0.20, transformed.y);
+              if (wElbow > 0.0) {
+                mat3 rotE = rotateX(elbowAng * wElbow);
+                p = rotE * (p - transElbow) + transElbow;
+                #ifdef USE_NORMAL
+                objectNormal = rotE * (rotS * objectNormal);
+                #endif
+              } else {
+                #ifdef USE_NORMAL
+                objectNormal = rotS * objectNormal;
+                #endif
+              }
+              transformed = p;
             }
 
-            // RIGHT ARM: rotates almost 90 deg forward
+            // RIGHT ARM: Organic 2-joint human biomechanics
             if (aArmRWeight > 0.0 && uArmRAngle > 0.0001) {
-              float ang = -uArmRAngle * aArmRWeight;
-              mat3 rot = rotateX(ang);
-              transformed = rot * (transformed - uRightShoulderPivot) + uRightShoulderPivot;
-              #ifdef USE_NORMAL
-              objectNormal = rot * objectNormal;
-              #endif
+              float shoulderAng = -uArmRAngle * 0.78 * aArmRWeight;
+              float elbowAng = -uArmRAngle * 0.82 * aArmRWeight;
+              mat3 rotS = rotateX(shoulderAng);
+              vec3 transElbow = rotS * (uRightElbowPivot - uRightShoulderPivot) + uRightShoulderPivot;
+              vec3 p = rotS * (transformed - uRightShoulderPivot) + uRightShoulderPivot;
+              float wElbow = 1.0 - smoothstep(0.12, 0.20, transformed.y);
+              if (wElbow > 0.0) {
+                mat3 rotE = rotateX(elbowAng * wElbow);
+                p = rotE * (p - transElbow) + transElbow;
+                #ifdef USE_NORMAL
+                objectNormal = rotE * (rotS * objectNormal);
+                #endif
+              } else {
+                #ifdef USE_NORMAL
+                objectNormal = rotS * objectNormal;
+                #endif
+              }
+              transformed = p;
             }
 
-            // LEFT LEG: steps forward ~35 deg
+            // LEFT LEG: Knee-rise natural human biomechanics (Thigh lifts up + Knee flexes backward)
             if (aLegLWeight > 0.0 && uLegLAngle > 0.0001) {
-              float ang = -uLegLAngle * aLegLWeight;
-              mat3 rot = rotateX(ang);
-              transformed = rot * (transformed - uLeftHipPivot) + uLeftHipPivot;
-              #ifdef USE_NORMAL
-              objectNormal = rot * objectNormal;
-              #endif
+              float hipAng = -uLegLAngle * 0.75 * aLegLWeight;
+              float kneeAng = uLegLAngle * 0.85 * aLegLWeight; // Positive bends backward, raising knee up!
+              mat3 rotH = rotateX(hipAng);
+              vec3 transKnee = rotH * (uLeftKneePivot - uLeftHipPivot) + uLeftHipPivot;
+              vec3 p = rotH * (transformed - uLeftHipPivot) + uLeftHipPivot;
+              float wKnee = 1.0 - smoothstep(-0.48, -0.40, transformed.y);
+              if (wKnee > 0.0) {
+                mat3 rotK = rotateX(kneeAng * wKnee);
+                p = rotK * (p - transKnee) + transKnee;
+                #ifdef USE_NORMAL
+                objectNormal = rotK * (rotH * objectNormal);
+                #endif
+              } else {
+                #ifdef USE_NORMAL
+                objectNormal = rotH * objectNormal;
+                #endif
+              }
+              transformed = p;
             }
 
-            // RIGHT LEG: steps forward ~35 deg
+            // RIGHT LEG: Knee-rise natural human biomechanics
             if (aLegRWeight > 0.0 && uLegRAngle > 0.0001) {
-              float ang = -uLegRAngle * aLegRWeight;
-              mat3 rot = rotateX(ang);
-              transformed = rot * (transformed - uRightHipPivot) + uRightHipPivot;
-              #ifdef USE_NORMAL
-              objectNormal = rot * objectNormal;
-              #endif
+              float hipAng = -uLegRAngle * 0.75 * aLegRWeight;
+              float kneeAng = uLegRAngle * 0.85 * aLegRWeight;
+              mat3 rotH = rotateX(hipAng);
+              vec3 transKnee = rotH * (uRightKneePivot - uRightHipPivot) + uRightHipPivot;
+              vec3 p = rotH * (transformed - uRightHipPivot) + uRightHipPivot;
+              float wKnee = 1.0 - smoothstep(-0.48, -0.40, transformed.y);
+              if (wKnee > 0.0) {
+                mat3 rotK = rotateX(kneeAng * wKnee);
+                p = rotK * (p - transKnee) + transKnee;
+                #ifdef USE_NORMAL
+                objectNormal = rotK * (rotH * objectNormal);
+                #endif
+              } else {
+                #ifdef USE_NORMAL
+                objectNormal = rotH * objectNormal;
+                #endif
+              }
+              transformed = p;
             }
             `
           );
@@ -2524,38 +2589,119 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const s = Math.max(0, pin.userData.currentScale);
           pin.scale.set(s, s, s);
 
-          // Rotate pin position in exact lockstep around shoulder/hip pivot
+          // Rotate pin position in exact lockstep with natural human 2-joint kinematics
           const basePos = pin.userData.baseLocalPos;
           if (basePos) {
             const reg = pin.userData.region;
+            const pLeftElbow = leftElbowPivotRef.current;
+            const pRightElbow = rightElbowPivotRef.current;
+            const pLeftKnee = leftKneePivotRef.current;
+            const pRightKnee = rightKneePivotRef.current;
+
             if (reg === 'arm_left' && curL.armL > 0.0001) {
-              const ang = -curL.armL;
-              const sn = Math.sin(ang), cs = Math.cos(ang);
-              const dy = basePos.y - pLeftShoulder.y;
-              const dz = basePos.z - pLeftShoulder.z;
-              pin.position.y = pLeftShoulder.y + (dy * cs - dz * sn);
-              pin.position.z = pLeftShoulder.z + (dy * sn + dz * cs);
+              const shoulderAng = -curL.armL * 0.78;
+              const elbowAng = -curL.armL * 0.82;
+              const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+
+              const dyEP = pLeftElbow.y - pLeftShoulder.y;
+              const dzEP = pLeftElbow.z - pLeftShoulder.z;
+              const epTransY = pLeftShoulder.y + (dyEP * cS - dzEP * sS);
+              const epTransZ = pLeftShoulder.z + (dyEP * sS + dzEP * cS);
+
+              const dyS = basePos.y - pLeftShoulder.y;
+              const dzS = basePos.z - pLeftShoulder.z;
+              let py = pLeftShoulder.y + (dyS * cS - dzS * sS);
+              let pz = pLeftShoulder.z + (dyS * sS + dzS * cS);
+
+              const wE = Math.max(0, Math.min(1, (0.20 - basePos.y) / 0.08));
+              if (wE > 0) {
+                const aE = elbowAng * wE;
+                const sE = Math.sin(aE), cE = Math.cos(aE);
+                const dyE = py - epTransY;
+                const dzE = pz - epTransZ;
+                py = epTransY + (dyE * cE - dzE * sE);
+                pz = epTransZ + (dyE * sE + dzE * cE);
+              }
+              pin.position.y = py;
+              pin.position.z = pz;
             } else if (reg === 'arm_right' && curL.armR > 0.0001) {
-              const ang = -curL.armR;
-              const sn = Math.sin(ang), cs = Math.cos(ang);
-              const dy = basePos.y - pRightShoulder.y;
-              const dz = basePos.z - pRightShoulder.z;
-              pin.position.y = pRightShoulder.y + (dy * cs - dz * sn);
-              pin.position.z = pRightShoulder.z + (dy * sn + dz * cs);
+              const shoulderAng = -curL.armR * 0.78;
+              const elbowAng = -curL.armR * 0.82;
+              const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+
+              const dyEP = pRightElbow.y - pRightShoulder.y;
+              const dzEP = pRightElbow.z - pRightShoulder.z;
+              const epTransY = pRightShoulder.y + (dyEP * cS - dzEP * sS);
+              const epTransZ = pRightShoulder.z + (dyEP * sS + dzEP * cS);
+
+              const dyS = basePos.y - pRightShoulder.y;
+              const dzS = basePos.z - pRightShoulder.z;
+              let py = pRightShoulder.y + (dyS * cS - dzS * sS);
+              let pz = pRightShoulder.z + (dyS * sS + dzS * cS);
+
+              const wE = Math.max(0, Math.min(1, (0.20 - basePos.y) / 0.08));
+              if (wE > 0) {
+                const aE = elbowAng * wE;
+                const sE = Math.sin(aE), cE = Math.cos(aE);
+                const dyE = py - epTransY;
+                const dzE = pz - epTransZ;
+                py = epTransY + (dyE * cE - dzE * sE);
+                pz = epTransZ + (dyE * sE + dzE * cE);
+              }
+              pin.position.y = py;
+              pin.position.z = pz;
             } else if (reg === 'leg_left' && curL.legL > 0.0001) {
-              const ang = -curL.legL;
-              const sn = Math.sin(ang), cs = Math.cos(ang);
-              const dy = basePos.y - pLeftHip.y;
-              const dz = basePos.z - pLeftHip.z;
-              pin.position.y = pLeftHip.y + (dy * cs - dz * sn);
-              pin.position.z = pLeftHip.z + (dy * sn + dz * cs);
+              const hipAng = -curL.legL * 0.75;
+              const kneeAng = curL.legL * 0.85; // Positive backward flexion lifts knee up!
+              const sH = Math.sin(hipAng), cH = Math.cos(hipAng);
+
+              const dyKP = pLeftKnee.y - pLeftHip.y;
+              const dzKP = pLeftKnee.z - pLeftHip.z;
+              const kpTransY = pLeftHip.y + (dyKP * cH - dzKP * sH);
+              const kpTransZ = pLeftHip.z + (dyKP * sH + dzKP * cH);
+
+              const dyH = basePos.y - pLeftHip.y;
+              const dzH = basePos.z - pLeftHip.z;
+              let py = pLeftHip.y + (dyH * cH - dzH * sH);
+              let pz = pLeftHip.z + (dyH * sH + dzH * cH);
+
+              const wK = Math.max(0, Math.min(1, (-0.40 - basePos.y) / 0.08));
+              if (wK > 0) {
+                const aK = kneeAng * wK;
+                const sK = Math.sin(aK), cK = Math.cos(aK);
+                const dyK = py - kpTransY;
+                const dzK = pz - kpTransZ;
+                py = kpTransY + (dyK * cK - dzK * sK);
+                pz = kpTransZ + (dyK * sK + dzK * cK);
+              }
+              pin.position.y = py;
+              pin.position.z = pz;
             } else if (reg === 'leg_right' && curL.legR > 0.0001) {
-              const ang = -curL.legR;
-              const sn = Math.sin(ang), cs = Math.cos(ang);
-              const dy = basePos.y - pRightHip.y;
-              const dz = basePos.z - pRightHip.z;
-              pin.position.y = pRightHip.y + (dy * cs - dz * sn);
-              pin.position.z = pRightHip.z + (dy * sn + dz * cs);
+              const hipAng = -curL.legR * 0.75;
+              const kneeAng = curL.legR * 0.85;
+              const sH = Math.sin(hipAng), cH = Math.cos(hipAng);
+
+              const dyKP = pRightKnee.y - pRightHip.y;
+              const dzKP = pRightKnee.z - pRightHip.z;
+              const kpTransY = pRightHip.y + (dyKP * cH - dzKP * sH);
+              const kpTransZ = pRightHip.z + (dyKP * sH + dzKP * cH);
+
+              const dyH = basePos.y - pRightHip.y;
+              const dzH = basePos.z - pRightHip.z;
+              let py = pRightHip.y + (dyH * cH - dzH * sH);
+              let pz = pRightHip.z + (dyH * sH + dzH * cH);
+
+              const wK = Math.max(0, Math.min(1, (-0.40 - basePos.y) / 0.08));
+              if (wK > 0) {
+                const aK = kneeAng * wK;
+                const sK = Math.sin(aK), cK = Math.cos(aK);
+                const dyK = py - kpTransY;
+                const dzK = pz - kpTransZ;
+                py = kpTransY + (dyK * cK - dzK * sK);
+                pz = kpTransZ + (dyK * sK + dzK * cK);
+              }
+              pin.position.y = py;
+              pin.position.z = pz;
             } else {
               pin.position.copy(basePos);
             }
