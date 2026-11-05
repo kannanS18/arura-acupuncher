@@ -2092,3 +2092,112 @@ export const ACUPOINT_CLOSEUPS = {
     "fov": 26
   }
 };
+
+
+export const CLINICAL_TOOLS = {
+  needle: {
+    id: 'needle',
+    name: '01 Needle',
+    shortName: 'Needle',
+    sub: '0.18mm Guide-Tube Filiform Needle',
+    metricLabel: 'Depth',
+    metricUnit: 'mm',
+    defaultTarget: 12.0,
+    maxVal: 15.0,
+    pathologyTitle: '⚡ TAUT BAND MYOFASCIAL TRIGGER POINT • 12mm',
+    pathologySubtitle: 'Ischemic Motor Endplate Spasm in Deep Striated Muscle',
+    outcomeTitle: 'Myofascial Trigger Knot Released',
+    outcomeDetail: 'De-Qi fasciculation achieved. Spastic motor endplate reset & micro-twitch contracture discharged.'
+  },
+  cup: {
+    id: 'cup',
+    name: '02 Cup',
+    shortName: 'Fire Cup',
+    sub: 'Negative Pressure Glass Fire Cup',
+    metricLabel: 'Suction',
+    metricUnit: 'mm',
+    defaultTarget: 6.0,
+    maxVal: 6.0,
+    pathologyTitle: '🧬 FIBROTIC FASCIAL ADHESION • 6mm',
+    pathologySubtitle: 'Dense Cross-Linked Collagen Tethering Retinacula Cutis',
+    outcomeTitle: 'Fascial Decompression Achieved',
+    outcomeDetail: 'Subcutaneous adhesions released under negative pressure (-35 kPa). Microvascular perfusion restored (+300%).'
+  },
+  moxa: {
+    id: 'moxa',
+    name: '03 Moxa',
+    shortName: 'Moxa Roll',
+    sub: 'Pure Artemisia Vulgaris Thermal Roll',
+    metricLabel: 'Heat',
+    metricUnit: '°C',
+    defaultTarget: 43.0,
+    maxVal: 43.0,
+    pathologyTitle: '❄️ COLD-DAMP MICROVASCULAR STASIS • 43°C',
+    pathologySubtitle: 'Hypoxic Capillary Vasoconstriction & Sluggish Venous Pooling',
+    outcomeTitle: 'Cold-Damp Stasis Dispelled',
+    outcomeDetail: 'Deep infrared thermal penetration (43°C). Capillary vasodilation active & Qi/Blood circulation restored.'
+  }
+};
+
+export function getAllowedToolsForPoint(point) {
+  if (!point) return [CLINICAL_TOOLS.needle];
+  const reg = point.region || '';
+  const code = point.code || '';
+
+  // Face & Cranium (GV-20, EX-HN3, EX-HN5, ST-2)
+  if (reg === 'face') {
+    return [CLINICAL_TOOLS.needle];
+  }
+
+  // Wrist, Hands & Fingers (LU-7, PC-6, HT-7, LI-4)
+  if ((reg === 'arm_left' || reg === 'arm_right') && (code === 'LU-7' || code === 'PC-6' || code === 'HT-7' || code === 'LI-4')) {
+    return [CLINICAL_TOOLS.needle];
+  }
+
+  // Fleshy Elbow / Arm (LI-11 Quchi)
+  if ((reg === 'arm_left' || reg === 'arm_right') && code === 'LI-11') {
+    return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.cup, CLINICAL_TOOLS.moxa];
+  }
+
+  // Back & Lumbar (BL-13, BL-23, GV-4)
+  if (reg === 'back') {
+    return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.cup, CLINICAL_TOOLS.moxa];
+  }
+
+  // Neck (GB-20 Wind Pool)
+  if (reg === 'neck') {
+    return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.moxa];
+  }
+
+  // Chest & Abdomen (CV-17, CV-12, ST-25, LU-1)
+  if (reg === 'chest') {
+    if (code === 'ST-25' || code === 'LU-1') {
+      return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.cup, CLINICAL_TOOLS.moxa];
+    }
+    return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.moxa];
+  }
+
+  // Leg & Thigh (ST-36, GB-34, BL-40, SP-6)
+  if (reg === 'leg_left' || reg === 'leg_right') {
+    if (code === 'LV-3') {
+      return [CLINICAL_TOOLS.needle];
+    }
+    return [CLINICAL_TOOLS.needle, CLINICAL_TOOLS.cup, CLINICAL_TOOLS.moxa];
+  }
+
+  return [CLINICAL_TOOLS.needle];
+}
+
+export function getClinicalOutcome(toolId, point) {
+  const code = point?.code || '';
+  const name = point?.translation || '';
+  const pain = point?.painName || 'Pathology';
+  const tool = CLINICAL_TOOLS[toolId] || CLINICAL_TOOLS.needle;
+
+  return {
+    pointLabel: `${code} (${name})`,
+    painLabel: pain,
+    highlight: `• ${tool.outcomeTitle}`,
+    detail: tool.outcomeDetail
+  };
+}

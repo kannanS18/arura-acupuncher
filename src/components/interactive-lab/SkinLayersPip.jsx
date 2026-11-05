@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { buildPhysical3DTray, createAuthenticMoxaTexture, createMoxaEmberTexture } from './physicalTray';
+import { buildPhysical3DTray, createAuthenticMoxaTexture, createMoxaEmberTexture, updateTrayToolAvailability } from './physicalTray';
+import { getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS, CLINICAL_ACUPOINTS } from './acupointsData';
 import { ArrowLeft } from 'lucide-react';
 import { 
   Sparkles, 
@@ -70,6 +71,21 @@ export default function SkinLayersPip({
   const activeToolRef = useRef(activeTool);
   activeToolRef.current = activeTool;
   const suctionBulgeRef = useRef(null);
+  const bulgeMatRef = useRef(null);
+  const erythemaRingRef = useRef(null);
+  const traySlotsRef = useRef(null);
+
+  const currentPoint = CLINICAL_ACUPOINTS.find(p => p.code === pointCode) || {
+    code: pointCode,
+    translation: pointName,
+    painName: painName,
+    region: 'arm_left'
+  };
+  const allowedTools = getAllowedToolsForPoint(currentPoint);
+  const allowedToolIds = allowedTools.map(t => t.id);
+  const clinicalOutcome = getClinicalOutcome(activeTool, currentPoint);
+  const allowedToolIdsRef = useRef(allowedToolIds);
+  allowedToolIdsRef.current = allowedToolIds;
 
   const [isMinimized, setIsMinimized] = useState(false);
   const [modelLoading, setModelLoading] = useState(true);
@@ -309,89 +325,95 @@ export default function SkinLayersPip({
     needleAssembly.add(handle);
 
     // B. Traditional Thick Molded Glass Fire Cupping Jar
-    // NOT blue plastic! Clear borosilicate glass with rolled rim, anti-slip grips & solid top glass knob
+    // Crystal-clear borosilicate glass with thick rolled rim, spherical suction chamber & flat top base
     const cupGroup = new THREE.Group();
     cupGroup.position.set(offsetX, skinSurfaceY, 0.360);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
 
-    const heavyGlassMat = new THREE.MeshStandardMaterial({
-      color: 0xf1f5f9, // crystal clear glass
-      roughness: 0.06,
-      metalness: 0.12,
+    // Crystal-Clear Borosilicate Fire Cupping Glass (Transmission = 0.96)
+    const realGlassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transmission: 0.96,
+      opacity: 1.0,
       transparent: true,
-      opacity: 0.88,
-      side: THREE.DoubleSide
+      roughness: 0.04,
+      metalness: 0.02,
+      ior: 1.52,
+      thickness: 0.16,
+      specularIntensity: 1.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      side: THREE.DoubleSide,
+      depthWrite: false
     });
 
-    // 1. Thick Smooth Rolled Glass Lip Rim (Base rests flush on skin surface)
-    const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.016, 24, 48), heavyGlassMat);
+    // 1. Thick Smooth Rolled Glass Lip Rim (Seals firmly on skin surface)
+    const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.016, 28, 48), realGlassMat);
     cupRim.rotation.x = Math.PI / 2;
     cupRim.position.y = 0.016;
     cupGroup.add(cupRim);
 
-    // 1b. Crisp Specular Edge Highlight Ring
+    // 1b. Specular Rim Highlight Glint
     const rimHighlight = new THREE.Mesh(
-      new THREE.TorusGeometry(0.14, 0.003, 16, 36),
-      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.04, metalness: 0.9 })
+      new THREE.TorusGeometry(0.145, 0.003, 16, 36),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.02, metalness: 0.95 })
     );
     rimHighlight.rotation.x = Math.PI / 2;
     rimHighlight.position.y = 0.016;
     cupGroup.add(rimHighlight);
 
-    // 2. Thick Flared Bell Glass Body
-    const cupBell = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.11, 0.14, 0.13, 32, 1, true),
-      heavyGlassMat
+    // 2. Bulbous Spherical Glass Suction Chamber (Translucent Globe Jar matching real fire cupping)
+    const cupGlobe = new THREE.Mesh(
+      new THREE.SphereGeometry(0.148, 36, 28, 0, Math.PI * 2, 0.22, Math.PI * 0.76),
+      realGlassMat
     );
-    cupBell.position.y = 0.081;
-    cupGroup.add(cupBell);
+    cupGlobe.rotation.x = Math.PI;
+    cupGlobe.position.y = 0.235;
+    cupGroup.add(cupGlobe);
 
-    // 3. Molded Anti-Slip Glass Finger Grip Indentations (Left and Right)
-    const gripL = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.055, 0.042), heavyGlassMat);
-    gripL.position.set(-0.115, 0.085, 0);
+    // 3. Molded Anti-Slip Glass Finger Grip Grooves (Left and Right)
+    const gripL = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.048, 0.038), realGlassMat);
+    gripL.position.set(-0.138, 0.110, 0);
     cupGroup.add(gripL);
-    const gripR = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.055, 0.042), heavyGlassMat);
-    gripR.position.set(0.115, 0.085, 0);
+    const gripR = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.048, 0.038), realGlassMat);
+    gripR.position.set(0.138, 0.110, 0);
     cupGroup.add(gripR);
 
-    // 4. Smooth Bulbous Glass Dome
-    const cupDome = new THREE.Mesh(
-      new THREE.SphereGeometry(0.114, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.72),
-      heavyGlassMat
+    // 4. Flat Circular Top Standing Base with Molded Thumb Recess (Fire-Cup hallmark)
+    const glassTopBase = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.065, 0.075, 0.022, 32),
+      realGlassMat
     );
-    cupDome.rotation.x = Math.PI;
-    cupDome.position.y = 0.246;
-    cupGroup.add(cupDome);
+    glassTopBase.position.y = 0.246;
+    cupGroup.add(glassTopBase);
 
-    // 5. Solid Molded Glass Crown Grip Knob on Top (Traditional Fire Cup feature)
-    const glassKnobNeck = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.024, 0.030, 0.028, 24),
-      heavyGlassMat
-    );
-    glassKnobNeck.position.y = 0.260;
-    cupGroup.add(glassKnobNeck);
-
-    const glassKnobHead = new THREE.Mesh(
-      new THREE.SphereGeometry(0.036, 24, 18),
-      heavyGlassMat
-    );
-    glassKnobHead.position.y = 0.282;
-    cupGroup.add(glassKnobHead);
-
-    // 6. Hyperemic suction tissue bulge inside glass cup
+    // 5. Authentic Organic Flesh Suction Mound inside the Cup
+    // Dynamic skin dome: bulges upward into the glass chamber as negative pressure intensifies
     const bulgeMat = new THREE.MeshStandardMaterial({
-      color: 0xf43f5e,
-      roughness: 0.35,
-      transparent: true,
-      opacity: 0.92
+      color: 0xf5d0c0, // Natural skin tone initially
+      roughness: 0.22,
+      metalness: 0.04
     });
-    const suctionBulge = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 18, 0, Math.PI * 2, 0, Math.PI / 2), bulgeMat);
+    bulgeMatRef.current = bulgeMat;
+
+    const suctionBulgeGeo = new THREE.SphereGeometry(0.140, 36, 28, 0, Math.PI * 2, 0, Math.PI / 2);
+    const suctionBulge = new THREE.Mesh(suctionBulgeGeo, bulgeMat);
     suctionBulge.position.y = 0.0;
-    suctionBulge.scale.set(1.0, 0.01, 1.0);
+    suctionBulge.scale.set(1.0, 0.02, 1.0);
     cupGroup.add(suctionBulge);
     suctionBulgeRef.current = suctionBulge;
+
+    // 6. Circular Petechial Hyperemic Ring on Skin Surface (Erythema suction footprint)
+    const erythemaRing = new THREE.Mesh(
+      new THREE.RingGeometry(0.125, 0.155, 36),
+      new THREE.MeshBasicMaterial({ color: 0x9f1239, transparent: true, opacity: 0.0, side: THREE.DoubleSide })
+    );
+    erythemaRing.rotation.x = -Math.PI / 2;
+    erythemaRing.position.y = 0.002;
+    cupGroup.add(erythemaRing);
+    erythemaRingRef.current = erythemaRing;
 
     // C. Authentic Chinese Artemisia Moxa Warmer (Hovers above skin at y = 0.670, z = 0.400)
     // NOT a cigarette! Xuan rice paper, gold foil bands, emerald header, cinnabar seal & dark ash tip
@@ -468,136 +490,165 @@ export default function SkinLayersPip({
     // 5. 3 Distinct Clinical Pathologies DIRECTLY ON THE VISIBLE FRONT CUT FACE (z = 0.430)
     // 100% VISIBLE TO USER WITH 3D CALLOUT BADGES & PULSATING RETICLES!
 
-    // A. Needle Target: Spastic Motor Endplate Knot (Striated Muscle, 12mm deep at y = -0.04, z = 0.430)
+    // A. Needle Target: Authentic Taut Band Myofascial Trigger Point (Deep Striated Muscle, y = -0.04, z = 0.430)
+    // Realistic anatomical spindle of hypercontracted skeletal muscle sarcomeres & ischemic motor endplate
     const knotGroup = new THREE.Group();
     knotGroup.position.set(offsetX, -0.04, 0.430);
     knotGroup.visible = (activeTool === 'needle');
     scene.add(knotGroup);
 
-    // Dense hypercontracted trigger knot nodule
-    const knotGeo = new THREE.TorusKnotGeometry(0.085, 0.028, 64, 16, 2, 3);
-    const knotMat = new THREE.MeshStandardMaterial({
-      color: 0xff1744,
-      emissive: 0xff0055,
-      emissiveIntensity: 1.8,
-      roughness: 0.25
+    // 1. Hypercontracted Myoglobin-Congested Central Nodule (Spindle core)
+    const knotCoreMat = new THREE.MeshStandardMaterial({
+      color: 0x881337,
+      emissive: 0x4c0519,
+      emissiveIntensity: 0.6,
+      roughness: 0.32,
+      metalness: 0.08
     });
-    const knotMesh = new THREE.Mesh(knotGeo, knotMat);
+    const knotMesh = new THREE.Mesh(new THREE.SphereGeometry(0.065, 24, 20), knotCoreMat);
+    knotMesh.scale.set(1.4, 0.85, 0.85);
     knotGroup.add(knotMesh);
     knotMeshRef.current = knotMesh;
 
-    // Radiating spastic contracture bands in striated muscle
-    for (let i = 0; i < 4; i++) {
-      const angle = (i / 4) * Math.PI;
-      const band = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.006, 0.006, 0.24, 12),
-        new THREE.MeshStandardMaterial({ color: 0xbe123c, emissive: 0x9f1239, emissiveIntensity: 1.2 })
-      );
-      band.rotation.z = angle;
-      band.position.z = 0.005;
-      knotGroup.add(band);
+    // 2. Taut Contractile Fiber Cords (Radiating along striated muscle fascicles)
+    const fiberMat = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.35, metalness: 0.1 });
+    for (let f = -3; f <= 3; f++) {
+      const fy = f * 0.018;
+      const fCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.16, fy * 0.6, 0),
+        new THREE.Vector3(-0.05, fy * 1.3, 0.008),
+        new THREE.Vector3(0.05, fy * 1.3, 0.008),
+        new THREE.Vector3(0.16, fy * 0.6, 0)
+      ]);
+      const fiber = new THREE.Mesh(new THREE.TubeGeometry(fCurve, 16, 0.0055, 6, false), fiberMat);
+      knotGroup.add(fiber);
     }
 
-    // Glowing pulsating target ring
-    const knotReticle = new THREE.Mesh(
-      new THREE.RingGeometry(0.095, 0.115, 32),
-      new THREE.MeshBasicMaterial({ color: 0xff1744, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
+    // 3. Focal Ischemic Blanching Core (Microvascular compression at center)
+    const ischemicCenter = new THREE.Mesh(
+      new THREE.SphereGeometry(0.024, 16, 12),
+      new THREE.MeshStandardMaterial({ color: 0xfca5a5, roughness: 0.4 })
     );
-    knotReticle.position.z = 0.015;
-    knotGroup.add(knotReticle);
+    ischemicCenter.position.z = 0.012;
+    knotGroup.add(ischemicCenter);
 
-    // Floating 3D Badge on Cut Face
-    const knotBadge = createPathologyBadge('⚡ SPASTIC MOTOR KNOT • 12mm', 'Deep Striated Muscle Trigger Point', '#e02868');
+    // 4. Branching Golden Motor Endplate Axon Innervating the Spindle
+    const axonCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0.10, 0.12, 0.01),
+      new THREE.Vector3(0.04, 0.05, 0.012),
+      new THREE.Vector3(0.0, 0.0, 0.015)
+    ]);
+    const axon = new THREE.Mesh(
+      new THREE.TubeGeometry(axonCurve, 12, 0.004, 6, false),
+      new THREE.MeshStandardMaterial({ color: 0xfacc15, emissive: 0xeab308, emissiveIntensity: 1.2 })
+    );
+    knotGroup.add(axon);
+
+    // Floating 3D Pathology Badge on Cut Face
+    const knotBadge = createPathologyBadge('⚡ TAUT BAND TRIGGER POINT • 12mm', 'Hypercontracted Sarcomeres & Motor Endplate', '#e02868');
     knotBadge.position.set(offsetX + 0.30, -0.04, 0.445);
     knotBadge.visible = (activeTool === 'needle');
     scene.add(knotBadge);
     knotBadgeRef.current = knotBadge;
 
-    // B. Cupping Target: Fibrotic Fascial Adhesion (Subcutaneous Fascia, 6mm deep at y = 0.22, z = 0.430)
+    // B. Cupping Target: Authentic Densified Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22, z = 0.430)
+    // Dense cross-linked collagenous septa tethering the subcutaneous adipose to deep fascia
     const adhesionGroup = new THREE.Group();
     adhesionGroup.position.set(offsetX, 0.22, 0.430);
     adhesionGroup.visible = (activeTool === 'cup');
     scene.add(adhesionGroup);
 
-    const adhesionGeo = new THREE.IcosahedronGeometry(0.088, 2);
-    const adhesionMat = new THREE.MeshStandardMaterial({
-      color: 0xc084fc,
-      emissive: 0x9333ea,
-      emissiveIntensity: 1.8,
-      roughness: 0.25,
+    // 1. Pearlescent Collagenous Dense Plaque
+    const collagenMat = new THREE.MeshStandardMaterial({
+      color: 0xf8fafc,
+      roughness: 0.24,
+      metalness: 0.15,
       transparent: true,
-      opacity: 0.95
+      opacity: 0.94
     });
-    const adhesionMesh = new THREE.Mesh(adhesionGeo, adhesionMat);
+    const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.09, 0.038, 24), collagenMat);
+    adhesionMesh.rotation.x = Math.PI / 2;
     adhesionGroup.add(adhesionMesh);
     adhesionMeshRef.current = adhesionMesh;
 
-    // Tangled fibrotic spiderweb bands
-    for (let i = 0; i < 3; i++) {
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(0.07 + i * 0.02, 0.005, 12, 24),
-        new THREE.MeshStandardMaterial({ color: 0x7e22ce, emissive: 0x6b21a8, emissiveIntensity: 1.0 })
-      );
-      ring.rotation.x = Math.random() * Math.PI;
-      ring.rotation.y = Math.random() * Math.PI;
-      adhesionGroup.add(ring);
+    // 2. Interwoven Retinacula Cutis Tethering Bands (Spider-web collagen strands)
+    const bandMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.28, transparent: true, opacity: 0.90 });
+    for (let b = 0; b < 8; b++) {
+      const angle = (b / 8) * Math.PI * 2;
+      const bCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(Math.cos(angle) * 0.06, Math.sin(angle) * 0.06, 0.015),
+        new THREE.Vector3(Math.cos(angle) * 0.12, Math.sin(angle) * 0.12, (b % 2 === 0 ? 0.02 : -0.01))
+      ]);
+      const band = new THREE.Mesh(new THREE.TubeGeometry(bCurve, 12, 0.0045, 6, false), bandMat);
+      adhesionGroup.add(band);
     }
 
-    const adhesionReticle = new THREE.Mesh(
-      new THREE.RingGeometry(0.095, 0.115, 32),
-      new THREE.MeshBasicMaterial({ color: 0xa855f7, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
-    );
-    adhesionReticle.position.z = 0.015;
-    adhesionGroup.add(adhesionReticle);
+    // 3. Entrapped Sluggish Micro-Venules (Hypoxic purple capillaries)
+    const venuleMat = new THREE.MeshStandardMaterial({ color: 0x4338ca, roughness: 0.35 });
+    for (let v = 0; v < 3; v++) {
+      const vCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.06 + v * 0.05, -0.04, 0.008),
+        new THREE.Vector3(-0.04 + v * 0.05, 0.02, 0.012),
+        new THREE.Vector3(-0.01 + v * 0.05, 0.05, 0.008)
+      ]);
+      const venule = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 10, 0.0035, 6, false), venuleMat);
+      adhesionGroup.add(venule);
+    }
 
-    // Floating 3D Badge on Cut Face
-    const adhesionBadge = createPathologyBadge('🧬 FIBROTIC FASCIAL ADHESION • 6mm', 'Subcutaneous Fascial Restriction', '#a855f7');
+    // Floating 3D Pathology Badge on Cut Face
+    const adhesionBadge = createPathologyBadge('🧬 FIBROTIC FASCIAL ADHESION • 6mm', 'Cross-Linked Collagen Tethering Retinacula', '#8b5cf6');
     adhesionBadge.position.set(offsetX + 0.30, 0.22, 0.445);
     adhesionBadge.visible = (activeTool === 'cup');
     scene.add(adhesionBadge);
     adhesionBadgeRef.current = adhesionBadge;
 
-    // C. Moxa Target: Cold Damp Stasis Pool (Dermal Plexus, 43°C at y = 0.44, z = 0.430)
+    // C. Moxa Target: Authentic Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44, z = 0.430)
+    // Hypoxic capillary vasoconstriction, sluggish venous pooling & interstitial micro-edema
     const stasisGroup = new THREE.Group();
     stasisGroup.position.set(offsetX, 0.44, 0.430);
     stasisGroup.visible = (activeTool === 'moxa');
     scene.add(stasisGroup);
 
-    const stasisGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.035, 24);
-    const stasisMat = new THREE.MeshStandardMaterial({
-      color: 0x38bdf8,
-      emissive: 0x0284c7,
-      emissiveIntensity: 1.6,
-      roughness: 0.20,
-      transparent: true,
-      opacity: 0.90
+    // 1. Branching Stagnant Cyanic Capillary Plexus
+    const stasisCapMat = new THREE.MeshStandardMaterial({
+      color: 0x1d4ed8, // Hypoxic cyanic blue
+      emissive: 0x1e3a8a,
+      emissiveIntensity: 0.8,
+      roughness: 0.25,
+      transparent: true
     });
-    const stasisMesh = new THREE.Mesh(stasisGeo, stasisMat);
-    stasisMesh.rotation.x = Math.PI / 2;
+    const stasisMesh = new THREE.Group();
     stasisGroup.add(stasisMesh);
     stasisMeshRef.current = stasisMesh;
 
-    // Radial cold cyanotic capillary branches
-    for (let i = 0; i < 6; i++) {
-      const angle = (i / 6) * Math.PI * 2;
-      const capillary = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.004, 0.002, 0.13, 8),
-        new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x0284c7, emissiveIntensity: 1.4 })
-      );
-      capillary.rotation.z = angle;
-      capillary.position.set(Math.cos(angle) * 0.07, Math.sin(angle) * 0.07, 0.01);
-      stasisGroup.add(capillary);
+    for (let c = 0; c < 8; c++) {
+      const angle = (c / 8) * Math.PI * 2;
+      const cCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0, 0.01),
+        new THREE.Vector3(Math.cos(angle) * 0.05, Math.sin(angle) * 0.04, 0.015),
+        new THREE.Vector3(Math.cos(angle + 0.3) * 0.10, Math.sin(angle + 0.3) * 0.08, 0.01)
+      ]);
+      const cap = new THREE.Mesh(new THREE.TubeGeometry(cCurve, 12, 0.004, 6, false), stasisCapMat);
+      stasisMesh.add(cap);
     }
 
-    const stasisReticle = new THREE.Mesh(
-      new THREE.RingGeometry(0.125, 0.145, 32),
-      new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
-    );
-    stasisReticle.position.z = 0.015;
-    stasisGroup.add(stasisReticle);
+    // 2. Interstitial Micro-Edema Pearls (Translucent fluid pooling)
+    const edemaMat = new THREE.MeshStandardMaterial({
+      color: 0x93c5fd,
+      transparent: true,
+      opacity: 0.65,
+      roughness: 0.15
+    });
+    for (let e = 0; e < 6; e++) {
+      const pearl = new THREE.Mesh(new THREE.SphereGeometry(0.016, 10, 10), edemaMat);
+      const ang = (e / 6) * Math.PI * 2;
+      pearl.position.set(Math.cos(ang) * 0.06, Math.sin(ang) * 0.05, 0.015);
+      stasisMesh.add(pearl);
+    }
 
-    // Floating 3D Badge on Cut Face
-    const stasisBadge = createPathologyBadge('❄️ COLD DAMP STASIS • 43°C', 'Dermal Microvascular Stagnation', '#0284c7');
+    // Floating 3D Pathology Badge on Cut Face
+    const stasisBadge = createPathologyBadge('❄️ COLD-DAMP VASCULAR STASIS • 43°C', 'Capillary Vasoconstriction & Venous Pooling', '#0284c7');
     stasisBadge.position.set(offsetX + 0.30, 0.44, 0.445);
     stasisBadge.visible = (activeTool === 'moxa');
     scene.add(stasisBadge);
@@ -646,12 +697,13 @@ export default function SkinLayersPip({
       trayMount.scale.setScalar(1.22);
       scene.add(trayMount);
 
-      buildPhysical3DTray(
+      traySlotsRef.current = buildPhysical3DTray(
         trayMount,
         trayToolHitboxesRef.current,
         trayHaloMeshesRef.current,
         trayLabelSpritesRef.current
       );
+      updateTrayToolAvailability(traySlotsRef.current, allowedToolIds);
     }
 
     // 7. Animation Loop
@@ -684,7 +736,7 @@ export default function SkinLayersPip({
       // Live cold stasis thermal dispersion feedback
       if (stasisMeshRef.current && stasisMeshRef.current.visible) {
         const tempFraction = Math.max(0, (curD - 20) / 23);
-        stasisMeshRef.current.material.opacity = Math.max(0.1, 0.85 - tempFraction * 0.6);
+        stasisMeshRef.current.traverse(child => { if (child.isMesh && child.material) { child.material.opacity = Math.max(0.1, 0.85 - tempFraction * 0.6); } });
       }
 
       // Thanos disintegration ash physics
@@ -843,7 +895,7 @@ export default function SkinLayersPip({
   // Sync Active Tool Visibility & Physics Depth
   useEffect(() => {
     Object.keys(trayHaloMeshesRef.current).forEach((key) => {
-      if (trayHaloMeshesRef.current[key]) {
+      if (trayHaloMeshesRef.current[key] && trayHaloMeshesRef.current[key].material) {
         trayHaloMeshesRef.current[key].material.opacity = (key === activeTool) ? 0.85 : 0.0;
       }
     });
@@ -859,9 +911,21 @@ export default function SkinLayersPip({
       needleGroupRef.current.position.y = 0.550 - fraction * 0.59;
     } else if (activeTool === 'cup' && cupGroupRef.current) {
       cupGroupRef.current.position.y = 0.550;
+      const suctionFraction = Math.min(1.0, depth / 6.0);
       if (suctionBulgeRef.current) {
-        const suctionFraction = Math.min(1.0, depth / 6.0);
-        suctionBulgeRef.current.scale.set(1.0, suctionFraction * 0.55 + 0.02, 1.0);
+        // Expand flesh mound upward into the glass chamber (up to 0.12 units high!)
+        suctionBulgeRef.current.scale.set(1.0, suctionFraction * 0.85 + 0.02, 1.0);
+      }
+      if (bulgeMatRef.current) {
+        // Dynamically flush from natural skin (#f5d0c0) to rich hyperemic rose-crimson (#be123c)
+        bulgeMatRef.current.color.lerpColors(
+          new THREE.Color(0xf5d0c0),
+          new THREE.Color(0xbe123c),
+          suctionFraction
+        );
+      }
+      if (erythemaRingRef.current && erythemaRingRef.current.material) {
+        erythemaRingRef.current.material.opacity = suctionFraction * 0.85;
       }
     } else if (activeTool === 'moxa' && moxaGroupRef.current) {
       moxaGroupRef.current.position.y = 0.670;
@@ -887,7 +951,12 @@ export default function SkinLayersPip({
     if (stasisBadgeRef.current) {
       stasisBadgeRef.current.visible = (activeTool === 'moxa') && !isDisintegrated;
     }
-  }, [activeTool, depth, isDisintegrated]);
+
+    // Sync 3D physical tray slot visibility with allowed clinical tools
+    if (traySlotsRef.current) {
+      updateTrayToolAvailability(traySlotsRef.current, allowedToolIds);
+    }
+  }, [activeTool, depth, isDisintegrated, allowedToolIds]);
 
   // Trigger Disintegration Particles
   useEffect(() => {
@@ -969,26 +1038,30 @@ export default function SkinLayersPip({
         {/* Bottom Interactive Surgical Controls & Tool Dock */}
         <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl animate-in fade-in slide-in-from-bottom-2">
           <div className="flex items-center gap-1 pr-2 border-r border-neutral-200/80">
-            {[
-              { id: 'needle', name: '01 Needle', icon: Zap, sub: '0.18mm Guide-Tube Needle' },
-              { id: 'cup', name: '02 Cup', icon: Flame, sub: 'Negative Pressure Fire Cup' },
-              { id: 'moxa', name: '03 Moxa', icon: Flame, sub: 'Artemisia Thermal Stick' }
-            ].map(t => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => onSelectTool && onSelectTool(t.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                  activeTool === t.id
-                    ? 'bg-[#e02868] text-white shadow-sm'
-                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
-                }`}
-                title={t.sub}
-              >
-                <t.icon className="w-3.5 h-3.5" />
-                <span>{t.name}</span>
-              </button>
-            ))}
+            {allowedTools.map(t => {
+              const IconComp = t.id === 'needle' ? Zap : Flame;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => onSelectTool && onSelectTool(t.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                    activeTool === t.id
+                      ? 'bg-[#e02868] text-white shadow-sm'
+                      : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
+                  }`}
+                  title={t.sub}
+                >
+                  <IconComp className="w-3.5 h-3.5" />
+                  <span>{t.name}</span>
+                </button>
+              );
+            })}
+            {allowedTools.length === 1 && (
+              <span className="hidden sm:inline-flex text-[10px] text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-lg font-medium">
+                Cupping contraindicated on bony distal joint
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-2 px-2">
@@ -1037,9 +1110,10 @@ export default function SkinLayersPip({
             <div className="flex items-center gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
               <div className="text-xs">
-                <span className="font-bold text-emerald-400">{pointCode} ({pointName}):</span>{' '}
-                <span className="text-neutral-200">{painName}</span>{' '}
-                <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
+                <span className="font-bold text-emerald-400">{clinicalOutcome.pointLabel}:</span>{' '}
+                <span className="text-neutral-200">{clinicalOutcome.painLabel}</span>{' '}
+                <span className="text-emerald-300 font-semibold">{clinicalOutcome.highlight}</span>
+                <p className="text-[11px] text-neutral-400 mt-0.5">{clinicalOutcome.detail}</p>
               </div>
             </div>
             <button
@@ -1233,7 +1307,7 @@ export default function SkinLayersPip({
               <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5 animate-in fade-in shadow-xs">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span className="text-[11px] leading-tight">
-                  ✓ {painName} Disintegrated into Ash! Spasm Relieved.
+                  ✓ {clinicalOutcome.highlight.replace('• ', '')} — {clinicalOutcome.detail}
                 </span>
               </div>
             )}

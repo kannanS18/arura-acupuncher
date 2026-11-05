@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip from './SkinLayersPip';
-import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS } from './acupointsData';
+import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS } from './acupointsData';
 export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
   Maximize2, 
@@ -589,6 +589,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const holdTimerRef = useRef(null);
 
   const activeAcupoint = CLINICAL_ACUPOINTS[selectedAcupointIdx] || CLINICAL_ACUPOINTS[0];
+  const clinicalOutcome = getClinicalOutcome(activeTool, activeAcupoint);
   const currentProb = CLINICAL_PROBLEMS[selectedProblemIdx];
 
   const sceneRef = useRef(null);
@@ -999,6 +1000,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     if (thermalRingRef.current) thermalRingRef.current.material.opacity = 0;
   }, [selectedProblemIdx, applySkinPhysicsAndToolHeight]);
+
+  // Clinically ensure activeTool is suitable for the selected acupoint / region
+  useEffect(() => {
+    const pt = CLINICAL_ACUPOINTS[selectedAcupointIdx];
+    const allowed = getAllowedToolsForPoint(pt).map(t => t.id);
+    if (!allowed.includes(activeTool)) {
+      setActiveTool(allowed[0] || 'needle');
+      setSelectedProblemIdx(0);
+      handleReset();
+    }
+  }, [selectedAcupointIdx, activeTool, handleReset]);
 
   // Unified Regional Presentation: Natural Articulation, Close Zoom & Sequential Acupoint Pop-up
   const triggerRegionPresentation = useCallback((regionKey, selectedIdx) => {
@@ -2867,9 +2879,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             <div className="flex items-center gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
               <div className="text-xs">
-                <span className="font-bold text-emerald-400">{activeAcupoint.code} ({activeAcupoint.translation}):</span>{' '}
-                <span className="text-neutral-200">{activeAcupoint.painName}</span>{' '}
-                <span className="text-emerald-300 font-semibold">• Vanished into Ash</span>
+                <span className="font-bold text-emerald-400">{clinicalOutcome.pointLabel}:</span>{' '}
+                <span className="text-neutral-200">{clinicalOutcome.painLabel}</span>{' '}
+                <span className="text-emerald-300 font-semibold">{clinicalOutcome.highlight}</span>
+                <p className="text-[11px] text-neutral-400 mt-0.5">{clinicalOutcome.detail}</p>
               </div>
             </div>
             <button

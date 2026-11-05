@@ -296,13 +296,20 @@ export function buildPhysical3DTray(parentGroup, trayToolHitboxes, trayHaloMeshe
   if (trayHaloMeshes) trayHaloMeshes.cup = cupHalo;
 
   // Clear Borosilicate Molded Glass Material (Solid, crystalline, non-plastic)
-  const heavyGlassMat = new THREE.MeshStandardMaterial({
-    color: 0xf1f5f9, // crystal clear glass
-    roughness: 0.06,
-    metalness: 0.12,
+  const heavyGlassMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    transmission: 0.95,
+    opacity: 1.0,
     transparent: true,
-    opacity: 0.88,
-    side: THREE.DoubleSide
+    roughness: 0.04,
+    metalness: 0.02,
+    ior: 1.52,
+    thickness: 0.12,
+    specularIntensity: 1.0,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.02,
+    side: THREE.DoubleSide,
+    depthWrite: false
   });
 
   // 1. Thick Rounded Rolled Glass Lip Rim (Base of Jar)
@@ -466,5 +473,14 @@ export function buildPhysical3DTray(parentGroup, trayToolHitboxes, trayHaloMeshe
   moxaSlot.add(moxaHit);
   if (trayToolHitboxes) trayToolHitboxes.push(moxaHit);
 
-  return trayGroup;
+  return { trayGroup, needleSlot, cupSlot, moxaSlot };
+}
+
+// Helper to dynamically show/hide physical tray slots based on clinical indications
+export function updateTrayToolAvailability(slots, allowedToolIds) {
+  if (!slots) return;
+  const { needleSlot, cupSlot, moxaSlot } = slots;
+  if (needleSlot) needleSlot.visible = allowedToolIds.includes('needle');
+  if (cupSlot) cupSlot.visible = allowedToolIds.includes('cup');
+  if (moxaSlot) moxaSlot.visible = allowedToolIds.includes('moxa');
 }
