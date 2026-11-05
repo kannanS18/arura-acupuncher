@@ -584,6 +584,11 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     onSelectAcupointCodeRef.current = onSelectAcupointCode;
   }, [onSelectAcupointCode]);
 
+  const onNavigateToStageRef = useRef(onNavigateToStage);
+  useEffect(() => {
+    onNavigateToStageRef.current = onNavigateToStage;
+  }, [onNavigateToStage]);
+
   useEffect(() => {
     activeRegionRef.current = activeRegion;
   }, [activeRegion]);
@@ -1083,16 +1088,16 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 1.00, 0.48);
-      targetLookAtRef.current.set(0.0, 0.96, 0.06);
+      targetCamPosRef.current.set(0.0, 0.82, 0.75);
+      targetLookAtRef.current.set(0.0, 0.78, 0.08);
       targetFacing = 'front';
     } else if (regionKey === 'neck') {
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.86, -0.85);
-      targetLookAtRef.current.set(0.0, 0.83, -0.06);
+      targetCamPosRef.current.set(0.0, 0.72, -0.80);
+      targetLookAtRef.current.set(0.0, 0.68, -0.06);
       targetFacing = 'back';
     } else if (regionKey === 'chest' || regionKey === 'torso') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1117,7 +1122,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
       targetCamPosRef.current.set(-0.22, 0.58, 0.90);
-      targetLookAtRef.current.set(-0.22, 0.58, 0.22);
+      targetLookAtRef.current.set(-0.22, 0.58, 0.18);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1930,7 +1935,9 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           badgeSprite.scale.set(isInitiallySel ? 0.082 : 0.038, isInitiallySel ? 0.017 : 0.014, 1.0);
           badgeSprite.visible = isInitiallySel;
           badgeSprite.renderOrder = 999;
+          badgeSprite.userData = { acupointIdx: idx };
           pinGroup.add(badgeSprite);
+          interactiveAcupointMeshes.push(badgeSprite);
 
           // Clickable HitBox for Raycaster (generous radius 0.045 for natural, effortless clicking)
           const hitBox = new THREE.Mesh(
@@ -2005,26 +2012,28 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         return;
       }
 
-      if (activeRegionRef.current !== 'full') {
-        // When a limb is articulated and in focus, only its acupoints show pointer cursor
-        const activeRegionHitboxes = interactiveAcupointMeshes.filter(m => {
-          const ptIdx = m.userData.acupointIdx;
-          const pt = CLINICAL_ACUPOINTS[ptIdx];
-          return pt && (pt.region === activeRegionRef.current);
-        });
-        const acuHover = raycaster.intersectObjects(activeRegionHitboxes, true).filter(h => h.object.parent && h.object.parent.visible);
-        if (acuHover.length > 0) {
+      // 1. Acupoints have absolute top priority for pointer cursor
+      const visibleHitboxes = interactiveAcupointMeshes.filter(m => {
+        let parent = m.parent;
+        while (parent) {
+          if (!parent.visible) return false;
+          if (parent.scale && parent.scale.x < 0.05) return false;
+          parent = parent.parent;
+        }
+        return true;
+      });
+      const acuHover = raycaster.intersectObjects(visibleHitboxes, true).filter(h => h.object.parent && h.object.parent.visible);
+      if (acuHover.length > 0) {
+        renderer.domElement.style.cursor = 'pointer';
+        return;
+      }
+
+      // 2. Direct hover on human body mannequin limbs/torso
+      if (bodyModelMeshRef.current) {
+        const bodyHover = raycaster.intersectObject(bodyModelMeshRef.current, false);
+        if (bodyHover.length > 0) {
           renderer.domElement.style.cursor = 'pointer';
           return;
-        }
-      } else {
-        // In whole-body overview, quick bounding-box check before testing mesh
-        if (bodyModelMeshRef.current) {
-          const bodyHover = raycaster.intersectObject(bodyModelMeshRef.current, false);
-          if (bodyHover.length > 0) {
-            renderer.domElement.style.cursor = 'pointer';
-            return;
-          }
         }
       }
       renderer.domElement.style.cursor = 'default';
@@ -2069,37 +2078,43 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         }
       }
 
-      // 1. Acupoint Clicking is STRICTLY GATED to the active focused limb/region!
-      // In whole-body overview (activeRegion === 'full'), clicking hands/limbs articulates the limb forward first!
-      const isRegionFocused = (activeRegionRef.current !== 'full');
+      // 1. Raycast Acupoint Dots (Top Priority!)
+      // Clicking ANY visible acupoint dot immediately selects it and opens the 3D Tissue Strata model!
+      const visibleHitboxes = interactiveAcupointMeshes.filter(m => {
+        let parent = m.parent;
+        while (parent) {
+          if (!parent.visible) return false;
+          if (parent.scale && parent.scale.x < 0.05) return false;
+          parent = parent.parent;
+        }
+        return true;
+      });
 
-      if (isRegionFocused) {
-        // Only consider hitboxes that belong to the currently articulated & focused region!
-        const activeRegionHitboxes = interactiveAcupointMeshes.filter(m => {
-          const ptIdx = m.userData.acupointIdx;
-          const pt = CLINICAL_ACUPOINTS[ptIdx];
-          let parent = m.parent;
-          while (parent) {
-            if (parent.scale && parent.scale.x < 0.2) return false;
-            parent = parent.parent;
-          }
-          return pt && (pt.region === activeRegionRef.current);
-        });
+      const rawAcuHits = raycaster.intersectObjects(visibleHitboxes, true);
+      const acuHits = rawAcuHits.filter(h => h.object.parent && h.object.parent.visible);
 
-        const rawIntersects = raycaster.intersectObjects(activeRegionHitboxes, true);
-        const intersects = rawIntersects.filter(h => h.object.parent && h.object.parent.visible);
-        if (intersects.length > 0) {
-          const hitIdx = intersects[0].object.userData.acupointIdx;
-          console.log('[AcuClick] Hit pin hitbox on active limb idx:', hitIdx, CLINICAL_ACUPOINTS[hitIdx]?.code);
-          if (typeof hitIdx === 'number') {
-            triggerAcupointCloseUp(hitIdx);
-            return;
+      if (acuHits.length > 0) {
+        const hitIdx = acuHits[0].object.userData.acupointIdx;
+        const pt = CLINICAL_ACUPOINTS[hitIdx];
+        if (typeof hitIdx === 'number' && pt) {
+          console.log('[AcuClick] Acupoint dot clicked -> Opening 3D Tissue Strata:', pt.code);
+          setSelectedAcupointIdx(hitIdx);
+          playAcuSound('popup', isMuted);
+          if (onSelectAcupointCodeRef.current) {
+            onSelectAcupointCodeRef.current(pt.code);
           }
+          // Direct navigation to 3D Tissue Strata Surgery!
+          if (onNavigateToStageRef.current) {
+            onNavigateToStageRef.current(3);
+          } else {
+            setViewMode('tissue');
+          }
+          return;
         }
       }
 
       // 2. Direct click on the 3D Human Body Anatomy (limbs, neck, face, back)
-      // Articulates that limb forward towards the camera and reveals its points!
+      // Articulates that limb forward with a cinematic Dolly Zoom!
       if (bodyModelMeshRef.current) {
         const bodyHits = raycaster.intersectObject(bodyModelMeshRef.current, false);
         if (bodyHits.length > 0) {
@@ -2111,26 +2126,22 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           console.log('[AcuClick] Body Hit Local:', { lx: Number(lx.toFixed(3)), ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
 
           let targetRegion = 'chest';
-          if (ly > 0.72) {
-            targetRegion = 'face';
-          } else if (ly >= 0.54 && ly <= 0.72) {
-            targetRegion = 'neck';
-          } else if (lx > 0.14 && ly < 0.54 && ly >= -0.25) {
+          // Check lateral arms first (lateral bounds x > 0.13 or x < -0.13)
+          if (lx > 0.13 && ly < 0.50) {
             targetRegion = 'arm_left';
-          } else if (lx < -0.14 && ly < 0.54 && ly >= -0.25) {
+          } else if (lx < -0.13 && ly < 0.50) {
             targetRegion = 'arm_right';
-          } else if (ly <= 0.02) {
-            targetRegion = lx > 0 ? 'leg_left' : 'leg_right';
+          } else if (ly > 0.58) {
+            targetRegion = 'face';
+          } else if (ly >= 0.44 && ly <= 0.58) {
+            targetRegion = lz < 0 ? 'neck' : 'face';
+          } else if (ly <= -0.05) {
+            targetRegion = lx >= 0 ? 'leg_left' : 'leg_right';
           } else {
-            // Torso region (0.02 < ly < 0.54 and Math.abs(lx) <= 0.14)
-            if (lz < -0.02) {
-              targetRegion = 'back';
-            } else {
-              targetRegion = 'chest';
-            }
+            targetRegion = lz < -0.02 ? 'back' : 'chest';
           }
 
-          console.log('[AcuClick] Articulating Limb & Presenting Region:', targetRegion);
+          console.log('[AcuClick] Articulating Limb & Dolly Zoom to Region:', targetRegion);
           triggerRegionPresentation(targetRegion);
         }
       }
@@ -2748,8 +2759,8 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         nerveMatRef.current.emissiveIntensity = 1.6 + Math.sin(elapsedTime * 8) * 0.6;
       }
 
-      // Kinematic Limb Interpolation (Delta-time damped spring: 100% fluid at any refresh rate)
-      const kdt = 1.0 - Math.exp(-14.0 * dt);
+      // Kinematic Limb Interpolation (Delta-time damped spring: harmonized with camera dolly duration)
+      const kdt = 1.0 - Math.exp(-6.0 * dt);
       const curL = currentLimbAnglesRef.current;
       const tgtL = targetLimbAnglesRef.current;
       curL.armL += (tgtL.armL - curL.armL) * kdt;
@@ -2899,13 +2910,40 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         });
       }
 
-      // Smooth Camera & Controls Interpolation towards Target Framing (Hermite Smoothstep: Zero OrbitControls conflict)
+      // Smooth Camera & Controls Dolly Zoom (Hermite Quintic with Spherical Orbit Arc)
       if (isCameraAnimatingRef.current) {
-        camAnimProgressRef.current += dt * 2.5; // ~0.40s smooth flight duration
+        camAnimProgressRef.current += dt * 1.35; // ~0.75s graceful cinematic flight
         const progress = Math.min(1.0, camAnimProgressRef.current);
-        const t = progress * progress * (3.0 - 2.0 * progress); // Cinematic smoothstep
-        camera.position.lerpVectors(camStartPosRef.current, targetCamPosRef.current, t);
+        // Cinematic Quintic Ease-In-Out: Starts silky smooth, dollies swiftly, settles like glass
+        const t = progress < 0.5 
+          ? 4.0 * progress * progress * progress 
+          : 1.0 - Math.pow(-2.0 * progress + 2.0, 3) / 2.0;
+
+        const startP = camStartPosRef.current;
+        const endP = targetCamPosRef.current;
+
+        // If transitioning between front (+Z) and back (-Z), orbit around in a cylindrical arc so the camera never cuts through the body interior
+        if (startP.z * endP.z < -0.05) {
+          const startAngle = Math.atan2(startP.x, startP.z);
+          let endAngle = Math.atan2(endP.x, endP.z);
+          let diff = endAngle - startAngle;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          while (diff > Math.PI) diff -= Math.PI * 2;
+          const currentAngle = startAngle + diff * t;
+
+          const startRadius = Math.hypot(startP.x, startP.z);
+          const endRadius = Math.hypot(endP.x, endP.z);
+          const currentRadius = startRadius + (endRadius - startRadius) * t;
+
+          camera.position.x = Math.sin(currentAngle) * currentRadius;
+          camera.position.y = startP.y + (endP.y - startP.y) * t;
+          camera.position.z = Math.cos(currentAngle) * currentRadius;
+        } else {
+          camera.position.lerpVectors(startP, endP, t);
+        }
+
         controls.target.lerpVectors(camStartLookAtRef.current, targetLookAtRef.current, t);
+
         if (progress >= 1.0) {
           camera.position.copy(targetCamPosRef.current);
           controls.target.copy(targetLookAtRef.current);
