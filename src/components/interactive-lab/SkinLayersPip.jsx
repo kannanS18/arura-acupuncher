@@ -55,6 +55,13 @@ export default function SkinLayersPip({
   const knotGroupRef = useRef(null);
   const knotMeshRef = useRef(null);
   const knotBadgeRef = useRef(null);
+  const axonMatRef = useRef(null);
+  const hyperemicHaloRef = useRef(null);
+  const collagenMatRef = useRef(null);
+  const venuleGroupRef = useRef(null);
+  const adhesionHaloRef = useRef(null);
+  const stasisCapMatRef = useRef(null);
+  const stasisBlushRef = useRef(null);
   const adhesionMeshRef = useRef(null);
   const adhesionBadgeRef = useRef(null);
   const stasisMeshRef = useRef(null);
@@ -551,10 +558,10 @@ export default function SkinLayersPip({
     // 5. 3 Vibrant, High-Contrast Authentic Clinical Pathologies on Cut Face (z = 0.430)
 
     // A. Needle Target: Highly Defined Taut Band Myofascial Trigger Point Knot (Striated Muscle)
-    const effectiveMaxDepth = Math.max(10.0, Math.ceil((targetDepth || 12.0) * 1.25));
-    const knotY = skinSurfaceY - ((targetDepth || 12.0) / effectiveMaxDepth) * 0.520;
+    // A. Needle Target: Highly Defined Taut Band Myofascial Trigger Point Knot in DEEP STRIATED MUSCLE LAYER (y = -0.040)
+    const knotY = -0.040;
     const knotGroup = new THREE.Group();
-    knotGroup.position.set(offsetX, knotY, 0.430);
+    knotGroup.position.set(offsetX, knotY, 0.438);
     knotGroup.visible = (activeTool === 'needle');
     scene.add(knotGroup);
     knotGroupRef.current = knotGroup;
@@ -618,9 +625,11 @@ export default function SkinLayersPip({
       new THREE.Vector3(0.06, 0.06, 0.012),
       new THREE.Vector3(0.0, 0.01, 0.015)
     ]);
+    const axonMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 1.5 });
+    axonMatRef.current = axonMat;
     const axon = new THREE.Mesh(
       new THREE.TubeGeometry(axonCurve, 12, 0.004, 6, false),
-      new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 1.5 })
+      axonMat
     );
     knotGroup.add(axon);
 
@@ -630,6 +639,7 @@ export default function SkinLayersPip({
       new THREE.MeshBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.28, side: THREE.DoubleSide })
     );
     hyperemicHalo.position.z = 0.002;
+    hyperemicHaloRef.current = hyperemicHalo;
     knotGroup.add(hyperemicHalo);
 
     // 6. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
@@ -645,7 +655,7 @@ export default function SkinLayersPip({
 
     // B. Cupping Target: Highly Defined Fibrotic Fascial Adhesion (Subcutaneous Fascia, y = 0.22)
     const adhesionGroup = new THREE.Group();
-    adhesionGroup.position.set(offsetX, 0.22, 0.430);
+    adhesionGroup.position.set(offsetX, 0.100, 0.438);
     adhesionGroup.visible = (activeTool === 'cup');
     scene.add(adhesionGroup);
 
@@ -659,6 +669,7 @@ export default function SkinLayersPip({
       transparent: true,
       opacity: 0.95
     });
+    collagenMatRef.current = collagenMat;
     const adhesionMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.095, 0.026, 24), collagenMat);
     adhesionMesh.rotation.x = Math.PI / 2;
     adhesionGroup.add(adhesionMesh);
@@ -700,6 +711,7 @@ export default function SkinLayersPip({
       new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
     );
     adhesionHalo.position.z = 0.002;
+    adhesionHaloRef.current = adhesionHalo;
     adhesionGroup.add(adhesionHalo);
 
     // 5. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
@@ -715,12 +727,13 @@ export default function SkinLayersPip({
 
     // C. Moxa Target: Highly Defined Cold-Damp Microvascular Stasis (Reticular Dermis, y = 0.44)
     const stasisGroup = new THREE.Group();
-    stasisGroup.position.set(offsetX, 0.44, 0.430);
+    stasisGroup.position.set(offsetX, 0.440, 0.438);
     stasisGroup.visible = (activeTool === 'moxa');
     scene.add(stasisGroup);
 
     // 1. Winding Hypoxic Capillary Loops (Luminous Cyan-Cobalt Plexus)
     const stasisCapMat = new THREE.MeshStandardMaterial({
+
       color: 0x38bdf8,
       emissive: 0x0284c7,
       emissiveIntensity: 1.2,
@@ -730,6 +743,7 @@ export default function SkinLayersPip({
     const stasisMesh = new THREE.Group();
     stasisGroup.add(stasisMesh);
     stasisMeshRef.current = stasisMesh;
+    stasisCapMatRef.current = stasisCapMat;
 
     for (let c = 0; c < 6; c++) {
       const angle = (c / 6) * Math.PI * 2;
@@ -752,6 +766,7 @@ export default function SkinLayersPip({
     const stasisBlush = new THREE.Mesh(new THREE.RingGeometry(0.015, 0.09, 32), stasisBlushMat);
     stasisBlush.position.z = 0.006;
     stasisMesh.add(stasisBlush);
+    stasisBlushRef.current = stasisBlush;
 
     // 3. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
     const stasisBadge = createUltraCrispBadge(
@@ -821,39 +836,59 @@ export default function SkinLayersPip({
     const animate = () => {
       animIdRef.current = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
-
       const curD = depthRef.current;
-      // Subtle organic twitch fasciculation on muscle knot when needle reaches trigger point
+
+      // 1. LIVE ANIMATION: Taut Band Trigger Point Muscle Spasm & Fasciculation
       if (knotMeshRef.current && knotMeshRef.current.visible) {
-        if (curD >= 11.5) {
-          const twitch = Math.sin(elapsedTime * 14) * 0.04;
-          knotMeshRef.current.scale.set(1.0 + twitch, 1.0 - twitch * 0.5, 1.0 + twitch);
-        } else {
-          knotMeshRef.current.scale.set(1, 1, 1);
+        // Continuous biological spasm rhythm
+        const spasm = Math.sin(elapsedTime * 4.5) * 0.05 + Math.sin(elapsedTime * 9.0) * 0.025;
+        // Intense De-Qi micro-twitch contracture discharge when needle reaches target
+        const isNearNeedle = curD >= ((targetDepth || 12.0) - 1.2);
+        const needleTwitch = isNearNeedle ? Math.sin(elapsedTime * 22.0) * 0.10 : 0.0;
+        const totalTwitch = spasm + needleTwitch;
+        knotMeshRef.current.scale.set(1.0 + totalTwitch, 1.0 - totalTwitch * 0.5, 1.0 + totalTwitch);
+
+        // Axon terminal bio-electric pulsing
+        if (axonMatRef.current) {
+          axonMatRef.current.emissiveIntensity = 1.2 + Math.sin(elapsedTime * 6.0) * 0.8;
+        }
+        // Hyperemic inflammatory halo breathing
+        if (hyperemicHaloRef.current) {
+          hyperemicHaloRef.current.scale.setScalar(1.0 + Math.sin(elapsedTime * 3.5) * 0.12);
+          hyperemicHaloRef.current.material.opacity = 0.32 + Math.sin(elapsedTime * 3.5) * 0.12;
         }
       }
 
-      // Dynamic fascial decompression lift under suction
+      // 2. LIVE ANIMATION: Fibrotic Fascial Adhesion Tension & Decompression Lift
       if (adhesionMeshRef.current && adhesionMeshRef.current.visible) {
+        // Collagen plaque tension shimmer
+        if (collagenMatRef.current) {
+          collagenMatRef.current.emissiveIntensity = 0.45 + Math.sin(elapsedTime * 3.0) * 0.25;
+        }
+        // Fascial decompression lift under suction
         const lift = Math.min(1.0, curD / 6.0) * 0.06;
         adhesionMeshRef.current.position.y = lift;
+        if (adhesionHaloRef.current) {
+          adhesionHaloRef.current.scale.setScalar(1.0 + Math.sin(elapsedTime * 2.8) * 0.10);
+        }
       }
 
-      // Dynamic microvascular vasodilation and hyperemia under moxa heat
+      // 3. LIVE ANIMATION: Cold-Damp Microvascular Stasis & Thermal Vasodilation
       if (stasisMeshRef.current && stasisMeshRef.current.visible) {
-        const heatFraction = Math.max(0, Math.min(1.0, (curD - 20) / 23));
-        stasisMeshRef.current.traverse(child => {
-          if (child.isMesh && child.material) {
-            if (child.geometry instanceof THREE.TubeGeometry) {
-              child.material.color.lerpColors(new THREE.Color(0x1e293b), new THREE.Color(0xdc2626), heatFraction);
-            } else if (child.geometry instanceof THREE.RingGeometry) {
-              child.material.opacity = Math.max(0, 0.28 * (1.0 - heatFraction));
-            }
-          }
-        });
+        const heatFrac = Math.max(0, Math.min(1.0, (curD - 24.0) / 19.0));
+        if (stasisCapMatRef.current) {
+          // Luminescence breathing pulse
+          stasisCapMatRef.current.emissiveIntensity = (1.2 + Math.sin(elapsedTime * 3.5) * 0.5) * (1.0 - heatFrac * 0.5);
+          // Thermal flush from hypoxic cyan (#38bdf8) to arterial crimson (#dc2626)
+          stasisCapMatRef.current.color.lerpColors(new THREE.Color(0x38bdf8), new THREE.Color(0xdc2626), heatFrac);
+        }
+        if (stasisBlushRef.current) {
+          stasisBlushRef.current.scale.setScalar(1.0 + Math.sin(elapsedTime * 2.5) * 0.12);
+          stasisBlushRef.current.material.opacity = Math.max(0.05, (0.38 + Math.sin(elapsedTime * 2.5) * 0.1) * (1.0 - heatFrac));
+        }
       }
 
-      // Thanos disintegration ash physics
+      // 4. Thanos disintegration ash physics
       const pData = particlesRef.current;
       if (pData && pData.active) {
         pData.timer += 0.016;
@@ -873,7 +908,7 @@ export default function SkinLayersPip({
         }
       }
 
-      // Moxa thermal flicker
+      // 5. Moxa thermal radiance flicker
       if (thermalLightRef.current && activeTool === 'moxa') {
         const flicker = Math.sin(elapsedTime * 8) * 0.25 + 0.75;
         thermalLightRef.current.intensity = (depth / 43.0) * 2.5 * flicker;

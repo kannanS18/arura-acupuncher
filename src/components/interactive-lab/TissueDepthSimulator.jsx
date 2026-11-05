@@ -1091,16 +1091,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.36, 0.38, 0.85);
-      targetLookAtRef.current.set(0.22, 0.38, 0.34);
+      targetCamPosRef.current.set(0.24, 0.48, 0.76);
+      targetLookAtRef.current.set(0.22, 0.46, 0.38);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
       targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.36, 0.38, 0.85);
-      targetLookAtRef.current.set(-0.22, 0.38, 0.34);
+      targetCamPosRef.current.set(-0.24, 0.48, 0.76);
+      targetLookAtRef.current.set(-0.22, 0.46, 0.38);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1183,11 +1183,32 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     isCameraAnimatingRef.current = true;
 
     const mScale = 1.55 / 1.90;
-    const worldPt = new THREE.Vector3(
+    let worldPt = new THREE.Vector3(
       pt.modelPos[0] * mScale,
       0.32 + pt.modelPos[1] * mScale,
       pt.modelPos[2] * mScale
     );
+
+    // If point is on articulated arm, track the CURRENT LIFTED POSITION in 3D world space!
+    if (pt.region === 'arm_left') {
+      const pLeftShoulder = leftShoulderPivotRef.current;
+      const shoulderAng = -1.38;
+      const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+      const dyS = pt.modelPos[1] - pLeftShoulder.y;
+      const dzS = pt.modelPos[2] - pLeftShoulder.z;
+      worldPt.x = pt.modelPos[0] * mScale;
+      worldPt.y = 0.32 + (pLeftShoulder.y + (dyS * cS - dzS * sS)) * mScale;
+      worldPt.z = (pLeftShoulder.z + (dyS * sS + dzS * cS)) * mScale;
+    } else if (pt.region === 'arm_right') {
+      const pRightShoulder = rightShoulderPivotRef.current;
+      const shoulderAng = -1.38;
+      const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+      const dyS = pt.modelPos[1] - pRightShoulder.y;
+      const dzS = pt.modelPos[2] - pRightShoulder.z;
+      worldPt.x = pt.modelPos[0] * mScale;
+      worldPt.y = 0.32 + (pRightShoulder.y + (dyS * cS - dzS * sS)) * mScale;
+      worldPt.z = (pRightShoulder.z + (dyS * sS + dzS * cS)) * mScale;
+    }
 
     targetLookAtRef.current.copy(worldPt);
     const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
