@@ -605,7 +605,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const bodyGroupRef = useRef(null);
   const bodyModelMeshRef = useRef(null);
   const bonesRef = useRef(null);
-  const targetLimbAnglesRef = useRef({ arm: 0.0, leg: 0.0 });
+  const targetLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
+  const currentLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
+  const limbUniformsRef = useRef({
+    uArmLAngle: { value: 0.0 },
+    uArmRAngle: { value: 0.0 },
+    uLegLAngle: { value: 0.0 },
+    uLegRAngle: { value: 0.0 }
+  });
   const limbPinGroupsRef = useRef({});
   const armPinObjectsRef = useRef([]);
   const allPinObjectsRef = useRef([]);
@@ -968,64 +975,107 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // Unified Regional Presentation: Natural Articulation, Close Zoom & Sequential Acupoint Pop-up
   const triggerRegionPresentation = useCallback((regionKey, selectedIdx) => {
     setActiveRegion(regionKey);
+    activeRegionRef.current = regionKey;
     setFilterRegion(regionKey === 'full' ? 'all' : regionKey);
     isCameraAnimatingRef.current = true;
 
-    // First fold down all pins
-    if (allPinObjectsRef.current) {
-      allPinObjectsRef.current.forEach(pin => {
-        pin.userData.targetScale = 0.0;
-      });
-    }
-
     if (regionKey === 'full') {
+      // Return all limbs to resting standing anatomical pose
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+
       targetCamPosRef.current.set(0.0, 0.32, 3.8);
       targetLookAtRef.current.set(0.0, 0.32, 0.0);
       if (bodyModelMeshRef.current) {
         bodyModelMeshRef.current.rotation.y = 0;
         setBodyFacing('front');
       }
-      // Reveal all pins across whole body
+      // Reveal all pins across whole body (unclickable until a limb is clicked)
       setTimeout(() => {
         if (allPinObjectsRef.current) {
           allPinObjectsRef.current.forEach(pin => {
             pin.userData.targetScale = 1.0;
-            if (pin.userData.badge) pin.userData.badge.visible = (pin.userData.acupointIdx === selectedAcupointIdx);
-            if (pin.userData.leaderLine) pin.userData.leaderLine.visible = (pin.userData.acupointIdx === selectedAcupointIdx);
+            if (pin.userData.badge) pin.userData.badge.visible = false;
+            if (pin.userData.leaderLine) pin.userData.leaderLine.visible = false;
           });
         }
       }, 200);
       return;
     }
 
+    // First fold down all pins
+    if (allPinObjectsRef.current) {
+      allPinObjectsRef.current.forEach(pin => {
+        pin.userData.targetScale = 0.0;
+        if (pin.userData.badge) pin.userData.badge.visible = false;
+        if (pin.userData.leaderLine) pin.userData.leaderLine.visible = false;
+      });
+    }
+
     let targetFacing = 'front';
     if (regionKey === 'face' || regionKey === 'crown') {
-      targetCamPosRef.current.set(0.0, 1.05, 0.44);
-      targetLookAtRef.current.set(0.0, 0.98, 0.04);
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetCamPosRef.current.set(0.0, 1.02, 0.46);
+      targetLookAtRef.current.set(0.0, 0.98, 0.06);
       targetFacing = 'front';
     } else if (regionKey === 'neck') {
-      targetCamPosRef.current.set(0.0, 0.92, -0.42);
-      targetLookAtRef.current.set(0.0, 0.85, -0.02);
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetCamPosRef.current.set(0.0, 0.90, -0.46);
+      targetLookAtRef.current.set(0.0, 0.86, -0.06);
       targetFacing = 'back';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      targetCamPosRef.current.set(0.32, 0.38, 0.42);
-      targetLookAtRef.current.set(0.19, 0.34, 0.03);
+      // Articulate LEFT ARM forward towards camera by ~34°
+      targetLimbAnglesRef.current.armL = 0.58;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      // Frame the extended left forearm and hand directly in center view
+      targetCamPosRef.current.set(0.24, 0.46, 0.60);
+      targetLookAtRef.current.set(0.19, 0.42, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
-      targetCamPosRef.current.set(-0.30, 0.38, 0.46);
-      targetLookAtRef.current.set(-0.16, 0.34, 0.12);
+      // Articulate RIGHT ARM forward towards camera by ~34°
+      targetLimbAnglesRef.current.armR = 0.58;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      // Frame the extended right forearm and hand directly in center view
+      targetCamPosRef.current.set(-0.24, 0.46, 0.60);
+      targetLookAtRef.current.set(-0.19, 0.42, 0.20);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
-      targetCamPosRef.current.set(0.0, 0.58, -0.58);
-      targetLookAtRef.current.set(0.0, 0.50, -0.05);
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetCamPosRef.current.set(0.0, 0.54, -0.62);
+      targetLookAtRef.current.set(0.0, 0.48, -0.08);
       targetFacing = 'back';
     } else if (regionKey === 'leg_left' || regionKey === 'leg') {
-      targetCamPosRef.current.set(0.14, -0.08, 0.55);
-      targetLookAtRef.current.set(0.09, -0.14, 0.0);
+      // Articulate LEFT LEG forward by ~22°
+      targetLimbAnglesRef.current.legL = 0.38;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetCamPosRef.current.set(0.16, -0.05, 0.62);
+      targetLookAtRef.current.set(0.10, -0.12, 0.12);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
-      targetCamPosRef.current.set(-0.14, -0.08, 0.55);
-      targetLookAtRef.current.set(-0.09, -0.14, 0.0);
+      // Articulate RIGHT LEG forward by ~22°
+      targetLimbAnglesRef.current.legR = 0.38;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetCamPosRef.current.set(-0.16, -0.05, 0.62);
+      targetLookAtRef.current.set(-0.10, -0.12, 0.12);
       targetFacing = 'front';
     }
 
@@ -1347,13 +1397,109 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
         if (!bodyMesh) return;
 
-        // Clean porcelain clinical white material (matching user model)
-        bodyMesh.material = new THREE.MeshStandardMaterial({
+        // Clean porcelain clinical white material with GPU Limb Kinematics
+        const bodyMat = new THREE.MeshStandardMaterial({
           color: 0xfdfdfd,
           roughness: 0.22,
           metalness: 0.04,
           flatShading: false
         });
+
+        const uniforms = {
+          uArmLAngle: limbUniformsRef.current.uArmLAngle,
+          uArmRAngle: limbUniformsRef.current.uArmRAngle,
+          uLegLAngle: limbUniformsRef.current.uLegLAngle,
+          uLegRAngle: limbUniformsRef.current.uLegRAngle
+        };
+
+        bodyMat.onBeforeCompile = (shader) => {
+          shader.uniforms.uArmLAngle = uniforms.uArmLAngle;
+          shader.uniforms.uArmRAngle = uniforms.uArmRAngle;
+          shader.uniforms.uLegLAngle = uniforms.uLegLAngle;
+          shader.uniforms.uLegRAngle = uniforms.uLegRAngle;
+
+          shader.vertexShader = `
+            uniform float uArmLAngle;
+            uniform float uArmRAngle;
+            uniform float uLegLAngle;
+            uniform float uLegRAngle;
+
+            mat3 rotateX(float angle) {
+              float s = sin(angle);
+              float c = cos(angle);
+              return mat3(
+                1.0, 0.0, 0.0,
+                0.0, c,   -s,
+                0.0, s,   c
+              );
+            }
+          ` + shader.vertexShader;
+
+          shader.vertexShader = shader.vertexShader.replace(
+            '#include <begin_vertex>',
+            `
+            #include <begin_vertex>
+
+            // LEFT ARM KINEMATICS (swings forward on click towards +Z)
+            if (transformed.x > 0.12 && transformed.y < 0.52 && transformed.y > -0.28) {
+              vec3 pivot = vec3(0.18, 0.45, 0.0);
+              float weight = smoothstep(0.12, 0.17, transformed.x) * smoothstep(0.52, 0.45, transformed.y);
+              if (weight > 0.0) {
+                float angle = -uArmLAngle * weight;
+                mat3 rot = rotateX(angle);
+                transformed = rot * (transformed - pivot) + pivot;
+                #ifdef USE_NORMAL
+                objectNormal = rot * objectNormal;
+                #endif
+              }
+            }
+
+            // RIGHT ARM KINEMATICS (swings forward on click towards +Z)
+            if (transformed.x < -0.12 && transformed.y < 0.52 && transformed.y > -0.28) {
+              vec3 pivot = vec3(-0.18, 0.45, 0.0);
+              float weight = smoothstep(-0.12, -0.17, transformed.x) * smoothstep(0.52, 0.45, transformed.y);
+              if (weight > 0.0) {
+                float angle = -uArmRAngle * weight;
+                mat3 rot = rotateX(angle);
+                transformed = rot * (transformed - pivot) + pivot;
+                #ifdef USE_NORMAL
+                objectNormal = rot * objectNormal;
+                #endif
+              }
+            }
+
+            // LEFT LEG KINEMATICS (steps forward on click towards +Z)
+            if (transformed.x > 0.02 && transformed.y < -0.18) {
+              vec3 pivot = vec3(0.08, -0.22, 0.0);
+              float weight = smoothstep(0.02, 0.05, transformed.x) * smoothstep(-0.18, -0.24, transformed.y);
+              if (weight > 0.0) {
+                float angle = -uLegLAngle * weight;
+                mat3 rot = rotateX(angle);
+                transformed = rot * (transformed - pivot) + pivot;
+                #ifdef USE_NORMAL
+                objectNormal = rot * objectNormal;
+                #endif
+              }
+            }
+
+            // RIGHT LEG KINEMATICS (steps forward on click towards +Z)
+            if (transformed.x < -0.02 && transformed.y < -0.18) {
+              vec3 pivot = vec3(-0.08, -0.22, 0.0);
+              float weight = smoothstep(-0.02, -0.05, transformed.x) * smoothstep(-0.18, -0.24, transformed.y);
+              if (weight > 0.0) {
+                float angle = -uLegRAngle * weight;
+                mat3 rot = rotateX(angle);
+                transformed = rot * (transformed - pivot) + pivot;
+                #ifdef USE_NORMAL
+                objectNormal = rot * objectNormal;
+                #endif
+              }
+            }
+            `
+          );
+        };
+
+        bodyMesh.material = bodyMat;
         bodyMesh.geometry.computeVertexNormals();
         bodyMesh.castShadow = true;
         bodyMesh.receiveShadow = true;
@@ -1385,7 +1531,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             currentScale: 1.0,
             acupointIdx: idx,
             region: pt.region,
-            orderIndex: pt.orderIndex ?? 0
+            orderIndex: pt.orderIndex ?? 0,
+            baseLocalPos: pinGroup.position.clone()
           };
 
           // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite, depthTest: false so it never clips)
@@ -1471,16 +1618,39 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     };
 
     const handlePointerMove = (e) => {
-      // Natural hover feedback on Acupoints
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
-      const acuHover = raycaster.intersectObjects(interactiveAcupointMeshes, true);
-      if (acuHover.length > 0) {
+      // Check surgical tray tools
+      const trayHover = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+      if (trayHover.length > 0) {
         renderer.domElement.style.cursor = 'pointer';
         return;
+      }
+
+      if (activeRegionRef.current !== 'full') {
+        // When a limb is articulated and in focus, only its acupoints show pointer cursor
+        const activeRegionHitboxes = interactiveAcupointMeshes.filter(m => {
+          const ptIdx = m.userData.acupointIdx;
+          const pt = CLINICAL_ACUPOINTS[ptIdx];
+          return pt && (pt.region === activeRegionRef.current);
+        });
+        const acuHover = raycaster.intersectObjects(activeRegionHitboxes, true);
+        if (acuHover.length > 0) {
+          renderer.domElement.style.cursor = 'pointer';
+          return;
+        }
+      } else {
+        // In whole-body overview, hovering over the body mesh shows pointer cursor to invite clicking limbs
+        if (bodyModelMeshRef.current) {
+          const bodyHover = raycaster.intersectObject(bodyModelMeshRef.current, false);
+          if (bodyHover.length > 0) {
+            renderer.domElement.style.cursor = 'pointer';
+            return;
+          }
+        }
       }
       renderer.domElement.style.cursor = 'default';
     };
@@ -1523,38 +1693,45 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         }
       }
 
-      // 1. Highest Priority: Direct click on an Acupoint Pin Dot or Callout Badge
-      // Only consider hitboxes whose parent pin is visibly scaled up (> 0.2)
-      const visibleHitboxes = interactiveAcupointMeshes.filter(m => {
-        let parent = m.parent;
-        while (parent) {
-          if (parent.scale && parent.scale.x < 0.2) return false;
-          parent = parent.parent;
-        }
-        return true;
-      });
-      const intersects = raycaster.intersectObjects(visibleHitboxes, true);
-      if (intersects.length > 0) {
-        const hitIdx = intersects[0].object.userData.acupointIdx;
-        console.log('[AcuClick] Hit pin hitbox idx:', hitIdx, CLINICAL_ACUPOINTS[hitIdx]?.code);
-        if (typeof hitIdx === 'number') {
-          triggerAcupointCloseUp(hitIdx);
-          return;
+      // 1. Acupoint Clicking is STRICTLY GATED to the active focused limb/region!
+      // In whole-body overview (activeRegion === 'full'), clicking hands/limbs articulates the limb forward first!
+      const isRegionFocused = (activeRegionRef.current !== 'full');
+
+      if (isRegionFocused) {
+        // Only consider hitboxes that belong to the currently articulated & focused region!
+        const activeRegionHitboxes = interactiveAcupointMeshes.filter(m => {
+          const ptIdx = m.userData.acupointIdx;
+          const pt = CLINICAL_ACUPOINTS[ptIdx];
+          let parent = m.parent;
+          while (parent) {
+            if (parent.scale && parent.scale.x < 0.2) return false;
+            parent = parent.parent;
+          }
+          return pt && (pt.region === activeRegionRef.current);
+        });
+
+        const intersects = raycaster.intersectObjects(activeRegionHitboxes, true);
+        if (intersects.length > 0) {
+          const hitIdx = intersects[0].object.userData.acupointIdx;
+          console.log('[AcuClick] Hit pin hitbox on active limb idx:', hitIdx, CLINICAL_ACUPOINTS[hitIdx]?.code);
+          if (typeof hitIdx === 'number') {
+            triggerAcupointCloseUp(hitIdx);
+            return;
+          }
         }
       }
 
-      // 2. Second Priority: Direct click on the 3D Human Body Anatomy
-      // ONLY test against the skinned mesh itself (recursive = false), NEVER against child lines/sprites!
+      // 2. Direct click on the 3D Human Body Anatomy (limbs, neck, face, back)
+      // Articulates that limb forward towards the camera and reveals its points!
       if (bodyModelMeshRef.current) {
         const bodyHits = raycaster.intersectObject(bodyModelMeshRef.current, false);
         if (bodyHits.length > 0) {
-          const hitObj = bodyHits[0].object;
           const worldPt = bodyHits[0].point;
           const localHit = bodyModelMeshRef.current.worldToLocal(worldPt.clone());
           const lx = localHit.x;
           const ly = localHit.y;
           const lz = localHit.z;
-          console.log('[AcuClick] HitObj:', hitObj.name || hitObj.type, 'WorldPt:', { x: Number(worldPt.x.toFixed(3)), y: Number(worldPt.y.toFixed(3)), z: Number(worldPt.z.toFixed(3)) }, 'LocalHit:', { lx: Number(lx.toFixed(3)), ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
+          console.log('[AcuClick] Body Hit Local:', { lx: Number(lx.toFixed(3)), ly: Number(ly.toFixed(3)), lz: Number(lz.toFixed(3)) });
 
           let targetRegion = 'face';
           if (ly > 0.72) {
@@ -1575,13 +1752,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             targetRegion = 'face';
           }
 
-          console.log('[AcuClick] Detected Region:', targetRegion);
+          console.log('[AcuClick] Articulating Limb & Presenting Region:', targetRegion);
           triggerRegionPresentation(targetRegion);
         }
       }
     };
-    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
-    renderer.domElement.addEventListener('click', handleCanvasClick);
 
     // =========================================================================
     // 4. REALISTIC 5-LAYER 3D TISSUE STRATA MODEL (ACCURATE TO REFERENCE IMAGE)
@@ -2123,7 +2298,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         nerveMatRef.current.emissiveIntensity = 1.6 + Math.sin(elapsedTime * 8) * 0.6;
       }
 
-      // Smooth Spring Scale Interpolation for Popping Up Acupoints Sequentially Across All Regions
+      // Kinematic Limb Articulation Interpolation (Moving limbs forward on click)
+      const kdt = 0.09;
+      const curLimb = currentLimbAnglesRef.current;
+      const tgtLimb = targetLimbAnglesRef.current;
+      curLimb.armL += (tgtLimb.armL - curLimb.armL) * kdt;
+      curLimb.armR += (tgtLimb.armR - curLimb.armR) * kdt;
+      curLimb.legL += (tgtLimb.legL - curLimb.legL) * kdt;
+      curLimb.legR += (tgtLimb.legR - curLimb.legR) * kdt;
+
+      limbUniformsRef.current.uArmLAngle.value = curLimb.armL;
+      limbUniformsRef.current.uArmRAngle.value = curLimb.armR;
+      limbUniformsRef.current.uLegLAngle.value = curLimb.legL;
+      limbUniformsRef.current.uLegRAngle.value = curLimb.legR;
+
+      // Smooth Spring Scale & Position Sync for Acupoints Attached to Moving Limbs
       const pinWorldPos = new THREE.Vector3();
       if (allPinObjectsRef.current) {
         allPinObjectsRef.current.forEach(pin => {
@@ -2132,11 +2321,50 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const s = Math.max(0, pin.userData.currentScale);
           pin.scale.set(s, s, s);
 
+          // Synchronize 3D pin position with the articulated limb
+          const basePos = pin.userData.baseLocalPos;
+          if (basePos) {
+            const reg = pin.userData.region;
+            if (reg === 'arm_left' && curLimb.armL > 0.0001) {
+              const ang = -curLimb.armL;
+              const sn = Math.sin(ang);
+              const cs = Math.cos(ang);
+              const dy = basePos.y - 0.45;
+              const dz = basePos.z - 0.0;
+              pin.position.y = 0.45 + (dy * cs - dz * sn);
+              pin.position.z = 0.0 + (dy * sn + dz * cs);
+            } else if (reg === 'arm_right' && curLimb.armR > 0.0001) {
+              const ang = -curLimb.armR;
+              const sn = Math.sin(ang);
+              const cs = Math.cos(ang);
+              const dy = basePos.y - 0.45;
+              const dz = basePos.z - 0.0;
+              pin.position.y = 0.45 + (dy * cs - dz * sn);
+              pin.position.z = 0.0 + (dy * sn + dz * cs);
+            } else if (reg === 'leg_left' && curLimb.legL > 0.0001) {
+              const ang = -curLimb.legL;
+              const sn = Math.sin(ang);
+              const cs = Math.cos(ang);
+              const dy = basePos.y - (-0.22);
+              const dz = basePos.z - 0.0;
+              pin.position.y = -0.22 + (dy * cs - dz * sn);
+              pin.position.z = 0.0 + (dy * sn + dz * cs);
+            } else if (reg === 'leg_right' && curLimb.legR > 0.0001) {
+              const ang = -curLimb.legR;
+              const sn = Math.sin(ang);
+              const cs = Math.cos(ang);
+              const dy = basePos.y - (-0.22);
+              const dz = basePos.z - 0.0;
+              pin.position.y = -0.22 + (dy * cs - dz * sn);
+              pin.position.z = 0.0 + (dy * sn + dz * cs);
+            } else {
+              pin.position.copy(basePos);
+            }
+          }
+
           // Dynamic scale based on distance to camera so dots NEVER get too big on close up!
           pin.getWorldPosition(pinWorldPos);
           const dist = camera.position.distanceTo(pinWorldPos);
-          // On full body (dist ≈ 2.7m): scale ≈ 0.024
-          // On close-up limbs (dist ≈ 0.5 - 0.8m): scale ≈ 0.009 - 0.012 (dainty, never overlapping!)
           const dynamicScale = Math.max(0.009, Math.min(0.025, dist * 0.0092));
 
           const dot = pin.children[0];

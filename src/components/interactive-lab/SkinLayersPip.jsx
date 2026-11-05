@@ -802,13 +802,18 @@ export default function SkinLayersPip({
 
     const handleResize = () => {
       if (!container || !rendererRef.current || !cameraRef.current) return;
-      const { w, h } = getContainerDims();
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(container.clientWidth || rect.width || window.innerWidth, 320);
+      const h = Math.max(container.clientHeight || rect.height || (container.parentElement ? container.parentElement.clientHeight : 600), 320);
       if (w > 50 && h > 50) {
         cameraRef.current.aspect = w / h;
         cameraRef.current.updateProjectionMatrix();
-        rendererRef.current.setSize(w, h, false);
+        rendererRef.current.setSize(w, h);
         rendererRef.current.domElement.style.width = '100%';
         rendererRef.current.domElement.style.height = '100%';
+        rendererRef.current.domElement.style.position = 'absolute';
+        rendererRef.current.domElement.style.inset = '0';
+        rendererRef.current.domElement.style.display = 'block';
       }
     };
     window.addEventListener('resize', handleResize);
