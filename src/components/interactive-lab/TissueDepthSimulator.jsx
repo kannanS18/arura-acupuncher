@@ -559,6 +559,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [viewMode, setViewMode] = useState('body'); // 'body' | 'tissue'
+  const viewModeRef = useRef('body');
+  useEffect(() => {
+    viewModeRef.current = viewMode;
+  }, [viewMode]);
 
   // Guarantee document scrolling is completely untampered and clean
   useEffect(() => {
@@ -1284,7 +1288,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   // Update active 3D badges when selected acupoint or activeRegion changes (100% English with Region Name)
   useEffect(() => {
     if (badgesRef.current) {
-      badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing }) => {
+      badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, normalTex, selTex }) => {
         const isSel = (idx === selectedAcupointIdx);
         const isInActiveRegion = (activeRegion !== 'full' && pt.region === activeRegion);
         const shouldShowBadge = isSel || isInActiveRegion;
@@ -1294,11 +1298,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         if (sprite) {
           sprite.visible = shouldShowBadge;
           if (sprite.material) {
-            const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
-            sprite.material.map = new THREE.CanvasTexture(
-              createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, isSel, regLabel)
-            );
-            sprite.material.needsUpdate = true;
+            const targetMap = isSel ? selTex : normalTex;
+            if (targetMap && sprite.material.map !== targetMap) {
+              sprite.material.map = targetMap;
+              sprite.material.needsUpdate = true;
+            }
           }
         }
       });
@@ -1414,9 +1418,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     container.innerHTML = '';
@@ -1438,6 +1442,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     const keySpot = new THREE.DirectionalLight(0xffffff, 1.6);
     keySpot.position.set(2.5, 5.0, 3.5);
     keySpot.castShadow = true;
+    keySpot.shadow.mapSize.width = 1024;
+    keySpot.shadow.mapSize.height = 1024;
+    keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
     const softFill = new THREE.DirectionalLight(0xffe4e6, 0.55);
@@ -1866,16 +1873,20 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           leaderLine.visible = (idx === selectedAcupointIdx);
           pinGroup.add(leaderLine);
 
-          // 3D Canvas Callout Badge in 100% English with Region Tag
+          // 3D Canvas Callout Badge in 100% English with Region Tag (Cached textures for zero-lag switching)
           const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
-          const badgeTex = new THREE.CanvasTexture(
-            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, idx === selectedAcupointIdx, regLabel)
+          const normalTex = new THREE.CanvasTexture(
+            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, false, regLabel)
           );
-          const badgeMat = new THREE.SpriteMaterial({ map: badgeTex });
+          const selTex = new THREE.CanvasTexture(
+            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, true, regLabel)
+          );
+          const isInitiallySel = (idx === selectedAcupointIdx);
+          const badgeMat = new THREE.SpriteMaterial({ map: isInitiallySel ? selTex : normalTex });
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.02);
           badgeSprite.scale.set(0.098, 0.028, 1.0);
-          badgeSprite.visible = (idx === selectedAcupointIdx);
+          badgeSprite.visible = isInitiallySel;
           pinGroup.add(badgeSprite);
 
           // Clickable HitBox for Raycaster (generous radius 0.045 for natural, effortless clicking)
@@ -1892,7 +1903,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
           bodyMesh.add(pinGroup);
           allPinObjectsRef.current.push(pinGroup);
-          badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing });
+          badgesRef.current.push({ idx, pt, sprite: badgeSprite, leaderLine, selRing, normalTex, selTex });
         });
 
         // Human Body Model Added to Scene (Pure anatomy: zero tools on man model)
@@ -2606,13 +2617,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     // Render Loop
     let animId;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
+    const pinWorldPos = new THREE.Vector3();
+    const tempCamDir = new THREE.Vector3();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (viewModeRef.current === 'tissue') {
+        // Paused while full-stage 3D tissue strata is active! Saves 50% CPU/GPU and eliminates dual-context stalls!
+        return;
+      }
+      const dt = Math.min(clock.getDelta(), 0.05);
       const elapsedTime = clock.getElapsedTime();
-
-
 
       // Thanos Particles Physics (Tissue Block)
       const pData = particlesRef.current;
@@ -2661,8 +2677,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         nerveMatRef.current.emissiveIntensity = 1.6 + Math.sin(elapsedTime * 8) * 0.6;
       }
 
-      // Kinematic Limb Interpolation (Moving limbs almost 90 deg forward to show viewer)
-      const kdt = 0.085;
+      // Kinematic Limb Interpolation (Delta-time damped spring: 100% fluid at any refresh rate)
+      const kdt = 1.0 - Math.exp(-14.0 * dt);
       const curL = currentLimbAnglesRef.current;
       const tgtL = targetLimbAnglesRef.current;
       curL.armL += (tgtL.armL - curL.armL) * kdt;
@@ -2681,13 +2697,19 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       const pRightHip = rightHipPivotRef.current;
 
       // Smooth Spring Scale & Distance-Scaled Acupoints locked to articulated limbs
-      const pinWorldPos = new THREE.Vector3();
       if (allPinObjectsRef.current) {
+        const isAnim = isCameraAnimatingRef.current;
         allPinObjectsRef.current.forEach(pin => {
           const ts = pin.userData.targetScale ?? 0.0;
-          pin.userData.currentScale = (pin.userData.currentScale ?? 0.0) + (ts - (pin.userData.currentScale ?? 0.0)) * 0.14;
+          pin.userData.currentScale = (pin.userData.currentScale ?? 0.0) + (ts - (pin.userData.currentScale ?? 0.0)) * 0.16;
           const s = Math.max(0, pin.userData.currentScale);
           pin.scale.set(s, s, s);
+
+          // Fast path: skip matrix computations for dormant pins
+          if (s < 0.01 && ts < 0.01) {
+            pin.visible = false;
+            return;
+          }
 
           // Rotate pin position in exact lockstep with natural human 2-joint kinematics
           const basePos = pin.userData.baseLocalPos;
@@ -2769,13 +2791,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             }
           }
 
-          // Dynamic scale & backface culling (Back points never shine through front, front points never shine through back!)
+          // Dynamic scale & backface culling (Reusing preallocated tempCamDir vector)
           pin.getWorldPosition(pinWorldPos);
           const pinNorm = pin.userData.surfaceNormal;
           const isActiveRegion = pin.userData.region === activeRegionRef.current;
           if (pinNorm) {
-            const camDir = new THREE.Vector3().subVectors(camera.position, pinWorldPos).normalize();
-            const dot = pinNorm.dot(camDir);
+            tempCamDir.subVectors(camera.position, pinWorldPos).normalize();
+            const dot = pinNorm.dot(tempCamDir);
             const isFacingCam = isActiveRegion || (dot > -0.2);
             pin.visible = isFacingCam && (pin.userData.targetScale > 0.01);
           }
@@ -2793,11 +2815,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
       }
 
-      // Smooth Camera & Controls Interpolation towards Target Framing (Cubic Ease-Out)
+      // Smooth Camera & Controls Interpolation towards Target Framing (Hermite Smoothstep: Zero OrbitControls conflict)
       if (isCameraAnimatingRef.current) {
-        camAnimProgressRef.current += 0.045; // ~22 frames (0.36s smooth flight)
+        camAnimProgressRef.current += dt * 2.5; // ~0.40s smooth flight duration
         const progress = Math.min(1.0, camAnimProgressRef.current);
-        const t = 1 - Math.pow(1 - progress, 3);
+        const t = progress * progress * (3.0 - 2.0 * progress); // Cinematic smoothstep
         camera.position.lerpVectors(camStartPosRef.current, targetCamPosRef.current, t);
         controls.target.lerpVectors(camStartLookAtRef.current, targetLookAtRef.current, t);
         if (progress >= 1.0) {
@@ -2805,9 +2827,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           controls.target.copy(targetLookAtRef.current);
           isCameraAnimatingRef.current = false;
         }
+      } else {
+        controls.update();
       }
 
-      controls.update();
       renderer.render(scene, camera);
     };
     animate();

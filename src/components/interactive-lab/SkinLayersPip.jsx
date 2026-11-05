@@ -149,9 +149,9 @@ export default function SkinLayersPip({
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(initW, initH);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
 
@@ -181,6 +181,9 @@ export default function SkinLayersPip({
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.8);
     dirLight1.position.set(3, 5, 3.5);
     dirLight1.castShadow = true;
+    dirLight1.shadow.mapSize.width = 1024;
+    dirLight1.shadow.mapSize.height = 1024;
+    dirLight1.shadow.bias = -0.0005;
     scene.add(dirLight1);
 
     const fillLight = new THREE.DirectionalLight(0xffe4e6, 0.7);
@@ -223,7 +226,7 @@ export default function SkinLayersPip({
         // Enable shadows on meshes
         model.traverse((child) => {
           if (child.isMesh) {
-            child.castShadow = true;
+            child.castShadow = false;
             child.receiveShadow = true;
             if (child.material) {
               child.material.roughness = Math.max(child.material.roughness || 0.4, 0.35);
@@ -833,6 +836,8 @@ export default function SkinLayersPip({
 
     // 7. Animation Loop
     const clock = new THREE.Clock();
+    const colorCyan = new THREE.Color(0x38bdf8);
+    const colorCrimson = new THREE.Color(0xdc2626);
     const animate = () => {
       animIdRef.current = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
@@ -880,7 +885,7 @@ export default function SkinLayersPip({
           // Luminescence breathing pulse
           stasisCapMatRef.current.emissiveIntensity = (1.2 + Math.sin(elapsedTime * 3.5) * 0.5) * (1.0 - heatFrac * 0.5);
           // Thermal flush from hypoxic cyan (#38bdf8) to arterial crimson (#dc2626)
-          stasisCapMatRef.current.color.lerpColors(new THREE.Color(0x38bdf8), new THREE.Color(0xdc2626), heatFrac);
+          stasisCapMatRef.current.color.lerpColors(colorCyan, colorCrimson, heatFrac);
         }
         if (stasisBlushRef.current) {
           stasisBlushRef.current.scale.setScalar(1.0 + Math.sin(elapsedTime * 2.5) * 0.12);
