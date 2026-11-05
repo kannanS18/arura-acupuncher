@@ -766,7 +766,7 @@ export const CLINICAL_ACUPOINTS = [
     ],
     "badgeOffset": [
       -0.04,
-      0.08,
+      0.04,
       0.04
     ],
     "painName": "Right Median Nerve Compression & Vasovagal Nausea",
@@ -829,9 +829,9 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      -0.1827,
-      -0.0153,
-      0.1884
+      -0.1857,
+      0.0018,
+      0.1140
     ],
     "surfaceNormal": [
       -0.076,
@@ -866,9 +866,9 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 12,
     "depthCun": "0.5–1.0 cun",
     "modelPos": [
-      -0.1914,
-      -0.0397,
-      0.1869
+      -0.2294,
+      -0.0233,
+      0.1453
     ],
     "surfaceNormal": [
       -0.586,

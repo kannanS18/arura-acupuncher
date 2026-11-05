@@ -1091,16 +1091,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.215, 0.45, 0.88);
-      targetLookAtRef.current.set(0.215, 0.45, 0.22);
+      targetCamPosRef.current.set(0.22, 0.58, 0.90);
+      targetLookAtRef.current.set(0.22, 0.58, 0.18);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
       targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.215, 0.45, 0.88);
-      targetLookAtRef.current.set(-0.215, 0.45, 0.22);
+      targetCamPosRef.current.set(-0.22, 0.58, 0.90);
+      targetLookAtRef.current.set(-0.22, 0.58, 0.22);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1190,6 +1190,10 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     );
 
     if (pt.region === 'arm_left') {
+      targetLimbAnglesRef.current.armL = 1.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
       const pLeftShoulder = leftShoulderPivotRef.current;
       const shoulderAng = -1.38;
       const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
@@ -1199,8 +1203,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       worldPt.y = 0.32 + (pLeftShoulder.y + (dyS * cS - dzS * sS)) * mScale;
       worldPt.z = (pLeftShoulder.z + (dyS * sS + dzS * cS)) * mScale;
       targetLookAtRef.current.copy(worldPt);
-      targetCamPosRef.current.set(worldPt.x + 0.06, worldPt.y + 0.02, worldPt.z + 0.45);
+      targetCamPosRef.current.set(worldPt.x + 0.04, worldPt.y + 0.02, worldPt.z + 0.50);
     } else if (pt.region === 'arm_right') {
+      targetLimbAnglesRef.current.armR = 1.0;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
       const pRightShoulder = rightShoulderPivotRef.current;
       const shoulderAng = -1.38;
       const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
@@ -1210,8 +1218,30 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       worldPt.y = 0.32 + (pRightShoulder.y + (dyS * cS - dzS * sS)) * mScale;
       worldPt.z = (pRightShoulder.z + (dyS * sS + dzS * cS)) * mScale;
       targetLookAtRef.current.copy(worldPt);
-      targetCamPosRef.current.set(worldPt.x - 0.06, worldPt.y + 0.02, worldPt.z + 0.45);
+      targetCamPosRef.current.set(worldPt.x - 0.04, worldPt.y + 0.02, worldPt.z + 0.50);
+    } else if (pt.region === 'leg_left') {
+      targetLimbAnglesRef.current.legL = 1.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLookAtRef.current.copy(worldPt);
+      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
+      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.40);
+      targetCamPosRef.current.y += 0.04;
+    } else if (pt.region === 'leg_right') {
+      targetLimbAnglesRef.current.legR = 1.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLookAtRef.current.copy(worldPt);
+      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
+      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.40);
+      targetCamPosRef.current.y += 0.04;
     } else {
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
       targetLookAtRef.current.copy(worldPt);
       const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
       targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.32);
@@ -2742,10 +2772,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           // Dynamic scale & backface culling (Back points never shine through front, front points never shine through back!)
           pin.getWorldPosition(pinWorldPos);
           const pinNorm = pin.userData.surfaceNormal;
+          const isActiveRegion = pin.userData.region === activeRegionRef.current;
           if (pinNorm) {
             const camDir = new THREE.Vector3().subVectors(camera.position, pinWorldPos).normalize();
             const dot = pinNorm.dot(camDir);
-            const isFacingCam = dot > 0.05;
+            const isFacingCam = isActiveRegion || (dot > -0.2);
             pin.visible = isFacingCam && (pin.userData.targetScale > 0.01);
           }
           const dist = camera.position.distanceTo(pinWorldPos);
