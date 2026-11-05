@@ -137,10 +137,11 @@ export default function SkinLayersPip({
     scene.background = new THREE.Color(0xf8fafc);
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(40, initW / initH, 0.1, 50);
+    const camera = new THREE.PerspectiveCamera(36, initW / initH, 0.1, 50);
     if (fullStage) {
-      camera.position.set(-0.16, 0.32, 2.65);
-      camera.lookAt(-0.24, 0.06, 0.0);
+      // Comfortably framed so entire 3D strata + surgical tools fit with generous breathing margins
+      camera.position.set(0.24, 0.35, 3.65);
+      camera.lookAt(0.20, 0.28, 0.0);
     } else {
       camera.position.set(2.0, 1.4, 2.2);
       camera.lookAt(0, 0.05, 0);
@@ -149,9 +150,8 @@ export default function SkinLayersPip({
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(initW, initH);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.shadowMap.enabled = false;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
 
@@ -171,7 +171,7 @@ export default function SkinLayersPip({
     controls.dampingFactor = 0.08;
     controls.maxDistance = 6.0;
     controls.minDistance = 0.8;
-    controls.target.set(fullStage ? -0.24 : 0, fullStage ? 0.20 : 0.05, fullStage ? 0.05 : 0);
+    controls.target.set(fullStage ? 0.20 : 0, fullStage ? 0.28 : 0.05, fullStage ? 0.05 : 0);
     controlsRef.current = controls;
 
     // 2. Studio Lighting
@@ -180,10 +180,7 @@ export default function SkinLayersPip({
 
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.8);
     dirLight1.position.set(3, 5, 3.5);
-    dirLight1.castShadow = true;
-    dirLight1.shadow.mapSize.width = 1024;
-    dirLight1.shadow.mapSize.height = 1024;
-    dirLight1.shadow.bias = -0.0005;
+    dirLight1.castShadow = false;
     scene.add(dirLight1);
 
     const fillLight = new THREE.DirectionalLight(0xffe4e6, 0.7);
@@ -198,7 +195,7 @@ export default function SkinLayersPip({
     // 3. Load Meshy AI Skin Layers GLB Model
     const skinGroup = new THREE.Group();
     if (fullStage) {
-      skinGroup.position.set(-0.38, -0.05, 0.0);
+      skinGroup.position.set(0.12, 0.0, 0.0);
     }
     scene.add(skinGroup);
 
@@ -215,7 +212,7 @@ export default function SkinLayersPip({
         const size = new THREE.Vector3();
         box.getSize(size);
         const maxDim = Math.max(size.x, size.y, size.z);
-        const normScale = (fullStage ? 1.38 : 1.35) / maxDim;
+        const normScale = (fullStage ? 1.15 : 1.35) / maxDim;
         model.scale.setScalar(normScale);
 
         const center = new THREE.Vector3();
@@ -245,7 +242,7 @@ export default function SkinLayersPip({
     );
 
     // 4. Surgical 3D Tools Operating Flush on Top of the Skin Model
-    const offsetX = fullStage ? -0.38 : 0.0;
+    const offsetX = fullStage ? 0.12 : 0.0;
     const skinSurfaceY = 0.550; // Exact top skin surface height of skin_layers.glb!
 
     // Helper: High-Definition Retina-Sharp 3D Floating Callout Badge + Reticle + Leader Line
@@ -405,16 +402,12 @@ export default function SkinLayersPip({
     // Crystal-Clear Borosilicate Fire Cupping Glass (Transmission = 0.96)
     const realGlassMat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
-      transmission: 0.96,
-      opacity: 1.0,
       transparent: true,
+      opacity: 0.45,
       roughness: 0.04,
-      metalness: 0.02,
-      ior: 1.52,
-      thickness: 0.16,
-      specularIntensity: 1.0,
+      metalness: 0.05,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.02,
+      clearcoatRoughness: 0.04,
       side: THREE.DoubleSide,
       depthWrite: false
     });
@@ -783,7 +776,7 @@ export default function SkinLayersPip({
     stasisBadgeRef.current = stasisBadge;
 
     // 6. Thanos Particle Ash System for Disintegration
-    const pCount = 180;
+    const pCount = 300;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
     const pVel = new Float32Array(pCount * 3);
@@ -817,22 +810,7 @@ export default function SkinLayersPip({
       timer: 0
     };
 
-    // 6B. Mount Physical 3D Surgical Instrument Tray Comfortably Beside Tissue Block
-    if (fullStage) {
-      const trayMount = new THREE.Group();
-      trayMount.position.set(0.78, -0.06, 0.38);
-      trayMount.rotation.y = -0.32;
-      trayMount.scale.setScalar(1.22);
-      scene.add(trayMount);
-
-      traySlotsRef.current = buildPhysical3DTray(
-        trayMount,
-        trayToolHitboxesRef.current,
-        trayHaloMeshesRef.current,
-        trayLabelSpritesRef.current
-      );
-      updateTrayToolAvailability(traySlotsRef.current, allowedToolIds);
-    }
+    // 6B. Physical 3D Tray omitted in fullStage to eliminate GPU draw calls and offscreen clipping
 
     // 7. Animation Loop
     const clock = new THREE.Clock();
@@ -1123,10 +1101,10 @@ export default function SkinLayersPip({
       );
 
       // Reset particle burst origin directly on the active pathology on the cut face
-      const pCount = 3000;
+      const pCount = 300;
       const pos = particlesRef.current.geo.attributes.position.array;
       const originY = activeTool === 'needle' ? -0.04 : activeTool === 'cup' ? 0.22 : 0.44;
-      const offsetX = fullStage ? -0.38 : 0.0;
+      const offsetX = fullStage ? 0.12 : 0.0;
       for (let i = 0; i < pCount; i++) {
         pos[i * 3] = offsetX + (Math.random() - 0.5) * 0.18;
         pos[i * 3 + 1] = originY + (Math.random() - 0.5) * 0.12;
@@ -1146,52 +1124,11 @@ export default function SkinLayersPip({
   if (fullStage) {
     return (
       <div className={`absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
-        {/* Main 3D Canvas */}
+        {/* Full 3D WebGL Canvas */}
         <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 
-                {/* Dedicated Crystal-Clear Vector-Sharp Pathology & Histology Card */}
-        <div className="absolute top-14 left-4 z-20 pointer-events-auto max-w-sm w-[90%] sm:w-[360px] p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl space-y-2.5 animate-in fade-in slide-in-from-top-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="text-base">{activeTool === 'needle' ? '⚡' : activeTool === 'cup' ? '🔥' : '🌿'}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-                {activeTool === 'needle' && 'Filiform Needle • Deep Striated Muscle'}
-                {activeTool === 'cup' && 'Glass Fire Cupping • Deep Fascial Sheath'}
-                {activeTool === 'moxa' && 'Artemisia Moxa • Reticular Dermis'}
-              </span>
-            </div>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-              isDisintegrated
-                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                : 'bg-rose-50 text-rose-700 border border-rose-200'
-            }`}>
-              {isDisintegrated ? '✓ Released & Restored' : '● Active Pathology'}
-            </span>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-bold text-neutral-900 leading-tight">
-              {activeTool === 'needle' && 'Taut Band Myofascial Trigger Point Knot (12mm)'}
-              {activeTool === 'cup' && 'Fibrotic Fascial Restriction & Adhesion (6mm)'}
-              {activeTool === 'moxa' && 'Cold-Damp Microvascular Stasis & Vasoconstriction (43°C)'}
-            </h4>
-            <p className="text-[11px] text-neutral-600 font-medium leading-relaxed mt-1">
-              {activeTool === 'needle' && 'Histology: Hypercontracted sarcomere cluster with microvascular ischemia and localized motor endplate tension.'}
-              {activeTool === 'cup' && 'Histology: Dense cross-linked collagen bundles tethering subcutaneous adipose to deep epimysium with stagnant venules.'}
-              {activeTool === 'moxa' && 'Histology: Hypoxic capillary vasoconstriction with sluggish venous pooling and interstitial micro-edema.'}
-            </p>
-          </div>
-
-          <div className="pt-2 border-t border-neutral-200/80 text-[10px] text-neutral-600 leading-relaxed">
-            <span className="font-bold text-neutral-800">Clinical Mechanism: </span>
-            {activeTool === 'needle' && 'Mechanical filiform stimulation triggers a local twitch fasciculation, resetting spastic motor loop and restoring blood flow.'}
-            {activeTool === 'cup' && 'Negative pressure (-35 kPa) lifts skin & fascia upward into glass jar, breaking adhesions and restoring +300% perfusion.'}
-            {activeTool === 'moxa' && 'Deep infrared radiation (43°C) dilates microvascular capillary loops, expelling cold stasis and restoring vitality.'}
-          </div>
-        </div>
-
-{/* Top Header Bar */}
-        <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+        {/* Top Header Bar */}
+        <header className="absolute top-3 inset-x-3 sm:inset-x-4 z-20 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-2 pointer-events-auto">
             {onBackToBody && (
               <button
@@ -1218,53 +1155,118 @@ export default function SkinLayersPip({
           </div>
 
           <div className="flex items-center gap-2 pointer-events-auto">
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[11px] font-medium text-neutral-600 shadow-sm">
+              <Eye className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>Drag to rotate 3D strata</span>
+            </div>
             <button
               type="button"
               onClick={onReset}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
-              title="Reset Treatment Depth"
+              title="Reset Treatment"
             >
               <RotateCcw className="w-3.5 h-3.5 text-[#e02868]" />
               <span>Reset</span>
             </button>
           </div>
-        </div>
+        </header>
 
-        {/* Bottom Interactive Surgical Controls & Tool Dock */}
-        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl animate-in fade-in slide-in-from-bottom-2">
-          <div className="flex items-center gap-1 pr-2 border-r border-neutral-200/80">
-            {allowedTools.map(t => {
-              const IconComp = t.id === 'needle' ? Zap : Flame;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => onSelectTool && onSelectTool(t.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                    activeTool === t.id
-                      ? 'bg-[#e02868] text-white shadow-sm'
-                      : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
-                  }`}
-                  title={t.sub}
-                >
-                  <IconComp className="w-3.5 h-3.5" />
-                  <span>{t.name}</span>
-                </button>
-              );
-            })}
-            {allowedTools.length === 1 && (
-              <span className="hidden sm:inline-flex text-[10px] text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-lg font-medium">
-                Cupping contraindicated on bony distal joint
+        {/* Left Side: Consolidated Clinical Treatment Console */}
+        <aside className="absolute top-14 left-3 sm:left-4 z-20 pointer-events-auto max-w-[340px] w-full max-h-[calc(100vh-4.5rem)] flex flex-col p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl space-y-3 overflow-y-auto animate-in fade-in slide-in-from-left-2">
+          
+          {/* 1. Clinical Tool Selector */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                Select Therapy Tool
               </span>
+              <span className="text-[10px] font-mono text-neutral-400">
+                {allowedTools.length} Available
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
+              {Object.values(CLINICAL_TOOLS).map(t => {
+                const isAllowed = allowedToolIds.includes(t.id);
+                const isSelected = activeTool === t.id;
+                const IconComp = t.id === 'needle' ? Zap : t.id === 'cup' ? CircleDot : Flame;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    disabled={!isAllowed}
+                    onClick={() => isAllowed && onSelectTool && onSelectTool(t.id)}
+                    className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition ${
+                      isSelected
+                        ? 'bg-[#e02868] text-white shadow-sm ring-2 ring-[#e02868]/30'
+                        : isAllowed
+                        ? 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
+                        : 'bg-neutral-100/50 text-neutral-400 border border-dashed border-neutral-200 cursor-not-allowed opacity-50'
+                    }`}
+                    title={isAllowed ? t.sub : 'Contraindicated for this anatomical region'}
+                  >
+                    <IconComp className={`w-4 h-4 mb-0.5 ${isSelected ? 'text-white' : 'text-neutral-500'}`} />
+                    <span className="text-[11px] font-bold leading-tight">{t.name}</span>
+                    <span className={`text-[9px] truncate max-w-full ${isSelected ? 'text-white/80' : 'text-neutral-400'}`}>
+                      {isAllowed ? t.sub : 'Contraindicated'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {allowedTools.length === 1 && (
+              <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200/80 p-1.5 rounded-lg font-medium mt-1.5 leading-snug">
+                Notice: Cupping & Moxa contraindicated on bony distal joint.
+              </p>
             )}
           </div>
 
-          <div className="flex items-center gap-2 px-2">
-            <span className="text-[11px] font-bold text-neutral-700 whitespace-nowrap">
-              {activeTool === 'needle' && `Depth: ${depth.toFixed(1)} / 15mm`}
-              {activeTool === 'cup' && `Suction: ${depth.toFixed(1)} / 6mm`}
-              {activeTool === 'moxa' && `Heat: ${depth.toFixed(0)} / 43°C`}
-            </span>
+          {/* 2. Pathology & Histology Details */}
+          <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/80 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                Target Pathology
+              </span>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                isDisintegrated
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                  : 'bg-rose-50 text-rose-700 border border-rose-200'
+              }`}>
+                {isDisintegrated ? '✓ Released & Restored' : '● Active Pathology'}
+              </span>
+            </div>
+            <h4 className="text-xs font-bold text-neutral-900 leading-tight">
+              {activeTool === 'needle' && 'Taut Band Myofascial Trigger Point Knot (12mm)'}
+              {activeTool === 'cup' && 'Fibrotic Fascial Restriction & Adhesion (6mm)'}
+              {activeTool === 'moxa' && 'Cold-Damp Microvascular Stasis & Vasoconstriction (43°C)'}
+            </h4>
+            <p className="text-[10px] text-neutral-600 font-medium leading-relaxed">
+              {activeTool === 'needle' && 'Histology: Hypercontracted sarcomere cluster with microvascular ischemia and localized motor endplate tension.'}
+              {activeTool === 'cup' && 'Histology: Dense cross-linked collagen bundles tethering subcutaneous adipose to deep epimysium with stagnant venules.'}
+              {activeTool === 'moxa' && 'Histology: Hypoxic capillary vasoconstriction with sluggish venous pooling and interstitial micro-edema.'}
+            </p>
+            <div className="pt-1.5 border-t border-neutral-200/70 text-[9.5px] text-neutral-600 leading-relaxed">
+              <span className="font-bold text-neutral-800">Mechanism: </span>
+              {activeTool === 'needle' && 'Mechanical filiform stimulation triggers a local twitch fasciculation, resetting spastic motor loop.'}
+              {activeTool === 'cup' && 'Negative pressure (-35 kPa) lifts skin & fascia upward into glass jar, breaking adhesions.'}
+              {activeTool === 'moxa' && 'Deep infrared radiation (43°C) dilates microvascular capillary loops, expelling cold stasis.'}
+            </div>
+          </div>
+
+          {/* 3. Interactive Depth / Dose Controller */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                {activeTool === 'needle' && 'Needle Insertion Depth'}
+                {activeTool === 'cup' && 'Negative Pressure Suction'}
+                {activeTool === 'moxa' && 'Moxa Infrared Thermal Dose'}
+              </span>
+              <span className="text-xs font-mono font-bold text-[#e02868]">
+                {activeTool === 'needle' && `${depth.toFixed(1)} / 15mm`}
+                {activeTool === 'cup' && `${depth.toFixed(1)} / 6mm`}
+                {activeTool === 'moxa' && `${depth.toFixed(0)} / 43°C`}
+              </span>
+            </div>
+
             <input
               type="range"
               min="0"
@@ -1272,55 +1274,51 @@ export default function SkinLayersPip({
               step="0.5"
               value={depth}
               onChange={(e) => onDepthChange && onDepthChange(parseFloat(e.target.value))}
-              className="w-24 sm:w-28 accent-[#e02868] cursor-pointer"
+              className="w-full accent-[#e02868] cursor-pointer"
             />
-          </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              const targetVal = activeTool === 'needle' ? (targetDepth || 12.0) : activeTool === 'cup' ? 6.0 : 43.0;
-              if (onDepthChange) onDepthChange(targetVal);
-            }}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md transition"
-          >
-            <Zap className="w-3.5 h-3.5 animate-pulse" />
-            <span>
-              {activeTool === 'needle' && `Insert Needle (${targetDepth || 12}mm)`}
-              {activeTool === 'cup' && 'Apply Full Suction (6mm)'}
-              {activeTool === 'moxa' && 'Apply Moxa Warmth (43°C)'}
-            </span>
-          </button>
-        </div>
-
-        {/* Orbit Hint Pill */}
-        <div className="absolute bottom-4 right-4 z-20 pointer-events-none flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm text-xs font-medium text-neutral-600">
-          <Eye className="w-3.5 h-3.5 text-[#e02868]" />
-          <span>Tissue Strata on Left • Physical Surgical Tray on Right</span>
-        </div>
-
-        {/* Thanos Disintegration Floating Toast */}
-        {isDisintegrated && (
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
-            <div className="flex items-center gap-2.5">
-              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
-              <div className="text-xs">
-                <span className="font-bold text-emerald-400">{clinicalOutcome.pointLabel}:</span>{' '}
-                <span className="text-neutral-200">{clinicalOutcome.painLabel}</span>{' '}
-                <span className="text-emerald-300 font-semibold">{clinicalOutcome.highlight}</span>
-                <p className="text-[11px] text-neutral-400 mt-0.5">{clinicalOutcome.detail}</p>
-              </div>
-            </div>
             <button
               type="button"
-              onClick={onReset}
-              className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
+              onClick={() => {
+                const targetVal = activeTool === 'needle' ? (targetDepth || 12.0) : activeTool === 'cup' ? 6.0 : 43.0;
+                if (onDepthChange) onDepthChange(targetVal);
+              }}
+              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md transition"
             >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
+              <Zap className="w-3.5 h-3.5 animate-pulse" />
+              <span>
+                {activeTool === 'needle' && `Insert Needle to Target (${targetDepth || 12}mm)`}
+                {activeTool === 'cup' && 'Apply Full Fire Cup Suction (6mm)'}
+                {activeTool === 'moxa' && 'Deliver Full Moxa Heat (43°C)'}
+              </span>
             </button>
           </div>
-        )}
+
+          {/* 4. Clinical Outcome Box (Embedded cleanly in console, NOT blocking the 3D model!) */}
+          {isDisintegrated && (
+            <div className="p-2.5 rounded-xl bg-emerald-950 text-white border border-emerald-500/50 shadow-md space-y-1.5 animate-in fade-in">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-400">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-300 animate-spin" />
+                  <span>De-Qi Release Achieved</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={onReset}
+                  className="px-2 py-0.5 text-[10px] font-bold bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded-md transition"
+                >
+                  Reset
+                </button>
+              </div>
+              <p className="text-[10px] text-emerald-200/90 leading-snug">
+                <span className="font-semibold">{clinicalOutcome.painLabel}:</span> {clinicalOutcome.highlight}
+              </p>
+              <p className="text-[9.5px] text-neutral-400 leading-snug">
+                {clinicalOutcome.detail}
+              </p>
+            </div>
+          )}
+        </aside>
       </div>
     );
   }
