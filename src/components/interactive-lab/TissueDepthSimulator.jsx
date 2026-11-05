@@ -392,113 +392,60 @@ const REGION_DISPLAY_NAMES = {
   full: 'BODY'
 };
 
-// Compact 3D Canvas Pill Badge for Acupoints (100% English, High-Legibility, Anti-Collision)
-function createCompactBadgeCanvas(code, englishName) {
+// Inactive Acupoint Pill (Crisp white pill with Arura Rose text)
+function createCompactBadgeCanvas(code) {
   const canvas = document.createElement('canvas');
-  canvas.width = 360;
-  canvas.height = 90;
+  canvas.width = 160;
+  canvas.height = 64;
   const ctx = canvas.getContext('2d');
 
-  // Pill card background
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.96)';
+  ctx.fillStyle = '#ffffff';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 352, 82, 24);
+    ctx.roundRect(4, 4, 152, 56, 20);
   } else {
-    ctx.rect(4, 4, 352, 82);
+    ctx.rect(4, 4, 152, 56);
   }
   ctx.fill();
 
-  // Vibrant Arura Rose accent border
   ctx.strokeStyle = '#e02868';
   ctx.lineWidth = 3.5;
   ctx.stroke();
 
-  // Left Code Pill (High-contrast, bold, centered)
   ctx.fillStyle = '#e02868';
-  ctx.beginPath();
-  if (ctx.roundRect) {
-    ctx.roundRect(10, 10, 110, 70, 18);
-  } else {
-    ctx.rect(10, 10, 110, 70);
-  }
-  ctx.fill();
-
-  ctx.fillStyle = '#ffffff';
   ctx.font = '900 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 65, 45);
-
-  // Right English Name in bold black
-  ctx.fillStyle = '#09090b';
-  ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  const nameToRender = englishName || code;
-  ctx.fillText(nameToRender, 132, 45);
+  ctx.fillText(code, 80, 32);
 
   return canvas;
 }
 
-// Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts with Region Tag (100% English)
-function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected, regionLabel) {
+// Active / Selected Acupoint Pill (Vibrant solid Arura Rose pill with white text)
+function createCalloutBadgeCanvas(code) {
   const canvas = document.createElement('canvas');
-  canvas.width = 720;
-  canvas.height = 200;
+  canvas.width = 176;
+  canvas.height = 70;
   const ctx = canvas.getContext('2d');
 
-  // Pill card background with subtle inner gradient
-  ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.96)';
+  ctx.fillStyle = '#e02868';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(8, 8, 704, 184, 28);
+    ctx.roundRect(4, 4, 168, 62, 22);
   } else {
-    ctx.rect(8, 8, 704, 184);
+    ctx.rect(4, 4, 168, 62);
   }
   ctx.fill();
 
-  // Vibrant Arura Rose accent border
-  ctx.strokeStyle = isSelected ? '#e02868' : 'rgba(224, 40, 104, 0.45)';
-  ctx.lineWidth = isSelected ? 5.5 : 3.0;
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3.0;
   ctx.stroke();
 
-  // Left Code Pill (High-contrast, bold, centered)
-  ctx.fillStyle = '#e02868';
-  ctx.beginPath();
-  if (ctx.roundRect) {
-    ctx.roundRect(24, 24, 140, 152, 22);
-  } else {
-    ctx.rect(24, 24, 140, 152);
-  }
-  ctx.fill();
-
   ctx.fillStyle = '#ffffff';
-  ctx.font = '900 52px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = '900 34px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 94, 100);
-
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-
-  const regText = (regionLabel || 'ANATOMICAL ACUPOINT').toUpperCase();
-  // 1. Bold Uppercase Region Name Tag (Arura Rose #e02868)
-  ctx.fillStyle = '#e02868';
-  ctx.font = '800 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText(`• ${regText}`, 188, 56);
-
-  // 2. Primary English Name in bold (Large, high-contrast, razor sharp black)
-  ctx.fillStyle = '#09090b';
-  ctx.font = 'bold 46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  // Truncate cleanly if string is exceptionally long
-  const nameToRender = englishName || code;
-  ctx.fillText(nameToRender, 188, 110);
-
-  // 3. Subtitle: Target Needle Depth & Translation
-  ctx.fillStyle = '#475569';
-  ctx.font = '600 30px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Depth Target', 188, 158);
+  ctx.fillText(code, 88, 35);
 
   return canvas;
 }
@@ -647,7 +594,12 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
   const navigateCameraToRegionRef = useRef(null);
 
   const [isExploded, setIsExploded] = useState(false); // Toggle between Zero Gap & Exploded View
-  const [bodyFacing, setBodyFacing] = useState('back'); // 'front' or 'back'
+  const [bodyFacing, setBodyFacing] = useState('front'); // 'front' or 'back'
+  const bodyFacingRef = useRef('front');
+  const updateBodyFacing = useCallback((val) => {
+    bodyFacingRef.current = val;
+    setBodyFacing(val);
+  }, []);
   const [showStrataPip, setShowStrataPip] = useState(true);
 
   const isHoldingRef = useRef(false);
@@ -761,24 +713,23 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
   // Toggle Body Facing Angle (Front vs Back)
   const toggleBodyFacing = useCallback(() => {
-    setBodyFacing((prev) => {
-      const next = prev === 'front' ? 'back' : 'front';
-      if (bodyModelMeshRef.current) {
-        bodyModelMeshRef.current.rotation.y = 0; // Model stays canonically oriented
-      }
-      if (cameraRef.current && controlsRef.current) {
-        const curPos = cameraRef.current.position;
-        const curTarget = controlsRef.current.target;
-        const targetZ = next === 'back' ? -Math.abs(curPos.z || 3.8) : Math.abs(curPos.z || 3.8);
-        targetCamPosRef.current.set(curPos.x, curPos.y, targetZ);
-        targetLookAtRef.current.copy(curTarget);
-        camStartPosRef.current.copy(curPos);
-        camStartLookAtRef.current.copy(curTarget);
-        camAnimProgressRef.current = 0.0;
-        isCameraAnimatingRef.current = true;
-      }
-      return next;
-    });
+    const next = bodyFacingRef.current === 'front' ? 'back' : 'front';
+    bodyFacingRef.current = next;
+    setBodyFacing(next);
+    if (bodyModelMeshRef.current) {
+      bodyModelMeshRef.current.rotation.y = 0; // Model stays canonically oriented
+    }
+    if (cameraRef.current && controlsRef.current) {
+      const curPos = cameraRef.current.position;
+      const curTarget = controlsRef.current.target;
+      const targetZ = next === 'back' ? -Math.abs(curPos.z || 3.8) : Math.abs(curPos.z || 3.8);
+      targetCamPosRef.current.set(curPos.x, curPos.y, targetZ);
+      targetLookAtRef.current.copy(curTarget);
+      camStartPosRef.current.copy(curPos);
+      camStartLookAtRef.current.copy(curTarget);
+      camAnimProgressRef.current = 0.0;
+      isCameraAnimatingRef.current = true;
+    }
   }, []);
 
   // Update Body Tool Placement & Physical Tray Selection
@@ -1095,7 +1046,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       targetLookAtRef.current.set(0.0, 0.32, 0.0);
       if (bodyModelMeshRef.current) {
         bodyModelMeshRef.current.rotation.y = 0;
-        setBodyFacing('front');
+        updateBodyFacing('front');
       }
       if (cameraRef.current && controlsRef.current) {
         camStartPosRef.current.copy(cameraRef.current.position);
@@ -1181,23 +1132,23 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       targetLimbAnglesRef.current.legR = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(0.35, -0.28, 1.70);
-      targetLookAtRef.current.set(0.08, -0.32, 0.06);
+      targetCamPosRef.current.set(0.35, -0.15, 1.60);
+      targetLookAtRef.current.set(0.12, -0.22, 0.10);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
       targetLimbAnglesRef.current.legR = 1.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(-0.35, -0.28, 1.70);
-      targetLookAtRef.current.set(-0.08, -0.32, 0.06);
+      targetCamPosRef.current.set(-0.35, -0.15, 1.60);
+      targetLookAtRef.current.set(-0.12, -0.22, 0.10);
       targetFacing = 'front';
     }
 
     // Model stays consistently oriented; camera orbits in front (+Z) or behind (-Z)
     if (bodyModelMeshRef.current) {
       bodyModelMeshRef.current.rotation.y = 0;
-      setBodyFacing(targetFacing);
+      updateBodyFacing(targetFacing);
     }
 
     if (cameraRef.current && controlsRef.current) {
@@ -1333,7 +1284,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     const targetFacing = pt.facing || 'front';
     if (bodyModelMeshRef.current) {
       bodyModelMeshRef.current.rotation.y = 0; // Model stays canonical
-      setBodyFacing(targetFacing);
+      updateBodyFacing(targetFacing);
     }
 
     if (cameraRef.current && controlsRef.current) {
@@ -1385,9 +1336,9 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             }
           }
           if (isSel) {
-            sprite.scale.set(0.320, 0.089, 1.0);
+            sprite.scale.set(0.055, 0.022, 1.0);
           } else {
-            sprite.scale.set(0.180, 0.045, 1.0);
+            sprite.scale.set(0.044, 0.018, 1.0);
           }
         }
       });
@@ -1912,6 +1863,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             currentScale: 1.0,
             acupointIdx: idx,
             region: pt.region,
+            facing: pt.facing || 'front',
             orderIndex: pt.orderIndex ?? 0,
             baseLocalPos: pinGroup.position.clone(),
             surfaceNormal: new THREE.Vector3(norm[0], norm[1], norm[2]).normalize()
@@ -1932,30 +1884,34 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           selRing.renderOrder = 9998;
           pinGroup.add(selRing);
 
-          // Leader Line (Crisp callout pointer for active acupoint)
+          // Refined, close-hugging micro badge offset
           const bo = pt.badgeOffset || [0, 0.030, 0.040];
+          const badgeOffX = bo[0] * 0.38;
+          const badgeOffY = bo[1] * 0.38;
+          const badgeOffZ = bo[2] * 0.38;
+
+          // Delicate Leader Line for selected point only
           const leaderLineGeo = new THREE.BufferGeometry().setFromPoints([
             new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(bo[0] * 0.5, bo[1] * 0.5, bo[2] * 0.5),
-            new THREE.Vector3(bo[0], bo[1], bo[2] * 0.85)
+            new THREE.Vector3(badgeOffX * 0.5, badgeOffY * 0.5, badgeOffZ * 0.5),
+            new THREE.Vector3(badgeOffX, badgeOffY, badgeOffZ)
           ]);
-          const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.85 });
+          const leaderLineMat = new THREE.LineBasicMaterial({ color: 0xe02868, transparent: true, opacity: 0.75 });
           const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
           leaderLine.visible = (idx === selectedAcupointIdx);
           leaderLine.renderOrder = 998;
           pinGroup.add(leaderLine);
 
-          // 3D Canvas Callout Badge in 100% English with Region Tag (Cached textures for zero-lag switching)
-          const regLabel = REGION_DISPLAY_NAMES[pt.region] || pt.region.toUpperCase();
+          // 3D Canvas Callout Badge
           const compactTex = new THREE.CanvasTexture(
-            createCompactBadgeCanvas(pt.code, pt.translation)
+            createCompactBadgeCanvas(pt.code)
           );
           compactTex.colorSpace = THREE.SRGBColorSpace;
           compactTex.minFilter = THREE.LinearFilter;
           compactTex.magFilter = THREE.LinearFilter;
 
           const selTex = new THREE.CanvasTexture(
-            createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, true, regLabel)
+            createCalloutBadgeCanvas(pt.code)
           );
           selTex.colorSpace = THREE.SRGBColorSpace;
           selTex.minFilter = THREE.LinearFilter;
@@ -1966,11 +1922,11 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             map: isInitiallySel ? selTex : compactTex, 
             depthTest: false, 
             depthWrite: false,
-            toneMapped: false // 100% color fidelity, pure white background & razor-sharp text
+            toneMapped: false
           });
           const badgeSprite = new THREE.Sprite(badgeMat);
-          badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.02);
-          badgeSprite.scale.set(isInitiallySel ? 0.320 : 0.180, isInitiallySel ? 0.089 : 0.045, 1.0);
+          badgeSprite.position.set(badgeOffX, badgeOffY, badgeOffZ + 0.008);
+          badgeSprite.scale.set(isInitiallySel ? 0.082 : 0.038, isInitiallySel ? 0.017 : 0.014, 1.0);
           badgeSprite.visible = isInitiallySel;
           badgeSprite.renderOrder = 999;
           pinGroup.add(badgeSprite);
@@ -2863,7 +2819,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
               let py = pLeftHip.y + (dyH * cH - dzH * sH);
               let pz = pLeftHip.z + (dyH * sH + dzH * cH);
 
-              const wK = Math.max(0, Math.min(1, (-0.40 - basePos.y) / 0.08));
+              const wK = Math.max(0, Math.min(1, (-0.33 - basePos.y) / 0.06));
               if (wK > 0) {
                 const aK = kneeAng * wK;
                 const sK = Math.sin(aK), cK = Math.cos(aK);
@@ -2889,7 +2845,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
               let py = pRightHip.y + (dyH * cH - dzH * sH);
               let pz = pRightHip.z + (dyH * sH + dzH * cH);
 
-              const wK = Math.max(0, Math.min(1, (-0.40 - basePos.y) / 0.08));
+              const wK = Math.max(0, Math.min(1, (-0.33 - basePos.y) / 0.06));
               if (wK > 0) {
                 const aK = kneeAng * wK;
                 const sK = Math.sin(aK), cK = Math.cos(aK);
@@ -2912,7 +2868,10 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           if (pinNorm) {
             tempCamDir.subVectors(camera.position, pinWorldPos).normalize();
             const dot = pinNorm.dot(tempCamDir);
-            const isFacingCam = isActiveRegion || (dot > -0.2);
+            const curFacing = bodyFacingRef.current || 'front';
+            const isFacingCam = isActiveRegion 
+              ? (pin.userData.facing === curFacing || !pin.userData.facing || dot > 0.05) 
+              : (dot > -0.2);
             pin.visible = isFacingCam && (pin.userData.targetScale > 0.01);
           }
           const dist = camera.position.distanceTo(pinWorldPos);
@@ -2925,6 +2884,16 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           const ring = pin.children[1];
           if (ring && ring.isSprite) {
             ring.scale.set(dynamicScale * 1.5, dynamicScale * 1.5, 1.0);
+          }
+
+          // Dynamic distance-proportional badge scaling (Never giant billboards, never unreadable)
+          const badge = pin.userData.badge;
+          if (badge && badge.isSprite && badge.visible) {
+            const isSel = (pin.userData.acupointIdx === selectedAcupointIdx);
+            const baseW = isSel ? 0.055 : 0.044;
+            const baseH = isSel ? 0.022 : 0.018;
+            const distFactor = Math.max(0.80, Math.min(1.40, dist * 0.90));
+            badge.scale.set(baseW * distFactor, baseH * distFactor, 1.0);
           }
         });
       }
