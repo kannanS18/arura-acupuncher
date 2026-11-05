@@ -75,11 +75,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "taiyang_l",
-    "code": "EX-HN5-L",
+    "code": "EX-HN5",
     "fullName": "EX-HN5 (Left Taiyang)",
     "pinyin": "Taiyang",
     "hanzi": "太阳",
-    "translation": "Supreme Yang (Left)",
+    "translation": "Supreme Yang",
     "englishTitle": "Left Temple Hollow",
     "region": "face",
     "regionLabel": "Left Temple",
@@ -112,11 +112,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "taiyang_r",
-    "code": "EX-HN5-R",
+    "code": "EX-HN5",
     "fullName": "EX-HN5 (Right Taiyang)",
     "pinyin": "Taiyang",
     "hanzi": "太阳",
-    "translation": "Supreme Yang (Right)",
+    "translation": "Supreme Yang",
     "englishTitle": "Right Temple Hollow",
     "region": "face",
     "regionLabel": "Right Temple",
@@ -149,11 +149,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "sibai_l",
-    "code": "ST-2-L",
+    "code": "ST-2",
     "fullName": "ST-2 (Left Sibai)",
     "pinyin": "Sibai",
     "hanzi": "四白",
-    "translation": "Four Whites (Left)",
+    "translation": "Four Whites",
     "englishTitle": "Left Infraorbital",
     "region": "face",
     "regionLabel": "Left Cheek",
@@ -186,11 +186,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "sibai_r",
-    "code": "ST-2-R",
+    "code": "ST-2",
     "fullName": "ST-2 (Right Sibai)",
     "pinyin": "Sibai",
     "hanzi": "四白",
-    "translation": "Four Whites (Right)",
+    "translation": "Four Whites",
     "englishTitle": "Right Infraorbital",
     "region": "face",
     "regionLabel": "Right Cheek",
@@ -260,11 +260,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "gb20_l",
-    "code": "GB-20-L",
+    "code": "GB-20",
     "fullName": "GB-20 (Left Fengchi)",
     "pinyin": "Fengchi",
     "hanzi": "风池",
-    "translation": "Wind Pool (Left)",
+    "translation": "Wind Pool",
     "englishTitle": "Left Occipital Hollow",
     "region": "neck",
     "regionLabel": "Left Occiput",
@@ -297,11 +297,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "gb20_r",
-    "code": "GB-20-R",
+    "code": "GB-20",
     "fullName": "GB-20 (Right Fengchi)",
     "pinyin": "Fengchi",
     "hanzi": "风池",
-    "translation": "Wind Pool (Right)",
+    "translation": "Wind Pool",
     "englishTitle": "Right Occipital Hollow",
     "region": "neck",
     "regionLabel": "Right Occiput",
@@ -334,11 +334,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "bl10_l",
-    "code": "BL-10-L",
+    "code": "BL-10",
     "fullName": "BL-10 (Left Tianzhu)",
     "pinyin": "Tianzhu",
     "hanzi": "天柱",
-    "translation": "Celestial Pillar (Left)",
+    "translation": "Celestial Pillar",
     "englishTitle": "Left Upper Neck",
     "region": "neck",
     "regionLabel": "Left Paraspinal",
@@ -371,11 +371,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "bl10_r",
-    "code": "BL-10-R",
+    "code": "BL-10",
     "fullName": "BL-10 (Right Tianzhu)",
     "pinyin": "Tianzhu",
     "hanzi": "天柱",
-    "translation": "Celestial Pillar (Right)",
+    "translation": "Celestial Pillar",
     "englishTitle": "Right Upper Neck",
     "region": "neck",
     "regionLabel": "Right Paraspinal",
@@ -408,11 +408,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "jianjing_l",
-    "code": "GB-21-L",
+    "code": "GB-21",
     "fullName": "GB-21 (Left Jianjing)",
     "pinyin": "Jianjing",
     "hanzi": "肩井",
-    "translation": "Shoulder Well (Left)",
+    "translation": "Shoulder Well",
     "englishTitle": "Left Trapezius Ridge",
     "region": "neck",
     "regionLabel": "Left Trapezius",
@@ -445,11 +445,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "jianjing_r",
-    "code": "GB-21-R",
+    "code": "GB-21",
     "fullName": "GB-21 (Right Jianjing)",
     "pinyin": "Jianjing",
     "hanzi": "肩井",
-    "translation": "Shoulder Well (Right)",
+    "translation": "Shoulder Well",
     "englishTitle": "Right Trapezius Ridge",
     "region": "neck",
     "regionLabel": "Right Trapezius",
@@ -533,19 +533,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 15,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      0.228,
-      0.1637,
-      -0.0056
+      0.2461,
+      0.1868,
+      -0.0243
     ],
     "surfaceNormal": [
-      0.75,
-      0.2,
-      0.63
+      0.807,
+      0.177,
+      0.563
     ],
     "badgeOffset": [
-      0.07,
-      0.06,
-      0
+      0.08,
+      0.05,
+      0.02
     ],
     "painName": "Lateral Epicondylitis (Tennis Elbow) & Inflammation",
     "nerves": "Radial Nerve & Posterior Cutaneous Nerve",
@@ -570,19 +570,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 10,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.2294,
-      0.0115,
-      0.0909
+      0.2115,
+      0.038,
+      0.0542
     ],
     "surfaceNormal": [
-      0.25,
-      0.1,
-      0.96
+      -0.831,
+      0.42,
+      0.366
     ],
     "badgeOffset": [
-      -0.06,
       0.04,
-      0.07
+      0.08,
+      0.04
     ],
     "painName": "Median Nerve Compression & Chest Angina",
     "nerves": "Median Nerve Trunk",
@@ -607,19 +607,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.2595,
-      -0.0129,
-      0.0687
+      0.248,
+      0.0192,
+      0.0614
     ],
     "surfaceNormal": [
-      0.85,
-      0.1,
-      0.52
+      0.731,
+      0.307,
+      0.61
     ],
     "badgeOffset": [
-      0.08,
+      0.09,
       0.02,
-      0.05
+      0.03
     ],
     "painName": "Radial Styloid Tenosynovitis & Stiff Forearm",
     "nerves": "Lateral Antebrachial Cutaneous Nerve",
@@ -644,19 +644,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      0.217,
-      -0.0038,
-      0.0015
+      0.1659,
+      -0.0109,
+      0.0104
     ],
     "surfaceNormal": [
-      -0.45,
-      0.1,
-      0.88
+      0.987,
+      0.098,
+      0.125
     ],
     "badgeOffset": [
-      -0.07,
-      -0.03,
-      -0.02
+      0.03,
+      -0.05,
+      0.03
     ],
     "painName": "Restless Insomnia & Cardiac Palpitations",
     "nerves": "Ulnar Nerve & Medial Antebrachial Cutaneous Nerve",
@@ -681,19 +681,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 12,
     "depthCun": "0.5–1.0 cun",
     "modelPos": [
-      0.2317,
-      -0.0209,
-      0.1016
+      0.2271,
+      -0.0371,
+      0.0057
     ],
     "surfaceNormal": [
-      0.2,
-      0.2,
-      0.96
+      -0.828,
+      0.388,
+      0.406
     ],
     "badgeOffset": [
-      0.02,
+      0.07,
       -0.07,
-      0.08
+      0.04
     ],
     "painName": "Trigeminal Facial Spasm & TMJ Jaw Clenching",
     "nerves": "Superficial Radial Nerve",
@@ -704,11 +704,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "li11_r",
-    "code": "R-LI-11",
-    "fullName": "LI-11 (Right Quchi)",
+    "code": "LI-11",
+    "fullName": "LI-11 (Quchi)",
     "pinyin": "Quchi",
     "hanzi": "曲池",
-    "translation": "Pool at the Bend (Right)",
+    "translation": "Pool at the Bend",
     "englishTitle": "Right Elbow Crease",
     "region": "arm_right",
     "regionLabel": "Right Elbow",
@@ -718,19 +718,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 15,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.2325,
-      0.1669,
-      0.092
+      -0.2495,
+      0.1885,
+      0.0751
     ],
     "surfaceNormal": [
-      -0.75,
-      0.2,
-      0.63
+      -0.764,
+      0.038,
+      0.645
     ],
     "badgeOffset": [
-      -0.07,
-      0.06,
-      0
+      -0.08,
+      0.05,
+      0.02
     ],
     "painName": "Right Lateral Epicondylitis & Tendon Inflammation",
     "nerves": "Right Radial Nerve",
@@ -741,11 +741,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "pc6_r",
-    "code": "R-PC-6",
-    "fullName": "PC-6 (Right Neiguan)",
+    "code": "PC-6",
+    "fullName": "PC-6 (Neiguan)",
     "pinyin": "Neiguan",
     "hanzi": "内关",
-    "translation": "Inner Gate (Right)",
+    "translation": "Inner Gate",
     "englishTitle": "Right Inner Forearm",
     "region": "arm_right",
     "regionLabel": "Right Forearm",
@@ -755,19 +755,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 10,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      -0.1863,
-      0.0103,
-      0.1733
+      -0.2062,
+      0.0694,
+      0.1207
     ],
     "surfaceNormal": [
-      -0.25,
-      0.1,
-      0.96
+      -0.068,
+      0.15,
+      0.986
     ],
     "badgeOffset": [
-      0.06,
-      0.04,
-      0.07
+      -0.04,
+      0.08,
+      0.04
     ],
     "painName": "Right Median Nerve Compression & Vasovagal Nausea",
     "nerves": "Right Median Nerve Trunk",
@@ -778,11 +778,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "lu7_r",
-    "code": "R-LU-7",
-    "fullName": "LU-7 (Right Lieque)",
+    "code": "LU-7",
+    "fullName": "LU-7 (Lieque)",
     "pinyin": "Lieque",
     "hanzi": "列缺",
-    "translation": "Broken Sequence (Right)",
+    "translation": "Broken Sequence",
     "englishTitle": "Right Radial Forearm",
     "region": "arm_right",
     "regionLabel": "Right Radial Styloid",
@@ -792,19 +792,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      -0.2296,
-      -0.0198,
-      0.1364
+      -0.224,
+      0.03,
+      0.1238
     ],
     "surfaceNormal": [
-      -0.85,
-      0.1,
-      0.52
+      -0.89,
+      0.208,
+      0.406
     ],
     "badgeOffset": [
-      -0.08,
+      -0.09,
       0.02,
-      0.05
+      0.03
     ],
     "painName": "Right Radial Styloid Tenosynovitis & Stiff Wrist",
     "nerves": "Lateral Antebrachial Cutaneous Nerve",
@@ -815,11 +815,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "ht7_r",
-    "code": "R-HT-7",
-    "fullName": "HT-7 (Right Shenmen)",
+    "code": "HT-7",
+    "fullName": "HT-7 (Shenmen)",
     "pinyin": "Shenmen",
     "hanzi": "神门",
-    "translation": "Spirit Gate (Right)",
+    "translation": "Spirit Gate",
     "englishTitle": "Right Ulnar Wrist",
     "region": "arm_right",
     "regionLabel": "Right Wrist",
@@ -829,19 +829,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      -0.1725,
-      -0.0175,
-      0.1774
+      -0.1827,
+      -0.0153,
+      0.1884
     ],
     "surfaceNormal": [
-      0.45,
-      0.1,
-      0.88
+      -0.076,
+      0.292,
+      0.953
     ],
     "badgeOffset": [
-      0.07,
       -0.03,
-      -0.02
+      -0.05,
+      0.03
     ],
     "painName": "Autonomic Stress Spasm & Sleep Disturbance",
     "nerves": "Right Ulnar Nerve",
@@ -852,11 +852,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "li4_r",
-    "code": "R-LI-4",
-    "fullName": "LI-4 (Right Hegu)",
+    "code": "LI-4",
+    "fullName": "LI-4 (Hegu)",
     "pinyin": "Hegu",
     "hanzi": "合谷",
-    "translation": "Joining Valley (Right)",
+    "translation": "Joining Valley",
     "englishTitle": "Right Dorsal Hand",
     "region": "arm_right",
     "regionLabel": "Right Hand Webbing",
@@ -866,19 +866,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 12,
     "depthCun": "0.5–1.0 cun",
     "modelPos": [
-      -0.1851,
-      -0.033,
-      0.19
+      -0.1914,
+      -0.0397,
+      0.1869
     ],
     "surfaceNormal": [
-      -0.2,
-      0.2,
-      0.96
+      -0.586,
+      -0.472,
+      0.658
     ],
     "badgeOffset": [
-      -0.02,
       -0.07,
-      0.08
+      -0.07,
+      0.04
     ],
     "painName": "Right Masseter Spasm & Frontal Headache",
     "nerves": "Superficial Radial Nerve",
@@ -889,11 +889,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "feishu_l",
-    "code": "BL-13-L",
+    "code": "BL-13",
     "fullName": "BL-13 (Left Feishu)",
     "pinyin": "Feishu",
     "hanzi": "肺俞",
-    "translation": "Lung Shu (Left)",
+    "translation": "Lung Shu",
     "englishTitle": "Left Upper Back T3",
     "region": "back",
     "regionLabel": "Left Upper Thoracic",
@@ -926,11 +926,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "feishu_r",
-    "code": "BL-13-R",
+    "code": "BL-13",
     "fullName": "BL-13 (Right Feishu)",
     "pinyin": "Feishu",
     "hanzi": "肺俞",
-    "translation": "Lung Shu (Right)",
+    "translation": "Lung Shu",
     "englishTitle": "Right Upper Back T3",
     "region": "back",
     "regionLabel": "Right Upper Thoracic",
@@ -963,11 +963,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "bl23_l",
-    "code": "BL-23-L",
+    "code": "BL-23",
     "fullName": "BL-23 (Left Shenshu)",
     "pinyin": "Shenshu",
     "hanzi": "肾俞",
-    "translation": "Kidney Shu (Left)",
+    "translation": "Kidney Shu",
     "englishTitle": "Left Lumbar L2",
     "region": "back",
     "regionLabel": "Left Lumbar Spine",
@@ -1000,11 +1000,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "bl23_r",
-    "code": "BL-23-R",
+    "code": "BL-23",
     "fullName": "BL-23 (Right Shenshu)",
     "pinyin": "Shenshu",
     "hanzi": "肾俞",
-    "translation": "Kidney Shu (Right)",
+    "translation": "Kidney Shu",
     "englishTitle": "Right Lumbar L2",
     "region": "back",
     "regionLabel": "Right Lumbar Spine",
@@ -1088,19 +1088,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 15,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      0.1153,
-      -0.3914,
-      0.034
+      0.1133,
+      -0.3772,
+      0.037
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      -0.108,
+      -0.192,
+      0.975
     ],
     "badgeOffset": [
       0.07,
       0.04,
-      0.06
+      0.03
     ],
     "painName": "Quadriceps Motor Endplate Spasm & Gastric Cramp",
     "nerves": "Deep Peroneal (Fibular) Nerve",
@@ -1125,19 +1125,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      0.1582,
-      -0.5228,
-      -0.1016
+      0.1534,
+      -0.4419,
+      -0.0904
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      0.667,
+      0.299,
+      -0.683
     ],
     "badgeOffset": [
       0.08,
-      0,
-      -0.04
+      0.01,
+      -0.02
     ],
     "painName": "Peroneal Tendon Adhesion & Lateral Knee Stiffness",
     "nerves": "Common Peroneal (Fibular) Nerve",
@@ -1163,18 +1163,18 @@ export const CLINICAL_ACUPOINTS = [
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
       0.121,
-      -0.5231,
-      -0.12
+      -0.4548,
+      -0.1062
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      -0.106,
+      0.33,
+      -0.938
     ],
     "badgeOffset": [
-      0,
-      -0.05,
-      -0.08
+      0.05,
+      0.03,
+      -0.05
     ],
     "painName": "Popliteal Fascial Restriction & Lumbar Radiculopathy",
     "nerves": "Tibial Nerve",
@@ -1199,19 +1199,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      0.0892,
-      -0.6119,
-      -0.0367
+      0.0875,
+      -0.6832,
+      -0.0663
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      -0.992,
+      -0.122,
+      0.039
     ],
     "badgeOffset": [
-      -0.07,
+      0.06,
       0.03,
-      0.05
+      0.02
     ],
     "painName": "Medial Tibial Stress (Shin Splint) & Pelvic Stasis",
     "nerves": "Tibial Nerve & Saphenous Nerve",
@@ -1236,19 +1236,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.1091,
-      -0.9072,
-      0.0805
+      0.1176,
+      -0.9111,
+      0.1179
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      -0.846,
+      0.339,
+      0.412
     ],
     "badgeOffset": [
       0.06,
-      0.05,
-      0.07
+      0.04,
+      0.04
     ],
     "painName": "Tarsal Tunnel Pain & Vertex Hypertensive Pressure",
     "nerves": "Deep Peroneal (Fibular) Nerve Branch",
@@ -1259,11 +1259,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "st36_r",
-    "code": "R-ST-36",
-    "fullName": "ST-36 (Right Zusanli)",
+    "code": "ST-36",
+    "fullName": "ST-36 (Zusanli)",
     "pinyin": "Zusanli",
     "hanzi": "足三里",
-    "translation": "Leg Three Miles (Right)",
+    "translation": "Leg Three Miles",
     "englishTitle": "Right Anterior Tibial Shin",
     "region": "leg_right",
     "regionLabel": "Right Shin",
@@ -1273,19 +1273,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 15,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.1127,
-      -0.397,
-      0.0371
+      -0.1015,
+      -0.3768,
+      0.0428
     ],
     "surfaceNormal": [
-      0.309,
-      0.039,
-      -0.95
+      0.018,
+      -0.144,
+      0.989
     ],
     "badgeOffset": [
       -0.07,
       0.04,
-      0.06
+      0.03
     ],
     "painName": "Right Quadriceps Motor Spasm & Leg Fatigue",
     "nerves": "Right Deep Peroneal Nerve",
@@ -1296,11 +1296,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "gb34_r",
-    "code": "R-GB-34",
-    "fullName": "GB-34 (Right Yanglingquan)",
+    "code": "GB-34",
+    "fullName": "GB-34 (Yanglingquan)",
     "pinyin": "Yanglingquan",
     "hanzi": "阳陵泉",
-    "translation": "Yang Mound Spring (Right)",
+    "translation": "Yang Mound Spring",
     "englishTitle": "Right Lateral Knee Fibula",
     "region": "leg_right",
     "regionLabel": "Right Fibula Head",
@@ -1310,19 +1310,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.157,
-      -0.5292,
-      -0.0974
+      -0.1535,
+      -0.4403,
+      -0.0839
     ],
     "surfaceNormal": [
-      -0.731,
-      -0.008,
-      -0.683
+      -0.818,
+      0.28,
+      -0.502
     ],
     "badgeOffset": [
       -0.08,
-      0,
-      -0.04
+      0.01,
+      -0.02
     ],
     "painName": "Right Peroneal Tendon Adhesion & Knee Stiffness",
     "nerves": "Right Common Peroneal Nerve",
@@ -1333,11 +1333,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "bl40_r",
-    "code": "R-BL-40",
-    "fullName": "BL-40 (Right Weizhong)",
+    "code": "BL-40",
+    "fullName": "BL-40 (Weizhong)",
     "pinyin": "Weizhong",
     "hanzi": "委中",
-    "translation": "Middle of the Crease (Right)",
+    "translation": "Middle of the Crease",
     "englishTitle": "Right Popliteal Knee Fossa",
     "region": "leg_right",
     "regionLabel": "Right Posterior Knee",
@@ -1347,19 +1347,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.1155,
-      -0.5223,
-      -0.1148
+      -0.1217,
+      -0.4515,
+      -0.1024
     ],
     "surfaceNormal": [
-      -0.061,
-      0.146,
-      -0.987
+      0.15,
+      0.238,
+      -0.959
     ],
     "badgeOffset": [
-      0,
       -0.05,
-      -0.08
+      0.03,
+      -0.05
     ],
     "painName": "Right Popliteal Fascial Adhesion & Sciatic Ache",
     "nerves": "Right Tibial Nerve",
@@ -1370,11 +1370,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "sp6_r",
-    "code": "R-SP-6",
-    "fullName": "SP-6 (Right Sanyinjiao)",
+    "code": "SP-6",
+    "fullName": "SP-6 (Sanyinjiao)",
     "pinyin": "Sanyinjiao",
     "hanzi": "三阴交",
-    "translation": "Three Yin Intersection (Right)",
+    "translation": "Three Yin Intersection",
     "englishTitle": "Right Medial Ankle Calf",
     "region": "leg_right",
     "regionLabel": "Right Inner Calf",
@@ -1384,19 +1384,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 14,
     "depthCun": "1.0–1.5 cun",
     "modelPos": [
-      -0.086,
-      -0.6194,
-      -0.0341
+      -0.0921,
+      -0.6801,
+      -0.0657
     ],
     "surfaceNormal": [
-      -0.939,
-      -0.174,
-      -0.297
+      0.958,
+      -0.113,
+      -0.262
     ],
     "badgeOffset": [
-      0.07,
+      -0.06,
       0.03,
-      0.05
+      0.02
     ],
     "painName": "Right Medial Tibial Stress & Calf Muscle Cramp",
     "nerves": "Right Tibial & Saphenous Nerves",
@@ -1407,11 +1407,11 @@ export const CLINICAL_ACUPOINTS = [
   },
   {
     "id": "lv3_r",
-    "code": "R-LV-3",
-    "fullName": "LV-3 (Right Taichong)",
+    "code": "LV-3",
+    "fullName": "LV-3 (Taichong)",
     "pinyin": "Taichong",
     "hanzi": "太冲",
-    "translation": "Great Surge (Right)",
+    "translation": "Great Surge",
     "englishTitle": "Right Foot Dorsum",
     "region": "leg_right",
     "regionLabel": "Right Foot Webbing",
@@ -1421,19 +1421,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      -0.1048,
-      -0.908,
-      0.1011
+      -0.0782,
+      -0.9147,
+      0.1119
     ],
     "surfaceNormal": [
-      0.646,
-      0.034,
-      -0.762
+      0.42,
+      0.876,
+      0.237
     ],
     "badgeOffset": [
       -0.06,
-      0.05,
-      0.07
+      0.04,
+      0.04
     ],
     "painName": "Right Tarsal Tunnel Pain & Plantar Fascia Strain",
     "nerves": "Right Deep Peroneal Nerve Branch",
@@ -1445,40 +1445,354 @@ export const CLINICAL_ACUPOINTS = [
 ];
 
 export const ACUPOINT_CLOSEUPS = {
-  // Cranial Crown & Third Eye Front Close-Up
-  gv20: { cameraPos: [0.0, 1.08, 0.32], lookAt: [0.0, 0.93, 0.0], facing: 'front', fov: 32 },
-  yintang: { cameraPos: [0.0, 0.88, 0.35], lookAt: [0.0, 0.81, 0.07], facing: 'front', fov: 28 },
-  st4: { cameraPos: [0.09, 0.69, 0.35], lookAt: [0.05, 0.67, 0.06], facing: 'front', fov: 28 },
-  gb20: { cameraPos: [0.0, 0.80, -0.38], lookAt: [0.0, 0.74, -0.05], facing: 'back', fov: 28 },
-  gb21: { cameraPos: [0.0, 0.70, -0.38], lookAt: [0.0, 0.60, -0.04], facing: 'back', fov: 30 },
-  du14: { cameraPos: [0.0, 0.68, -0.38], lookAt: [0.0, 0.59, -0.05], facing: 'back', fov: 28 },
-
-  // Right Arm Close-ups (Extended forward towards Z ~ +0.19, X ~ -0.19)
-  li11_r: { cameraPos: [-0.42, 0.26, 0.28], lookAt: [-0.23, 0.17, 0.09], facing: 'front', fov: 28 },
-  pc6_r: { cameraPos: [-0.28, 0.08, 0.38], lookAt: [-0.19, 0.01, 0.17], facing: 'front', fov: 26 },
-  lu7_r: { cameraPos: [-0.38, 0.04, 0.32], lookAt: [-0.23, -0.02, 0.14], facing: 'front', fov: 26 },
-  ht7_r: { cameraPos: [-0.18, 0.04, 0.38], lookAt: [-0.17, -0.02, 0.18], facing: 'front', fov: 25 },
-  li4_r: { cameraPos: [-0.26, 0.02, 0.40], lookAt: [-0.18, -0.03, 0.19], facing: 'front', fov: 25 },
-
-  // Left Arm Close-ups
-  li11_l: { cameraPos: [0.42, 0.25, 0.18], lookAt: [0.23, 0.16, -0.01], facing: 'front', fov: 28 },
-  pc6_l: { cameraPos: [0.35, 0.08, 0.28], lookAt: [0.23, 0.01, 0.09], facing: 'front', fov: 26 },
-  lu7_l: { cameraPos: [0.40, 0.04, 0.24], lookAt: [0.26, -0.01, 0.07], facing: 'front', fov: 26 },
-  ht7_l: { cameraPos: [0.32, 0.06, 0.20], lookAt: [0.22, -0.00, 0.00], facing: 'front', fov: 25 },
-  li4_l: { cameraPos: [0.36, 0.03, 0.28], lookAt: [0.23, -0.02, 0.10], facing: 'front', fov: 25 },
-
-  // Spine & Lumbar Back
-  bl23: { cameraPos: [0.0, 0.22, -0.42], lookAt: [0.0, 0.17, -0.06], facing: 'back', fov: 30 },
-  du4: { cameraPos: [0.0, 0.22, -0.42], lookAt: [0.0, 0.17, -0.06], facing: 'back', fov: 30 },
-  bl54: { cameraPos: [0.0, -0.02, -0.44], lookAt: [0.0, -0.07, -0.07], facing: 'back', fov: 30 },
-
-  // Left Leg Close-Ups
-  st36_l: { cameraPos: [0.24, -0.32, 0.28], lookAt: [0.11, -0.39, 0.03], facing: 'front', fov: 28 },
-  sp6_l: { cameraPos: [0.20, -0.54, 0.22], lookAt: [0.09, -0.61, -0.03], facing: 'front', fov: 26 },
-  lv3_l: { cameraPos: [0.18, -0.74, 0.24], lookAt: [0.09, -0.82, 0.05], facing: 'front', fov: 26 },
-
-  // Right Leg Close-Ups
-  st36_r: { cameraPos: [-0.24, -0.32, 0.28], lookAt: [-0.11, -0.39, 0.03], facing: 'front', fov: 28 },
-  sp6_r: { cameraPos: [-0.20, -0.54, 0.22], lookAt: [-0.09, -0.61, -0.03], facing: 'front', fov: 26 },
-  lv3_r: { cameraPos: [-0.18, -0.74, 0.24], lookAt: [-0.09, -0.82, 0.05], facing: 'front', fov: 26 }
+  "gv20": {
+    "cameraPos": [
+      0,
+      1.08,
+      0.32
+    ],
+    "lookAt": [
+      0,
+      0.93,
+      0
+    ],
+    "facing": "front",
+    "fov": 32
+  },
+  "yintang": {
+    "cameraPos": [
+      0,
+      0.88,
+      0.35
+    ],
+    "lookAt": [
+      0,
+      0.81,
+      0.07
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "st4": {
+    "cameraPos": [
+      0.09,
+      0.69,
+      0.35
+    ],
+    "lookAt": [
+      0.05,
+      0.67,
+      0.06
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "gb20": {
+    "cameraPos": [
+      0,
+      0.8,
+      -0.38
+    ],
+    "lookAt": [
+      0,
+      0.74,
+      -0.05
+    ],
+    "facing": "back",
+    "fov": 28
+  },
+  "gb21": {
+    "cameraPos": [
+      0,
+      0.7,
+      -0.38
+    ],
+    "lookAt": [
+      0,
+      0.6,
+      -0.04
+    ],
+    "facing": "back",
+    "fov": 30
+  },
+  "du14": {
+    "cameraPos": [
+      0,
+      0.68,
+      -0.38
+    ],
+    "lookAt": [
+      0,
+      0.59,
+      -0.05
+    ],
+    "facing": "back",
+    "fov": 28
+  },
+  "li11_r": {
+    "cameraPos": [
+      -0.42,
+      0.26,
+      0.28
+    ],
+    "lookAt": [
+      -0.23,
+      0.17,
+      0.09
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "pc6_r": {
+    "cameraPos": [
+      -0.28,
+      0.08,
+      0.38
+    ],
+    "lookAt": [
+      -0.19,
+      0.01,
+      0.17
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "lu7_r": {
+    "cameraPos": [
+      -0.38,
+      0.04,
+      0.32
+    ],
+    "lookAt": [
+      -0.23,
+      -0.02,
+      0.14
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "ht7_r": {
+    "cameraPos": [
+      -0.18,
+      0.04,
+      0.38
+    ],
+    "lookAt": [
+      -0.17,
+      -0.02,
+      0.18
+    ],
+    "facing": "front",
+    "fov": 25
+  },
+  "li4_r": {
+    "cameraPos": [
+      -0.26,
+      0.02,
+      0.4
+    ],
+    "lookAt": [
+      -0.18,
+      -0.03,
+      0.19
+    ],
+    "facing": "front",
+    "fov": 25
+  },
+  "li11_l": {
+    "cameraPos": [
+      0.42,
+      0.25,
+      0.18
+    ],
+    "lookAt": [
+      0.23,
+      0.16,
+      -0.01
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "pc6_l": {
+    "cameraPos": [
+      0.35,
+      0.08,
+      0.28
+    ],
+    "lookAt": [
+      0.23,
+      0.01,
+      0.09
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "lu7_l": {
+    "cameraPos": [
+      0.4,
+      0.04,
+      0.24
+    ],
+    "lookAt": [
+      0.26,
+      -0.01,
+      0.07
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "ht7_l": {
+    "cameraPos": [
+      0.32,
+      0.06,
+      0.2
+    ],
+    "lookAt": [
+      0.22,
+      0,
+      0
+    ],
+    "facing": "front",
+    "fov": 25
+  },
+  "li4_l": {
+    "cameraPos": [
+      0.36,
+      0.03,
+      0.28
+    ],
+    "lookAt": [
+      0.23,
+      -0.02,
+      0.1
+    ],
+    "facing": "front",
+    "fov": 25
+  },
+  "bl23": {
+    "cameraPos": [
+      0,
+      0.22,
+      -0.42
+    ],
+    "lookAt": [
+      0,
+      0.17,
+      -0.06
+    ],
+    "facing": "back",
+    "fov": 30
+  },
+  "du4": {
+    "cameraPos": [
+      0,
+      0.22,
+      -0.42
+    ],
+    "lookAt": [
+      0,
+      0.17,
+      -0.06
+    ],
+    "facing": "back",
+    "fov": 30
+  },
+  "bl54": {
+    "cameraPos": [
+      0,
+      -0.02,
+      -0.44
+    ],
+    "lookAt": [
+      0,
+      -0.07,
+      -0.07
+    ],
+    "facing": "back",
+    "fov": 30
+  },
+  "st36_l": {
+    "cameraPos": [
+      0.24,
+      -0.32,
+      0.28
+    ],
+    "lookAt": [
+      0.11,
+      -0.39,
+      0.03
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "sp6_l": {
+    "cameraPos": [
+      0.2,
+      -0.54,
+      0.22
+    ],
+    "lookAt": [
+      0.09,
+      -0.61,
+      -0.03
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "lv3_l": {
+    "cameraPos": [
+      0.18,
+      -0.74,
+      0.24
+    ],
+    "lookAt": [
+      0.09,
+      -0.82,
+      0.05
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "st36_r": {
+    "cameraPos": [
+      -0.24,
+      -0.32,
+      0.28
+    ],
+    "lookAt": [
+      -0.11,
+      -0.39,
+      0.03
+    ],
+    "facing": "front",
+    "fov": 28
+  },
+  "sp6_r": {
+    "cameraPos": [
+      -0.2,
+      -0.54,
+      0.22
+    ],
+    "lookAt": [
+      -0.09,
+      -0.61,
+      -0.03
+    ],
+    "facing": "front",
+    "fov": 26
+  },
+  "lv3_r": {
+    "cameraPos": [
+      -0.18,
+      -0.74,
+      0.24
+    ],
+    "lookAt": [
+      -0.09,
+      -0.82,
+      0.05
+    ],
+    "facing": "front",
+    "fov": 26
+  }
 };

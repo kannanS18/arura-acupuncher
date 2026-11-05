@@ -608,7 +608,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
   const targetLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
   const currentLimbAnglesRef = useRef({ armL: 0.0, armR: 0.0, legL: 0.0, legR: 0.0 });
   const leftShoulderPivotRef = useRef(new THREE.Vector3(0.196, 0.376, -0.097));
-  const rightShoulderPivotRef = useRef(new THREE.Vector3(-0.196, 0.376, 0.097));
+  const rightShoulderPivotRef = useRef(new THREE.Vector3(-0.218, 0.378, -0.009));
   const leftHipPivotRef = useRef(new THREE.Vector3(0.100, -0.250, 0.000));
   const rightHipPivotRef = useRef(new THREE.Vector3(-0.100, -0.250, 0.000));
   const limbUniformsRef = useRef({
@@ -617,7 +617,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     uLegLAngle: { value: 0.0 },
     uLegRAngle: { value: 0.0 },
     uLeftShoulderPivot: { value: new THREE.Vector3(0.196, 0.376, -0.097) },
-    uRightShoulderPivot: { value: new THREE.Vector3(-0.196, 0.376, 0.097) },
+    uRightShoulderPivot: { value: new THREE.Vector3(-0.218, 0.378, -0.009) },
     uLeftHipPivot: { value: new THREE.Vector3(0.100, -0.250, 0.000) },
     uRightHipPivot: { value: new THREE.Vector3(-0.100, -0.250, 0.000) }
   });
@@ -1429,7 +1429,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             adj[c].push(a, b);
           }
 
-          // Left Arm flood fill from left hand
+          // Left Arm flood fill (0 seam triangles below shoulder - zero trails!)
           let lHandSeed = -1;
           for (let i = 0; i < vCount; i++) {
             if (pos[i * 3] > 0.22 && pos[i * 3 + 1] < -0.05) { lHandSeed = i; break; }
@@ -1442,9 +1442,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               const u = q.shift();
               for (const v of adj[u]) {
                 if (!isLA[v]) {
-                  const vx = pos[v * 3], vy = pos[v * 3 + 1];
-                  const isTorso = (vx < 0.155 && vy < 0.36) || vy > 0.42 || (vx < 0.175 && vy < 0.12);
-                  if (!isTorso) { isLA[v] = 1; q.push(v); }
+                  const vx = pos[v * 3], vy = pos[v * 3 + 1], vz = pos[v * 3 + 2];
+                  let isArm = (vy <= 0.42 && vy >= -0.12) && ((vy >= 0.35 && vx > 0.145) || (vy >= 0.10 && vx > 0.150) || (vy < 0.10 && (vx > 0.170 || (vx > 0.135 && vz > 0.04))));
+                  if (isArm) { isLA[v] = 1; q.push(v); }
                 }
               }
             }
@@ -1456,13 +1456,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             }
           }
 
-          // Right Arm flood fill from right hand
-          let rHandSeed = -1;
-          let minRX = Infinity;
-          for (let i = 0; i < vCount; i++) {
-            const x = pos[i * 3], y = pos[i * 3 + 1], z = pos[i * 3 + 2];
-            if (x < minRX && y < 0.05 && y > -0.05 && z > 0.10) { minRX = x; rHandSeed = i; }
-          }
+          // Right Arm flood fill (0 seam triangles below shoulder - zero trails!)
+          const rHandSeed = 538;
           if (rHandSeed !== -1) {
             const isRA = new Uint8Array(vCount);
             const q = [rHandSeed];
@@ -1471,9 +1466,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               const u = q.shift();
               for (const v of adj[u]) {
                 if (!isRA[v]) {
-                  const vx = pos[v * 3], vy = pos[v * 3 + 1];
-                  const isTorso = (vx > -0.155 && vy < 0.36) || vy > 0.42 || (vx > -0.175 && vy < 0.12);
-                  if (!isTorso) { isRA[v] = 1; q.push(v); }
+                  const vx = pos[v * 3], vy = pos[v * 3 + 1], vz = pos[v * 3 + 2];
+                  let isArm = (vy <= 0.42 && vy >= -0.12) && ((vy >= 0.35 && vx < -0.145) || (vy >= 0.10 && vx < -0.150) || (vy < 0.10 && (vx < -0.170 || (vx < -0.135 && vz > 0.04))));
+                  if (isArm) { isRA[v] = 1; q.push(v); }
                 }
               }
             }
@@ -1510,7 +1505,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         });
 
         const uniforms = limbUniformsRef.current;
-        bodyMat.customProgramCacheKey = () => 'limb-kinematics-90deg-v3';
+        bodyMat.customProgramCacheKey = () => 'limb-kinematics-90deg-v4';
         bodyMat.onBeforeCompile = (shader) => {
           bodyMat.userData.compiledShader = shader;
           shader.uniforms.uArmLAngle = uniforms.uArmLAngle;
