@@ -15,7 +15,7 @@ import {
   Calendar
 } from 'lucide-react';
 import TissueDepthSimulator from '../components/interactive-lab/TissueDepthSimulator';
-import SkinLayersPip from '../components/interactive-lab/SkinLayersPip';
+import SkinLayersPip, { preloadSkinModel } from '../components/interactive-lab/SkinLayersPip';
 import { CLINICAL_ACUPOINTS, getClinicalOutcome } from '../components/interactive-lab/acupointsData';
 
 const CLINICAL_CONDITIONS = [
@@ -39,6 +39,11 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
   // Find active acupoint data
   const activeAcupoint = CLINICAL_ACUPOINTS.find(p => p.code === selectedPointCode) || CLINICAL_ACUPOINTS[0];
   const clinicalOutcome = getClinicalOutcome(activeTool, activeAcupoint);
+
+  // Preload 3D histological strata in background for instant Stage 3 activation
+  useEffect(() => {
+    preloadSkinModel();
+  }, []);
 
   // Sync initial tool for point
   useEffect(() => {

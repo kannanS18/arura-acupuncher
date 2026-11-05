@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import SkinLayersPip from './SkinLayersPip';
+import SkinLayersPip, { preloadSkinModel } from './SkinLayersPip';
 import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS } from './acupointsData';
 export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
@@ -551,10 +551,11 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     viewModeRef.current = viewMode;
   }, [viewMode]);
 
-  // Guarantee document scrolling is completely untampered and clean
+  // Guarantee document scrolling is completely untampered and clean; preload 3D strata
   useEffect(() => {
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
+    preloadSkinModel();
   }, []);
   const [isMuted, setIsMuted] = useState(false);
   const [activeRegion, setActiveRegion] = useState('full'); // Start centered on Whole Body!

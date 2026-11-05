@@ -20,6 +20,55 @@ import {
   CircleDot
 } from 'lucide-react';
 
+// Singleton In-Memory Cache for the 3D Tissue Strata Model
+let cachedSkinGltf = null;
+let preloadPromise = null;
+
+export function preloadSkinModel() {
+  if (cachedSkinGltf) return Promise.resolve(cachedSkinGltf);
+  if (preloadPromise) return preloadPromise;
+
+  preloadPromise = new Promise((resolve) => {
+    try {
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(`${import.meta.env.BASE_URL}draco/gltf/`);
+      const loader = new GLTFLoader();
+      loader.setDRACOLoader(dracoLoader);
+
+      const optUrl = `${import.meta.env.BASE_URL}models/skin_layers_opt.glb`;
+      loader.load(
+        optUrl,
+        (gltf) => {
+          cachedSkinGltf = gltf;
+          resolve(gltf);
+        },
+        undefined,
+        (err) => {
+          console.warn('[SkinPreload] skin_layers_opt.glb failed, falling back to skin_layers.glb:', err);
+          const fallbackLoader = new GLTFLoader();
+          fallbackLoader.load(
+            `${import.meta.env.BASE_URL}models/skin_layers.glb`,
+            (gltf) => {
+              cachedSkinGltf = gltf;
+              resolve(gltf);
+            },
+            undefined,
+            (fallbackErr) => {
+              console.error('[SkinPreload] All fallbacks failed:', fallbackErr);
+              resolve(null);
+            }
+          );
+        }
+      );
+    } catch (e) {
+      console.warn('[SkinPreload] exception:', e);
+      resolve(null);
+    }
+  });
+
+  return preloadPromise;
+}
+
 export default function SkinLayersPip({
   activeTool = 'needle', // 'needle', 'cup', 'moxa'
   depth = 0,
@@ -99,6 +148,7 @@ export default function SkinLayersPip({
 
   const [isMinimized, setIsMinimized] = useState(false);
   const [modelLoading, setModelLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(25);
 
   // Determine active stratum layer name from current depth
   const getStratumInfo = (d) => {
@@ -193,55 +243,76 @@ export default function SkinLayersPip({
     scene.add(thermalLight);
     thermalLightRef.current = thermalLight;
 
-    // 3. Load Meshy AI Skin Layers GLB Model
+    // 3. Load Meshy AI Skin Layers GLB Model (Optimized Draco Mesh with Instant Cache & Radial Loading)
     const skinGroup = new THREE.Group();
     if (fullStage) {
       skinGroup.position.set(0.12, 0.0, 0.0);
     }
     scene.add(skinGroup);
 
-    const loader = new GLTFLoader();
-    const modelUrl = `${import.meta.env.BASE_URL}models/skin_layers.glb`;
+    let progressInterval = null;
 
-    loader.load(
-      modelUrl,
-      (gltf) => {
-        const model = gltf.scene;
-
-        // Auto-center and normalize size
-        const box = new THREE.Box3().setFromObject(model);
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const normScale = (fullStage ? 1.15 : 1.35) / maxDim;
-        model.scale.setScalar(normScale);
-
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        model.position.sub(center.multiplyScalar(normScale));
-        model.position.y += 0.02; // Fine tune height
-
-        // Enable shadows on meshes
-        model.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = false;
-            child.receiveShadow = true;
-            if (child.material) {
-              child.material.roughness = Math.max(child.material.roughness || 0.4, 0.35);
-              child.material.side = THREE.FrontSide;
-            }
-          }
-        });
-
-        skinGroup.add(model);
+    const applyModel = (gltf) => {
+      if (!gltf || !gltf.scene) {
         setModelLoading(false);
-      },
-      undefined,
-      (err) => {
-        console.error('Failed to load skin_layers.glb in PiP:', err);
-        setModelLoading(false);
+        return;
       }
-    );
+      const model = gltf.scene.clone(true);
+
+      // Auto-center and normalize size
+      const box = new THREE.Box3().setFromObject(model);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const normScale = (fullStage ? 1.15 : 1.35) / maxDim;
+      model.scale.setScalar(normScale);
+
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      model.position.sub(center.multiplyScalar(normScale));
+      model.position.y += 0.02; // Fine tune height
+
+      // Enable shadows on meshes
+      model.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = false;
+          child.receiveShadow = true;
+          if (child.material) {
+            child.material.roughness = Math.max(child.material.roughness || 0.4, 0.35);
+            child.material.side = THREE.FrontSide;
+          }
+        }
+      });
+
+      skinGroup.add(model);
+      setLoadProgress(100);
+      setTimeout(() => {
+        setModelLoading(false);
+      }, 250);
+    };
+
+    if (cachedSkinGltf) {
+      setLoadProgress(90);
+      applyModel(cachedSkinGltf);
+    } else {
+      let curP = 25;
+      progressInterval = setInterval(() => {
+        curP = Math.min(94, curP + Math.floor(Math.random() * 8 + 5));
+        setLoadProgress(curP);
+      }, 70);
+
+      preloadSkinModel().then((gltf) => {
+        if (progressInterval) clearInterval(progressInterval);
+        if (gltf) {
+          applyModel(gltf);
+        } else {
+          setModelLoading(false);
+        }
+      }).catch(() => {
+        if (progressInterval) clearInterval(progressInterval);
+        setModelLoading(false);
+      });
+    }
 
     // 4. Surgical 3D Tools Operating Flush on Top of the Skin Model
     const offsetX = fullStage ? 0.12 : 0.0;
@@ -1149,6 +1220,80 @@ export default function SkinLayersPip({
         {/* Full 3D WebGL Canvas */}
         <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 
+        {/* Radial Loading Animation Overlay (Medical Calibration HUD) */}
+        {modelLoading && (
+          <div 
+            className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#f8fafc]/95 backdrop-blur-md transition-opacity duration-500 ${
+              loadProgress >= 100 ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+            }`}
+          >
+            <div className="relative flex flex-col items-center max-w-sm px-6 text-center animate-in fade-in zoom-in-95 duration-300">
+              {/* Dual Radial Ring HUD */}
+              <div className="relative w-28 h-28 flex items-center justify-center mb-5">
+                {/* Outer glowing pulsing aura */}
+                <div className="absolute inset-0 rounded-full bg-[#e02868]/15 blur-xl animate-pulse" />
+                
+                {/* SVG Radial Progress Ring */}
+                <svg className="w-28 h-28 -rotate-90 transform" viewBox="0 0 120 120">
+                  {/* Background Track */}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke="#e2e8f0"
+                    strokeWidth="6"
+                    fill="none"
+                  />
+                  {/* Animated Radial Progress Arc */}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke="#e02868"
+                    strokeWidth="6"
+                    strokeDasharray={2 * Math.PI * 52}
+                    strokeDashoffset={2 * Math.PI * 52 * (1 - Math.max(0.08, loadProgress / 100))}
+                    strokeLinecap="round"
+                    fill="none"
+                    className="transition-all duration-200 ease-out"
+                  />
+                </svg>
+
+                {/* Center Glass Capsule with Icon & Percentage */}
+                <div className="absolute inset-3 rounded-full bg-white shadow-md border border-neutral-100 flex flex-col items-center justify-center">
+                  <Layers className="w-5 h-5 text-[#e02868] animate-pulse" />
+                  <span className="text-sm font-mono font-black text-[#09090b] mt-0.5">
+                    {Math.min(100, Math.round(loadProgress))}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Calibration Clinical Copy */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
+                  <span className="text-xs font-black uppercase tracking-wider text-[#09090b]">
+                    Calibrating 3D Tissue Strata
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-500 font-medium h-4">
+                  {loadProgress < 40 
+                    ? 'Loading Micro-Cellular Geometry...' 
+                    : loadProgress < 85 
+                    ? 'Synthesizing 5 Histological Cellular Layers...' 
+                    : 'Mounting Reticles & Surgical Tray...'}
+                </p>
+              </div>
+
+              {/* Micro Status Badge */}
+              <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-neutral-200/80 shadow-xs text-[10px] font-semibold text-neutral-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>{pointCode ? `Point ${pointCode} • Target Depth ${targetDepth || 12}mm` : 'Histological Tissue Matrix'}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Top Header Bar */}
         <header className="absolute top-3 inset-x-3 sm:inset-x-4 z-20 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-2 pointer-events-auto">
@@ -1402,10 +1547,31 @@ export default function SkinLayersPip({
             <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
             
             {modelLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-xs">
-                <span className="text-[11px] font-bold text-neutral-600 animate-pulse flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-[#e02868] animate-spin" />
-                  <span>Loading Histological Strata...</span>
+              <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white/95 backdrop-blur-xs">
+                <div className="relative w-11 h-11 flex items-center justify-center mb-1">
+                  <svg className="w-11 h-11 -rotate-90 transform" viewBox="0 0 44 44">
+                    <circle cx="22" cy="22" r="18" stroke="#e2e8f0" strokeWidth="3.5" fill="none" />
+                    <circle
+                      cx="22"
+                      cy="22"
+                      r="18"
+                      stroke="#e02868"
+                      strokeWidth="3.5"
+                      strokeDasharray={2 * Math.PI * 18}
+                      strokeDashoffset={2 * Math.PI * 18 * (1 - Math.max(0.1, loadProgress / 100))}
+                      strokeLinecap="round"
+                      fill="none"
+                      className="transition-all duration-200 ease-out"
+                    />
+                  </svg>
+                  <div className="absolute inset-1.5 rounded-full bg-white flex items-center justify-center">
+                    <span className="text-[10px] font-mono font-bold text-[#e02868]">
+                      {Math.min(100, Math.round(loadProgress))}%
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-bold text-neutral-600 tracking-wide uppercase">
+                  Calibrating Strata...
                 </span>
               </div>
             )}
