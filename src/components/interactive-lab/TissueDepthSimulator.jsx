@@ -1415,19 +1415,22 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         if (!bodyMesh) return;
 
         // Compute exact anatomical limb vertex weights (Zero risk of torso/pelvis distortion)
-        const geo = bodyMesh.geometry;
-        const pos = geo.attributes.position.array;
-        const vCount = geo.attributes.position.count;
+        let geo = bodyMesh.geometry;
+        const oldPos = geo.attributes.position.array;
+        const initialVCount = geo.attributes.position.count;
 
-        // Strip embedded base plate/mat triangles so feet are completely freestanding
+        // Strip embedded base plate/mat triangles and seamlessly cap feet soles
+        let vCount = initialVCount;
+        let idxArr = null;
+
         if (geo.index) {
           const oldIdx = geo.index.array;
           const cleanIndices = [];
           for (let i = 0; i < oldIdx.length; i += 3) {
             const a = oldIdx[i], b = oldIdx[i + 1], c = oldIdx[i + 2];
-            const ya = pos[a * 3 + 1], yb = pos[b * 3 + 1], yc = pos[c * 3 + 1];
-            const xa = pos[a * 3], xb = pos[b * 3], xc = pos[c * 3];
-            const za = pos[a * 3 + 2], zb = pos[b * 3 + 2], zc = pos[c * 3 + 2];
+            const ya = oldPos[a * 3 + 1], yb = oldPos[b * 3 + 1], yc = oldPos[c * 3 + 1];
+            const xa = oldPos[a * 3], xb = oldPos[b * 3], xc = oldPos[c * 3];
+            const za = oldPos[a * 3 + 2], zb = oldPos[b * 3 + 2], zc = oldPos[c * 3 + 2];
 
             const minY = Math.min(ya, yb, yc);
             const maxY = Math.max(ya, yb, yc);
@@ -1442,10 +1445,78 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               cleanIndices.push(a, b, c);
             }
           }
-          geo.setIndex(cleanIndices);
-        }
-        const idxArr = geo.index ? geo.index.array : null;
 
+          // Find boundary edge loops of the soles to seal the hollow holes
+          const edgeMap = new Map();
+          for (let i = 0; i < cleanIndices.length; i += 3) {
+            const a = cleanIndices[i], b = cleanIndices[i + 1], c = cleanIndices[i + 2];
+            const tri = [a, b, c];
+            for (let e = 0; e < 3; e++) {
+              const u = tri[e], v = tri[(e + 1) % 3];
+              const revKey = v + '_' + u;
+              if (edgeMap.has(revKey)) {
+                edgeMap.delete(revKey);
+              } else {
+                edgeMap.set(u + '_' + v, { u, v });
+              }
+            }
+          }
+
+          const leftEdges = [];
+          const rightEdges = [];
+          for (const { u, v } of edgeMap.values()) {
+            if (oldPos[u * 3] > 0) leftEdges.push({ u, v });
+            else rightEdges.push({ u, v });
+          }
+
+          if (leftEdges.length > 0 && rightEdges.length > 0) {
+            let lSumX = 0, lSumY = 0, lSumZ = 0;
+            for (const { u } of leftEdges) {
+              lSumX += oldPos[u * 3];
+              lSumY += oldPos[u * 3 + 1];
+              lSumZ += oldPos[u * 3 + 2];
+            }
+            const lCenter = [lSumX / leftEdges.length, lSumY / leftEdges.length, lSumZ / leftEdges.length];
+
+            let rSumX = 0, rSumY = 0, rSumZ = 0;
+            for (const { u } of rightEdges) {
+              rSumX += oldPos[u * 3];
+              rSumY += oldPos[u * 3 + 1];
+              rSumZ += oldPos[u * 3 + 2];
+            }
+            const rCenter = [rSumX / rightEdges.length, rSumY / rightEdges.length, rSumZ / rightEdges.length];
+
+            const lCenterIdx = initialVCount;
+            const rCenterIdx = initialVCount + 1;
+            vCount = initialVCount + 2;
+
+            const newPos = new Float32Array(vCount * 3);
+            newPos.set(oldPos);
+            newPos[lCenterIdx * 3] = lCenter[0];
+            newPos[lCenterIdx * 3 + 1] = lCenter[1];
+            newPos[lCenterIdx * 3 + 2] = lCenter[2];
+            newPos[rCenterIdx * 3] = rCenter[0];
+            newPos[rCenterIdx * 3 + 1] = rCenter[1];
+            newPos[rCenterIdx * 3 + 2] = rCenter[2];
+
+            geo.setAttribute('position', new THREE.BufferAttribute(newPos, 3));
+
+            // Cap left and right soles with watertight triangle fans
+            for (const { u, v } of leftEdges) {
+              cleanIndices.push(lCenterIdx, v, u);
+            }
+            for (const { u, v } of rightEdges) {
+              cleanIndices.push(rCenterIdx, v, u);
+            }
+
+            geo.computeVertexNormals();
+          }
+
+          geo.setIndex(cleanIndices);
+          idxArr = geo.index.array;
+        }
+
+        const pos = geo.attributes.position.array;
         const armLWeights = new Float32Array(vCount);
         const armRWeights = new Float32Array(vCount);
         const legLWeights = new Float32Array(vCount);
