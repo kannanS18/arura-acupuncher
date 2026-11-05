@@ -24,6 +24,7 @@ export default function SkinLayersPip({
   depth = 0,
   maxDepth = 15.0,
   targetDepth = 12.0,
+  depthCun = "0.5–1.0 cun",
   pointCode = 'PC-6',
   pointName = 'Inner Gate',
   painName = 'Spastic Motor Endplate Knot',
@@ -51,6 +52,7 @@ export default function SkinLayersPip({
   const needleGroupRef = useRef(null);
   const cupGroupRef = useRef(null);
   const moxaGroupRef = useRef(null);
+  const knotGroupRef = useRef(null);
   const knotMeshRef = useRef(null);
   const knotBadgeRef = useRef(null);
   const adhesionMeshRef = useRef(null);
@@ -548,11 +550,14 @@ export default function SkinLayersPip({
 
     // 5. 3 Vibrant, High-Contrast Authentic Clinical Pathologies on Cut Face (z = 0.430)
 
-    // A. Needle Target: Highly Defined Taut Band Myofascial Trigger Point Knot (Striated Muscle, y = -0.04)
+    // A. Needle Target: Highly Defined Taut Band Myofascial Trigger Point Knot (Striated Muscle)
+    const effectiveMaxDepth = Math.max(10.0, Math.ceil((targetDepth || 12.0) * 1.25));
+    const knotY = skinSurfaceY - ((targetDepth || 12.0) / effectiveMaxDepth) * 0.520;
     const knotGroup = new THREE.Group();
-    knotGroup.position.set(offsetX, -0.04, 0.430);
+    knotGroup.position.set(offsetX, knotY, 0.430);
     knotGroup.visible = (activeTool === 'needle');
     scene.add(knotGroup);
+    knotGroupRef.current = knotGroup;
 
     // 1. Inflamed Hyperemic Striated Muscle Fascicles (Vibrant Ruby-Crimson with Specular Sheen)
     const muscleFiberMat = new THREE.MeshStandardMaterial({
@@ -630,7 +635,7 @@ export default function SkinLayersPip({
     // 6. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
     const knotBadge = createUltraCrispBadge(
       '⚡',
-      'TAUT BAND TRIGGER POINT • 12mm',
+      `TAUT BAND TRIGGER POINT • ${targetDepth || 12}mm`,
       'Hypercontracted Sarcomere Spindle • Motor Endplate',
       '#f43f5e'
     );
@@ -700,7 +705,7 @@ export default function SkinLayersPip({
     // 5. High-Definition 3D Floating Callout Badge + Reticle + Leader Line
     const adhesionBadge = createUltraCrispBadge(
       '🧬',
-      'FIBROTIC FASCIAL ADHESION • 6mm',
+      'FIBROTIC FASCIAL ADHESION • -35 kPa',
       'Dense Cross-Linked Collagen • Retinacula Restriction',
       '#a855f7'
     );
@@ -1164,7 +1169,7 @@ export default function SkinLayersPip({
               <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
               <span>Treating: {pointCode} • {pointName}</span>
               <span className="text-[10px] font-mono text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
-                {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm` : activeTool === 'cup' ? 'Suction: 6.0mm' : 'Heat: 43°C'}
+                {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm (${depthCun})` : activeTool === 'cup' ? 'Suction: -35 kPa' : 'Heat: 43°C'}
               </span>
               <span className="text-[10px] font-bold text-amber-700 bg-amber-500/15 px-2 py-0.5 rounded-full">
                 {activeTool === 'needle' ? '⚠️ Spastic Motor Knot' : activeTool === 'cup' ? '⚠️ Fascial Adhesion' : '⚠️ Cold Damp Stasis'}
@@ -1447,7 +1452,7 @@ export default function SkinLayersPip({
                 <span>{activeTool === 'needle' ? 'Drag 3D Needle on Body to Stab' : activeTool === 'cup' ? 'Drag 3D Cup to Decompress' : 'Hover 3D Moxa to Radiate'}</span>
               </span>
               <span className="font-mono text-[9px] text-neutral-500">
-                {activeTool === 'needle' ? 'Target: 12mm' : activeTool === 'cup' ? 'Target: 6mm' : 'Target: 43°C'}
+                {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm` : activeTool === 'cup' ? 'Target: -35 kPa' : 'Target: 43°C'}
               </span>
             </div>
 

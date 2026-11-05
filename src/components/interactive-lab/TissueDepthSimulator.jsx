@@ -1086,21 +1086,21 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLookAtRef.current.set(0.0, 0.56, 0.06);
       targetFacing = 'front';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      // Articulate Left Arm: shoulder flexion ~45 deg + elbow flexion ~38 deg
+      // Articulate Left Arm: shoulder flexion and frame the forearm, wrist, and hand centered
       targetLimbAnglesRef.current.armL = 1.0;
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.38, 0.42, 0.95);
-      targetLookAtRef.current.set(0.20, 0.40, 0.28);
+      targetCamPosRef.current.set(0.36, 0.38, 0.85);
+      targetLookAtRef.current.set(0.22, 0.38, 0.34);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
       targetLimbAnglesRef.current.armR = 1.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.38, 0.42, 0.95);
-      targetLookAtRef.current.set(-0.20, 0.40, 0.28);
+      targetCamPosRef.current.set(-0.36, 0.38, 0.85);
+      targetLookAtRef.current.set(-0.22, 0.38, 0.34);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
       targetLimbAnglesRef.current.armL = 0.0;
@@ -1989,14 +1989,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             targetRegion = 'face';
           } else if (ly >= 0.54 && ly <= 0.72) {
             targetRegion = 'neck';
-          } else if (lx > 0.13 && ly < 0.54 && ly > -0.15) {
+          } else if (lx > 0.14 && ly < 0.54 && ly >= -0.25) {
             targetRegion = 'arm_left';
-          } else if (lx < -0.13 && ly < 0.54 && ly > -0.15) {
+          } else if (lx < -0.14 && ly < 0.54 && ly >= -0.25) {
             targetRegion = 'arm_right';
           } else if (ly <= 0.02) {
             targetRegion = lx > 0 ? 'leg_left' : 'leg_right';
           } else {
-            // Torso region (0.02 < ly < 0.54 and Math.abs(lx) <= 0.13)
+            // Torso region (0.02 < ly < 0.54 and Math.abs(lx) <= 0.14)
             if (lz < -0.02) {
               targetRegion = 'back';
             } else {
@@ -2809,10 +2809,14 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
   const handleBackToBody = useCallback(() => {
     setViewMode('body');
+    handleReset();
+    triggerRegionPresentation('full');
+    setActiveRegion('full');
+    setFilterRegion('all');
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
     }, 50);
-  }, []);
+  }, [handleReset, triggerRegionPresentation]);
 
   return (
     <div 
@@ -2826,8 +2830,13 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             fullStage={true}
             activeTool={activeTool}
             depth={interactiveDepth}
-            maxDepth={activeTool === 'needle' ? 15.0 : activeTool === 'cup' ? 6.0 : 43.0}
+            maxDepth={
+              activeTool === 'needle'
+                ? Math.max(10.0, Math.ceil((activeAcupoint.depthTarget || 12.0) * 1.25))
+                : activeTool === 'cup' ? 6.0 : 43.0
+            }
             targetDepth={activeAcupoint.depthTarget || 12.0}
+            depthCun={activeAcupoint.depthCun || '0.5–1.0 cun'}
             pointCode={activeAcupoint.code}
             pointName={activeAcupoint.translation}
             painName={activeAcupoint.painName}
@@ -2861,7 +2870,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             </div>
             <button
               type="button"
-              onClick={() => navigateCameraToRegion('full')}
+              onClick={() => {
+                handleReset();
+                triggerRegionPresentation('full');
+                setActiveRegion('full');
+                setFilterRegion('all');
+              }}
               className="px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
               title="Reset Camera to Whole Body"
             >
@@ -2930,29 +2944,6 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           <Sparkles className="w-4 h-4 text-[#e02868] animate-pulse shrink-0" />
           <span>Click any limb to inspect points • Click an acupoint to open 3D Tissue Strata & Surgical Tray</span>
         </div>
-
-        {/* Thanos Disintegration Ash Floating Toast */}
-        {isDisintegrated && viewMode === 'body' && (
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 max-w-lg w-[92%] sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-neutral-900/95 text-white border border-emerald-500/50 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-bottom-2 pointer-events-auto">
-            <div className="flex items-center gap-2.5">
-              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 animate-spin" />
-              <div className="text-xs">
-                <span className="font-bold text-emerald-400">{clinicalOutcome.pointLabel}:</span>{' '}
-                <span className="text-neutral-200">{clinicalOutcome.painLabel}</span>{' '}
-                <span className="text-emerald-300 font-semibold">{clinicalOutcome.highlight}</span>
-                <p className="text-[11px] text-neutral-400 mt-0.5">{clinicalOutcome.detail}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="px-2.5 py-1 text-[11px] font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg transition shrink-0 flex items-center gap-1"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* ===================================================================== */}
