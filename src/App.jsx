@@ -15,6 +15,9 @@ import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import BookingPage from './pages/BookingPage';
 
+// Lazy-loaded dedicated 3D interactive science lab (code-split from main bundle)
+const HowAcupunctureWorksPage = React.lazy(() => import('./pages/HowAcupunctureWorksPage'));
+
 /**
  * Scroll to top on route change
  */
@@ -64,6 +67,24 @@ export default function App() {
               <Route path="/blog" element={<BlogPage onOpenBooking={handleOpenBooking} />} />
               <Route path="/blog/:id" element={<BlogPostPage onOpenBooking={handleOpenBooking} />} />
               <Route path="/booking" element={<BookingPage onOpenBooking={handleOpenBooking} />} />
+
+              {/* Dedicated Fullscreen 3D Science Lab Experience */}
+              <Route 
+                path="/how-acupuncture-works" 
+                element={
+                  <React.Suspense fallback={
+                    <div className="h-screen w-full flex items-center justify-center bg-white">
+                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-600 animate-pulse">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#e02868] animate-ping" />
+                        <span>Initializing 3D Clinical Anatomy Lab...</span>
+                      </div>
+                    </div>
+                  }>
+                    <HowAcupunctureWorksPage onOpenBooking={handleOpenBooking} />
+                  </React.Suspense>
+                } 
+              />
+              <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
 
               {/* Seamless redirects for legacy paths to consolidated pages */}
               <Route path="/therapist" element={<Navigate to="/doctor" replace />} />

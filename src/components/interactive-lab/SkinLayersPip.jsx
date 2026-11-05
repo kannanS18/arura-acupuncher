@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { buildPhysical3DTray, createAuthenticMoxaTexture, createMoxaEmberTexture, updateTrayToolAvailability } from './physicalTray';
 import { getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS, CLINICAL_ACUPOINTS } from './acupointsData';
 import { ArrowLeft } from 'lucide-react';
