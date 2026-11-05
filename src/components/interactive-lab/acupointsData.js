@@ -279,9 +279,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.0827
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      0.15,
+      0.15,
+      -0.97
     ],
     "badgeOffset": [
       0.07,
@@ -316,9 +316,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.0765
     ],
     "surfaceNormal": [
-      0.06,
-      0.188,
-      0.98
+      -0.15,
+      0.15,
+      -0.97
     ],
     "badgeOffset": [
       -0.07,
@@ -353,9 +353,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.0995
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      0.1,
+      0.1,
+      -0.99
     ],
     "badgeOffset": [
       0.06,
@@ -390,9 +390,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.0894
     ],
     "surfaceNormal": [
-      0.046,
-      0.252,
-      0.967
+      -0.1,
+      0.1,
+      -0.99
     ],
     "badgeOffset": [
       -0.06,
@@ -501,9 +501,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.1351
     ],
     "surfaceNormal": [
-      -0.744,
-      0.66,
-      -0.107
+      0,
+      0.25,
+      -0.97
     ],
     "badgeOffset": [
       0,
@@ -908,9 +908,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.1569
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      0.15,
+      0.05,
+      -0.98
     ],
     "badgeOffset": [
       0.08,
@@ -945,9 +945,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.1414
     ],
     "surfaceNormal": [
-      -0.478,
-      0.837,
-      0.268
+      -0.15,
+      0.05,
+      -0.98
     ],
     "badgeOffset": [
       -0.08,
@@ -982,9 +982,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.1391
     ],
     "surfaceNormal": [
-      0,
-      0,
-      1
+      0.2,
+      0.05,
+      -0.98
     ],
     "badgeOffset": [
       0.08,
@@ -1019,9 +1019,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.1183
     ],
     "surfaceNormal": [
-      -0.079,
-      0.543,
-      -0.836
+      -0.2,
+      0.05,
+      -0.98
     ],
     "badgeOffset": [
       -0.08,
@@ -1057,8 +1057,8 @@ export const CLINICAL_ACUPOINTS = [
     ],
     "surfaceNormal": [
       0,
-      0,
-      1
+      0.05,
+      -0.99
     ],
     "badgeOffset": [
       0,
@@ -1441,6 +1441,302 @@ export const CLINICAL_ACUPOINTS = [
     "relief": "Plantar Fasciitis, Vertex Migraines, Stress Spasms, Foot Soreness",
     "deqi": "Clear invigorating release grounding physical agitation.",
     "colorHex": 1357990
+  },
+  {
+    "id": "cv17",
+    "code": "CV-17",
+    "fullName": "CV-17 (Danzhong)",
+    "pinyin": "Danzhong",
+    "hanzi": "膻中",
+    "translation": "Chest Center",
+    "englishTitle": "Sea of Qi & Emotional Center",
+    "region": "chest",
+    "regionLabel": "Sternum Midline",
+    "facing": "front",
+    "orderIndex": 0,
+    "meridian": "Conception Vessel (Ren Mai)",
+    "depthTarget": 5,
+    "depthCun": "0.3–0.5 cun",
+    "modelPos": [
+      0.0099,
+      0.3626,
+      0.0944
+    ],
+    "surfaceNormal": [
+      -0.071,
+      0.063,
+      0.995
+    ],
+    "badgeOffset": [
+      0,
+      0.07,
+      0.03
+    ],
+    "painName": "Chest Tightness, Dyspnea & Emotional Grief Knot",
+    "nerves": "Anterior cutaneous branches of 4th intercostal nerve",
+    "vessels": "Internal thoracic artery perforating branches",
+    "relief": "Anxiety Decompression, Cardiac Palpitations, Bronchial Asthma, Emotional Sighing",
+    "deqi": "Gentle buoyant warmth spreading through sternum, immediate chest decompression.",
+    "colorHex": 440020
+  },
+  {
+    "id": "lu1_l",
+    "code": "LU-1",
+    "fullName": "LU-1 (Left Zhongfu)",
+    "pinyin": "Zhongfu",
+    "hanzi": "中府",
+    "translation": "Central Treasury",
+    "englishTitle": "Left Infraclavicular Fossa",
+    "region": "chest",
+    "regionLabel": "Left Upper Chest",
+    "facing": "front",
+    "orderIndex": 1,
+    "meridian": "Lung Meridian (LU)",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
+    "modelPos": [
+      0.0881,
+      0.4396,
+      0.0757
+    ],
+    "surfaceNormal": [
+      0.373,
+      0.038,
+      0.927
+    ],
+    "badgeOffset": [
+      0.07,
+      0.05,
+      0.03
+    ],
+    "painName": "Bronchial Constriction & Left Pectoral Adhesion",
+    "nerves": "Lateral supraclavicular nerve & anterior thoracic nerve",
+    "vessels": "Thoracoacromial artery & pectoral branches",
+    "relief": "Bronchial Wheezing, Restricted Inhalation, Left Pectoral Strain",
+    "deqi": "Deep expansive opening in lung apex with warm releasing tingle.",
+    "colorHex": 440020
+  },
+  {
+    "id": "lu1_r",
+    "code": "LU-1",
+    "fullName": "LU-1 (Right Zhongfu)",
+    "pinyin": "Zhongfu",
+    "hanzi": "中府",
+    "translation": "Central Treasury",
+    "englishTitle": "Right Infraclavicular Fossa",
+    "region": "chest",
+    "regionLabel": "Right Upper Chest",
+    "facing": "front",
+    "orderIndex": 2,
+    "meridian": "Lung Meridian (LU)",
+    "depthTarget": 8,
+    "depthCun": "0.5–0.8 cun",
+    "modelPos": [
+      -0.0896,
+      0.432,
+      0.0982
+    ],
+    "surfaceNormal": [
+      -0.197,
+      0.042,
+      0.98
+    ],
+    "badgeOffset": [
+      -0.07,
+      0.05,
+      0.03
+    ],
+    "painName": "Bronchial Constriction & Right Pectoral Adhesion",
+    "nerves": "Lateral supraclavicular nerve & anterior thoracic nerve",
+    "vessels": "Thoracoacromial artery & pectoral branches",
+    "relief": "Bronchial Wheezing, Restricted Inhalation, Right Pectoral Strain",
+    "deqi": "Deep expansive opening in lung apex with warm releasing tingle.",
+    "colorHex": 440020
+  },
+  {
+    "id": "cv12",
+    "code": "CV-12",
+    "fullName": "CV-12 (Zhongwan)",
+    "pinyin": "Zhongwan",
+    "hanzi": "中脘",
+    "translation": "Middle Cavity",
+    "englishTitle": "Stomach Front-Mu Center",
+    "region": "chest",
+    "regionLabel": "Upper Epigastrium",
+    "facing": "front",
+    "orderIndex": 3,
+    "meridian": "Conception Vessel (Ren Mai)",
+    "depthTarget": 12,
+    "depthCun": "0.8–1.2 cun",
+    "modelPos": [
+      -0.0011,
+      0.1996,
+      0.0805
+    ],
+    "surfaceNormal": [
+      0.13,
+      0.112,
+      0.985
+    ],
+    "badgeOffset": [
+      0,
+      0.06,
+      0.03
+    ],
+    "painName": "Epigastric Spasm, Acid Reflux & Gastric Tension",
+    "nerves": "Anterior cutaneous branch of 7th intercostal nerve",
+    "vessels": "Superior epigastric artery & vein",
+    "relief": "Acid Reflux, Gastric Neurosis, Chronic Indigestion, Abdominal Distension",
+    "deqi": "Settling warming pulse descending into stomach cavity.",
+    "colorHex": 440020
+  },
+  {
+    "id": "st25_l",
+    "code": "ST-25",
+    "fullName": "ST-25 (Left Tianshu)",
+    "pinyin": "Tianshu",
+    "hanzi": "天枢",
+    "translation": "Celestial Pivot",
+    "englishTitle": "Left Large Intestine Mu",
+    "region": "chest",
+    "regionLabel": "Left Abdomen",
+    "facing": "front",
+    "orderIndex": 4,
+    "meridian": "Stomach Meridian (ST)",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
+    "modelPos": [
+      0.0313,
+      0.1018,
+      0.0895
+    ],
+    "surfaceNormal": [
+      0.228,
+      0.061,
+      0.972
+    ],
+    "badgeOffset": [
+      0.07,
+      0.03,
+      0.03
+    ],
+    "painName": "Intestinal Motility Dysregulation & Colonic Spasm",
+    "nerves": "Anterior cutaneous branch of 10th intercostal nerve",
+    "vessels": "Inferior epigastric vascular branches",
+    "relief": "IBS, Abdominal Cramping, Spastic Colonic Constipation",
+    "deqi": "Gentle peristaltic ripple releasing visceral abdominal tension.",
+    "colorHex": 440020
+  },
+  {
+    "id": "st25_r",
+    "code": "ST-25",
+    "fullName": "ST-25 (Right Tianshu)",
+    "pinyin": "Tianshu",
+    "hanzi": "天枢",
+    "translation": "Celestial Pivot",
+    "englishTitle": "Right Large Intestine Mu",
+    "region": "chest",
+    "regionLabel": "Right Abdomen",
+    "facing": "front",
+    "orderIndex": 5,
+    "meridian": "Stomach Meridian (ST)",
+    "depthTarget": 14,
+    "depthCun": "1.0–1.5 cun",
+    "modelPos": [
+      -0.0419,
+      0.0902,
+      0.0915
+    ],
+    "surfaceNormal": [
+      -0.12,
+      0.03,
+      0.992
+    ],
+    "badgeOffset": [
+      -0.07,
+      0.03,
+      0.03
+    ],
+    "painName": "Intestinal Motility Dysregulation & Colonic Spasm",
+    "nerves": "Anterior cutaneous branch of 10th intercostal nerve",
+    "vessels": "Inferior epigastric vascular branches",
+    "relief": "IBS, Abdominal Cramping, Spastic Colonic Constipation",
+    "deqi": "Gentle peristaltic ripple releasing visceral abdominal tension.",
+    "colorHex": 440020
+  },
+  {
+    "id": "cv6",
+    "code": "CV-6",
+    "fullName": "CV-6 (Qihai)",
+    "pinyin": "Qihai",
+    "hanzi": "气海",
+    "translation": "Sea of Qi",
+    "englishTitle": "Lower Dantian Vital Energy Center",
+    "region": "chest",
+    "regionLabel": "Lower Abdomen",
+    "facing": "front",
+    "orderIndex": 6,
+    "meridian": "Conception Vessel (Ren Mai)",
+    "depthTarget": 12,
+    "depthCun": "0.8–1.2 cun",
+    "modelPos": [
+      -0.0067,
+      0.0513,
+      0.0926
+    ],
+    "surfaceNormal": [
+      0.001,
+      -0.137,
+      0.991
+    ],
+    "badgeOffset": [
+      0,
+      -0.06,
+      0.03
+    ],
+    "painName": "Core Exhaustion, Lower Abdominal Cold & Pelvic Fatigue",
+    "nerves": "Anterior cutaneous branch of 11th intercostal nerve",
+    "vessels": "Inferior epigastric vascular branches",
+    "relief": "Chronic Fatigue Syndrome, Postural Hypotension, Core Qi Deficiency, Cold Abdomen",
+    "deqi": "Deep radiant warmth accumulating at the lower dantian.",
+    "colorHex": 440020
+  },
+  {
+    "id": "cv4",
+    "code": "CV-4",
+    "fullName": "CV-4 (Guanyuan)",
+    "pinyin": "Guanyuan",
+    "hanzi": "关元",
+    "translation": "Gate of Origin",
+    "englishTitle": "Primordial Source Center",
+    "region": "chest",
+    "regionLabel": "Hypogastrium",
+    "facing": "front",
+    "orderIndex": 7,
+    "meridian": "Conception Vessel (Ren Mai)",
+    "depthTarget": 12,
+    "depthCun": "0.8–1.2 cun",
+    "modelPos": [
+      0.0088,
+      0.0006,
+      0.0797
+    ],
+    "surfaceNormal": [
+      0.058,
+      -0.382,
+      0.922
+    ],
+    "badgeOffset": [
+      0,
+      -0.08,
+      0.03
+    ],
+    "painName": "Deep Vitality Depletion & Primordial Essence Weakness",
+    "nerves": "Anterior cutaneous branch of 12th subcostal nerve",
+    "vessels": "Inferior epigastric artery branches",
+    "relief": "Vital Essence Tonification, Enuresis, Deep Fatigue, Pelvic Floor Disharmony",
+    "deqi": "Rooted, grounding warmth filling pelvic floor and lower lumbar reservoir.",
+    "colorHex": 440020
   }
 ];
 

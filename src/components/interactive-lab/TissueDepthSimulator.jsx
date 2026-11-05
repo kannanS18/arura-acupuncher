@@ -380,6 +380,7 @@ const REGION_DISPLAY_NAMES = {
   arm_right: 'RIGHT ARM',
   arm_left: 'LEFT ARM',
   arm: 'ARM',
+  chest: 'CHEST & CORE',
   neck: 'NECK',
   face: 'FACE',
   crown: 'HEAD',
@@ -689,7 +690,18 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     setBodyFacing((prev) => {
       const next = prev === 'front' ? 'back' : 'front';
       if (bodyModelMeshRef.current) {
-        bodyModelMeshRef.current.rotation.y = next === 'front' ? 0 : Math.PI;
+        bodyModelMeshRef.current.rotation.y = 0; // Model stays canonically oriented
+      }
+      if (cameraRef.current && controlsRef.current) {
+        const curPos = cameraRef.current.position;
+        const curTarget = controlsRef.current.target;
+        const targetZ = next === 'back' ? -Math.abs(curPos.z || 3.8) : Math.abs(curPos.z || 3.8);
+        targetCamPosRef.current.set(curPos.x, curPos.y, targetZ);
+        targetLookAtRef.current.copy(curTarget);
+        camStartPosRef.current.copy(curPos);
+        camStartLookAtRef.current.copy(curTarget);
+        camAnimProgressRef.current = 0.0;
+        isCameraAnimatingRef.current = true;
       }
       return next;
     });
@@ -1042,9 +1054,17 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.88, -0.46);
-      targetLookAtRef.current.set(0.0, 0.84, -0.06);
+      targetCamPosRef.current.set(0.0, 0.86, -0.85);
+      targetLookAtRef.current.set(0.0, 0.83, -0.06);
       targetFacing = 'back';
+    } else if (regionKey === 'chest' || regionKey === 'torso') {
+      targetLimbAnglesRef.current.armL = 0.0;
+      targetLimbAnglesRef.current.armR = 0.0;
+      targetLimbAnglesRef.current.legL = 0.0;
+      targetLimbAnglesRef.current.legR = 0.0;
+      targetCamPosRef.current.set(0.0, 0.50, 1.35);
+      targetLookAtRef.current.set(0.0, 0.48, 0.06);
+      targetFacing = 'front';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
       // Articulate Left Arm FORWARD by ~84 deg (almost 90 deg!), extending toward viewer!
       targetLimbAnglesRef.current.armL = 1.46;
@@ -1069,8 +1089,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.armR = 0.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.56, -0.62);
-      targetLookAtRef.current.set(0.0, 0.50, -0.08);
+      targetCamPosRef.current.set(0.0, 0.58, -1.35);
+      targetLookAtRef.current.set(0.0, 0.55, -0.06);
       targetFacing = 'back';
     } else if (regionKey === 'leg_left' || regionKey === 'leg') {
       // Articulate Left Leg forward by ~35 deg!
@@ -1091,9 +1111,9 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetFacing = 'front';
     }
 
-    // Set initial look target
+    // Model stays consistently oriented; camera orbits in front (+Z) or behind (-Z)
     if (bodyModelMeshRef.current) {
-      bodyModelMeshRef.current.rotation.y = targetFacing === 'front' ? 0 : Math.PI;
+      bodyModelMeshRef.current.rotation.y = 0;
       setBodyFacing(targetFacing);
     }
 
@@ -1158,7 +1178,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const targetFacing = pt.facing || 'front';
     if (bodyModelMeshRef.current) {
-      bodyModelMeshRef.current.rotation.y = targetFacing === 'front' ? 0 : Math.PI;
+      bodyModelMeshRef.current.rotation.y = 0; // Model stays canonical
       setBodyFacing(targetFacing);
     }
 
@@ -1626,7 +1646,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             acupointIdx: idx,
             region: pt.region,
             orderIndex: pt.orderIndex ?? 0,
-            baseLocalPos: pinGroup.position.clone()
+            baseLocalPos: pinGroup.position.clone(),
+            surfaceNormal: new THREE.Vector3(norm[0], norm[1], norm[2]).normalize()
           };
 
           // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite, depthTest: false so it never clips)
@@ -1731,7 +1752,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const pt = CLINICAL_ACUPOINTS[ptIdx];
           return pt && (pt.region === activeRegionRef.current);
         });
-        const acuHover = raycaster.intersectObjects(activeRegionHitboxes, true);
+        const acuHover = raycaster.intersectObjects(activeRegionHitboxes, true).filter(h => h.object.parent && h.object.parent.visible);
         if (acuHover.length > 0) {
           renderer.domElement.style.cursor = 'pointer';
           return;
@@ -1804,7 +1825,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           return pt && (pt.region === activeRegionRef.current);
         });
 
-        const intersects = raycaster.intersectObjects(activeRegionHitboxes, true);
+        const rawIntersects = raycaster.intersectObjects(activeRegionHitboxes, true);
+        const intersects = rawIntersects.filter(h => h.object.parent && h.object.parent.visible);
         if (intersects.length > 0) {
           const hitIdx = intersects[0].object.userData.acupointIdx;
           console.log('[AcuClick] Hit pin hitbox on active limb idx:', hitIdx, CLINICAL_ACUPOINTS[hitIdx]?.code);
@@ -2457,8 +2479,15 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
             }
           }
 
-          // Dynamic scale based on distance to camera so dots NEVER get too big on close up!
+          // Dynamic scale & backface culling (Back points never shine through front, front points never shine through back!)
           pin.getWorldPosition(pinWorldPos);
+          const pinNorm = pin.userData.surfaceNormal;
+          if (pinNorm) {
+            const camDir = new THREE.Vector3().subVectors(camera.position, pinWorldPos).normalize();
+            const dot = pinNorm.dot(camDir);
+            const isFacingCam = dot > 0.05;
+            pin.visible = isFacingCam && (pin.userData.targetScale > 0.01);
+          }
           const dist = camera.position.distanceTo(pinWorldPos);
           const dynamicScale = Math.max(0.009, Math.min(0.025, dist * 0.0092));
 
@@ -2611,11 +2640,12 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
               { id: 'full', label: 'All Limbs' },
               { id: 'face', label: 'Face' },
               { id: 'neck', label: 'Neck' },
-              { id: 'arm_right', label: 'R-Arm' },
+              { id: 'chest', label: 'Chest' },
               { id: 'arm_left', label: 'L-Arm' },
+              { id: 'arm_right', label: 'R-Arm' },
               { id: 'back', label: 'Back' },
-              { id: 'leg_right', label: 'R-Leg' },
-              { id: 'leg_left', label: 'L-Leg' }
+              { id: 'leg_left', label: 'L-Leg' },
+              { id: 'leg_right', label: 'R-Leg' }
             ].map(r => (
               <button
                 key={r.id}
