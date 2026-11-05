@@ -228,6 +228,7 @@ export default function SkinLayersPip({
             child.receiveShadow = true;
             if (child.material) {
               child.material.roughness = Math.max(child.material.roughness || 0.4, 0.35);
+              child.material.side = THREE.FrontSide;
             }
           }
         });
@@ -375,12 +376,13 @@ export default function SkinLayersPip({
 
     // Translucent guide tube
     const tubeMat = new THREE.MeshPhysicalMaterial({
-      color: 0xe2e8f0,
+      color: 0xf1f5f9,
       transparent: true,
-      opacity: 0.38,
-      roughness: 0.1,
-      transmission: 0.85,
-      thickness: 0.02
+      opacity: 0.40,
+      roughness: 0.06,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      depthWrite: false
     });
     const guideTube = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.38, 20), tubeMat);
     guideTube.position.y = 0.48;
@@ -395,7 +397,7 @@ export default function SkinLayersPip({
     // B. Traditional Thick Molded Glass Fire Cupping Jar
     // Crystal-clear borosilicate glass with thick rolled rim, spherical suction chamber & flat top base
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(offsetX, skinSurfaceY, 0.140);
+    cupGroup.position.set(offsetX, 0.468, 0.140);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
@@ -416,7 +418,7 @@ export default function SkinLayersPip({
     // 1. Thick Smooth Rolled Glass Lip Rim (Seals firmly on skin surface)
     const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.016, 28, 48), realGlassMat);
     cupRim.rotation.x = Math.PI / 2;
-    cupRim.position.y = 0.016;
+    cupRim.position.y = 0.008;
     cupGroup.add(cupRim);
 
     // 1b. Specular Rim Highlight Glint
@@ -425,7 +427,7 @@ export default function SkinLayersPip({
       new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.02, metalness: 0.95 })
     );
     rimHighlight.rotation.x = Math.PI / 2;
-    rimHighlight.position.y = 0.016;
+    rimHighlight.position.y = 0.008;
     cupGroup.add(rimHighlight);
 
     // 2. Bulbous Spherical Glass Suction Chamber (Translucent Globe Jar matching real fire cupping)
@@ -899,7 +901,12 @@ export default function SkinLayersPip({
       }
 
       controls.update();
+      const _t0 = performance.now();
       renderer.render(scene, camera);
+      const _t1 = performance.now();
+      if (Math.random() < 0.05) {
+        console.log('[PERF Pip] renderer.render took:', (_t1 - _t0).toFixed(2), 'ms', 'drawCalls:', renderer.info.render.calls, 'triangles:', renderer.info.render.triangles);
+      }
     };
     animate();
 
@@ -985,11 +992,14 @@ export default function SkinLayersPip({
     window.addEventListener('pointerup', onPointerUp);
     renderer.domElement.addEventListener('click', onClickCanvas);
 
+    let lastW = 0, lastH = 0;
     const handleResize = () => {
       if (!container || !rendererRef.current || !cameraRef.current) return;
       const rect = container.getBoundingClientRect();
       const w = Math.max(container.clientWidth || rect.width || window.innerWidth, 320);
       const h = Math.max(container.clientHeight || rect.height || (container.parentElement ? container.parentElement.clientHeight : 600), 320);
+      if (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) < 2) return;
+      lastW = w; lastH = h;
       if (w > 50 && h > 50) {
         cameraRef.current.aspect = w / h;
         cameraRef.current.updateProjectionMatrix();
@@ -1013,7 +1023,17 @@ export default function SkinLayersPip({
     setTimeout(handleResize, 180);
     setTimeout(handleResize, 360);
 
+    let isWheeling = false;
+    let wheelTimer = null;
+    const onWheel = () => {
+      isWheeling = true;
+      if (wheelTimer) clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => { isWheeling = false; }, 120);
+    };
+    renderer.domElement.addEventListener('wheel', onWheel, { passive: true });
+
     return () => {
+      renderer.domElement.removeEventListener('wheel', onWheel);
       window.removeEventListener('resize', handleResize);
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDownCustom);
@@ -1043,7 +1063,7 @@ export default function SkinLayersPip({
       const fraction = Math.min(1.0, depth / 15.0);
       needleGroupRef.current.position.y = 0.490 - fraction * 0.530;
     } else if (activeTool === 'cup' && cupGroupRef.current) {
-      cupGroupRef.current.position.y = 0.488;
+      cupGroupRef.current.position.y = 0.468;
       cupGroupRef.current.position.z = 0.140;
       const suctionFraction = Math.min(1.0, depth / 6.0);
       if (suctionBulgeRef.current) {

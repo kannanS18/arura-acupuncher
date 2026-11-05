@@ -395,70 +395,61 @@ const REGION_DISPLAY_NAMES = {
 // Helper: Create 3D Canvas Badge for Anatomical Acupoint Callouts with Region Tag (100% English)
 function createCalloutBadgeCanvas(code, englishName, subInfo, isSelected, regionLabel) {
   const canvas = document.createElement('canvas');
-  canvas.width = 260;
-  canvas.height = 76;
+  canvas.width = 720;
+  canvas.height = 200;
   const ctx = canvas.getContext('2d');
 
-  // Pill card background
-  ctx.fillStyle = isSelected ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.94)';
+  // Pill card background with subtle inner gradient
+  ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.96)';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 252, 68, 14);
+    ctx.roundRect(8, 8, 704, 184, 28);
   } else {
-    ctx.rect(4, 4, 252, 68);
+    ctx.rect(8, 8, 704, 184);
   }
   ctx.fill();
 
-  // Arura Rose accent border
-  ctx.strokeStyle = isSelected ? '#e02868' : 'rgba(224, 40, 104, 0.40)';
-  ctx.lineWidth = isSelected ? 3.5 : 2;
+  // Vibrant Arura Rose accent border
+  ctx.strokeStyle = isSelected ? '#e02868' : 'rgba(224, 40, 104, 0.45)';
+  ctx.lineWidth = isSelected ? 5.5 : 3.0;
   ctx.stroke();
 
-  // Left Code Pill
+  // Left Code Pill (High-contrast, bold, centered)
   ctx.fillStyle = '#e02868';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(12, 12, 62, 52, 10);
+    ctx.roundRect(24, 24, 140, 152, 22);
   } else {
-    ctx.rect(12, 12, 62, 52);
+    ctx.rect(24, 24, 140, 152);
   }
   ctx.fill();
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = '900 52px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 43, 38);
+  ctx.fillText(code, 94, 100);
 
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
 
-  if (regionLabel) {
-    // 1. Bold Uppercase Region Name Tag
-    ctx.fillStyle = isSelected ? '#e02868' : '#be123c';
-    ctx.font = '800 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(`• ${regionLabel.toUpperCase()}`, 82, 22);
+  const regText = (regionLabel || 'ANATOMICAL ACUPOINT').toUpperCase();
+  // 1. Bold Uppercase Region Name Tag (Arura Rose #e02868)
+  ctx.fillStyle = '#e02868';
+  ctx.font = '800 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText(`• ${regText}`, 188, 56);
 
-    // 2. Primary English Name in bold
-    ctx.fillStyle = '#09090b';
-    ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(englishName || code, 82, 41);
+  // 2. Primary English Name in bold (Large, high-contrast, razor sharp black)
+  ctx.fillStyle = '#09090b';
+  ctx.font = 'bold 46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  // Truncate cleanly if string is exceptionally long
+  const nameToRender = englishName || code;
+  ctx.fillText(nameToRender, 188, 110);
 
-    // 3. Subtitle: Pinyin + Target Needle Depth in English
-    ctx.fillStyle = '#64748b';
-    ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Target', 82, 58);
-  } else {
-    // Primary English Name in bold
-    ctx.fillStyle = '#09090b';
-    ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(englishName || code, 82, 34);
-
-    // Subtitle: Pinyin + Target Needle Depth in English
-    ctx.fillStyle = '#64748b';
-    ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Target', 82, 53);
-  }
+  // 3. Subtitle: Target Needle Depth & Translation
+  ctx.fillStyle = '#475569';
+  ctx.font = '600 30px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.fillText(subInfo ? `Target: ${subInfo}` : 'Clinical Depth Target', 188, 158);
 
   return canvas;
 }
@@ -866,7 +857,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     } else if (activeTool === 'cup') {
       const suctionFraction = Math.min(1.0, val / 6.0);
       if (activeCupRef.current) {
-        activeCupRef.current.position.y = 0.48 + suctionFraction * 0.04;
+        activeCupRef.current.position.y = 0.381 + suctionFraction * 0.005;
       }
 
       // Fascial Suction Lift
@@ -1120,16 +1111,16 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       targetLimbAnglesRef.current.legR = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(0.95, -0.20, 1.65);
-      targetLookAtRef.current.set(0.12, -0.36, 0.14);
+      targetCamPosRef.current.set(0.35, -0.28, 1.70);
+      targetLookAtRef.current.set(0.08, -0.32, 0.06);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
       targetLimbAnglesRef.current.legR = 1.0;
       targetLimbAnglesRef.current.legL = 0.0;
       targetLimbAnglesRef.current.armL = 0.0;
       targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(-0.95, -0.20, 1.65);
-      targetLookAtRef.current.set(-0.12, -0.36, 0.14);
+      targetCamPosRef.current.set(-0.35, -0.28, 1.70);
+      targetLookAtRef.current.set(-0.08, -0.32, 0.06);
       targetFacing = 'front';
     }
 
@@ -1155,10 +1146,11 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       regionPins.forEach((pin, i) => {
         setTimeout(() => {
           pin.userData.targetScale = 1.0;
-          if (pin.userData.badge) pin.userData.badge.visible = true;
-          if (pin.userData.leaderLine) pin.userData.leaderLine.visible = true;
+          const isThisSel = (pin.userData.acupointIdx === selectedIdx);
+          if (pin.userData.badge) pin.userData.badge.visible = isThisSel;
+          if (pin.userData.leaderLine) pin.userData.leaderLine.visible = isThisSel;
           playAcuSound('popup', isMuted);
-        }, 180 + i * 220);
+        }, 180 + i * 160);
       });
     }
 
@@ -1290,8 +1282,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     if (badgesRef.current) {
       badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, normalTex, selTex }) => {
         const isSel = (idx === selectedAcupointIdx);
-        const isInActiveRegion = (activeRegion !== 'full' && pt.region === activeRegion);
-        const shouldShowBadge = isSel || isInActiveRegion;
+        // ONLY the active selected acupoint displays the expanded callout card to prevent overlapping clutter!
+        const shouldShowBadge = isSel;
 
         if (selRing) selRing.visible = isSel;
         if (leaderLine) leaderLine.visible = shouldShowBadge;
@@ -1418,9 +1410,8 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.shadowMap.enabled = false;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     container.innerHTML = '';
@@ -1429,41 +1420,28 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.07;
+    controls.dampingFactor = 0.08;
     controls.maxDistance = 7.0;
     controls.minDistance = 0.20; // Unlocked: full 360° turning enabled even at close-up zoom!
     controls.target.set(0.0, 0.34, 0.0);
     controlsRef.current = controls;
 
     // Clean Studio Lighting for Light Theme
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);
 
     const keySpot = new THREE.DirectionalLight(0xffffff, 1.6);
     keySpot.position.set(2.5, 5.0, 3.5);
-    keySpot.castShadow = true;
-    keySpot.shadow.mapSize.width = 1024;
-    keySpot.shadow.mapSize.height = 1024;
-    keySpot.shadow.bias = -0.0005;
+    keySpot.castShadow = false;
     scene.add(keySpot);
 
-    const softFill = new THREE.DirectionalLight(0xffe4e6, 0.55);
+    const softFill = new THREE.DirectionalLight(0xffe4e6, 0.65);
     softFill.position.set(-2.5, 2.5, 2.0);
     scene.add(softFill);
 
     const rimLight = new THREE.DirectionalLight(0xffffff, 0.85);
     rimLight.position.set(0.0, 2.5, -3.0);
     scene.add(rimLight);
-
-    // Soft Shadow Floor Receiver
-    const table = new THREE.Mesh(
-      new THREE.PlaneGeometry(24, 24),
-      new THREE.ShadowMaterial({ opacity: 0.08 })
-    );
-    table.rotation.x = -Math.PI / 2;
-    table.position.y = -0.49;
-    table.receiveShadow = true;
-    scene.add(table);
 
     // =========================================================================
     // 2. 3D WHOLE HUMAN BODY MODEL (Centered, 60% Screen Height Fit)
@@ -1871,6 +1849,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const leaderLineMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.85 });
           const leaderLine = new THREE.Line(leaderLineGeo, leaderLineMat);
           leaderLine.visible = (idx === selectedAcupointIdx);
+          leaderLine.renderOrder = 998;
           pinGroup.add(leaderLine);
 
           // 3D Canvas Callout Badge in 100% English with Region Tag (Cached textures for zero-lag switching)
@@ -1878,15 +1857,29 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           const normalTex = new THREE.CanvasTexture(
             createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, false, regLabel)
           );
+          normalTex.colorSpace = THREE.SRGBColorSpace;
+          normalTex.minFilter = THREE.LinearFilter;
+          normalTex.magFilter = THREE.LinearFilter;
+
           const selTex = new THREE.CanvasTexture(
             createCalloutBadgeCanvas(pt.code, pt.translation, `${pt.pinyin} • ${pt.depthTarget}mm`, true, regLabel)
           );
+          selTex.colorSpace = THREE.SRGBColorSpace;
+          selTex.minFilter = THREE.LinearFilter;
+          selTex.magFilter = THREE.LinearFilter;
+
           const isInitiallySel = (idx === selectedAcupointIdx);
-          const badgeMat = new THREE.SpriteMaterial({ map: isInitiallySel ? selTex : normalTex });
+          const badgeMat = new THREE.SpriteMaterial({ 
+            map: isInitiallySel ? selTex : normalTex, 
+            depthTest: false, 
+            depthWrite: false,
+            toneMapped: false // 100% color fidelity, pure white background & razor-sharp text
+          });
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(bo[0], bo[1], bo[2] + 0.02);
-          badgeSprite.scale.set(0.098, 0.028, 1.0);
+          badgeSprite.scale.set(0.320, 0.089, 1.0); // Perfectly proportioned high-DPI badge
           badgeSprite.visible = isInitiallySel;
+          badgeSprite.renderOrder = 999;
           pinGroup.add(badgeSprite);
 
           // Clickable HitBox for Raycaster (generous radius 0.045 for natural, effortless clicking)
@@ -1932,7 +1925,24 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       pointerDownPos = { x: e.clientX, y: e.clientY, hasDown: true };
     };
 
+    let isWheeling = false;
+    let wheelTimer = null;
+    const handleWheel = () => {
+      isWheeling = true;
+      if (wheelTimer) clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => {
+        isWheeling = false;
+      }, 140);
+    };
+
+    let lastMoveTime = 0;
     const handlePointerMove = (e) => {
+      // If user is actively orbiting, dragging, or wheel-zooming: bypass raycasting completely for 60fps fluidity!
+      if (pointerDownPos.hasDown || isWheeling) return;
+
+      const now = performance.now();
+      if (now - lastMoveTime < 32) return; // Cap hover raycasting to ~30Hz max
+      lastMoveTime = now;
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -1958,7 +1968,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
           return;
         }
       } else {
-        // In whole-body overview, hovering over the body mesh shows pointer cursor to invite clicking limbs
+        // In whole-body overview, quick bounding-box check before testing mesh
         if (bodyModelMeshRef.current) {
           const bodyHover = raycaster.intersectObject(bodyModelMeshRef.current, false);
           if (bodyHover.length > 0) {
@@ -1971,6 +1981,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     };
 
     const handlePointerUp = () => {
+      pointerDownPos.hasDown = false;
       if (isStabbingRef.current) {
         isStabbingRef.current = false;
         controls.enabled = true; // Re-enable OrbitControls!
@@ -2538,24 +2549,34 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     // Acrylic Guide Tube
     const guideTube = new THREE.Mesh(
       new THREE.CylinderGeometry(0.024, 0.024, 0.40, 20, 1, true),
-      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.45, roughness: 0.08, transmission: 0.85 })
+      new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.40, roughness: 0.06, clearcoat: 1.0, depthWrite: false })
     );
     guideTube.position.set(0.0, 0.48, 0.20);
     strataGroup.add(guideTube);
     guideTubeRef.current = guideTube;
 
-    // B. Glass Fire Cup
+    // B. Glass Fire Cup (Seated flush on top epidermal surface y = 0.381)
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(0.0, 0.48, 0.20);
+    cupGroup.position.set(0.0, 0.381, 0.20);
     cupGroup.visible = false;
     strataGroup.add(cupGroup);
     activeCupRef.current = cupGroup;
 
+    // Smooth rolled glass lip rim that seals firmly on skin
+    const cupRim = new THREE.Mesh(
+      new THREE.TorusGeometry(0.155, 0.012, 16, 32),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.08, metalness: 0.1, transparent: true, opacity: 0.65 })
+    );
+    cupRim.rotation.x = Math.PI / 2;
+    cupRim.position.y = 0.005;
+    cupGroup.add(cupRim);
+
     const cupDome = new THREE.Mesh(
       new THREE.SphereGeometry(0.16, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2),
-      new THREE.MeshPhysicalMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.55, roughness: 0.1, transmission: 0.9 })
+      new THREE.MeshPhysicalMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.45, roughness: 0.06, clearcoat: 1.0, depthWrite: false })
     );
     cupDome.rotation.x = Math.PI;
+    cupDome.position.y = 0.005;
     cupGroup.add(cupDome);
 
     // C. Pure Herbal Moxa Roll
@@ -2831,21 +2852,32 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         controls.update();
       }
 
+      const _t0 = performance.now();
       renderer.render(scene, camera);
+      const _t1 = performance.now();
+      if (Math.random() < 0.05) {
+        console.log('[PERF Sim] renderer.render took:', (_t1 - _t0).toFixed(2), 'ms', 'drawCalls:', renderer.info.render.calls, 'triangles:', renderer.info.render.triangles);
+      }
     };
     animate();
 
     // Event Listeners for Direct Needle Stabbing, Tool Tray, & Freely Orbiting
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
     renderer.domElement.addEventListener('pointermove', handlePointerMove);
+    renderer.domElement.addEventListener('wheel', handleWheel, { passive: true });
     window.addEventListener('pointerup', handlePointerUp);
     renderer.domElement.addEventListener('click', handleCanvasClick);
 
-    // Resize Handler
+    // Resize Handler with threshold guard against jitter
+    let curW = width;
+    let curH = height;
     const handleResize = () => {
       if (!container) return;
       const nw = container.clientWidth;
       const nh = container.clientHeight;
+      if (Math.abs(nw - curW) < 2 && Math.abs(nh - curH) < 2) return;
+      curW = nw;
+      curH = nh;
       camera.aspect = nw / nh;
       camera.updateProjectionMatrix();
       renderer.setSize(nw, nh);
@@ -2856,6 +2888,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
       renderer.domElement.removeEventListener('pointermove', handlePointerMove);
+      renderer.domElement.removeEventListener('wheel', handleWheel);
       window.removeEventListener('pointerup', handlePointerUp);
       renderer.domElement.removeEventListener('click', handleCanvasClick);
       cancelAnimationFrame(animId);
