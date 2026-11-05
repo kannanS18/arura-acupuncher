@@ -243,7 +243,7 @@ export default function SkinLayersPip({
 
     // 4. Surgical 3D Tools Operating Flush on Top of the Skin Model
     const offsetX = fullStage ? 0.12 : 0.0;
-    const skinSurfaceY = 0.550; // Exact top skin surface height of skin_layers.glb!
+    const skinSurfaceY = 0.488; // Exact top skin surface height of skin_layers.glb!
 
     // Helper: High-Definition Retina-Sharp 3D Floating Callout Badge + Reticle + Leader Line
     const createUltraCrispBadge = (icon, title, subtitle, colorHex) => {
@@ -350,7 +350,7 @@ export default function SkinLayersPip({
 
     // A. 3D Needle Assembly (Operates along the visible front cut face at z = 0.410)
     const needleAssembly = new THREE.Group();
-    needleAssembly.position.set(offsetX, skinSurfaceY, 0.410);
+    needleAssembly.position.set(offsetX, 0.490, 0.410);
     scene.add(needleAssembly);
     needleGroupRef.current = needleAssembly;
 
@@ -394,7 +394,7 @@ export default function SkinLayersPip({
     // B. Traditional Thick Molded Glass Fire Cupping Jar
     // Crystal-clear borosilicate glass with thick rolled rim, spherical suction chamber & flat top base
     const cupGroup = new THREE.Group();
-    cupGroup.position.set(offsetX, skinSurfaceY, 0.360);
+    cupGroup.position.set(offsetX, skinSurfaceY, 0.140);
     cupGroup.visible = false;
     scene.add(cupGroup);
     cupGroupRef.current = cupGroup;
@@ -481,7 +481,7 @@ export default function SkinLayersPip({
     // C. Authentic Chinese Artemisia Moxa Warmer (Hovers above skin at y = 0.670, z = 0.400)
     // NOT a cigarette! Xuan rice paper, gold foil bands, emerald header, cinnabar seal & dark ash tip
     const moxaGroup = new THREE.Group();
-    moxaGroup.position.set(offsetX, 0.670, 0.400);
+    moxaGroup.position.set(offsetX, 0.610, 0.250);
     moxaGroup.visible = (activeTool === 'moxa');
     scene.add(moxaGroup);
     moxaGroupRef.current = moxaGroup;
@@ -1040,9 +1040,10 @@ export default function SkinLayersPip({
       // At depth 0mm: needle tip sits right on top skin surface (y = 0.550, z = 0.410)
       // At depth 15mm: needle tip penetrates down along cut face to muscle knot center (y = -0.04)
       const fraction = Math.min(1.0, depth / 15.0);
-      needleGroupRef.current.position.y = 0.550 - fraction * 0.59;
+      needleGroupRef.current.position.y = 0.490 - fraction * 0.530;
     } else if (activeTool === 'cup' && cupGroupRef.current) {
-      cupGroupRef.current.position.y = 0.550;
+      cupGroupRef.current.position.y = 0.488;
+      cupGroupRef.current.position.z = 0.140;
       const suctionFraction = Math.min(1.0, depth / 6.0);
       if (suctionBulgeRef.current) {
         // Expand flesh mound upward into the glass chamber (up to 0.12 units high!)
