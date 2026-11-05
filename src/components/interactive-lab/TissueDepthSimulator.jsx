@@ -1394,22 +1394,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
     scene.add(bodyGroup);
     bodyGroupRef.current = bodyGroup;
 
-    // Minimal Elegant Pedestal with Arura Rose Rim
-    const pedestal = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.48, 0.52, 0.03, 48),
-      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1 })
-    );
-    pedestal.position.y = -0.47;
-    pedestal.receiveShadow = true;
-    bodyGroup.add(pedestal);
-
-    const ringLed = new THREE.Mesh(
-      new THREE.RingGeometry(0.46, 0.50, 48),
-      new THREE.MeshBasicMaterial({ color: 0xe02868, side: THREE.DoubleSide })
-    );
-    ringLed.rotation.x = -Math.PI / 2;
-    ringLed.position.y = -0.45;
-    bodyGroup.add(ringLed);
+    // Freestanding mannequin (zero pedestal, zero mat, zero ground ring as requested)
 
     const interactiveAcupointMeshes = [];
 
@@ -1433,6 +1418,32 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
         const geo = bodyMesh.geometry;
         const pos = geo.attributes.position.array;
         const vCount = geo.attributes.position.count;
+
+        // Strip embedded base plate/mat triangles so feet are completely freestanding
+        if (geo.index) {
+          const oldIdx = geo.index.array;
+          const cleanIndices = [];
+          for (let i = 0; i < oldIdx.length; i += 3) {
+            const a = oldIdx[i], b = oldIdx[i + 1], c = oldIdx[i + 2];
+            const ya = pos[a * 3 + 1], yb = pos[b * 3 + 1], yc = pos[c * 3 + 1];
+            const xa = pos[a * 3], xb = pos[b * 3], xc = pos[c * 3];
+            const za = pos[a * 3 + 2], zb = pos[b * 3 + 2], zc = pos[c * 3 + 2];
+
+            const minY = Math.min(ya, yb, yc);
+            const maxY = Math.max(ya, yb, yc);
+            const avgX = (xa + xb + xc) / 3;
+            const avgZ = (za + zb + zc) / 3;
+
+            const isBottomPlate = (maxY < -0.936);
+            const isOutsideFeet = (avgX > -0.05 && avgX < 0.08) || avgX > 0.20 || avgX < -0.17 || avgZ < -0.12 || avgZ > 0.16;
+            const isPlateBevel = (minY < -0.92 && isOutsideFeet);
+
+            if (!isBottomPlate && !isPlateBevel) {
+              cleanIndices.push(a, b, c);
+            }
+          }
+          geo.setIndex(cleanIndices);
+        }
         const idxArr = geo.index ? geo.index.array : null;
 
         const armLWeights = new Float32Array(vCount);
@@ -2365,8 +2376,7 @@ export default function TissueDepthSimulator({ onOpenBooking }) {
       animId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Diagnostic LED rotation
-      ringLed.rotation.z += 0.004;
+
 
       // Thanos Particles Physics (Tissue Block)
       const pData = particlesRef.current;
