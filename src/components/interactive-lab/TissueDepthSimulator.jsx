@@ -1079,13 +1079,14 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
         targetLookAtRef.current.copy(regionCenter);
 
-        // Distance calibrated to frame the entire region with comfortable margins
+        // Distance calibrated to frame the entire region with comfortable margins on mobile and desktop
+        const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
         let dollyDist = 0.65;
-        if (regionKey === 'face' || regionKey === 'crown') dollyDist = 0.52;
-        else if (regionKey === 'neck') dollyDist = 0.52;
-        else if (regionKey === 'chest' || regionKey === 'back') dollyDist = 0.72;
-        else if (regionKey === 'arm_left' || regionKey === 'arm_right') dollyDist = 0.62;
-        else if (regionKey === 'leg_left' || regionKey === 'leg_right') dollyDist = 0.72;
+        if (regionKey === 'face' || regionKey === 'crown') dollyDist = isMobileScreen ? 0.58 : 0.52;
+        else if (regionKey === 'neck') dollyDist = isMobileScreen ? 0.58 : 0.52;
+        else if (regionKey === 'chest' || regionKey === 'back') dollyDist = isMobileScreen ? 0.82 : 0.72;
+        else if (regionKey === 'arm_left' || regionKey === 'arm_right') dollyDist = isMobileScreen ? 0.68 : 0.62;
+        else if (regionKey === 'leg_left' || regionKey === 'leg_right') dollyDist = isMobileScreen ? 0.88 : 0.75;
 
         const camZ = targetFacing === 'back' ? regionCenter.z - dollyDist : regionCenter.z + dollyDist;
         targetCamPosRef.current.set(regionCenter.x, regionCenter.y + 0.02, camZ);
