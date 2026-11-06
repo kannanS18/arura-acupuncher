@@ -17,7 +17,8 @@ import {
   Eye, 
   ShieldCheck,
   Flame,
-  CircleDot
+  CircleDot,
+  MoveVertical
 } from 'lucide-react';
 
 // Singleton In-Memory Cache for the 3D Tissue Strata Model
@@ -465,6 +466,17 @@ export default function SkinLayersPip({
     handle.position.y = 0.77;
     needleAssembly.add(handle);
 
+    // Invisible comfortable hit cylinder for smooth grabbing & dragging (radius 0.075, height 0.95)
+    const needleHitbox = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.075, 0.075, 0.95, 16),
+      new THREE.MeshBasicMaterial({ visible: false, transparent: true, opacity: 0 })
+    );
+    needleHitbox.position.y = 0.45;
+    needleAssembly.add(needleHitbox);
+    needleAssembly.traverse((child) => {
+      if (child.isMesh) child.userData = { isToolMesh: true, toolId: 'needle' };
+    });
+
     // B. Traditional Thick Molded Glass Fire Cupping Jar
     // Crystal-clear borosilicate glass with thick rolled rim, spherical suction chamber & flat top base
     const cupGroup = new THREE.Group();
@@ -552,6 +564,17 @@ export default function SkinLayersPip({
     cupGroup.add(erythemaRing);
     erythemaRingRef.current = erythemaRing;
 
+    // Comfortable hit cylinder for grabbing & dragging the suction cup
+    const cupHitbox = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.18, 0.18, 0.32, 16),
+      new THREE.MeshBasicMaterial({ visible: false, transparent: true, opacity: 0 })
+    );
+    cupHitbox.position.y = 0.14;
+    cupGroup.add(cupHitbox);
+    cupGroup.traverse((child) => {
+      if (child.isMesh) child.userData = { isToolMesh: true, toolId: 'cup' };
+    });
+
     // C. Authentic Chinese Artemisia Moxa Warmer (Hovers above skin at y = 0.670, z = 0.400)
     // NOT a cigarette! Xuan rice paper, gold foil bands, emerald header, cinnabar seal & dark ash tip
     const moxaGroup = new THREE.Group();
@@ -624,6 +647,17 @@ export default function SkinLayersPip({
     thermalRing.rotation.x = -Math.PI / 2;
     thermalRing.position.y = -0.11;
     moxaGroup.add(thermalRing);
+
+    // Comfortable hit cylinder for grabbing & dragging the moxa roll
+    const moxaHitbox = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.08, 0.52, 16),
+      new THREE.MeshBasicMaterial({ visible: false, transparent: true, opacity: 0 })
+    );
+    moxaHitbox.position.y = 0.22;
+    moxaGroup.add(moxaHitbox);
+    moxaGroup.traverse((child) => {
+      if (child.isMesh) child.userData = { isToolMesh: true, toolId: 'moxa' };
+    });
 
     // 5. 3 Vibrant, High-Contrast Authentic Clinical Pathologies on Cut Face (z = 0.430)
 
@@ -981,16 +1015,130 @@ export default function SkinLayersPip({
     };
     animate();
 
-    // Raycast click on physical tray tools & free orbit
+    // Raycast click on physical tray tools & free orbit vs physical tool drag
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     let downPos = { x: 0, y: 0, time: 0 };
+    let isDraggingTool = false;
+    let dragStartY = 0;
+    let dragStartDepth = 0;
+    let hasDraggedTool = false;
 
     const onPointerDown = (e) => {
       downPos = { x: e.clientX, y: e.clientY, time: performance.now() };
+
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      // ONLY test the active surgical tool group! (NEVER skinGroup, tissue strata, or canvas)
+      const activeToolGroup = activeToolRef.current === 'needle' 
+        ? needleAssembly 
+        : activeToolRef.current === 'cup' 
+          ? cupGroup 
+          : moxaGroup;
+
+      if (activeToolGroup && activeToolGroup.visible) {
+        const toolHits = raycaster.intersectObject(activeToolGroup, true);
+        if (toolHits.length > 0) {
+          // Tool specifically clicked! Activate physical dragging state!
+          isDraggingTool = true;
+          hasDraggedTool = false;
+          dragStartY = e.clientY;
+          dragStartDepth = depthRef.current;
+          controls.enabled = false; // Disable camera orbit while dragging tool
+          renderer.domElement.style.cursor = 'ns-resize';
+          return;
+        }
+      }
+
+      // If user did not click the tool, controls stay enabled for free 360-degree rotation!
+      isDraggingTool = false;
+      controls.enabled = true;
+      renderer.domElement.style.cursor = 'grabbing';
+    };
+
+    const onPointerMove = (e) => {
+      if (isDraggingTool) {
+        hasDraggedTool = true;
+        const deltaY = e.clientY - dragStartY;
+        const currentTool = activeToolRef.current;
+
+        let maxD = 15.0;
+        let sensitivity = 0.055; // Natural smooth tactile response
+
+        if (currentTool === 'needle') {
+          maxD = 15.0;
+          sensitivity = 0.055;
+        } else if (currentTool === 'cup') {
+          maxD = 6.0;
+          sensitivity = 0.025;
+        } else if (currentTool === 'moxa') {
+          maxD = 43.0;
+          sensitivity = 0.16;
+        }
+
+        const newD = Math.max(0, Math.min(maxD, parseFloat((dragStartDepth + deltaY * sensitivity).toFixed(2))));
+        if (onDepthChangeRef.current) {
+          onDepthChangeRef.current(newD);
+        }
+        renderer.domElement.style.cursor = 'ns-resize';
+        return;
+      }
+
+      // When orbiting actively (mouse held down outside tool)
+      if (e.buttons > 0) {
+        renderer.domElement.style.cursor = 'grabbing';
+        return;
+      }
+
+      // Hover feedback:
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      // Check if hovering over active tool
+      const activeToolGroup = activeToolRef.current === 'needle' 
+        ? needleAssembly 
+        : activeToolRef.current === 'cup' 
+          ? cupGroup 
+          : moxaGroup;
+
+      if (activeToolGroup && activeToolGroup.visible) {
+        const toolHits = raycaster.intersectObject(activeToolGroup, true);
+        if (toolHits.length > 0) {
+          renderer.domElement.style.cursor = 'ns-resize';
+          return;
+        }
+      }
+
+      if (fullStage) {
+        const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+        if (trayHits.length > 0) {
+          renderer.domElement.style.cursor = 'pointer';
+          return;
+        }
+      }
+
+      renderer.domElement.style.cursor = 'grab';
+    };
+
+    const onPointerUp = () => {
+      if (isDraggingTool) {
+        isDraggingTool = false;
+        controls.enabled = true; // Re-enable OrbitControls immediately!
+        renderer.domElement.style.cursor = 'grab';
+      }
     };
 
     const onClickCanvas = (e) => {
+      if (hasDraggedTool) {
+        hasDraggedTool = false;
+        return;
+      }
+
       const dist = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
       const duration = performance.now() - downPos.time;
       if (dist > 8 || duration > 300) return; // User was rotating/orbiting the 3D model!
@@ -1017,24 +1165,9 @@ export default function SkinLayersPip({
       }
     };
 
-    const onPointerMove = (e) => {
-      if (e.buttons > 0) return; // Orbiting actively
-      if (fullStage) {
-        const rect = renderer.domElement.getBoundingClientRect();
-        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
-        const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
-        if (trayHits.length > 0) {
-          renderer.domElement.style.cursor = 'pointer';
-          return;
-        }
-      }
-      renderer.domElement.style.cursor = 'grab';
-    };
-
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
     renderer.domElement.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
     renderer.domElement.addEventListener('click', onClickCanvas);
 
     let lastW = 0, lastH = 0;
@@ -1083,6 +1216,7 @@ export default function SkinLayersPip({
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
       renderer.domElement.removeEventListener('click', onClickCanvas);
       cancelAnimationFrame(animIdRef.current);
       renderer.dispose();
@@ -1295,9 +1429,16 @@ export default function SkinLayersPip({
           </div>
 
           <div className="flex items-center gap-2 pointer-events-auto">
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[11px] font-medium text-neutral-600 shadow-sm">
-              <Eye className="w-3.5 h-3.5 text-[#e02868]" />
-              <span>Drag to rotate 3D strata</span>
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[11px] font-medium text-neutral-700 shadow-sm">
+              <span className="flex items-center gap-1 font-semibold text-[#e02868]">
+                <MoveVertical className="w-3.5 h-3.5" />
+                <span>Drag tool to plunge</span>
+              </span>
+              <span className="text-neutral-300">|</span>
+              <span className="flex items-center gap-1 text-neutral-500">
+                <Eye className="w-3.5 h-3.5" />
+                <span>Drag block to rotate</span>
+              </span>
             </div>
             <button
               type="button"
@@ -1406,6 +1547,10 @@ export default function SkinLayersPip({
                 {activeTool === 'moxa' && `${depth.toFixed(0)} / 43°C`}
               </span>
             </div>
+
+            <p className="text-[10px] text-neutral-500 font-medium">
+              💡 Drag the 3D tool directly down, or adjust the slider:
+            </p>
 
             <input
               type="range"
