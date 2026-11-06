@@ -1,171 +1,150 @@
-import React, { useState } from 'react';
-import { X, ShieldCheck, MessageCircle } from 'lucide-react';
+import React, { useCallback } from 'react';
+import { X, ShieldCheck, MessageCircle, PhoneCall } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
+import { Booking } from './booking';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function BookingModal({ isOpen, onClose, preselectedService, preselectedPrice }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: preselectedService || 'Diagnostic Clinical Consultation (₹600)',
-    date: '',
-    time: '10:00 AM to 12:00 PM (Morning)',
-    concerns: ''
-  });
-
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    const message = `*Arura Wellness Studio — Priority Clinical Appointment*
----------------------------------------
-👤 *Patient:* ${formData.name}
-📞 *Phone:* ${formData.phone}
-🩺 *Service:* ${formData.service}
-🗓️ *Preferred Date:* ${formData.date}
-⏰ *Time Window:* ${formData.time}
-💬 *Primary Health Concern:* ${formData.concerns || 'General clinical consultation'}
----------------------------------------
-_Requested via Arura Official Studio Concierge_`;
+  const serviceTitle = preselectedService || 'Diagnostic Clinical Consultation (₹600)';
+  const serviceDuration = serviceTitle.includes('Psychotherapy') ? 50 : serviceTitle.includes('Dual') ? 90 : 45;
 
-    const encoded = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${CLINIC_INFO.phoneRaw}?text=${encoded}`;
-    window.open(whatsappUrl, '_blank');
-    onClose();
+  const getClinicSlots = async ({ from, to, timeZone }, signal) => {
+    const dailySlotTemplates = [
+      { h: 10, m: 0 },
+      { h: 10, m: 45 },
+      { h: 11, m: 30 },
+      { h: 12, m: 15 },
+      { h: 13, m: 45 },
+      { h: 14, m: 30 },
+      { h: 15, m: 15 },
+      { h: 16, m: 0 },
+      { h: 16, m: 45 },
+      { h: 17, m: 30 },
+      { h: 18, m: 15 },
+      { h: 19, m: 0 }
+    ];
+
+    const slots = [];
+    const now = Date.now();
+    const curr = new Date(from);
+    const end = new Date(to);
+
+    while (curr < end) {
+      if (signal?.aborted) return [];
+      const dayOfWeek = curr.getDay();
+      const hoursForDay = dayOfWeek === 0 ? dailySlotTemplates.slice(0, 4) : dailySlotTemplates;
+
+      for (const t of hoursForDay) {
+        const slotDate = new Date(curr.getFullYear(), curr.getMonth(), curr.getDate(), t.h, t.m, 0);
+        const slotMs = slotDate.getTime();
+        if (slotMs > now + 30 * 60 * 1000) {
+          slots.push(slotMs);
+        }
+      }
+      curr.setDate(curr.getDate() + 1);
+    }
+    return slots;
+  };
+
+  const handleBook = async (request) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    const appointmentId = `ARURA-${Date.now().toString(36).toUpperCase()}`;
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('arura_appointments') || '[]');
+      existing.push({
+        id: appointmentId,
+        service: serviceTitle,
+        start: request.start.toISOString(),
+        end: request.end.toISOString(),
+        name: request.name,
+        email: request.email,
+        note: request.note,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem('arura_appointments', JSON.stringify(existing));
+    } catch {
+      // Ignore
+    }
+
+    return {
+      id: appointmentId
+    };
+  };
+
+  const handleCancel = async (booking) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const existing = JSON.parse(localStorage.getItem('arura_appointments') || '[]');
+      const filtered = existing.filter(a => a.id !== booking.id);
+      localStorage.setItem('arura_appointments', JSON.stringify(filtered));
+    } catch {
+      // Ignore
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-10 shadow-2xl border border-gray-200 max-h-[92vh] overflow-y-auto relative motion-safe:animate-fadeIn text-ink">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+      <div className="bg-white rounded-3xl max-w-5xl w-full p-4 sm:p-8 shadow-2xl border border-gray-200 max-h-[95vh] overflow-y-auto relative motion-safe:animate-fadeIn text-ink flex flex-col items-center">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-gray-500 hover:text-black bg-gray-100 p-2.5 rounded-full transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
-          aria-label="Close Modal"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-black bg-gray-100 hover:bg-gray-200 p-2.5 rounded-full transition-colors z-20 cursor-pointer focus-visible:outline-2 focus-visible:outline-brand"
+          aria-label="Close Booking Modal"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="space-y-6">
-          <div className="space-y-1">
-            <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-              Priority Appointment Reservation
-            </h3>
-            <p className="text-sm text-gray-600 font-normal">
-              Direct one-on-one consultation with Dr. Nivedha Priyadharshini, MD (Acu).
-            </p>
-          </div>
+        {/* Modal Header */}
+        <div className="w-full text-center sm:text-left mb-6 pr-10">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand bg-brand/10 px-2.5 py-1 rounded-full mb-1">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Priority Consultation Reservation</span>
+          </span>
+          <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+            Book With Dr. Nivedha Priyadharshini
+          </h3>
+          <p className="text-xs sm:text-sm text-gray-600 font-normal mt-0.5">
+            Strict 1-on-1 private appointments at our Virugambakkam sanctuary. Choose your date & time below.
+          </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Service Selection */}
-            <div className="space-y-1.5">
-              <label className="text-xs text-gray-700 font-semibold block">
-                Clinical procedure
-              </label>
-              <select
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                className="w-full px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-brand font-medium focus-visible:outline-brand"
-              >
-                <option>Diagnostic Clinical Consultation (₹600)</option>
-                <option>Acupuncture Therapy Session (₹600)</option>
-                <option>Clinical Psychotherapy (₹1,800)</option>
-                <option>Mind-Body Dual Therapy (₹2,400)</option>
-              </select>
-            </div>
+        {/* The Hairline UI Booking Component */}
+        <div className="w-full flex justify-center">
+          <Booking
+            host={{
+              name: CLINIC_INFO.founder,
+              role: 'MD (Acu) • Chief Healer & Psychotherapist',
+              src: getAssetUrl('doctor_nivedha_portrait.jpg')
+            }}
+            title={serviceTitle}
+            description="14-pulse assessment, tongue diagnosis & private acupuncture consultation."
+            duration={serviceDuration}
+            location="Arura Studio • Chinmaya Nagar, Virugambakkam"
+            getSlots={getClinicSlots}
+            onBook={handleBook}
+            onCancel={handleCancel}
+            hour12={true}
+            weekStartsOn={1}
+            className="shadow-md border border-gray-200/90 w-full"
+          />
+        </div>
 
-            {/* Date & Time */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-xs text-gray-700 font-semibold block">
-                  Preferred date
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-ink focus-visible:outline-brand"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs text-gray-700 font-semibold block">
-                  Time window
-                </label>
-                <select
-                  value={formData.time}
-                  onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-ink focus-visible:outline-brand"
-                >
-                  <option>10:00 AM to 12:00 PM (Morning)</option>
-                  <option>02:00 PM to 05:00 PM (Afternoon)</option>
-                  <option>05:00 PM to 08:00 PM (Evening)</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Patient Name & Phone */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-xs text-gray-700 font-semibold block">
-                  Patient full name
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Ramesh Kumar"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-ink focus-visible:outline-brand"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs text-gray-700 font-semibold block">
-                  WhatsApp phone
-                </label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="+91 98765 43210"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-ink focus-visible:outline-brand"
-                />
-              </div>
-            </div>
-
-            {/* Health Concern */}
-            <div className="space-y-1.5">
-              <label className="text-xs text-gray-700 font-semibold block">
-                Chief health concern
-              </label>
-              <textarea
-                rows={3}
-                placeholder="Briefly describe your symptoms (e.g. severe cervical pain for 3 months, migraine attacks, anxiety)..."
-                value={formData.concerns}
-                onChange={(e) => setFormData({ ...formData, concerns: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-ink focus:outline-none focus:border-ink focus-visible:outline-brand"
-              />
-            </div>
-
-            {/* Clinical Guarantee Notice */}
-            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-xs text-emerald-950 flex items-center space-x-3">
-              <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-              <span>Strict clinical confidentiality. 100% single-use sterile Japanese needles.</span>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full py-4 rounded-xl text-xs font-semibold flex items-center justify-center space-x-2 bg-ink text-white hover:bg-brand transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 disabled:opacity-50 shadow-md whitespace-nowrap"
-            >
-              <MessageCircle className="w-4 h-4 text-emerald-400" />
-              <span>Confirm on WhatsApp</span>
-            </button>
-          </form>
+        {/* Quick Footer Links */}
+        <div className="w-full pt-4 mt-4 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
+          <span>Fee collected after personal session • No advance payment lock</span>
+          <a
+            href={CLINIC_INFO.whatsappLink}
+            target="_blank"
+            rel="noreferrer"
+            className="text-emerald-700 hover:text-emerald-800 font-semibold inline-flex items-center gap-1"
+          >
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <span>WhatsApp Quick Desk</span>
+          </a>
         </div>
 
       </div>

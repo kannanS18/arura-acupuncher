@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Award, HeartPulse, Clock, Sparkles, CheckCircle2, Stethoscope, Flame } from 'lucide-react';
+import { ShieldCheck, Award, HeartPulse, Clock, CheckCircle2, Stethoscope, Flame } from 'lucide-react';
 
 export default function MarqueeTicker() {
   const [activeTooltip, setActiveTooltip] = useState(null);
@@ -14,14 +14,14 @@ export default function MarqueeTicker() {
     },
     {
       id: 'cambridge',
-      icon: <Award className="w-5 h-5 text-[#e02868] flex-shrink-0" />,
+      icon: <Award className="w-5 h-5 text-brand flex-shrink-0" />,
       title: "Cambridge Certified",
       desc: "Evidence-based clinical psychotherapy",
       detail: "Led by Dr. Nivedha Priyadharshini, MD (Acu), PG Dip."
     },
     {
       id: 'experience',
-      icon: <HeartPulse className="w-5 h-5 text-[#581c87] flex-shrink-0" />,
+      icon: <HeartPulse className="w-5 h-5 text-brand flex-shrink-0" />,
       title: "8+ Years in Chennai",
       desc: "1,100+ documented patient recoveries",
       detail: "Established clinic located in Chinmaya Nagar, Virugambakkam."
@@ -66,9 +66,9 @@ export default function MarqueeTicker() {
             key={`${pillar.id}-${idx}`}
             onMouseEnter={() => setActiveTooltip(pillar.id)}
             onMouseLeave={() => setActiveTooltip(null)}
-            className="flex items-center space-x-3.5 px-4 py-3 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-[#e02868] hover:shadow-md transition-all cursor-pointer flex-shrink-0 group/card transform hover:-translate-y-0.5"
+            className="flex items-center space-x-3.5 px-4 py-3 rounded-xl bg-white border border-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer flex-shrink-0 group/card"
           >
-            <div className="p-2 rounded-xl bg-gray-50 group-hover/card:bg-pink-50 transition-colors flex-shrink-0">
+            <div className="p-2 rounded-lg bg-neutral-50 group-hover/card:bg-pink-50/60 transition-colors flex-shrink-0">
               {pillar.icon}
             </div>
             <div className="text-left">

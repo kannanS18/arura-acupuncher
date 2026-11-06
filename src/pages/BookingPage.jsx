@@ -1,62 +1,149 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, PhoneCall, MessageCircle, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, MessageCircle, PhoneCall, MapPin, CheckCircle2, Sparkles, Clock } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
-import MeridianPulseWave from '../components/MeridianPulseWave';
+import { Booking } from '../components/booking';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export default function BookingPage() {
-  const [selectedService, setSelectedService] = useState({
-    title: 'Initial Diagnostic Consultation',
-    fee: 600,
-    duration: '30 to 45 mins'
-  });
-  const [patientName, setPatientName] = useState('');
-  const [patientPhone, setPatientPhone] = useState('');
-  const [preferredDate, setPreferredDate] = useState('');
-  const [preferredSlot, setPreferredSlot] = useState('Morning (10:00 AM – 1:00 PM)');
-  const [healthConcern, setHealthConcern] = useState('');
-
   const services = [
-    { title: 'Initial Diagnostic Consultation', fee: 600, duration: '30 to 45 mins', desc: 'Medical history, 14-pulse assessment, tongue diagnosis' },
-    { title: 'Acupuncture Therapy Session', fee: 600, duration: '25 mins (Daily Limit: 50 Sessions)', desc: '0.18mm hair-thin single-use needles, TDP infrared heat, moxa/cupping' },
-    { title: 'Clinical Psychotherapy', fee: 1800, duration: '50 mins (Weekly Limit: 20 Sessions)', desc: 'CBT, REBT & Gestalt therapy in private acoustic suite' },
-    { title: 'Mind-Body Dual Therapy', fee: 2400, duration: '75 to 90 mins', desc: 'Integrated psychotherapy + full acupuncture needling back-to-back' }
+    {
+      id: 'diagnostic',
+      title: 'Diagnostic Clinical Consultation',
+      fee: 600,
+      duration: 45,
+      durationText: '45 mins',
+      desc: 'Comprehensive medical history, 14-meridian pulse diagnosis, tongue examination & treatment plan.'
+    },
+    {
+      id: 'acupuncture',
+      title: 'Acupuncture Therapy Session',
+      fee: 600,
+      duration: 30,
+      durationText: '30 mins (Daily Limit: 50 Sessions)',
+      desc: '0.18mm hair-thin single-use sterile needles, TDP infrared therapy & optional glass cupping.'
+    },
+    {
+      id: 'counselling',
+      title: 'Clinical Psychotherapy',
+      fee: 1800,
+      duration: 50,
+      durationText: '50 mins (Weekly Limit: 20 Sessions)',
+      desc: 'Confidential CBT, REBT & Gestalt therapy in private acoustic suite with Dr. Nivedha.'
+    },
+    {
+      id: 'dual',
+      title: 'Mind-Body Dual Therapy',
+      fee: 2400,
+      duration: 90,
+      durationText: '90 mins',
+      desc: 'Combined cognitive psychotherapy + full somatic acupuncture needling session back-to-back.'
+    }
   ];
 
-  const handleWhatsAppBooking = (e) => {
-    e.preventDefault();
-    if (!patientName.trim()) {
-      alert('Please enter your full name.');
-      return;
+  const [selectedService, setSelectedService] = useState(services[0]);
+
+  // Generates real clinical appointment slots according to clinic working hours
+  const getClinicSlots = useCallback(async ({ from, to, timeZone }, signal) => {
+    // Timings: 10:00 AM - 7:30 PM
+    const dailySlotTemplates = [
+      { h: 10, m: 0 },
+      { h: 10, m: 45 },
+      { h: 11, m: 30 },
+      { h: 12, m: 15 },
+      { h: 13, m: 45 },
+      { h: 14, m: 30 },
+      { h: 15, m: 15 },
+      { h: 16, m: 0 },
+      { h: 16, m: 45 },
+      { h: 17, m: 30 },
+      { h: 18, m: 15 },
+      { h: 19, m: 0 }
+    ];
+
+    const slots = [];
+    const now = Date.now();
+    const curr = new Date(from);
+    const end = new Date(to);
+
+    while (curr < end) {
+      if (signal?.aborted) return [];
+
+      const dayOfWeek = curr.getDay(); // 0 is Sunday
+      // Sunday clinic hours: Morning only
+      const hoursForDay = dayOfWeek === 0 ? dailySlotTemplates.slice(0, 4) : dailySlotTemplates;
+
+      for (const t of hoursForDay) {
+        const slotDate = new Date(curr.getFullYear(), curr.getMonth(), curr.getDate(), t.h, t.m, 0);
+        const slotMs = slotDate.getTime();
+        // Only return slots at least 30 mins in the future
+        if (slotMs > now + 30 * 60 * 1000) {
+          slots.push(slotMs);
+        }
+      }
+      curr.setDate(curr.getDate() + 1);
     }
-    const message = encodeURIComponent(
-      `Hello Dr. Nivedha,\n\nI would like to schedule a private clinical consultation at Arura Wellness Studio, Virugambakkam.\n\n` +
-      `• Patient Name: ${patientName}\n` +
-      `• Phone: ${patientPhone || 'Direct'}\n` +
-      `• Selected Service: ${selectedService.title} (₹${selectedService.fee})\n` +
-      `• Preferred Date: ${preferredDate || 'Earliest Available'}\n` +
-      `• Time Window: ${preferredSlot}\n` +
-      `• Chief Complaint: ${healthConcern || 'General Assessment'}\n\n` +
-      `Kindly confirm the earliest appointment slot. Thank you.`
-    );
-    window.open(`https://wa.me/${CLINIC_INFO.phoneRaw}?text=${message}`, '_blank');
-  };
+
+    return slots;
+  }, []);
+
+  const handleBook = useCallback(async (request) => {
+    // Emulate realistic appointment recording
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    const appointmentId = `ARURA-${Date.now().toString(36).toUpperCase()}`;
+
+    // Store in localStorage for client record
+    try {
+      const existing = JSON.parse(localStorage.getItem('arura_appointments') || '[]');
+      existing.push({
+        id: appointmentId,
+        service: selectedService.title,
+        fee: selectedService.fee,
+        start: request.start.toISOString(),
+        end: request.end.toISOString(),
+        name: request.name,
+        email: request.email,
+        note: request.note,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem('arura_appointments', JSON.stringify(existing));
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
+
+    return {
+      id: appointmentId,
+      meetingUrl: undefined // In-person clinic consultation
+    };
+  }, [selectedService]);
+
+  const handleCancel = useCallback(async (booking) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const existing = JSON.parse(localStorage.getItem('arura_appointments') || '[]');
+      const filtered = existing.filter(a => a.id !== booking.id);
+      localStorage.setItem('arura_appointments', JSON.stringify(filtered));
+    } catch {
+      // Ignore
+    }
+  }, []);
 
   return (
     <div className="bg-white text-ink min-h-screen">
       
-      {/* Header with Scroll Reveal */}
-      <section className="pt-24 pb-20 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
+      {/* Header Banner */}
+      <section className="pt-20 pb-14 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl space-y-6"
+            className="max-w-3xl space-y-4"
           >
-            <p className="text-xs text-brand font-semibold tracking-normal">
-              Sanctuary Concierge, Virugambakkam
-            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Sanctuary Concierge • Virugambakkam</span>
+            </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
               Schedule Your Private <br />
@@ -64,189 +151,150 @@ export default function BookingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Appointments are held strictly 1-on-1 in sound-dampened acoustic rooms at our Virugambakkam sanctuary. Prior scheduling is required to protect patient confidentiality.
+              Select your therapeutic modality below, pick your preferred appointment slot on the interactive ticket, and confirm your visit directly with Dr. Nivedha Priyadharshini.
             </p>
           </motion.div>
         </div>
-
-        {/* Biological Meridian Pulse Line Divider */}
-        <div className="pt-8">
-          <MeridianPulseWave color="#e02868" />
-        </div>
       </section>
 
-      {/* Main Booking Interface */}
-      <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Main Interactive Booking Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <form onSubmit={handleWhatsAppBooking} className="space-y-12">
-            
-            {/* Step 1: Select Service */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4"
-            >
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-                Select Clinical Modality
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                {services.map((srv, idx) => {
-                  const isSelected = selectedService.title === srv.title;
-                  return (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      onClick={() => setSelectedService(srv)}
-                      className={`p-6 rounded-2xl cursor-pointer border transition-colors duration-200 flex flex-col justify-between space-y-3 ${
-                        isSelected
-                          ? 'border-brand bg-pink-50/20 shadow-md ring-1 ring-brand'
-                          : 'border-gray-200 bg-surface-subtle hover:border-gray-400 hover:bg-white'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className={`font-display text-lg font-bold ${isSelected ? 'text-brand' : 'text-gray-900'}`}>
-                            {srv.title}
-                          </h3>
-                          <span className="text-xs text-gray-500 font-medium">{srv.duration}</span>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-xl font-bold text-ink">₹{srv.fee}</span>
-                        </div>
-                      </div>
-
-                      <p className="text-xs text-gray-600 leading-relaxed font-normal">
-                        {srv.desc}
-                      </p>
-
-                      <div className="pt-2 text-xs font-semibold">
-                        <span className={isSelected ? 'text-brand' : 'text-gray-400'}>
-                          {isSelected ? '✓ Selected' : 'Click to select'}
-                        </span>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-
-            {/* Step 2: Patient Information */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6 }}
-              className="space-y-6 pt-6 border-t border-gray-200"
-            >
-              <div className="space-y-1">
+          {/* Step 1: Select Service Modality */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs font-medium text-brand block mb-1">
+                  Step 1 of 2
+                </span>
                 <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-                  Patient & Appointment Details
+                  Select clinical modality
                 </h2>
               </div>
+              <span className="text-xs text-neutral-500 font-normal hidden sm:inline">
+                Click any service to update ticket
+              </span>
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
-                    Patient Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Enter your full name"
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
-                    Contact Phone Number (WhatsApp Enabled)
-                  </label>
-                  <input
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    value={patientPhone}
-                    onChange={(e) => setPatientPhone(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
-                    Preferred Date
-                  </label>
-                  <input
-                    type="date"
-                    value={preferredDate}
-                    onChange={(e) => setPreferredDate(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-medium text-gray-700 block mb-1.5">
-                    Preferred Time Window
-                  </label>
-                  <select
-                    value={preferredSlot}
-                    onChange={(e) => setPreferredSlot(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {services.map((srv) => {
+                const isSelected = selectedService.id === srv.id;
+                return (
+                  <button
+                    key={srv.id}
+                    type="button"
+                    onClick={() => setSelectedService(srv)}
+                    className={`p-5 rounded-2xl border text-left flex flex-col justify-between space-y-3 transition-colors duration-150 cursor-pointer ${
+                      isSelected
+                        ? 'border-brand bg-pink-50/40 ring-1 ring-brand'
+                        : 'border-neutral-200 bg-white hover:border-neutral-300'
+                    }`}
                   >
-                    <option>Morning (10:00 AM to 1:00 PM)</option>
-                    <option>Afternoon (1:00 PM to 4:00 PM)</option>
-                    <option>Evening (4:00 PM to 8:00 PM)</option>
-                  </select>
-                </div>
-              </div>
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <span className="text-xl font-bold text-ink">₹{srv.fee}</span>
+                        {isSelected && (
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-brand bg-pink-100/70 px-2 py-0.5 rounded-full">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <h3 className={`font-display text-base font-bold ${isSelected ? 'text-brand' : 'text-neutral-900'}`}>
+                        {srv.title}
+                      </h3>
+                      <p className="text-xs text-neutral-500 font-medium flex items-center gap-1 mt-1">
+                        <Clock className="w-3 h-3 text-neutral-400" />
+                        <span>{srv.durationText}</span>
+                      </p>
+                    </div>
 
+                    <p className="text-xs text-neutral-600 leading-relaxed">
+                      {srv.desc}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 2: The Hairline UI Interactive Booking Ticket */}
+          <div className="space-y-4 pt-4 border-t border-neutral-200">
+            <div>
+              <span className="text-xs font-medium text-brand block mb-1">
+                Step 2 of 2
+              </span>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+                Select date and printable ticket
+              </h2>
+              <p className="text-xs text-neutral-500 mt-1">
+                Click a date on the calendar, select an available hour, and your appointment time will print onto the clinical ticket stub.
+              </p>
+            </div>
+
+            <div className="flex justify-center pt-2 w-full">
+              <Booking
+                key={selectedService.id}
+                host={{
+                  name: CLINIC_INFO.founder,
+                  role: 'MD (Acu) • Chief Healer & Psychotherapist',
+                  src: getAssetUrl('doctor_nivedha_portrait.jpg')
+                }}
+                title={selectedService.title}
+                description={selectedService.desc}
+                duration={selectedService.duration}
+                location="Arura Studio • Chinmaya Nagar, Virugambakkam"
+                getSlots={getClinicSlots}
+                onBook={handleBook}
+                onCancel={handleCancel}
+                hour12={true}
+                weekStartsOn={1}
+                className="shadow-xl border border-gray-200/90 w-full"
+              />
+            </div>
+          </div>
+
+          {/* Trust Guarantees & Clinical Assurances */}
+          <div className="pt-8 border-t border-gray-200 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-5 rounded-2xl bg-surface-subtle border border-gray-200 flex items-start space-x-3.5">
+              <ShieldCheck className="w-5 h-5 text-brand shrink-0 mt-0.5" />
               <div>
-                <label className="text-xs font-medium text-gray-700 block mb-1.5">
-                  Primary Health Distress / Chief Complaint
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Describe your health concern (e.g. cervical spondylosis, migraine frequency, sleep trouble, sciatica)..."
-                  value={healthConcern}
-                  onChange={(e) => setHealthConcern(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
-                />
+                <h4 className="font-bold text-sm text-gray-900">Strict Aseptic Needling</h4>
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                  Single-use 0.18mm surgical stainless steel needles unsealed fresh at your bedside. Zero reuse policy.
+                </p>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Submit Action */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6 }}
-              className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-6"
-            >
-              <div className="space-y-1 text-center sm:text-left">
-                <span className="text-sm font-bold text-gray-900 block">
-                  Total Consultation Fee: ₹{selectedService.fee}
-                </span>
-                <span className="text-xs text-gray-500 block">
-                  No advance payment required. Fee collected after direct clinical session.
-                </span>
+            <div className="p-5 rounded-2xl bg-surface-subtle border border-gray-200 flex items-start space-x-3.5">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-bold text-sm text-gray-900">No Advance Payment</h4>
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                  Total consultation fee is collected only after direct personal clinical assessment. No pre-payment locks.
+                </p>
               </div>
+            </div>
 
-              <button
-                type="submit"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50 whitespace-nowrap"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Confirm on WhatsApp desk</span>
-                <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
-              </button>
-            </motion.div>
-
-          </form>
+            <div className="p-5 rounded-2xl bg-surface-subtle border border-gray-200 flex items-start space-x-3.5">
+              <MessageCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-bold text-sm text-gray-900">Direct WhatsApp Concierge</h4>
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                  Need an urgent emergency slot or route directions? Chat directly with Dr. Nivedha's clinical desk.
+                </p>
+                <a
+                  href={CLINIC_INFO.whatsappLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-2"
+                >
+                  <span>Open WhatsApp Desk</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </div>
+          </div>
 
         </div>
       </section>

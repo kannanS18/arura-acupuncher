@@ -68,6 +68,7 @@ export default function Footer() {
               <li><Link to="/about" className="hover:text-brand transition-colors">About Us</Link></li>
               <li><Link to="/doctor" className="hover:text-brand transition-colors">Doctor (Dr. Nivedha)</Link></li>
               <li><Link to="/clinic" className="hover:text-brand transition-colors">Clinic and Tariff Schedule</Link></li>
+              <li><Link to="/counselling" className="hover:text-brand transition-colors">Counselling Centre (15 Modalities)</Link></li>
               <li><Link to="/blog" className="hover:text-brand transition-colors">Clinical Blog</Link></li>
               <li><Link to="/booking" className="hover:text-brand transition-colors">Book Priority Consultation</Link></li>
             </ul>

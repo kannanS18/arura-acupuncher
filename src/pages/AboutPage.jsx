@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
-import MeridianPulseWave from '../components/MeridianPulseWave';
+import { StatsBand } from '../components/stats-band';
+import ClinicalIntakeManifesto from '../components/ClinicalIntakeManifesto';
+import ClinicalModalitiesSection from '../components/ClinicalModalitiesSection';
 
 export default function AboutPage({ onOpenBooking }) {
   const clinicalTechniques = [
@@ -81,7 +83,7 @@ export default function AboutPage({ onOpenBooking }) {
             >
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
                 A quiet sanctuary for <br />
-                <span className="text-brand">evidence-based healing.</span>
+                <span className="text-brand">evidence-based healing</span>
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
@@ -146,206 +148,13 @@ export default function AboutPage({ onOpenBooking }) {
 
           </div>
         </div>
-
-        {/* Biological Meridian Pulse Line Divider */}
-        <div className="pt-8">
-          <MeridianPulseWave color="#e02868" />
-        </div>
       </section>
 
-      {/* 2. Narrative Manifesto Section */}
-      <section className="py-20 lg:py-28 border-b border-neutral-200/80 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
-            {/* Left Column: Big Editorial Manifesto Typography */}
-            <motion.div 
-              className="lg:col-span-6 space-y-6"
-              initial={{ opacity: 0, x: -35 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-ink leading-[1.12] tracking-tight">
-                “The needle clears what the mind holds.”
-              </h2>
-              
-              <div className="space-y-6 pt-2">
-                <p className="text-lg sm:text-xl text-neutral-900 font-normal leading-relaxed tracking-tight border-l-2 border-brand pl-6">
-                  Modern medicine excels at acute surgical emergencies, but often fails patients with chronic, recurring health distress. When you struggle with chronic migraines, cervical pain, or IBS, you are often prescribed painkillers, muscle relaxants, and antacids that mask symptoms without resolving the source.
-                </p>
+      {/* 2. Narrative Manifesto & Three-Stage Clinical Intake (21st.dev + Hairline UI Architecture) */}
+      <ClinicalIntakeManifesto onOpenBooking={onOpenBooking} />
 
-                <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed pl-6">
-                  At Arura, we observe the human body as an integrated neurological, biological, and psychological organism. By combining classical 14-meridian acupuncture with Cambridge clinical counselling, we address physical nerve inflammation and emotional stress simultaneously.
-                </p>
-              </div>
-
-              {/* 3 Metric Anchors */}
-              <div className="pt-6 flex items-center space-x-6 sm:space-x-8 text-xs border-t border-neutral-100">
-                <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-ink font-display block">
-                    <AnimatedCounter end={100} suffix="%" />
-                  </span>
-                  <span className="text-neutral-500 font-medium">Single-Use Needles</span>
-                </div>
-                <div className="h-10 w-px bg-neutral-200" />
-                <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-brand font-display block">1-on-1</span>
-                  <span className="text-neutral-500 font-medium">Unhurried Care</span>
-                </div>
-                <div className="h-10 w-px bg-neutral-200" />
-                <div>
-                  <span className="text-2xl sm:text-3xl font-bold text-emerald-700 font-display block">
-                    <AnimatedCounter end={8} suffix="+ Yrs" />
-                  </span>
-                  <span className="text-neutral-500 font-medium">Chennai Experience</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Column: Visual 3-Stage Timeline */}
-            <motion.div 
-              className="lg:col-span-6 space-y-4"
-              initial={{ opacity: 0, x: 35 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p className="text-xs text-neutral-500 font-semibold block">
-                Three-Stage Clinical Intake
-              </p>
-
-              {stages.map((st, i) => (
-                <motion.div 
-                  key={st.num}
-                  className="p-6 sm:p-7 rounded-2xl bg-surface-subtle border border-neutral-200 hover:border-brand hover:bg-white hover:shadow-lg transition-colors duration-200 space-y-2 group"
-                  initial={{ opacity: 0, y: 25 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 text-brand font-bold text-xs flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
-                      {st.num}
-                    </span>
-                    <h4 className="font-display text-lg font-bold text-ink">
-                      {st.title}
-                    </h4>
-                  </div>
-                  <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pl-11">
-                    {st.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 3. BESPOKE EDITORIAL TECHNIQUE DOSSIER (Replaces generic AI cards & green alert boxes) */}
-      <section className="py-24 lg:py-32 bg-white border-b border-neutral-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
-            {/* Left Sticky Column: Editorial Overview & Philosophy */}
-            <motion.div 
-              className="lg:col-span-5 lg:sticky lg:top-28 space-y-6"
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="space-y-3">
-                <span className="text-xs font-semibold text-brand block">
-                  Clinical Modalities
-                </span>
-                <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink leading-tight">
-                  Four Disciplines. <br />
-                  <span className="text-neutral-700">Zero Chemical Masking.</span>
-                </h2>
-                <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed pt-2">
-                  Each session is custom-formulated from Dr. Nivedha’s diagnostic pulse mapping. We activate strategic peripheral nerves to dissipate myofascial tension and calm chronic sympathetic overdrive.
-                </p>
-              </div>
-
-              {/* Clinical Standard Dossier Box */}
-              <div className="p-6 rounded-2xl bg-sanctuary-texture border border-neutral-200 space-y-4">
-                <div className="flex items-center space-x-2.5 text-xs text-neutral-800 font-semibold">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  <span>Hospital-Grade Sterile Guarantee</span>
-                </div>
-                <p className="text-xs text-neutral-600 leading-relaxed font-normal">
-                  Pre-sterilized single-use 0.18mm surgical stainless needles opened in your presence and discarded into biohazard containers immediately after use.
-                </p>
-                <div className="pt-2 border-t border-neutral-200 flex items-center justify-between text-xs">
-                  <span className="text-neutral-500 font-medium">Standard consultation:</span>
-                  <strong className="text-ink font-bold text-sm">₹600</strong>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <Link
-                  to="/booking"
-                  className="w-full py-4 rounded-xl text-xs font-semibold bg-ink text-white hover:bg-brand transition-colors duration-200 flex items-center justify-center space-x-2 shadow-sm motion-safe:active:scale-[0.98]"
-                >
-                  <span>Book Private Consultation (₹600)</span>
-                  <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Right Column: Architectural Ledger Table (Zero Card Slop) */}
-            <div className="lg:col-span-7 divide-y divide-neutral-200 border-t border-b border-neutral-200">
-              {clinicalTechniques.map((tech, idx) => (
-                <motion.div
-                  key={tech.num}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  className="py-8 space-y-4 group"
-                >
-                  <div className="flex flex-wrap items-baseline justify-between gap-4">
-                    <div className="flex items-baseline space-x-3">
-                      <span className="font-display text-2xl font-bold text-ink tabular-nums group-hover:text-brand transition-colors">
-                        {tech.num}
-                      </span>
-                      <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors">
-                        {tech.title}
-                      </h3>
-                    </div>
-                    <span className="text-xs text-neutral-500 font-medium">
-                      {tech.category}
-                    </span>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-                    {tech.desc}
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pt-2 text-xs">
-                    <p className="text-neutral-800 font-medium">
-                      <strong className="text-brand font-semibold">Outcome: </strong>
-                      {tech.benefit}
-                    </p>
-                    <Link
-                      to="/booking"
-                      className="text-xs font-semibold text-ink group-hover:text-brand inline-flex items-center space-x-1.5 transition-colors whitespace-nowrap"
-                    >
-                      <span>Book modality</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-          </div>
-
-        </div>
-      </section>
+      {/* 3. Clinical Disciplines & Modalities (21st.dev + Hairline UI Architecture) */}
+      <ClinicalModalitiesSection onOpenBooking={onOpenBooking} />
 
       {/* 4. Sanctuary Location Strip */}
       <section className="py-20 lg:py-28 bg-sanctuary-texture">

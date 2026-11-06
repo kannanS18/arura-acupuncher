@@ -28,12 +28,12 @@ export default function DisordersPage({ onOpenBooking }) {
       <section className="pt-24 pb-20 bg-ambient-light border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-xs uppercase tracking-wider text-[#581c87] font-bold">
-              <span>Clinical Taxonomy</span>
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50/70 border border-pink-200/60 text-xs text-brand font-medium">
+              <span>Clinical taxonomy</span>
             </div>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
               Disorders Treated & <br />
-              <span className="text-gradient-luxury">Clinical Taxonomies</span>
+              <span className="text-brand">Clinical Taxonomies</span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed max-w-3xl">
               Arura specializes in treating root systemic blockages across 6 major physiological and emotional categories. Search below to understand how acupuncture and psychotherapy restore balance.
@@ -62,10 +62,10 @@ export default function DisordersPage({ onOpenBooking }) {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-5 py-2.5 rounded-xl whitespace-nowrap uppercase tracking-wider transition-all font-bold ${
+                className={`px-4 py-2 rounded-lg whitespace-nowrap text-xs transition-colors font-medium ${
                   activeCategory === cat.id
-                    ? 'bg-[#09090b] text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:text-black hover:bg-gray-200'
+                    ? 'bg-ink text-white'
+                    : 'bg-neutral-100 text-neutral-600 hover:text-ink hover:bg-neutral-200'
                 }`}
               >
                 {cat.label}
@@ -89,8 +89,8 @@ export default function DisordersPage({ onOpenBooking }) {
                   <h2 className="font-display text-3xl sm:text-4xl text-[#09090b] font-bold tracking-tight">
                     {cat.category}
                   </h2>
-                  <span className="text-xs uppercase tracking-wider text-[#581c87] bg-purple-50 border border-purple-200 px-3.5 py-1.5 rounded-full font-bold">
-                    {cat.items.length} Documented Conditions
+                  <span className="text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full font-medium">
+                    {cat.items.length} conditions
                   </span>
                 </div>
 
@@ -98,21 +98,21 @@ export default function DisordersPage({ onOpenBooking }) {
                   {cat.items.map((item, idx) => {
                     const itemName = typeof item === 'string' ? item : item.name;
                     return (
-                      <div key={idx} className="spotlight-card p-8 rounded-3xl space-y-4 flex flex-col justify-between border border-gray-200/80">
+                      <div key={idx} className="p-6 rounded-2xl bg-white space-y-4 flex flex-col justify-between border border-neutral-200 hover:border-neutral-300 transition-colors">
                         <div className="space-y-3">
                           <div className="flex items-start space-x-3">
-                            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                            <h4 className="font-display text-xl sm:text-2xl font-bold text-[#09090b] leading-snug">{itemName}</h4>
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-1" />
+                            <h4 className="font-display text-xl font-bold text-ink leading-snug">{itemName}</h4>
                           </div>
-                          <p className="text-sm text-gray-700 font-normal leading-relaxed pl-8">
+                          <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pl-7">
                             Targeted meridian needle placement and neuro-vascular stimulation to address underlying qi stagnation and biological inflammation.
                           </p>
                         </div>
 
-                        <div className="pt-4 border-t border-gray-100 flex items-center justify-between pl-8">
+                        <div className="pt-4 border-t border-neutral-100 flex items-center justify-between pl-7">
                           <button
                             onClick={() => onOpenBooking(itemName, 600)}
-                            className="text-xs text-[#581c87] hover:text-black font-bold flex items-center space-x-1.5 transition-colors uppercase tracking-wider"
+                            className="text-xs text-brand hover:text-ink font-medium flex items-center space-x-1.5 transition-colors"
                           >
                             <span>Consult on this →</span>
                           </button>

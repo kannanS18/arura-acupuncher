@@ -23,14 +23,14 @@ export default function ContactPage({ onOpenBooking }) {
       <section className="relative pt-24 pb-20 border-b border-gray-200/80 bg-ambient-light overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#581c87] text-xs uppercase tracking-wider font-bold">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50/70 border border-pink-200/60 text-brand text-xs font-medium">
               <Navigation className="w-3.5 h-3.5" />
-              <span>Sanctuary Coordinates</span>
+              <span>Sanctuary coordinates</span>
             </div>
             
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
               Visit Arura Studio <br />
-              <span className="text-gradient-luxury">in Chennai</span>
+              <span className="text-brand">in Chennai</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
@@ -150,36 +150,36 @@ export default function ContactPage({ onOpenBooking }) {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label className="text-xs uppercase tracking-wider text-gray-700 font-semibold">Your Full Name</label>
+                        <label className="text-xs text-neutral-600 font-medium">Your full name</label>
                         <input
                           type="text"
                           required
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           placeholder="e.g. Ramesh Kumar"
-                          className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#09090b] placeholder-gray-400 text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-[#09090b] placeholder-neutral-400 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs uppercase tracking-wider text-gray-700 font-semibold">Phone Number (WhatsApp)</label>
+                        <label className="text-xs text-neutral-600 font-medium">Phone number (WhatsApp)</label>
                         <input
                           type="tel"
                           required
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           placeholder="+91 98765 43210"
-                          className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#09090b] placeholder-gray-400 text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-[#09090b] placeholder-neutral-400 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-xs uppercase tracking-wider text-gray-700 font-semibold">Preferred Clinical Service</label>
+                      <label className="text-xs text-neutral-600 font-medium">Preferred clinical service</label>
                       <select
                         value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#09090b] text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-[#09090b] text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink"
                       >
                         <option>Diagnostic Clinical Consultation (₹600)</option>
                         <option>Clinical Acupuncture Session (₹1,800)</option>
@@ -189,19 +189,19 @@ export default function ContactPage({ onOpenBooking }) {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-xs uppercase tracking-wider text-gray-700 font-semibold">Chief Health Concerns / Symptoms</label>
+                      <label className="text-xs text-neutral-600 font-medium">Chief health concerns / symptoms</label>
                       <textarea
                         rows={4}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Describe your symptoms (e.g. chronic sciatica, insomnia, knee arthritis, anxiety)..."
-                        className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#09090b] placeholder-gray-400 text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-[#09090b] placeholder-neutral-400 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full btn-luxury-dark py-4 rounded-xl text-sm font-semibold tracking-wider flex items-center justify-center space-x-2 shadow-lg"
+                      className="w-full px-6 py-3.5 rounded-full bg-ink text-white font-medium text-xs hover:bg-neutral-800 transition-colors flex items-center justify-center space-x-2"
                     >
                       <Send className="w-4 h-4" />
                       <span>Submit Appointment Request</span>

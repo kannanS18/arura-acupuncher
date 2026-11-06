@@ -89,13 +89,13 @@ export default function PricingPage({ onOpenBooking }) {
       <section className="relative pt-24 pb-20 border-b border-gray-200/80 bg-ambient-light overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#581c87] text-xs uppercase tracking-wider font-bold">
-              <span>Transparent Clinical Pricing</span>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white border border-neutral-200 text-neutral-600 text-xs font-medium">
+              <span>Transparent clinical pricing</span>
             </div>
             
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
               Transparent Session Fees <br />
-              <span className="text-[#581c87]">& Treatment Investments</span>
+              <span className="text-brand">& Treatment Investments</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed max-w-2xl">
@@ -111,8 +111,8 @@ export default function PricingPage({ onOpenBooking }) {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200/80 pb-6">
             <div>
-              <span className="text-xs uppercase tracking-wider text-[#581c87] font-bold">
-                Direct Clinic Tariff
+              <span className="text-xs font-mono text-neutral-500">
+                Direct clinic tariff
               </span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b] mt-1">
                 Clinical Service Options
@@ -134,40 +134,40 @@ export default function PricingPage({ onOpenBooking }) {
                 }`}
               >
                 {tier.popular && (
-                  <div className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#581c87] text-white text-xs uppercase tracking-wider font-bold shadow-md">
-                    Most Requested
+                  <div className="absolute -top-3 right-6 px-3 py-0.5 rounded-full bg-brand text-white text-xs font-medium">
+                    Most requested
                   </div>
                 )}
 
                 <div className="space-y-5">
                   <div>
-                    <span className="text-xs uppercase tracking-wider text-[#581c87] font-bold block mb-1">
+                    <span className="text-xs font-medium text-brand block mb-1">
                       {tier.category}
                     </span>
                     <h3 className="font-display text-2xl font-bold text-[#09090b]">
                       {tier.name}
                     </h3>
-                    <div className="inline-flex items-center space-x-1.5 text-xs text-gray-600 mt-2 font-medium">
-                      <Clock className="w-3.5 h-3.5 text-[#581c87]" />
+                    <div className="inline-flex items-center space-x-1.5 text-xs text-neutral-500 mt-2 font-medium">
+                      <Clock className="w-3.5 h-3.5 text-neutral-400" />
                       <span>{tier.duration}</span>
                     </div>
                   </div>
 
                   <div className="font-display text-4xl sm:text-5xl text-[#09090b] font-bold tracking-tight border-b border-gray-100 pb-4">
                     {tier.price}
-                    <span className="text-xs text-gray-500 font-sans font-normal ml-2">/ session</span>
+                    <span className="text-xs text-neutral-500 font-sans font-normal ml-2">/ session</span>
                   </div>
 
-                  <p className="text-sm text-gray-700 font-normal leading-relaxed">
+                  <p className="text-sm text-neutral-600 font-normal leading-relaxed">
                     {tier.description}
                   </p>
 
                   <div className="space-y-2.5 pt-2">
-                    <span className="text-xs uppercase tracking-wider text-gray-500 font-bold block">
-                      What is Included:
+                    <span className="text-xs font-medium text-neutral-500 block">
+                      What is included:
                     </span>
                     {tier.deliverables.map((item, idx) => (
-                      <div key={idx} className="flex items-start space-x-2 text-xs text-gray-800 leading-snug">
+                      <div key={idx} className="flex items-start space-x-2 text-xs text-neutral-700 leading-snug">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </div>
@@ -178,10 +178,10 @@ export default function PricingPage({ onOpenBooking }) {
                 <div className="pt-4 border-t border-gray-100">
                   <button
                     onClick={() => onOpenBooking(tier.name, tier.fee)}
-                    className={`w-full py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center justify-center space-x-2 transition-all ${
+                    className={`w-full py-3.5 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition-colors ${
                       tier.popular
-                        ? 'btn-luxury-dark shadow-md'
-                        : 'btn-luxury-outline hover:bg-gray-100'
+                        ? 'bg-ink text-white hover:bg-neutral-800'
+                        : 'border border-neutral-300 text-ink hover:bg-neutral-50'
                     }`}
                   >
                     <span>{tier.ctaText}</span>
@@ -196,17 +196,17 @@ export default function PricingPage({ onOpenBooking }) {
       </section>
 
       {/* Clinical Preparation: DOs and DON'Ts from Official Documentation */}
-      <section className="py-20 lg:py-28 bg-[#f8fafc] border-b border-gray-200/80">
+      <section className="py-20 lg:py-28 bg-[#f8fafc] border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="max-w-2xl space-y-3">
-            <span className="text-xs uppercase tracking-wider text-[#581c87] font-bold">
-              Patient Guidelines
+            <span className="text-xs text-brand font-medium">
+              Patient guidelines
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b]">
-              Preparing for Your Treatment Session
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#09090b] tracking-tight">
+              Preparing for your treatment session
             </h2>
-            <p className="text-base text-gray-600 font-normal">
+            <p className="text-base text-neutral-600 font-normal">
               Follow these simple clinical instructions from Dr. Nivedha to ensure maximum therapeutic benefit.
             </p>
           </div>
@@ -214,34 +214,34 @@ export default function PricingPage({ onOpenBooking }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             {/* DOs */}
-            <div className="p-8 rounded-3xl bg-white border border-emerald-200 shadow-sm space-y-6">
-              <div className="flex items-center space-x-3 text-emerald-800 border-b border-emerald-100 pb-4">
-                <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                <h3 className="font-display text-2xl font-bold">Recommended Clinical DOs</h3>
+            <div className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6">
+              <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <h3 className="font-display text-xl font-bold">Recommended clinical DOs</h3>
               </div>
 
               <div className="space-y-4">
                 {DOS_DONTS.dos.map((item, idx) => (
                   <div key={idx} className="space-y-1">
-                    <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">{item.desc}</p>
+                    <h4 className="text-sm font-semibold text-neutral-900">{item.title}</h4>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">{item.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* DONTs */}
-            <div className="p-8 rounded-3xl bg-white border border-amber-200 shadow-sm space-y-6">
-              <div className="flex items-center space-x-3 text-amber-900 border-b border-amber-100 pb-4">
-                <AlertCircle className="w-6 h-6 text-amber-600" />
-                <h3 className="font-display text-2xl font-bold">Important Precautions (DON'Ts)</h3>
+            <div className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6">
+              <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
+                <AlertCircle className="w-5 h-5 text-neutral-400" />
+                <h3 className="font-display text-xl font-bold">Important precautions (DON'Ts)</h3>
               </div>
 
               <div className="space-y-4">
                 {DOS_DONTS.donts.map((item, idx) => (
                   <div key={idx} className="space-y-1">
-                    <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">{item.desc}</p>
+                    <h4 className="text-sm font-semibold text-neutral-900">{item.title}</h4>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -258,25 +258,25 @@ export default function PricingPage({ onOpenBooking }) {
           <h3 className="font-display text-2xl font-bold text-[#09090b]">
             Need help choosing the right treatment?
           </h3>
-          <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto font-normal">
+          <p className="text-sm sm:text-base text-neutral-600 max-w-xl mx-auto font-normal">
             Speak directly with Dr. Nivedha's clinic desk at Virugambakkam to discuss your medical condition.
           </p>
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
             <a
               href={`tel:${CLINIC_INFO.phone}`}
-              className="btn-luxury-outline px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2"
+              className="px-6 py-3 rounded-full border border-neutral-300 text-xs text-ink font-medium hover:bg-neutral-50 inline-flex items-center space-x-2 transition-colors"
             >
-              <PhoneCall className="w-4 h-4 text-[#581c87]" />
+              <PhoneCall className="w-4 h-4 text-brand" />
               <span>Call {CLINIC_INFO.phone}</span>
             </a>
             <a
               href={CLINIC_INFO.whatsappLink}
               target="_blank"
               rel="noreferrer"
-              className="btn-luxury-dark px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center space-x-2"
+              className="px-6 py-3 rounded-full bg-ink text-white text-xs font-medium hover:bg-neutral-800 inline-flex items-center space-x-2 transition-colors"
             >
               <MessageCircle className="w-4 h-4 text-emerald-400" />
-              <span>WhatsApp Concierge</span>
+              <span>WhatsApp concierge</span>
             </a>
           </div>
         </div>

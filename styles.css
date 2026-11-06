@@ -2,20 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
 
 :root {
-  --brand-purple: #66478d;
-  --brand-purple-dark: #4b2f6b;
-  --brand-purple-light: #7e5ea6;
-  --brand-magenta: #ed3373;
-  --brand-magenta-dark: #c91e5c;
-  --brand-coral: #ed3b61;
-  --brand-gradient: linear-gradient(135deg, #66478d 0%, #ed3373 100%);
-  --brand-gradient-horizontal: linear-gradient(90deg, #66478d 0%, #a43a85 50%, #ed3373 100%);
-  --brand-gradient-subtle: linear-gradient(135deg, rgba(102, 71, 141, 0.08) 0%, rgba(237, 51, 115, 0.08) 100%);
-  --brand-gradient-glow: radial-gradient(circle, rgba(237, 51, 115, 0.15) 0%, rgba(102, 71, 141, 0.05) 50%, transparent 70%);
-  --bg-page: #faf8fb;
-  --text-main: #1f232e;
-  --text-muted: #647087;
-  --card-border: rgba(102, 71, 141, 0.12);
+  --brand-pink: #ed3373;
+  --brand-pink-dark: #c91e5c;
+  --brand-pink-subtle: rgba(237, 51, 115, 0.08);
+  --brand-gradient: linear-gradient(135deg, #18181b 0%, #ed3373 100%);
+  --brand-gradient-horizontal: linear-gradient(90deg, #ed3373 0%, #ff4e8c 100%);
+  --brand-gradient-subtle: linear-gradient(135deg, rgba(237, 51, 115, 0.05) 0%, rgba(237, 51, 115, 0.12) 100%);
+  --brand-gradient-glow: radial-gradient(circle, rgba(237, 51, 115, 0.18) 0%, transparent 70%);
+  --bg-page: #fafafa;
+  --text-main: #09090b;
+  --text-muted: #71717a;
+  --card-border: rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -129,4 +126,20 @@ body {
 
 .animate-soft-pulse {
   animation: softPulse 3s infinite ease-in-out;
+}
+
+/* Smooth zoom-in dive transition into 3D tissue strata */
+@keyframes strataFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-strata-in {
+  animation: strataFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

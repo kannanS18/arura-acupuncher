@@ -7,6 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: {
+          DEFAULT: '#e02868',
+          foreground: '#ffffff',
+        },
+        background: '#ffffff',
+        foreground: '#09090b',
+        muted: {
+          DEFAULT: '#f4f4f5',
+          foreground: '#64748b',
+        },
         brand: {
           DEFAULT: '#e02868',
           dark: '#c21e54',
@@ -75,5 +85,7 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
 }

@@ -14,6 +14,7 @@ import ClinicPage from './pages/ClinicPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import BookingPage from './pages/BookingPage';
+import CounsellingPage from './pages/CounsellingPage';
 
 // Lazy-loaded dedicated 3D interactive science lab (code-split from main bundle)
 const HowAcupunctureWorksPage = React.lazy(() => import('./pages/HowAcupunctureWorksPage'));
@@ -69,14 +70,8 @@ function AppLayout({ onOpenBooking, isBookingOpen, onCloseBooking, selectedServi
                 </React.Suspense>
               } 
             />
+            <Route path="/counselling" element={<CounsellingPage onOpenBooking={onOpenBooking} />} />
             <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
-
-            {/* Seamless redirects for legacy paths to consolidated pages */}
-            <Route path="/therapist" element={<Navigate to="/doctor" replace />} />
-            <Route path="/pricing" element={<Navigate to="/clinic" replace />} />
-            <Route path="/acupuncture" element={<Navigate to="/clinic" replace />} />
-            <Route path="/disorders" element={<Navigate to="/about" replace />} />
-            <Route path="/counselling" element={<Navigate to="/clinic" replace />} />
             <Route path="/safety" element={<Navigate to="/clinic" replace />} />
             <Route path="/faqs" element={<Navigate to="/clinic" replace />} />
             <Route path="/contact" element={<Navigate to="/booking" replace />} />

@@ -5,9 +5,19 @@
 @tailwind utilities;
 
 :root {
-  --color-brand: #e02868;
-  --color-brand-muted: rgba(224, 40, 104, 0.1);
-  --color-violet: #581c87;
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --primary: #ed3373;
+  --primary-foreground: #ffffff;
+  --muted: #f4f4f5;
+  --muted-foreground: #64748b;
+  --border: rgba(15, 23, 42, 0.08);
+  --ring: #ed3373;
+
+  --color-brand: #ed3373;
+  --color-brand-muted: rgba(237, 51, 115, 0.08);
   --color-charcoal: #09090b;
   --color-surface: #ffffff;
   --color-bone: #f8fafc;
@@ -56,6 +66,15 @@ body {
 
 .animate-marquee-continuous:hover {
   animation-play-state: paused;
+}
+
+@keyframes ui-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 * {
@@ -311,5 +330,44 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@theme inline {
+  @keyframes ui-col-in {
+  from {
+    max-width: 0;
+    opacity: 0;
+    }
+  to {
+    max-width: 1em;
+    opacity: 1;
+    }
+  }
+  @keyframes ui-col-out {
+  from {
+    max-width: 1em;
+    opacity: 1;
+    }
+  to {
+    max-width: 0;
+    opacity: 0;
+    }
+  }
+  @keyframes ui-fade-in {
+  from {
+    opacity: 0;
+    }
+  to {
+    opacity: 1;
+    }
+  }
+  @keyframes ui-ring-fill {
+  from {
+    stroke-dashoffset: var(--ui-ring);
+    }
+  to {
+    stroke-dashoffset: 0;
+    }
   }
 }

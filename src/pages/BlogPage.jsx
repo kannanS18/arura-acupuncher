@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Clock, BookOpen, Search, Calendar, User, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../data/blogData';
-import MeridianPulseWave from '../components/MeridianPulseWave';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -76,11 +75,6 @@ export default function BlogPage() {
               className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 shadow-sm transition-colors"
             />
           </motion.div>
-        </div>
-
-        {/* Biological Meridian Pulse Line Divider */}
-        <div className="pt-8">
-          <MeridianPulseWave color="#e02868" />
         </div>
       </section>
 

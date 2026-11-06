@@ -4,16 +4,16 @@ import { TESTIMONIALS_DATA } from '../data/websiteContent';
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimonials" className="py-24 bg-[#faf8fb]">
+    <section id="testimonials" className="py-24 bg-neutral-50/60 border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mb-16 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#581c87]">Patient Stories</span>
-          <h2 className="text-3xl sm:text-5xl font-bold text-[#161820] font-display">
-            Words From Those <br />
-            <span className="italic text-[#66478d]">We Have Had the Privilege to Heal.</span>
+          <span className="text-xs font-medium text-brand">Patient stories</span>
+          <h2 className="text-3xl sm:text-5xl font-bold text-ink font-display tracking-tight">
+            Words from those <br />
+            <span className="text-neutral-500 font-normal">we have had the privilege to heal</span>
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed pt-2">
+          <p className="text-neutral-600 text-sm sm:text-base leading-relaxed pt-2">
             Real testimonies from Chennai residents whose lives were transformed by compassionate acupuncture and counseling.
           </p>
         </div>
@@ -23,29 +23,29 @@ export default function TestimonialsSection() {
           {TESTIMONIALS_DATA.map((t, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-3xl p-8 sm:p-10 border border-[#ede7f3] hover:border-[#581c87] transition-all shadow-sm hover:shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden group"
+              className="bg-white rounded-2xl p-8 sm:p-10 border border-neutral-200 hover:border-neutral-300 transition-colors flex flex-col justify-between space-y-6 relative overflow-hidden group"
             >
-              <Quote className="w-16 h-16 text-[#66478d]/10 absolute -top-2 -right-2 pointer-events-none group-hover:text-[#581c87]/15 transition-colors" />
+              <Quote className="w-16 h-16 text-neutral-200/50 absolute -top-2 -right-2 pointer-events-none group-hover:text-neutral-200 transition-colors" />
               
               <div className="space-y-4 relative z-10">
                 <div className="flex items-center space-x-2">
-                  <span className="text-amber-400 text-sm font-bold tracking-wider">★★★★★</span>
-                  <span className="text-[11px] text-[#581c87] font-bold px-2 py-0.5 rounded-full bg-pink-50">
+                  <span className="text-amber-500 text-sm font-medium tracking-wide">★★★★★</span>
+                  <span className="text-xs text-brand font-medium px-2 py-0.5 rounded-full bg-pink-50/70 border border-pink-200/50">
                     {t.tag}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-700 font-display italic leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed font-normal">
                   "{t.text}"
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center space-x-3 relative z-10">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#66478d] to-[#581c87] text-white font-display font-bold text-sm flex items-center justify-center shadow-md">
+              <div className="pt-4 border-t border-neutral-100 flex items-center space-x-3 relative z-10">
+                <div className="w-10 h-10 rounded-full bg-ink text-white font-medium text-sm flex items-center justify-center">
                   {t.name.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-xs text-gray-900">{t.name}</h4>
-                  <p className="text-[11px] text-gray-400">{t.location} • Verified Patient</p>
+                  <h4 className="font-semibold text-xs text-neutral-900">{t.name}</h4>
+                  <p className="text-[11px] text-neutral-500">{t.location} • Verified patient</p>
                 </div>
               </div>
             </div>

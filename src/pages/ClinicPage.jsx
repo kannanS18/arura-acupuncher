@@ -4,14 +4,15 @@ import { Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, MapPin, Phon
 import { CLINIC_INFO, DOS_DONTS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
-import MeridianPulseWave from '../components/MeridianPulseWave';
 import StackedCards from '../components/ui/glass-cards';
+import { CardDeck } from '../components/card-deck';
+import FaqSection from '../components/FaqSection';
 
 export default function ClinicPage({ onOpenBooking }) {
   const clinicalTreatments = [
     {
-      id: 1,
-      code: "MED-01",
+      id: "1",
+      code: "01 / 04",
       title: "Initial Diagnostic Consultation & Pulse Mapping",
       subtitle: "First Visit Clinical Assessment",
       duration: "30 – 45 mins",
@@ -30,8 +31,8 @@ export default function ClinicPage({ onOpenBooking }) {
       color: "rgba(224, 40, 104, 0.8)"
     },
     {
-      id: 2,
-      code: "MED-02",
+      id: "2",
+      code: "02 / 04",
       title: "Targeted Acupuncture Therapy",
       subtitle: "Meridian Pain & Autonomic Regulation",
       duration: "25 mins (Daily Cap: 50 Patients)",
@@ -50,8 +51,8 @@ export default function ClinicPage({ onOpenBooking }) {
       color: "rgba(5, 150, 105, 0.8)"
     },
     {
-      id: 3,
-      code: "MED-03",
+      id: "3",
+      code: "03 / 04",
       title: "Clinical Psychotherapy Session",
       subtitle: "Cognitive & Emotional Equilibrium",
       duration: "50 mins",
@@ -70,8 +71,8 @@ export default function ClinicPage({ onOpenBooking }) {
       color: "rgba(88, 28, 135, 0.8)"
     },
     {
-      id: 4,
-      code: "MED-04",
+      id: "4",
+      code: "04 / 04",
       title: "Integrated Mind-Body Dual Session",
       subtitle: "Psychotherapy + Full Precision Needling",
       duration: "75 – 90 mins",
@@ -126,15 +127,113 @@ export default function ClinicPage({ onOpenBooking }) {
             </motion.p>
           </div>
         </div>
-
-        {/* Biological Meridian Pulse Line Divider */}
-        <div className="pt-6">
-          <MeridianPulseWave color="#e02868" />
-        </div>
       </section>
 
-      {/* 2. Clinical Treatments: Stacking Electric Glass Cards (GSAP) */}
-      <StackedCards items={clinicalTreatments} onOpenBooking={onOpenBooking} />
+      {/* 2. Clinical Treatments */}
+      {/* Desktop Version: Stacking Electric Glass Cards (GSAP) */}
+      <div className="hidden md:block">
+        <StackedCards items={clinicalTreatments} onOpenBooking={onOpenBooking} />
+      </div>
+
+      {/* Mobile Version: Tactile Hairline UI CardDeck */}
+      <section className="block md:hidden py-12 bg-surface-subtle border-b border-gray-200/80 overflow-hidden">
+        <div className="max-w-md mx-auto px-4 space-y-6">
+          <div className="text-center space-y-1.5">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-600 bg-white border border-neutral-200 px-3 py-1 rounded-full shadow-2xs">
+              Interactive clinical modalities
+            </span>
+            <h2 className="font-display text-2xl font-bold text-ink">
+              Clinical Treatments
+            </h2>
+            <p className="text-xs text-gray-500 max-w-xs mx-auto">
+              Swipe or flick cards to explore Dr. Nivedha's clinical therapies in sequence.
+            </p>
+          </div>
+
+          <CardDeck
+            items={clinicalTreatments}
+            height={490}
+            label="Clinical treatments deck"
+            renderCard={(treatment) => (
+              <div className="h-full flex flex-col justify-between bg-white text-ink select-none relative overflow-hidden">
+                {/* Top Image Banner */}
+                <div className="relative h-44 w-full overflow-hidden bg-slate-900 shrink-0">
+                  <img
+                    src={getAssetUrl(treatment.image)}
+                    alt={treatment.title}
+                    className="w-full h-full object-cover opacity-90"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                  
+                  {/* Code Badge */}
+                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono tracking-wider bg-black/60 text-white backdrop-blur-md border border-white/20">
+                    {treatment.code}
+                  </span>
+
+                  {/* Fee Badge */}
+                  <span className="absolute top-3 right-3 px-3 py-0.5 rounded-full text-xs font-bold bg-brand text-white shadow-sm">
+                    {treatment.fee}
+                  </span>
+
+                  {/* Subtitle & Duration on Image */}
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+                    <span className="font-semibold text-white/95 text-[11px] truncate">
+                      {treatment.badge}
+                    </span>
+                    <span className="text-[11px] text-white/80 shrink-0 font-medium flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-white/70" />
+                      {treatment.duration}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                  <div>
+                    <h3 className="font-display text-base font-bold text-ink leading-snug line-clamp-2">
+                      {treatment.title}
+                    </h3>
+                    <p className="text-[11.5px] text-gray-600 line-clamp-2 mt-1 leading-relaxed">
+                      {treatment.summary}
+                    </p>
+                  </div>
+
+                  {/* Key Clinical Features */}
+                  <div className="space-y-1.5 pt-2 border-t border-gray-100">
+                    {treatment.features.slice(0, 3).map((feat, fIdx) => (
+                      <div key={fIdx} className="flex items-center gap-1.5 text-[11px] text-gray-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-brand shrink-0" />
+                        <span className="truncate">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Action Booking Button */}
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      data-deck-no-drag
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onOpenBooking) {
+                          onOpenBooking(treatment.title, treatment.feeNum);
+                        } else {
+                          window.location.hash = '#/booking';
+                        }
+                      }}
+                      className="w-full py-2.5 px-3 rounded-xl bg-ink text-white hover:bg-brand text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer active:scale-95"
+                    >
+                      <span>Reserve Session ({treatment.fee})</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          />
+        </div>
+      </section>
 
       {/* 3. Patient Guidelines: DOs and DON'Ts */}
       <section className="py-20 lg:py-24 bg-surface-subtle border-b border-gray-200/80">
@@ -162,17 +261,17 @@ export default function ClinicPage({ onOpenBooking }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="p-8 rounded-3xl bg-white border border-emerald-200 shadow-xs space-y-6"
+              className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6"
             >
-              <div className="flex items-center space-x-3 text-emerald-800 border-b border-emerald-100 pb-4">
-                <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                <h3 className="font-display text-xl sm:text-2xl font-bold">Clinical DOs</h3>
+              <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <h3 className="font-display text-xl font-bold">Clinical DOs</h3>
               </div>
               <div className="space-y-4">
                 {DOS_DONTS.dos.map((d, idx) => (
                   <div key={idx} className="space-y-1">
-                    <h4 className="text-sm font-bold text-gray-900">{d.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{d.desc}</p>
+                    <h4 className="text-sm font-semibold text-neutral-900">{d.title}</h4>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">{d.desc}</p>
                   </div>
                 ))}
               </div>
@@ -184,17 +283,17 @@ export default function ClinicPage({ onOpenBooking }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="p-8 rounded-3xl bg-white border border-amber-200 shadow-xs space-y-6"
+              className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6"
             >
-              <div className="flex items-center space-x-3 text-amber-900 border-b border-amber-100 pb-4">
-                <AlertCircle className="w-6 h-6 text-amber-600" />
-                <h3 className="font-display text-xl sm:text-2xl font-bold">Clinical DON’Ts</h3>
+              <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
+                <AlertCircle className="w-5 h-5 text-neutral-400" />
+                <h3 className="font-display text-xl font-bold">Clinical DON’Ts</h3>
               </div>
               <div className="space-y-4">
                 {DOS_DONTS.donts.map((d, idx) => (
                   <div key={idx} className="space-y-1">
-                    <h4 className="text-sm font-bold text-gray-900">{d.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{d.desc}</p>
+                    <h4 className="text-sm font-semibold text-neutral-900">{d.title}</h4>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">{d.desc}</p>
                   </div>
                 ))}
               </div>
@@ -204,7 +303,10 @@ export default function ClinicPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* 4. Clinic Sanctuary Location & Immediate Booking Card */}
+      {/* 4. Hairline UI FAQ Knowledge Section */}
+      <FaqSection />
+
+      {/* 5. Clinic Sanctuary Location & Immediate Booking Card */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -212,20 +314,20 @@ export default function ClinicPage({ onOpenBooking }) {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-ink text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl"
+            className="bg-ink text-white rounded-2xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 border border-neutral-800"
           >
             <div className="space-y-3 text-center md:text-left">
               <h3 className="font-display text-2xl sm:text-3xl font-bold">
                 {CLINIC_INFO.address}
               </h3>
-              <p className="text-sm text-gray-300 font-normal max-w-lg">
+              <p className="text-sm text-neutral-300 font-normal max-w-lg">
                 Daily clinical consultations from 10:00 AM to 8:00 PM. Prior appointment booking required to preserve private acoustic suite confidentiality.
               </p>
             </div>
 
             <Link
               to="/booking"
-              className="btn-shimmer px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl"
+              className="px-6 py-3 rounded-full text-xs font-medium bg-brand text-white hover:bg-brand-dark whitespace-nowrap transition-colors"
             >
               Book In-Clinic Session (₹600)
             </Link>

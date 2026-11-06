@@ -1,160 +1,118 @@
-import React from 'react';
-import { CalendarCheck, MessageCircle, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { HeroSection } from './ui/hero-section-2';
 import { CLINIC_INFO } from '../data/websiteContent';
-import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
+import { Zap, Waves } from 'lucide-react';
 import { motion } from 'framer-motion';
-import AnimatedCounter from './AnimatedCounter';
 
-export default function HeroSection({ onOpenBooking }) {
+// 14-Meridian Presets with matching imagery & resonance
+const MERIDIAN_PRESETS = [
+  {
+    id: 'cervical',
+    condition: 'Cervical Spondylosis',
+    frequency: '0.15 Hz Vagal Wave',
+    image: getAssetUrl('hero_acupuncture_sanctuary.jpg'),
+    focus: 'Decompresses C5–C7 cervical nerve roots and releases trapezius hypertonia.'
+  },
+  {
+    id: 'migraine',
+    condition: 'Migraine Syndromes',
+    frequency: '0.22 Hz Cranial Calm',
+    image: getAssetUrl('acupuncture_session.jpg'),
+    focus: 'Downregulates trigeminovascular nociception via GB-20 & Taiyang acupoints.'
+  },
+  {
+    id: 'burnout',
+    condition: 'Autonomic Burnout',
+    frequency: '0.10 Hz Parasympathetic',
+    image: getAssetUrl('zen_treatment.jpg'),
+    focus: 'Activates parasympathetic vagal recovery and regulates Shen exhaustion.'
+  },
+  {
+    id: 'nerve',
+    condition: 'Chronic Nerve Pain',
+    frequency: '0.18 Hz Neural Reset',
+    image: getAssetUrl('clinic_interior.jpg'),
+    focus: 'Discharges myofascial trigger nodes with 0.18mm pre-sterilized single-use needles.'
+  }
+];
+
+export default function HeroSectionWrapper({ onOpenBooking }) {
+  const [activePreset, setActivePreset] = useState(MERIDIAN_PRESETS[0]);
+
   return (
-    <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 bg-white text-ink overflow-hidden border-b border-neutral-200/80">
-      
-      {/* Minimalist Medical Pulse Line Divider */}
-      <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-15 pointer-events-none overflow-hidden" aria-hidden="true">
-        <svg viewBox="0 0 1200 120" className="w-full h-20 text-brand" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-          <path 
-            className="animate-meridian-wave" 
-            d="M0,60 L300,60 L330,60 L345,20 L360,100 L375,45 L390,75 L405,60 L700,60 L730,60 L745,20 L760,100 L775,45 L790,75 L805,60 L1200,60" 
-          />
-        </svg>
-      </div>
+    <div className="relative w-full bg-background overflow-hidden">
+      <HeroSection
+        badge="ARURA WELLNESS STUDIO • VIRUGAMBAKKAM, CHENNAI"
+        logo={{
+          url: getAssetUrl("logo.png"),
+          alt: "Arura Wellness Studio",
+          text: "ARURA WELLNESS STUDIO"
+        }}
+        slogan="CLASSICAL 14-MERIDIAN ACUPUNCTURE & PSYCHOTHERAPY"
+        words={[
+          { text: "Classical" },
+          { text: "14-meridian" },
+          { text: "acupuncture" },
+          { text: "&" },
+          { text: "psychological", highlight: true },
+          { text: "therapy", highlight: true },
+        ]}
+        title="Classical 14-meridian acupuncture & psychological therapy"
+        subtitle="Led by Dr. Nivedha Priyadharshini, MD (Acu). Dedicated 1-on-1 clinical consultations for chronic nerve pain, migraine syndromes, cervical spondylosis, and autonomic burnout. 0.18mm pre-sterilized single-use needles in private acoustic suites."
+        callToAction={{
+          text: "Book Priority Consultation (₹600)",
+          href: "#/booking",
+          onClick: onOpenBooking,
+        }}
+        secondaryAction={{
+          text: "WhatsApp Clinic Concierge",
+          href: CLINIC_INFO.whatsappLink,
+          icon: (
+            <svg className="h-4 w-4 text-emerald-500 fill-current shrink-0" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.711 1.457h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.404z"/>
+            </svg>
+          )
+        }}
+        backgroundImage={activePreset.image}
+        floatingBadge={{
+          title: "Virugambakkam Acoustic Suite",
+          subtitle: `${activePreset.frequency} • ${activePreset.condition}`
+        }}
+        contactInfo={{
+          website: "arura.in • Daily 10AM–8PM",
+          phone: "+91 73580 31752",
+          address: "No 45A, Vaikasi St, Chinmaya Nagar",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* Left Column (7 cols): Aesthetic Minimalist Narrative */}
-          <motion.div 
-            className="lg:col-span-7 space-y-8"
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            
-            {/* Authentic Clinical Subtitle (No AI pill badge) */}
-            <motion.div 
-              className="flex items-center space-x-3 text-xs text-neutral-500 font-medium"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-            >
-              <span className="text-brand font-semibold">Arura Studio</span>
-              <span className="text-neutral-300">/</span>
-              <span>Virugambakkam, Chennai</span>
-              <span className="text-neutral-300">/</span>
-              <span className="text-neutral-700">Classical 14-Meridian Medicine</span>
-            </motion.div>
-
-            {/* Confident Modern Human-Crafted Headline */}
-            <motion.div 
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.7 }}
-            >
-              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
-                Heal the root cause, <br />
-                <span className="text-brand">not just the symptom.</span>
-              </h1>
-              <p className="text-base sm:text-xl text-neutral-600 font-normal leading-relaxed max-w-xl">
-                Classical 14-meridian acupuncture and certified psychotherapy by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Restoring chronic nerve pain, severe migraines, and autonomic burnout in Virugambakkam.
-              </p>
-            </motion.div>
-
-            {/* Primary Action Buttons */}
-            <motion.div 
-              className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.7 }}
-            >
-              <Link
-                to="/booking"
-                className="px-8 py-4 rounded-2xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark flex items-center justify-center space-x-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-[0.98] shadow-sm"
-              >
-                <CalendarCheck className="w-4 h-4 text-white" />
-                <span>Book evaluation (₹600)</span>
-                <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
-              </Link>
-
-              <a
-                href={CLINIC_INFO.whatsappLink}
-                target="_blank"
-                rel="noreferrer"
-                className="px-7 py-4 rounded-2xl text-xs font-semibold bg-white text-neutral-800 border border-neutral-200 hover:border-emerald-600 hover:text-emerald-700 flex items-center justify-center space-x-2 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 motion-safe:active:scale-[0.98] shadow-xs"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
-                <span>WhatsApp concierge</span>
-              </a>
-            </motion.div>
-
-            {/* 3 Minimalist Trust Anchors */}
-            <motion.div 
-              className="pt-6 border-t border-neutral-200/80 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-neutral-500 font-medium"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.7 }}
-            >
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span><AnimatedCounter end={100} suffix="%" /> Single-use sterile needles</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-brand flex-shrink-0" />
-                <span><AnimatedCounter end={8} suffix="+ Yrs" /> clinical experience</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-neutral-700 flex-shrink-0" />
-                <span>Private acoustic suites</span>
-              </div>
-            </motion.div>
-
-          </motion.div>
-
-          {/* Right Column (5 cols): Framed Visual Artistry with Reveal */}
-          <motion.div 
-            className="lg:col-span-5"
-            initial={{ opacity: 0, scale: 0.97, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="relative rounded-3xl overflow-hidden border border-neutral-200/90 shadow-sm bg-surface-subtle group">
-              
-              <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-neutral-100">
-                <img 
-                  src={getAssetUrl('hero_acupuncture_sanctuary.jpg')} 
-                  alt="Authentic Gentle Acupuncture Treatment Session at Arura Wellness Sanctuary" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Architectural Caption Strip (Human-crafted museum/clinical layout) */}
-              <div className="p-5 bg-white border-t border-neutral-200/80 flex items-center justify-between text-xs">
-                <div>
-                  <h3 className="font-display text-sm font-bold text-ink">
-                    Classical 14-Meridian Needle Insertion
-                  </h3>
-                  <p className="text-neutral-500 text-[11px] mt-0.5 font-normal">
-                    0.18mm hair-thin needles · Aseptic single-use guarantee
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span className="text-brand font-semibold text-[11px] block">
-                    Virugambakkam Suite
-                  </span>
-                  <span className="text-neutral-500 text-[11px] tabular-nums font-medium">
-                    Daily 10:00 AM to 8:00 PM
-                  </span>
-                </div>
-              </div>
-
-            </div>
-          </motion.div>
-
+      {/* Interactive 14-Meridian Selector Strip positioned above bottom footer */}
+      <div className="border-t border-border/40 bg-pink-50/25 px-5 sm:px-8 lg:px-12 py-2.5 flex flex-wrap items-center justify-between gap-2.5 text-xs">
+        <div className="flex items-center gap-2 text-muted-foreground font-semibold">
+          <Waves className="w-3.5 h-3.5 text-primary" />
+          <span className="uppercase tracking-wider text-[11px]">Explore Clinical Meridian Pathways:</span>
         </div>
-
+        <div className="flex flex-wrap items-center gap-2">
+          {MERIDIAN_PRESETS.map((p) => {
+            const isSelected = activePreset.id === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setActivePreset(p)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all text-xs ${
+                  isSelected
+                    ? 'bg-primary text-white shadow-sm scale-105'
+                    : 'bg-white text-foreground hover:bg-pink-100/60 border border-border/60'
+                }`}
+              >
+                <Zap className={`w-3 h-3 ${isSelected ? 'text-white' : 'text-primary'}`} />
+                <span>{p.condition}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

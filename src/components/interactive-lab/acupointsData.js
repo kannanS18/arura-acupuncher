@@ -570,17 +570,17 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 10,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.2115,
-      0.038,
-      0.0542
+      0.2263,
+      0.0395,
+      0.0652
     ],
     "surfaceNormal": [
-      -0.831,
-      0.42,
-      0.366
+      0.024,
+      0.727,
+      0.686
     ],
     "badgeOffset": [
-      0.08,
+      0.05,
       0.03,
       0.03
     ],
@@ -607,17 +607,17 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.5–0.8 cun",
     "modelPos": [
-      0.248,
+      0.2599,
       0.0192,
-      0.0614
+      0.0294
     ],
     "surfaceNormal": [
-      0.731,
-      0.307,
-      0.61
+      0.959,
+      0.276,
+      -0.058
     ],
     "badgeOffset": [
-      0.09,
+      0.05,
       0.02,
       0.03
     ],
@@ -644,18 +644,18 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      0.1659,
-      -0.0109,
-      0.0104
+      0.1632,
+      -0.0073,
+      0.0222
     ],
     "surfaceNormal": [
-      0.987,
-      0.098,
-      0.125
+      0.959,
+      0.088,
+      0.268
     ],
     "badgeOffset": [
-      0.03,
-      -0.05,
+      -0.03,
+      -0.03,
       0.03
     ],
     "painName": "Restless Insomnia & Cardiac Palpitations",
@@ -681,19 +681,19 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 12,
     "depthCun": "0.5–1.0 cun",
     "modelPos": [
-      0.2271,
-      -0.0371,
-      0.0057
+      0.2246,
+      -0.0475,
+      0.0344
     ],
     "surfaceNormal": [
-      -0.828,
-      0.388,
-      0.406
+      -0.277,
+      0.705,
+      0.653
     ],
     "badgeOffset": [
-      0.07,
-      -0.07,
-      0.04
+      0.04,
+      -0.04,
+      0.03
     ],
     "painName": "Trigeminal Facial Spasm & TMJ Jaw Clenching",
     "nerves": "Superficial Radial Nerve",

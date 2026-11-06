@@ -1,169 +1,391 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { HeartPulse, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  ArrowRight, 
+  Sparkles, 
+  Clock, 
+  CheckCircle2, 
+  ShieldCheck, 
+  Zap, 
+  Activity, 
+  ArrowUpRight,
+  Stethoscope,
+  Waves
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getAssetUrl } from '../utils/assetUrl';
 
-const CLINICAL_ZONES = [
+// 6 Signature 14-Meridian Clinical Pathways with Dedicated Images and Visual Specs
+const PATHWAYS = [
   {
     id: '01',
-    roman: 'I',
-    name: 'Cranial & Facial Nervous System',
-    points: 'GV20 (Baihui) • Taiyang • Yintang',
-    clears: 'Chronic Migraines, Tension Headaches & Severe Insomnia',
-    relief: '92% Relief in 4 Sessions',
-    protocol: '0.18mm Hair-Thin Calming Needles',
-    acupoints: ['GV20 Crown', 'GB20 Wind Pool', 'Yintang Third Eye']
+    code: 'PATHWAY 01',
+    category: 'Cranial & Vagal',
+    title: 'Cranial & Facial Nervous System',
+    subtitle: 'Chronic Migraines, Cluster Headaches & Insomnia',
+    relief: '3–4 Sessions to Long-Term Relief',
+    image: getAssetUrl('hero_acupuncture_sanctuary.jpg'),
+    description: 'Directly downregulates the hyperactive trigeminovascular sensory loop, decreasing neurogenic CGRP release and stopping cranial arterial spasm at the root.',
+    spec: '0.18mm hair-thin calming needles · Shallow sensory de-afferentation',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'GV-20', name: 'Baihui', role: 'Intracranial pressure regulation & Shen calm' },
+      { code: 'GB-20', name: 'Fengchi', role: 'Suboccipital arterial release for migraine arrest' },
+      { code: 'Taiyang', name: 'Extra Point', role: 'Immediate temporal muscle clench decompression' },
+      { code: 'Yintang', name: 'Third Eye', role: 'Vagal parasympathetic trigger for deep REM sleep' }
+    ],
+    milestones: [
+      'Session 1–2: Acute reduction in headache frequency & neck stiffness',
+      'Session 3–4: Restoration of restful sleep & sustained symptom cessation'
+    ]
   },
   {
     id: '02',
-    roman: 'II',
-    name: 'Cervical Spine, Neck & Shoulders',
-    points: 'GB21 (Jianjing) • BL10 • GV14 (Dazhui)',
-    clears: 'Cervical Spondylosis, Frozen Shoulder & Tech Neck Spasms',
-    relief: '88% Mobility Restored in 3 Sessions',
-    protocol: 'Acupuncture + Localized TDP Mineral Heat',
-    acupoints: ['GB21 Shoulder Well', 'GV14 Great Vertebra', 'SI11 Upper Back']
+    code: 'PATHWAY 02',
+    category: 'Spine & Nerves',
+    title: 'Cervical Spine, Neck & Trapezius',
+    subtitle: 'Cervical Spondylosis, Tech Neck & Arm Numbness',
+    relief: 'Mobility Restored in 3–5 Sessions',
+    image: getAssetUrl('acupuncture_session.jpg'),
+    description: 'Decompresses pinched C5–C7 cervical nerve roots, discharges deep myofascial trigger nodes in the trapezius, and relieves radiating arm tingling without surgery.',
+    spec: 'Trapezius myofascial release paired with localized TDP mineral infrared warmth',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'GB-21', name: 'Jianjing', role: 'Master release of chronic upper trapezius knotting' },
+      { code: 'GV-14', name: 'Dazhui', role: 'Cervico-thoracic junction nerve de-entrapment' },
+      { code: 'BL-10', name: 'Tianzhu', role: 'Suboccipital nerve exit decompression' },
+      { code: 'SI-11', name: 'Tianzong', role: 'Scapular glide & frozen shoulder rotation' }
+    ],
+    milestones: [
+      'Session 1–2: Discharge of deep trapezius knots & numbness cessation',
+      'Session 3–5: Full painless cervical rotation & posture stabilization'
+    ]
   },
   {
     id: '03',
-    roman: 'III',
-    name: 'Thoracic, Heart & Stress Regulation',
-    points: 'CV17 (Danzhong) • PC6 (Neiguan) • HT7',
-    clears: 'Panic Attacks, Somatic Chest Tightness & Autonomic Burnout',
-    relief: 'Immediate Vagus Nerve Relaxation',
-    protocol: 'Vagal Regulation + Cambridge Counselling',
-    acupoints: ['CV17 Chest Center', 'PC6 Inner Gate', 'HT7 Spirit Gate']
+    code: 'PATHWAY 03',
+    category: 'Cranial & Vagal',
+    title: 'Thoracic, Heart & Autonomic Vagal Calm',
+    subtitle: 'Panic Episodes, Somatic Chest Tightness & Burnout',
+    relief: 'Immediate Parasympathetic Shift',
+    image: getAssetUrl('zen_treatment.jpg'),
+    description: 'Stimulates the afferent vagus nerve (CN X) to trigger central acetylcholine release, shifting heart rate variability (HRV) from chronic fight-or-flight into restorative calm.',
+    spec: 'Gentle non-invasive sternal & median nerve acupuncture paired with integrative psychotherapy',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'PC-6', name: 'Neiguan', role: 'Vagus nerve cardiac soothing & anti-panic trigger' },
+      { code: 'HT-7', name: 'Shenmen', role: 'Downregulates cortisol hyper-arousal & racing thoughts' },
+      { code: 'CV-17', name: 'Danzhong', role: 'Decompresses diaphragm & expands respiratory ease' }
+    ],
+    milestones: [
+      'Session 1: Instant drop in resting heart rate and somatic chest easing',
+      'Session 2–4: Long-term autonomic resilience against chronic panic spikes'
+    ]
   },
   {
     id: '04',
-    roman: 'IV',
-    name: 'Gastrointestinal & Epigastric Health',
-    points: 'CV12 (Zhongwan) • ST36 (Zusanli) • ST25',
-    clears: 'Acid Reflux, IBS, Gastritis & Chronic Abdominal Bloating',
-    relief: 'Noticeable Ease Within 3 to 5 Sessions',
-    protocol: 'Meridian Needling + Warming Herb Moxa',
-    acupoints: ['CV12 Middle Cavity', 'ST36 Leg Three Miles', 'ST25 Pivot']
+    code: 'PATHWAY 04',
+    category: 'Internal Health',
+    title: 'Gastrointestinal & Epigastric Health',
+    subtitle: 'Acid Reflux (GERD), IBS & Chronic Bloating',
+    relief: 'Digestive Rhythm in 4–6 Sessions',
+    image: getAssetUrl('clinic_interior.jpg'),
+    description: 'Harmonizes the gut-brain axis through the dorsal vagal complex, balancing gastric acid secretions, improving mucosal perfusion, and normalizing smooth bowel motility.',
+    spec: 'Enteric nervous system harmonization paired with gentle micro-thermal moxibustion',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'ST-36', name: 'Zusanli', role: 'Master gastrointestinal motility & mucosal immunity' },
+      { code: 'CV-12', name: 'Zhongwan', role: 'Balances gastric acid & relaxes pyloric sphincter' },
+      { code: 'ST-25', name: 'Tianshu', role: 'Normalizes colon peristalsis for irritable bowel relief' }
+    ],
+    milestones: [
+      'Session 1–3: Elimination of post-meal acid flare-ups & epigastric burning',
+      'Session 4–6: Regular, pain-free bowel transit and gut barrier recovery'
+    ]
   },
   {
     id: '05',
-    roman: 'V',
-    name: 'Pelvic, Reproductive & Hormonal Axis',
-    points: 'CV4 (Guanyuan) • SP6 (Sanyinjiao) • Zigong',
-    clears: 'PCOS/PCOD, Severe Menstrual Cramps & Hormonal Fatigue',
-    relief: 'Clinically Stabilizes Cycles & Relieves Cramps',
-    protocol: 'Gentle Pelvic Needling + Thermal Moxibustion',
-    acupoints: ['CV4 Origin Gate', 'SP6 Three Yin', 'KI3 Great Ravine']
+    code: 'PATHWAY 05',
+    category: 'Internal Health',
+    title: 'Pelvic, Reproductive & Hormonal Axis',
+    subtitle: 'PCOS/PCOD Symptoms & Debilitating Period Pain',
+    relief: 'Hormonal Stabilization across 2 Cycles',
+    image: getAssetUrl('wellness_holistic.jpg'),
+    description: 'Modulates the hypothalamic-pituitary-ovarian (HPO) axis while enhancing micro-pelvic perfusion to relieve dysmenorrhea cramps and restore predictable menstrual rhythms.',
+    spec: 'Hypogastric neuro-vascular needling with targeted restorative thermal warmth',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'SP-6', name: 'Sanyinjiao', role: 'Master crossing of Spleen, Liver & Kidney meridians' },
+      { code: 'CV-4', name: 'Guanyuan', role: 'Increases ovarian arterial flow & uterine tone' },
+      { code: 'Zigong', name: 'Extra Point', role: 'Direct relief of pelvic floor spasms and cramping' }
+    ],
+    milestones: [
+      'Month 1: 50–70% drop in acute period pain and NSAID dependence',
+      'Month 2–3: Predictable ovulatory timing and regulated cycle flow'
+    ]
   },
   {
     id: '06',
-    roman: 'VI',
-    name: 'Lumbar Spine, Sciatic Nerve & Limbs',
-    points: 'BL23 (Shenshu) • GB30 (Huantiao) • BL40',
-    clears: 'Sciatica, Lumbar Disc Herniation & Radiating Nerve Pain',
-    relief: 'Rapid Pain Decompression (Avoids Surgery)',
-    protocol: 'Precision Needling + Micro-Current Electro-Stim',
-    acupoints: ['BL23 Kidney Shu', 'GB30 Jumping Circle', 'BL40 Crook']
+    code: 'PATHWAY 06',
+    category: 'Spine & Nerves',
+    title: 'Lumbar Spine, Sciatic Nerve & Lower Limbs',
+    subtitle: 'Sciatica, L4–S1 Nerve Pain & Disc Bulge Stiffness',
+    relief: 'Deep Decompression in 4–6 Sessions',
+    image: getAssetUrl('acu_treatment1.jpg'),
+    description: 'Releases chronic spasm in the piriformis and paraspinal muscles, un-clamping the sciatic nerve sheath and restoring pain-free standing, walking, and spinal flexion.',
+    spec: 'Precision deep-fascial needle guidance & non-convulsive micro-current wave therapy',
+    duration: '45–60 Mins',
+    fee: '₹600 / Session',
+    acupoints: [
+      { code: 'GB-30', name: 'Huantiao', role: 'Un-pinches sciatic nerve at the piriformis notch' },
+      { code: 'BL-23', name: 'Shenshu', role: 'Relaxes deep lumbar stabilizer muscle bands' },
+      { code: 'BL-40', name: 'Weizhong', role: 'Distal master release for entire posterior leg chain' }
+    ],
+    milestones: [
+      'Session 1–2: Interruption of radiating burning shock down the leg',
+      'Session 3–6: Pain-free sitting, bending, and unassisted walking'
+    ]
   }
 ];
 
 export default function InteractiveMeridianExplorer({ onOpenBooking }) {
+  const [activePathway, setActivePathway] = useState(PATHWAYS[0]);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
   return (
-    <div id="meridian-explorer" className="w-full bg-white text-ink">
+    <div id="meridian-explorer" className="w-full bg-white text-neutral-900 py-6">
       
-      {/* Section Header with Crisp Modern Typography */}
-      <motion.div 
-        initial={{ opacity: 0, y: 25 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-200 pb-8 mb-12"
+      {/* Header Section */}
+      <div className="max-w-3xl mx-auto text-center space-y-4 mb-10">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-50 border border-pink-200/80 text-xs font-semibold text-[#ed3373] tracking-wider uppercase font-mono">
+          <Sparkles className="w-3.5 h-3.5 text-[#ed3373]" />
+          <span>CLINICAL 14-MERIDIAN DIRECTORY</span>
+        </div>
+
+        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 tracking-tight leading-tight">
+          Anatomical Treatment Ledger
+        </h2>
+
+        <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl mx-auto">
+          Explore our six dedicated clinical pathways targeting chronic neuro-myofascial pain, migraine syndromes, and autonomic burnout at the root.
+        </p>
+      </div>
+
+      {/* Main 21st.dev Feature Showcase Stage */}
+      <div 
+        onMouseMove={handleMouseMove}
+        className="relative max-w-6xl mx-auto rounded-3xl border border-neutral-200/90 bg-white overflow-hidden shadow-[0_12px_40px_-8px_rgba(0,0,0,0.06)]"
       >
-        <div className="space-y-3">
-          <p className="text-xs font-semibold text-brand tracking-normal">
-            Targeted Clinical Pathways
-          </p>
-          <h2 className="font-display text-3xl sm:text-5xl font-bold text-ink tracking-tight">
-            Anatomical Treatment Zones
-          </h2>
-          <p className="text-sm sm:text-base text-neutral-600 font-normal max-w-2xl leading-relaxed">
-            Every zone is addressed with micro-precision needle placement to release trapped nerve fibers and restore systemic equilibrium.
-          </p>
-        </div>
+        {/* Subtle Ambient Mouse Spotlight following pointer (21st.dev effect) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-px opacity-40 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(237, 51, 115, 0.08), transparent 80%)`
+          }}
+        />
 
-        <div className="text-left md:text-right text-xs text-neutral-500 font-medium">
-          <span className="text-ink font-bold text-sm block">6 Dedicated Pathways</span>
-          <span>Curated by Dr. Nivedha (MD Acu)</span>
-        </div>
-      </motion.div>
-
-      {/* Architectural Ledger Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {CLINICAL_ZONES.map((zone, idx) => (
+        <AnimatePresence mode="wait">
           <motion.div
-            key={zone.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="group p-8 rounded-3xl bg-white border border-neutral-200 hover:border-brand/60 hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 relative overflow-hidden"
+            key={activePathway.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-12 items-stretch"
           >
-            {/* Top brand accent indicator on hover */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-            <div className="space-y-5">
-              {/* Top row: Pathway Number & Clinical Timeline */}
-              <div className="flex items-baseline justify-between border-b border-neutral-100 pb-3">
-                <span className="font-display text-base font-bold text-ink/90 tabular-nums">
-                  Pathway {zone.id}
-                </span>
-                <span className="text-xs text-neutral-500 font-medium">
-                  {zone.relief}
-                </span>
-              </div>
-
-              {/* Zone title & nerve points */}
-              <div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink group-hover:text-brand transition-colors leading-snug">
-                  {zone.name}
-                </h3>
-                <p className="text-xs text-neutral-500 mt-1.5 font-medium">
-                  {zone.points}
-                </p>
-              </div>
-
-              {/* Conditions cleared: Clean editorial presentation (No nested box!) */}
-              <div className="pl-4 border-l-2 border-brand/40 py-1 space-y-1">
-                <span className="text-xs font-semibold text-neutral-500 block">
-                  Conditions resolved:
-                </span>
-                <p className="text-sm font-semibold text-neutral-900 leading-snug">
-                  {zone.clears}
-                </p>
-              </div>
-
-              {/* Clinical Protocol */}
-              <div className="space-y-1 pt-1">
-                <span className="text-xs font-semibold text-brand block">
-                  Clinical protocol:
-                </span>
-                <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
-                  {zone.protocol}
-                </p>
-              </div>
-
-              {/* Acupoints: Refined minimal tags */}
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-neutral-100">
-                {zone.acupoints.map((pt, pIdx) => (
-                  <span
-                    key={pIdx}
-                    className="px-2.5 py-1 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-medium text-neutral-700"
-                  >
-                    {pt}
+            {/* Left Column: Clear Clinical Story & Acupoint Targets */}
+            <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between space-y-8 relative z-10">
+              
+              <div className="space-y-6">
+                
+                {/* Top Pathway Eyebrow + Relief Badge */}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="font-mono text-xs font-bold text-[#ed3373] bg-pink-50 px-3 py-1 rounded-full border border-pink-200/70">
+                    {activePathway.code} • {activePathway.category}
                   </span>
-                ))}
+
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-800 bg-neutral-100 px-3.5 py-1 rounded-full font-mono border border-neutral-200/60">
+                    <Clock className="w-3.5 h-3.5 text-[#ed3373]" />
+                    <span>{activePathway.relief}</span>
+                  </span>
+                </div>
+
+                {/* Main Condition Headline */}
+                <div>
+                  <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 tracking-tight leading-snug">
+                    {activePathway.title}
+                  </h3>
+                  <p className="text-sm sm:text-base font-semibold text-[#ed3373] mt-1 font-display">
+                    {activePathway.subtitle}
+                  </p>
+                </div>
+
+                {/* Plain-English Medical Explanation */}
+                <p className="text-sm sm:text-[15px] text-neutral-600 leading-relaxed font-normal">
+                  {activePathway.description}
+                </p>
+
+                {/* Primary Acupoint Focus Chips */}
+                <div className="space-y-2.5">
+                  <span className="text-xs font-bold text-neutral-400 font-mono tracking-wider uppercase flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-[#ed3373]" />
+                    <span>Primary Acupoint Targets:</span>
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {activePathway.acupoints.map((pt, idx) => (
+                      <div 
+                        key={idx}
+                        className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-200/70 hover:border-pink-200 hover:bg-pink-50/40 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono font-bold text-[#ed3373] text-xs">{pt.code}</span>
+                          <span className="text-[11px] font-semibold text-neutral-800">{pt.name}</span>
+                        </div>
+                        <p className="text-[11px] text-neutral-500 mt-1 leading-snug">{pt.role}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Expected Healing Milestones */}
+                <div className="space-y-2 pt-1 border-t border-neutral-100">
+                  <span className="text-xs font-bold text-neutral-400 font-mono tracking-wider uppercase">
+                    Recovery Trajectory:
+                  </span>
+                  <div className="space-y-1.5">
+                    {activePathway.milestones.map((m, mIdx) => (
+                      <div key={mIdx} className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>{m}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
+
+              {/* Bottom Tariff & Action Bar */}
+              <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                  <span className="text-sm font-bold text-neutral-900 block font-mono">
+                    {activePathway.fee}
+                  </span>
+                  <span className="text-xs text-neutral-400 block">
+                    {activePathway.duration} • 1-on-1 with Dr. Nivedha, MD (Acu)
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenBooking) {
+                      onOpenBooking(`Consultation: ${activePathway.title}`, 600);
+                    }
+                  }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/25 hover:shadow-lg hover:shadow-pink-500/35 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                >
+                  <span>Book Consultation for this Pathway</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
             </div>
+
+            {/* Right Column: 21st.dev Visual Experience (Full-Bleed Photography + Glassmorphic Badges) */}
+            <div className="lg:col-span-5 relative min-h-[380px] lg:min-h-full overflow-hidden bg-neutral-900">
+              <motion.div
+                key={activePathway.image}
+                initial={{ scale: 1.05, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${activePathway.image})` }}
+              >
+                {/* Subtle vignette gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              </motion.div>
+
+              {/* Bio-Electric Wave Overlay Graphic */}
+              <div className="absolute top-6 left-6 z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-xs font-mono">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>14-Meridian Resonance</span>
+              </div>
+
+              {/* Floating Clinical Credential Pill at Bottom */}
+              <div className="absolute bottom-6 left-6 right-6 z-10 space-y-2">
+                <div className="p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-pink-100 shadow-xl space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-neutral-900 font-display flex items-center gap-1.5">
+                      <Stethoscope className="w-4 h-4 text-[#ed3373]" />
+                      <span>Dr. Nivedha Priyadharshini, MD (Acu)</span>
+                    </span>
+                    <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">
+                      Verified
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-snug">
+                    {activePathway.spec}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
           </motion.div>
-        ))}
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom 6-Pathway Quick-Browse Strip (Hairline UI Card Thumbnails) */}
+      <div className="max-w-6xl mx-auto mt-8">
+        <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider mb-3 px-1">
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373] animate-pulse" />
+            <span>Select Clinical Pathway:</span>
+          </span>
+          <span className="text-[#ed3373] font-semibold">{activePathway.code} Active</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {PATHWAYS.map((p) => {
+          const isSelected = activePathway.id === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setActivePathway(p)}
+              className={`text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                isSelected
+                  ? 'bg-pink-50/60 border-[#ed3373] shadow-sm ring-1 ring-[#ed3373]/30 scale-[1.02]'
+                  : 'bg-white border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-50/70'
+              }`}
+            >
+              <span className="font-mono text-[10px] font-bold text-[#ed3373] block">
+                {p.id}
+              </span>
+              <p className="font-display text-xs font-bold text-neutral-900 mt-1 line-clamp-1">
+                {p.title.split('&')[0].trim()}
+              </p>
+              <p className="text-[10px] text-neutral-500 mt-0.5 line-clamp-1 font-mono">
+                {p.relief}
+              </p>
+            </button>
+          );
+        })}
+        </div>
       </div>
 
     </div>

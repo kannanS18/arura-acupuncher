@@ -31,4 +31,9 @@ playwright-report/
 *.sw?
 
 # Scratch & temporary artifacts
-scripts/test_*.mjs
+scripts/
+*.png
+test_*.png
+check_*.png
+verification_*.png
+public/test_arm_zoom.html

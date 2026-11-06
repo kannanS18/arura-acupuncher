@@ -1,20 +1,40 @@
 import React, { useState } from 'react';
 import { PhoneCall, MessageCircle, MapPin, Menu, X } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
+import { LiquidTabs } from './ui/liquid-tabs';
 
 export default function Navbar({ onOpenBooking }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Exactly the 5 essential pages requested by the user
-  const navLinks = [
-    { name: 'About Us', path: '/about' },
-    { name: 'Doctor', path: '/doctor' },
-    { name: 'Clinic', path: '/clinic' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Booking', path: '/booking' }
+  // Exactly the essential clinic navigation destinations
+  const navTabs = [
+    { value: '/', label: 'Home', href: '#/' },
+    { value: '/about', label: 'About Us', href: '#/about' },
+    { value: '/doctor', label: 'Doctor', href: '#/doctor' },
+    { value: '/clinic', label: 'Clinic', href: '#/clinic' },
+    { value: '/counselling', label: 'Counselling', href: '#/counselling' },
+    { value: '/blog', label: 'Blog', href: '#/blog' },
+    { value: '/booking', label: 'Booking', href: '#/booking' },
   ];
+
+  // Map active route dynamically to LiquidTab value
+  const getActiveTab = () => {
+    const path = location.pathname;
+    if (path === '/' || path === '') return '/';
+    if (path.startsWith('/about') || path === '/disorders') return '/about';
+    if (path.startsWith('/doctor') || path === '/therapist') return '/doctor';
+    if (path.startsWith('/clinic') || path === '/pricing' || path === '/acupuncture' || path === '/safety' || path === '/faqs') return '/clinic';
+    if (path.startsWith('/counselling')) return '/counselling';
+    if (path.startsWith('/blog')) return '/blog';
+    if (path.startsWith('/booking') || path === '/contact') return '/booking';
+    return '/';
+  };
+
+  const activeTab = getActiveTab();
 
   return (
     <header className="relative z-30 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-xs transition-colors duration-200">
@@ -126,32 +146,18 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
-            <NavLink
-              to="/"
-              className={({ isActive }) => `py-2 transition-colors relative ${
-                isActive 
-                  ? 'text-brand font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand' 
-                  : 'hover:text-brand'
-              }`}
-            >
-              Home
-            </NavLink>
-
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) => `py-2 transition-colors relative whitespace-nowrap ${
-                  isActive 
-                    ? 'text-brand font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand' 
-                    : 'hover:text-brand'
-                }`}
-              >
-                {link.name}
-              </NavLink>
-            ))}
+          {/* Desktop Navigation with Hairline Liquid Tabs */}
+          <nav className="hidden md:flex items-center justify-center">
+            <LiquidTabs
+              tabs={navTabs}
+              value={activeTab}
+              onValueChange={(path) => {
+                navigate(path);
+              }}
+              label="Main navigation"
+              size="md"
+              className="bg-slate-100/90 border border-slate-200/90 shadow-[inset_0_1px_2.5px_rgba(0,0,0,0.06)]"
+            />
           </nav>
 
           {/* Action Button */}
@@ -178,46 +184,54 @@ export default function Navbar({ onOpenBooking }) {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200 px-6 py-6 space-y-4 shadow-xl">
-          <p className="text-xs text-brand font-semibold mb-2">
-            Navigation menu
-          </p>
-          <div className="flex flex-col space-y-3 text-base font-semibold text-gray-800">
-            <NavLink
-              to="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-brand font-bold' : 'hover:text-brand'}`}
-            >
-              Home
-            </NavLink>
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) => `py-2 transition-colors ${isActive ? 'text-brand font-bold' : 'hover:text-brand'}`}
-              >
-                {link.name}
-              </NavLink>
-            ))}
+        <div className="md:hidden bg-white border-b border-gray-200 px-4 sm:px-6 py-6 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span className="text-xs text-brand font-bold uppercase tracking-wider">
+              Navigation Menu
+            </span>
+            <span className="text-[11px] text-gray-400 font-mono">
+              Arura Wellness
+            </span>
           </div>
 
-          <div className="pt-4 space-y-3">
+          {/* Clean Vertical Navigation Links */}
+          <div className="flex flex-col space-y-1 text-base font-semibold text-gray-800">
+            {navTabs.map((tab) => {
+              const isActive = activeTab === tab.value;
+              return (
+                <NavLink
+                  key={tab.value}
+                  to={tab.value}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between py-3 px-4 rounded-xl transition-colors cursor-pointer ${
+                    isActive 
+                      ? 'text-brand font-bold bg-brand/10' 
+                      : 'text-gray-700 hover:text-brand hover:bg-gray-50'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-brand" />}
+                </NavLink>
+              );
+            })}
+          </div>
+
+          <div className="pt-4 space-y-3 border-t border-gray-100">
             <Link
               to="/booking"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3.5 rounded-xl text-xs font-semibold text-center block bg-brand text-white hover:bg-brand-dark transition-colors motion-safe:active:scale-95 shadow-sm"
+              className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center block bg-brand text-white hover:bg-brand-dark transition-colors shadow-sm cursor-pointer"
             >
-              Book priority consultation (₹600)
+              Book Priority Consultation (₹600)
             </Link>
             <a
               href={CLINIC_INFO.whatsappLink}
               target="_blank"
               rel="noreferrer"
-              className="w-full py-3.5 rounded-xl text-xs font-semibold flex items-center justify-center space-x-2 border border-gray-200 text-gray-800 hover:border-emerald-600 hover:text-emerald-700 transition-colors motion-safe:active:scale-95 shadow-xs"
+              className="w-full py-3.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 border border-gray-200 text-gray-800 hover:border-emerald-600 hover:text-emerald-700 transition-colors shadow-xs"
             >
               <MessageCircle className="w-4 h-4 text-emerald-600" />
-              <span>Direct WhatsApp desk</span>
+              <span>Direct WhatsApp Desk</span>
             </a>
           </div>
         </div>

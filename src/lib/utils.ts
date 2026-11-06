@@ -31,7 +31,7 @@ export interface TreatmentCardItem {
 export const cardData: TreatmentCardItem[] = [
   {
     id: 1,
-    code: "MED-01",
+    code: "01 / 04",
     title: "Diagnostic Consultation & Pulse Mapping",
     subtitle: "First Visit Clinical Assessment",
     description: "Comprehensive 14-radial pulse assessment and tongue topography analysis by Dr. Nivedha to identify original root imbalances before any needle is placed.",
@@ -50,7 +50,7 @@ export const cardData: TreatmentCardItem[] = [
   },
   {
     id: 2,
-    code: "MED-02",
+    code: "02 / 04",
     title: "Classical 14-Meridian Acupuncture",
     subtitle: "Meridian Pain & Autonomic Regulation",
     description: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along targeted meridian pathways, paired with localized infrared TDP mineral heat.",
@@ -69,7 +69,7 @@ export const cardData: TreatmentCardItem[] = [
   },
   {
     id: 3,
-    code: "MED-03",
+    code: "03 / 04",
     title: "Clinical Psychotherapy Session",
     subtitle: "Cognitive & Emotional Equilibrium",
     description: "Unhurried, strictly confidential psychotherapy in our private acoustic room, integrating Cambridge-aligned CBT, REBT, and autonomic de-escalation.",
@@ -88,7 +88,7 @@ export const cardData: TreatmentCardItem[] = [
   },
   {
     id: 4,
-    code: "MED-04",
+    code: "04 / 04",
     title: "Integrated Mind-Body Dual Session",
     subtitle: "Psychotherapy + Full Precision Needling",
     description: "Our comprehensive clinical synergy: 40 minutes of cognitive dialogue followed immediately by full-body meridian acupuncture to dismantle chronic pain loops.",

@@ -41,7 +41,7 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-            Medicine crafted for real recovery.
+            Medicine crafted for real recovery
           </h2>
           <p className="text-sm sm:text-base text-gray-600 font-normal">
             Hospital-grade sterile techniques and peaceful private suites in Chennai.
@@ -53,10 +53,10 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
           {pillars.map((item, idx) => (
             <motion.div
               key={idx}
-              whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              whileTap={{ scale: 0.98 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg hover:border-brand transition-colors duration-200 flex flex-col justify-between cursor-pointer"
-              initial={{ opacity: 0, y: 40 }}
+              whileHover={{ y: -2, transition: { duration: 0.15 } }}
+              whileTap={{ scale: 0.99 }}
+              className="group bg-white rounded-2xl overflow-hidden border border-neutral-200 hover:border-neutral-300 transition-colors duration-150 flex flex-col justify-between cursor-pointer"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}

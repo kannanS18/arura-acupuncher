@@ -1323,9 +1323,62 @@ export default function SkinLayersPip({
 
   if (fullStage) {
     return (
-      <div className={`absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] select-none ${className}`}>
-        {/* Full 3D WebGL Canvas */}
-        <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      <div className={`relative w-full h-full flex flex-col lg:block overflow-hidden bg-[#f8fafc] select-none ${className}`}>
+        
+        {/* 3D WebGL Canvas Viewport (Top half on Mobile/Tablet, Fullscreen on Desktop) */}
+        <div className="relative w-full h-[45vh] sm:h-[48vh] lg:h-full lg:absolute lg:inset-0 shrink-0 overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
+          <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing touch-none" />
+
+          {/* Top Header Bar over 3D Canvas */}
+          <header className="absolute top-3 inset-x-3 sm:inset-x-4 lg:inset-x-6 z-20 flex items-center justify-between pointer-events-none">
+            <div className="flex items-center gap-2 pointer-events-auto">
+              {onBackToBody && (
+                <button
+                  type="button"
+                  onClick={onBackToBody}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold shadow-md transition cursor-pointer"
+                  title="Return to Whole Human Body Model"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5 text-[#e02868]" />
+                  <span className="hidden sm:inline">← Back to 3D Anatomy</span>
+                  <span className="sm:hidden">← 3D Anatomy</span>
+                </button>
+              )}
+
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
+                <span>{pointCode}</span>
+                <span className="hidden sm:inline">• {pointName}</span>
+                <span className="text-[10px] font-mono text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
+                  {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm` : activeTool === 'cup' ? '-35 kPa' : '43°C'}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pointer-events-auto">
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[11px] font-medium text-neutral-700 shadow-xs">
+                <span className="flex items-center gap-1 font-semibold text-[#e02868]">
+                  <MoveVertical className="w-3.5 h-3.5" />
+                  <span>Drag tool to plunge</span>
+                </span>
+                <span className="text-neutral-300">|</span>
+                <span className="flex items-center gap-1 text-neutral-500">
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Drag block to rotate</span>
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={onReset}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-xs cursor-pointer"
+                title="Reset Treatment"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-[#e02868]" />
+                <span className="hidden sm:inline">Reset</span>
+              </button>
+            </div>
+          </header>
+        </div>
 
         {/* Radial Loading Animation Overlay (Medical Calibration HUD) */}
         {modelLoading && (
@@ -1337,12 +1390,9 @@ export default function SkinLayersPip({
             <div className="relative flex flex-col items-center max-w-sm px-6 text-center animate-in fade-in zoom-in-95 duration-300">
               {/* Dual Radial Ring HUD */}
               <div className="relative w-28 h-28 flex items-center justify-center mb-5">
-                {/* Outer glowing pulsing aura */}
                 <div className="absolute inset-0 rounded-full bg-[#e02868]/15 blur-xl animate-pulse" />
                 
-                {/* SVG Radial Progress Ring */}
                 <svg className="w-28 h-28 -rotate-90 transform" viewBox="0 0 120 120">
-                  {/* Background Track */}
                   <circle
                     cx="60"
                     cy="60"
@@ -1351,7 +1401,6 @@ export default function SkinLayersPip({
                     strokeWidth="6"
                     fill="none"
                   />
-                  {/* Animated Radial Progress Arc */}
                   <circle
                     cx="60"
                     cy="60"
@@ -1366,7 +1415,6 @@ export default function SkinLayersPip({
                   />
                 </svg>
 
-                {/* Center Glass Capsule with Icon & Percentage */}
                 <div className="absolute inset-3 rounded-full bg-white shadow-md border border-neutral-100 flex flex-col items-center justify-center">
                   <Layers className="w-5 h-5 text-[#e02868] animate-pulse" />
                   <span className="text-sm font-mono font-black text-[#09090b] mt-0.5">
@@ -1375,7 +1423,6 @@ export default function SkinLayersPip({
                 </div>
               </div>
 
-              {/* Calibration Clinical Copy */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
@@ -1392,7 +1439,6 @@ export default function SkinLayersPip({
                 </p>
               </div>
 
-              {/* Micro Status Badge */}
               <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-neutral-200/80 shadow-xs text-[10px] font-semibold text-neutral-600">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span>{pointCode ? `Point ${pointCode} • Target Depth ${targetDepth || 12}mm` : 'Histological Tissue Matrix'}</span>
@@ -1401,63 +1447,12 @@ export default function SkinLayersPip({
           </div>
         )}
 
-        {/* Top Header Bar */}
-        <header className="absolute top-3 inset-x-3 sm:inset-x-4 z-20 flex items-center justify-between pointer-events-none">
-          <div className="flex items-center gap-2 pointer-events-auto">
-            {onBackToBody && (
-              <button
-                type="button"
-                onClick={onBackToBody}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold shadow-md transition"
-                title="Return to Whole Human Body Model"
-              >
-                <ArrowLeft className="w-3.5 h-3.5 text-[#e02868]" />
-                <span>← Back to 3D Anatomy</span>
-              </button>
-            )}
-
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#e02868] animate-ping" />
-              <span>Treating: {pointCode} • {pointName}</span>
-              <span className="text-[10px] font-mono text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
-                {activeTool === 'needle' ? `Target: ${targetDepth || 12}mm (${depthCun})` : activeTool === 'cup' ? 'Suction: -35 kPa' : 'Heat: 43°C'}
-              </span>
-              <span className="text-[10px] font-bold text-amber-700 bg-amber-500/15 px-2 py-0.5 rounded-full">
-                {activeTool === 'needle' ? '⚠️ Spastic Motor Knot' : activeTool === 'cup' ? '⚠️ Fascial Adhesion' : '⚠️ Cold Damp Stasis'}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 pointer-events-auto">
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[11px] font-medium text-neutral-700 shadow-sm">
-              <span className="flex items-center gap-1 font-semibold text-[#e02868]">
-                <MoveVertical className="w-3.5 h-3.5" />
-                <span>Drag tool to plunge</span>
-              </span>
-              <span className="text-neutral-300">|</span>
-              <span className="flex items-center gap-1 text-neutral-500">
-                <Eye className="w-3.5 h-3.5" />
-                <span>Drag block to rotate</span>
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={onReset}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
-              title="Reset Treatment"
-            >
-              <RotateCcw className="w-3.5 h-3.5 text-[#e02868]" />
-              <span>Reset</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Left Side: Consolidated Clinical Treatment Console */}
-        <aside className="absolute top-14 left-3 sm:left-4 z-20 pointer-events-auto max-w-[340px] w-full max-h-[calc(100vh-4.5rem)] flex flex-col p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl space-y-3 overflow-y-auto animate-in fade-in slide-in-from-left-2">
+        {/* Clinical Treatment Console (Bottom Drawer on Mobile/Tablet, Floating Aside on Desktop) */}
+        <aside className="relative flex-1 lg:flex-none w-full lg:w-[360px] lg:absolute lg:top-14 lg:left-6 z-20 pointer-events-auto p-4 sm:p-6 lg:p-4 rounded-t-3xl lg:rounded-2xl bg-white lg:bg-white/95 lg:backdrop-blur-md border-t lg:border border-neutral-200/90 shadow-2xl lg:shadow-xl space-y-4 overflow-y-auto lg:max-h-[calc(100vh-4.5rem)] [scrollbar-width:thin] animate-in fade-in">
           
-          {/* 1. Clinical Tool Selector */}
+          {/* 1. Clinical Tool Selector (Hairline 3-Card Architecture) */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                 Select Therapy Tool
               </span>
@@ -1465,7 +1460,7 @@ export default function SkinLayersPip({
                 {allowedTools.length} Available
               </span>
             </div>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-3 gap-2">
               {Object.values(CLINICAL_TOOLS).map(t => {
                 const isAllowed = allowedToolIds.includes(t.id);
                 const isSelected = activeTool === t.id;
@@ -1476,18 +1471,18 @@ export default function SkinLayersPip({
                     type="button"
                     disabled={!isAllowed}
                     onClick={() => isAllowed && onSelectTool && onSelectTool(t.id)}
-                    className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition ${
+                    className={`flex flex-col items-center justify-center p-3 rounded-2xl text-center transition cursor-pointer ${
                       isSelected
-                        ? 'bg-[#e02868] text-white shadow-sm ring-2 ring-[#e02868]/30'
+                        ? 'bg-[#e02868] text-white shadow-sm ring-2 ring-[#e02868]/30 font-bold'
                         : isAllowed
-                        ? 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80'
+                        ? 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200/80 shadow-xs'
                         : 'bg-neutral-100/50 text-neutral-400 border border-dashed border-neutral-200 cursor-not-allowed opacity-50'
                     }`}
                     title={isAllowed ? t.sub : 'Contraindicated for this anatomical region'}
                   >
-                    <IconComp className={`w-4 h-4 mb-0.5 ${isSelected ? 'text-white' : 'text-neutral-500'}`} />
+                    <IconComp className={`w-4 h-4 mb-1 ${isSelected ? 'text-white' : 'text-neutral-500'}`} />
                     <span className="text-[11px] font-bold leading-tight">{t.name}</span>
-                    <span className={`text-[9px] truncate max-w-full ${isSelected ? 'text-white/80' : 'text-neutral-400'}`}>
+                    <span className={`text-[9px] truncate max-w-full mt-0.5 ${isSelected ? 'text-white/80' : 'text-neutral-400'}`}>
                       {isAllowed ? t.sub : 'Contraindicated'}
                     </span>
                   </button>
@@ -1495,14 +1490,14 @@ export default function SkinLayersPip({
               })}
             </div>
             {allowedTools.length === 1 && (
-              <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200/80 p-1.5 rounded-lg font-medium mt-1.5 leading-snug">
+              <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200/80 p-2 rounded-xl font-medium mt-2 leading-snug">
                 Notice: Cupping & Moxa contraindicated on bony distal joint.
               </p>
             )}
           </div>
 
           {/* 2. Pathology & Histology Details */}
-          <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/80 space-y-1.5">
+          <div className="p-3.5 rounded-2xl bg-neutral-50/80 border border-neutral-200/80 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                 Target Pathology
@@ -1525,7 +1520,7 @@ export default function SkinLayersPip({
               {activeTool === 'cup' && 'Histology: Dense cross-linked collagen bundles tethering subcutaneous adipose to deep epimysium with stagnant venules.'}
               {activeTool === 'moxa' && 'Histology: Hypoxic capillary vasoconstriction with sluggish venous pooling and interstitial micro-edema.'}
             </p>
-            <div className="pt-1.5 border-t border-neutral-200/70 text-[9.5px] text-neutral-600 leading-relaxed">
+            <div className="pt-2 border-t border-neutral-200/70 text-[10px] text-neutral-600 leading-relaxed">
               <span className="font-bold text-neutral-800">Mechanism: </span>
               {activeTool === 'needle' && 'Mechanical filiform stimulation triggers a local twitch fasciculation, resetting spastic motor loop.'}
               {activeTool === 'cup' && 'Negative pressure (-35 kPa) lifts skin & fascia upward into glass jar, breaking adhesions.'}
@@ -1534,7 +1529,7 @@ export default function SkinLayersPip({
           </div>
 
           {/* 3. Interactive Depth / Dose Controller */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                 {activeTool === 'needle' && 'Needle Insertion Depth'}
@@ -1559,7 +1554,7 @@ export default function SkinLayersPip({
               step="0.5"
               value={depth}
               onChange={(e) => onDepthChange && onDepthChange(parseFloat(e.target.value))}
-              className="w-full accent-[#e02868] cursor-pointer"
+              className="w-full accent-[#e02868] cursor-pointer h-2 bg-neutral-200 rounded-lg"
             />
 
             <button
@@ -1568,7 +1563,7 @@ export default function SkinLayersPip({
                 const targetVal = activeTool === 'needle' ? (targetDepth || 12.0) : activeTool === 'cup' ? 6.0 : 43.0;
                 if (onDepthChange) onDepthChange(targetVal);
               }}
-              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md transition"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-md transition cursor-pointer"
             >
               <Zap className="w-3.5 h-3.5 animate-pulse" />
               <span>
@@ -1579,9 +1574,9 @@ export default function SkinLayersPip({
             </button>
           </div>
 
-          {/* 4. Clinical Outcome Box (Embedded cleanly in console, NOT blocking the 3D model!) */}
+          {/* 4. Clinical Outcome Box */}
           {isDisintegrated && (
-            <div className="p-2.5 rounded-xl bg-emerald-950 text-white border border-emerald-500/50 shadow-md space-y-1.5 animate-in fade-in">
+            <div className="p-3.5 rounded-2xl bg-emerald-950 text-white border border-emerald-500/50 shadow-md space-y-2 animate-in fade-in">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-400">
                   <Sparkles className="w-3.5 h-3.5 text-emerald-300 animate-spin" />
@@ -1590,7 +1585,7 @@ export default function SkinLayersPip({
                 <button
                   type="button"
                   onClick={onReset}
-                  className="px-2 py-0.5 text-[10px] font-bold bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded-md transition"
+                  className="px-2.5 py-1 text-[10px] font-bold bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded-lg transition cursor-pointer"
                 >
                   Reset
                 </button>

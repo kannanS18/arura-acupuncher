@@ -24,6 +24,7 @@ import {
   Boxes,
   RefreshCw,
   Flame,
+  Info,
   X
 } from 'lucide-react';
 
@@ -563,19 +564,23 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     ? CLINICAL_ACUPOINTS 
     : CLINICAL_ACUPOINTS.filter(p => p.region === activeRegion); // Start centered on Whole Body!
   const activeRegionRef = useRef('full');
+  const isFirstMountRef = useRef(true);
   // Sync with parent selectedPointCode if provided
   useEffect(() => {
     if (selectedPointCode) {
       const idx = CLINICAL_ACUPOINTS.findIndex(p => p.code === selectedPointCode);
-      if (idx !== -1 && idx !== selectedAcupointIdx) {
+      if (idx !== -1) {
         setSelectedAcupointIdx(idx);
-        const pt = CLINICAL_ACUPOINTS[idx];
-        if (pt?.region && pt.region !== activeRegionRef.current) {
-          setActiveRegion(pt.region);
-          activeRegionRef.current = pt.region;
-          setFilterRegion(pt.region);
+        if (!isFirstMountRef.current) {
+          const pt = CLINICAL_ACUPOINTS[idx];
+          if (pt?.region && pt.region !== activeRegionRef.current) {
+            setActiveRegion(pt.region);
+            activeRegionRef.current = pt.region;
+            setFilterRegion(pt.region);
+          }
         }
       }
+      isFirstMountRef.current = false;
     }
   }, [selectedPointCode]);
 
@@ -1034,129 +1039,74 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     }
   }, [selectedAcupointIdx, activeTool, handleReset]);
 
-  // Unified Regional Presentation: Natural Articulation, Close Zoom & Sequential Acupoint Pop-up
+  // Unified Regional Presentation: Natural Anatomical Alignment & Flawless Dolly Zoom
   const triggerRegionPresentation = useCallback((regionKey, selectedIdx) => {
     setActiveRegion(regionKey);
     activeRegionRef.current = regionKey;
     setFilterRegion(regionKey === 'full' ? 'all' : regionKey);
-    isCameraAnimatingRef.current = true;
 
-    if (regionKey === 'full') {
-      // Return all limbs to resting standing anatomical pose
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-
-      targetCamPosRef.current.set(0.0, 0.32, 3.8);
-      targetLookAtRef.current.set(0.0, 0.32, 0.0);
-      if (bodyModelMeshRef.current) {
-        bodyModelMeshRef.current.rotation.y = 0;
-        updateBodyFacing('front');
-      }
-      if (cameraRef.current && controlsRef.current) {
-        camStartPosRef.current.copy(cameraRef.current.position);
-        camStartLookAtRef.current.copy(controlsRef.current.target);
-        camAnimProgressRef.current = 0.0;
-        isCameraAnimatingRef.current = true;
-      }
-      // Reveal all pins across whole body (unclickable until a limb is clicked)
-      setTimeout(() => {
-        if (allPinObjectsRef.current) {
-          allPinObjectsRef.current.forEach(pin => {
-            pin.userData.targetScale = 1.0;
-            if (pin.userData.badge) pin.userData.badge.visible = false;
-            if (pin.userData.leaderLine) pin.userData.leaderLine.visible = false;
-          });
-        }
-      }, 200);
-      return;
-    }
-
-    // First fold down all pins
-    if (allPinObjectsRef.current) {
-      allPinObjectsRef.current.forEach(pin => {
-        pin.userData.targetScale = 0.0;
-        if (pin.userData.badge) pin.userData.badge.visible = false;
-        if (pin.userData.leaderLine) pin.userData.leaderLine.visible = false;
-      });
-    }
+    // Keep limbs in natural, stable standing anatomical pose (no unnatural limb swinging that displaces body parts)
+    targetLimbAnglesRef.current.armL = 0.0;
+    targetLimbAnglesRef.current.armR = 0.0;
+    targetLimbAnglesRef.current.legL = 0.0;
+    targetLimbAnglesRef.current.legR = 0.0;
 
     let targetFacing = 'front';
-    if (regionKey === 'face' || regionKey === 'crown') {
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.82, 0.75);
-      targetLookAtRef.current.set(0.0, 0.78, 0.08);
+
+    if (regionKey === 'full') {
+      // Whole Body Overview
+      targetCamPosRef.current.set(0.0, 0.34, 3.8);
+      targetLookAtRef.current.set(0.0, 0.32, 0.0);
+      targetFacing = 'front';
+    } else if (regionKey === 'face' || regionKey === 'crown') {
+      // Head / Cranial Crown / Facial Features
+      targetLookAtRef.current.set(0.0, 0.98, 0.07);
+      targetCamPosRef.current.set(0.0, 0.98, 0.58);
       targetFacing = 'front';
     } else if (regionKey === 'neck') {
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.72, -0.80);
-      targetLookAtRef.current.set(0.0, 0.68, -0.06);
+      // Occiput / Cervical Spine
+      targetLookAtRef.current.set(0.0, 0.85, -0.06);
+      targetCamPosRef.current.set(0.0, 0.85, -0.58);
       targetFacing = 'back';
     } else if (regionKey === 'chest' || regionKey === 'torso') {
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.60, 1.35);
-      targetLookAtRef.current.set(0.0, 0.56, 0.06);
+      // Thoracic Sternum & Abdominal Midline
+      targetLookAtRef.current.set(0.0, 0.57, 0.10);
+      targetCamPosRef.current.set(0.0, 0.57, 0.78);
       targetFacing = 'front';
     } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      // Articulate Left Arm: shoulder flexion and frame the forearm, wrist, and hand centered
-      targetLimbAnglesRef.current.armL = 1.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.22, 0.58, 0.90);
-      targetLookAtRef.current.set(0.22, 0.58, 0.18);
+      // Left Arm, Forearm, Wrist & Hand (Centered on forearm, wrist & dorsal webbing)
+      targetLookAtRef.current.set(0.22, 0.05, 0.04);
+      targetCamPosRef.current.set(0.24, 0.05, 0.48);
       targetFacing = 'front';
     } else if (regionKey === 'arm_right') {
-      targetLimbAnglesRef.current.armR = 1.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(-0.22, 0.58, 0.90);
-      targetLookAtRef.current.set(-0.22, 0.58, 0.18);
+      // Right Arm, Forearm, Wrist & Hand
+      targetLookAtRef.current.set(-0.20, 0.05, 0.12);
+      targetCamPosRef.current.set(-0.22, 0.05, 0.52);
       targetFacing = 'front';
     } else if (regionKey === 'back') {
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetCamPosRef.current.set(0.0, 0.58, -1.35);
-      targetLookAtRef.current.set(0.0, 0.55, -0.06);
+      // Posterior Thoracic & Lumbar Meridian Chain
+      targetLookAtRef.current.set(0.0, 0.57, -0.065);
+      targetCamPosRef.current.set(0.0, 0.57, -0.78);
       targetFacing = 'back';
     } else if (regionKey === 'leg_left' || regionKey === 'leg') {
-      // Articulate Left Leg: Thigh rises forward & knee flexes backward (knee rises up first!)
-      targetLimbAnglesRef.current.legL = 1.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(0.35, -0.15, 1.60);
-      targetLookAtRef.current.set(0.12, -0.22, 0.10);
+      // Left Leg, Knee, Tibia & Foot Dorsum
+      targetLookAtRef.current.set(0.09, -0.18, 0.06);
+      targetCamPosRef.current.set(0.12, -0.18, 0.68);
       targetFacing = 'front';
     } else if (regionKey === 'leg_right') {
-      targetLimbAnglesRef.current.legR = 1.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetCamPosRef.current.set(-0.35, -0.15, 1.60);
-      targetLookAtRef.current.set(-0.12, -0.22, 0.10);
+      // Right Leg, Knee, Tibia & Foot Dorsum
+      targetLookAtRef.current.set(-0.09, -0.18, 0.06);
+      targetCamPosRef.current.set(-0.12, -0.18, 0.68);
       targetFacing = 'front';
     }
 
-    // Model stays consistently oriented; camera orbits in front (+Z) or behind (-Z)
+    // Model stays canonical; camera dollies to front (+Z) or back (-Z)
     if (bodyModelMeshRef.current) {
       bodyModelMeshRef.current.rotation.y = 0;
       updateBodyFacing(targetFacing);
     }
 
+    // Capture camera start position and orientation cleanly before beginning animation
     if (cameraRef.current && controlsRef.current) {
       camStartPosRef.current.copy(cameraRef.current.position);
       camStartLookAtRef.current.copy(controlsRef.current.target);
@@ -1171,21 +1121,19 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       if (pIdx !== -1) targetIdx = pIdx;
     }
 
-    // Sequentially pop up the acupoint pins for THIS region one-by-one WITH NAMES and crystalline chimes
+    // Keep pins in the active region smoothly visible with their names/badges (no vanishing or jarring pop-ins)
     if (allPinObjectsRef.current) {
-      const regionPins = allPinObjectsRef.current
-        .filter(p => p.userData.region === regionKey)
-        .sort((a, b) => (a.userData.orderIndex ?? 0) - (b.userData.orderIndex ?? 0));
-
-      regionPins.forEach((pin, i) => {
-        setTimeout(() => {
-          pin.userData.targetScale = 1.0;
-          const isThisSel = (pin.userData.acupointIdx === targetIdx);
-          if (pin.userData.badge) pin.userData.badge.visible = true; // Names ALWAYS visible in active region!
-          if (pin.userData.leaderLine) pin.userData.leaderLine.visible = isThisSel;
-          playAcuSound('popup', isMuted);
-        }, 180 + i * 160);
+      allPinObjectsRef.current.forEach(pin => {
+        const isThisRegion = (pin.userData.region === regionKey || regionKey === 'full');
+        pin.userData.targetScale = isThisRegion ? 1.0 : (regionKey === 'full' ? 1.0 : 0.0);
+        if (pin.userData.badge) {
+          pin.userData.badge.visible = isThisRegion;
+        }
+        if (pin.userData.leaderLine) {
+          pin.userData.leaderLine.visible = isThisRegion && (pin.userData.acupointIdx === targetIdx);
+        }
       });
+      playAcuSound('popup', isMuted);
     }
 
     if (typeof targetIdx === 'number') {
@@ -1194,7 +1142,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         onSelectAcupointCodeRef.current(CLINICAL_ACUPOINTS[targetIdx]?.code);
       }
     }
-  }, [isMuted]);
+  }, [isMuted, updateBodyFacing]);
 
   // Navigate to any anatomical region
   const navigateCameraToRegion = useCallback((regionKey) => {
@@ -1203,7 +1151,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
   }, [triggerRegionPresentation]);
   navigateCameraToRegionRef.current = navigateCameraToRegion;
 
-  // Dedicated Point Close-Up Presentation (As requested: "proper close up", physical tray on Mayo stand, skin blob on top right)
+  // Dedicated Point Close-Up Presentation: Direct Flawless Dolly Zoom onto Acupoint
   const triggerAcupointCloseUp = useCallback((idx) => {
     const pt = CLINICAL_ACUPOINTS[idx];
     if (!pt) return;
@@ -1213,86 +1161,50 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     setFilterRegion(pt.region || 'all');
     setShowStrataPip(true);
     if (!onNavigateToStage) {
-      // Standalone mode only
       setViewMode('body');
     }
     if (onSelectAcupointCodeRef.current) {
       onSelectAcupointCodeRef.current(pt.code);
     }
-    isCameraAnimatingRef.current = true;
+
+    // Natural stable standing pose
+    targetLimbAnglesRef.current.armL = 0.0;
+    targetLimbAnglesRef.current.armR = 0.0;
+    targetLimbAnglesRef.current.legL = 0.0;
+    targetLimbAnglesRef.current.legR = 0.0;
 
     const mScale = 1.55 / 1.90;
-    let worldPt = new THREE.Vector3(
+    const worldPt = new THREE.Vector3(
       pt.modelPos[0] * mScale,
       0.32 + pt.modelPos[1] * mScale,
       pt.modelPos[2] * mScale
     );
 
-    if (pt.region === 'arm_left') {
-      targetLimbAnglesRef.current.armL = 1.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      const pLeftShoulder = leftShoulderPivotRef.current;
-      const shoulderAng = -1.38;
-      const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
-      const dyS = pt.modelPos[1] - pLeftShoulder.y;
-      const dzS = pt.modelPos[2] - pLeftShoulder.z;
-      worldPt.x = pt.modelPos[0] * mScale;
-      worldPt.y = 0.32 + (pLeftShoulder.y + (dyS * cS - dzS * sS)) * mScale;
-      worldPt.z = (pLeftShoulder.z + (dyS * sS + dzS * cS)) * mScale;
-      targetLookAtRef.current.copy(worldPt);
-      targetCamPosRef.current.set(worldPt.x + 0.04, worldPt.y + 0.02, worldPt.z + 0.50);
-    } else if (pt.region === 'arm_right') {
-      targetLimbAnglesRef.current.armR = 1.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      const pRightShoulder = rightShoulderPivotRef.current;
-      const shoulderAng = -1.38;
-      const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
-      const dyS = pt.modelPos[1] - pRightShoulder.y;
-      const dzS = pt.modelPos[2] - pRightShoulder.z;
-      worldPt.x = pt.modelPos[0] * mScale;
-      worldPt.y = 0.32 + (pRightShoulder.y + (dyS * cS - dzS * sS)) * mScale;
-      worldPt.z = (pRightShoulder.z + (dyS * sS + dzS * cS)) * mScale;
-      targetLookAtRef.current.copy(worldPt);
-      targetCamPosRef.current.set(worldPt.x - 0.04, worldPt.y + 0.02, worldPt.z + 0.50);
-    } else if (pt.region === 'leg_left') {
-      targetLimbAnglesRef.current.legL = 1.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLookAtRef.current.copy(worldPt);
-      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
-      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.40);
-      targetCamPosRef.current.y += 0.04;
-    } else if (pt.region === 'leg_right') {
-      targetLimbAnglesRef.current.legR = 1.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLookAtRef.current.copy(worldPt);
-      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
-      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.40);
-      targetCamPosRef.current.y += 0.04;
-    } else {
-      targetLimbAnglesRef.current.armL = 0.0;
-      targetLimbAnglesRef.current.armR = 0.0;
-      targetLimbAnglesRef.current.legL = 0.0;
-      targetLimbAnglesRef.current.legR = 0.0;
-      targetLookAtRef.current.copy(worldPt);
-      const norm = new THREE.Vector3(pt.surfaceNormal[0], pt.surfaceNormal[1], pt.surfaceNormal[2]).normalize();
-      targetCamPosRef.current.copy(worldPt).addScaledVector(norm, 0.32);
-      targetCamPosRef.current.y += 0.04;
-    }
+    // Focal point is the exact acupoint vertex
+    targetLookAtRef.current.copy(worldPt);
 
-    const targetFacing = pt.facing || 'front';
+    // Compute direct dolly zoom camera position at 0.42m distance
+    const isBackFacing = pt.facing === 'back';
+    const norm = new THREE.Vector3(
+      pt.surfaceNormal[0] || 0,
+      pt.surfaceNormal[1] || 0,
+      pt.surfaceNormal[2] || (isBackFacing ? -1 : 1)
+    ).normalize();
+
+    // Position camera along the outward normal from the point
+    const dollyDistance = 0.45;
+    targetCamPosRef.current.copy(worldPt).addScaledVector(norm, dollyDistance);
+
+    // Ensure camera stays slightly elevated for clear perspective
+    targetCamPosRef.current.y += 0.03;
+
+    const targetFacing = isBackFacing ? 'back' : 'front';
     if (bodyModelMeshRef.current) {
-      bodyModelMeshRef.current.rotation.y = 0; // Model stays canonical
+      bodyModelMeshRef.current.rotation.y = 0;
       updateBodyFacing(targetFacing);
     }
 
+    // Capture camera start position and orientation cleanly before beginning animation
     if (cameraRef.current && controlsRef.current) {
       camStartPosRef.current.copy(cameraRef.current.position);
       camStartLookAtRef.current.copy(controlsRef.current.target);
@@ -1300,17 +1212,25 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       isCameraAnimatingRef.current = true;
     }
 
-    // Highlight and scale up this active pin, fold down other distant pins
+    // Highlight active pin, keep points in same region visible
     if (allPinObjectsRef.current) {
       allPinObjectsRef.current.forEach((pin, i) => {
-        pin.userData.targetScale = (i === idx) ? 1.0 : 0.0;
+        const isSel = (i === idx);
+        const isSameRegion = (pin.userData.region === pt.region);
+        pin.userData.targetScale = isSel ? 1.2 : (isSameRegion ? 1.0 : 0.0);
+        if (pin.userData.badge) {
+          pin.userData.badge.visible = isSel || isSameRegion;
+        }
+        if (pin.userData.leaderLine) {
+          pin.userData.leaderLine.visible = isSel;
+        }
       });
       playAcuSound('popup', isMuted);
     }
 
     const toolToKeep = activeToolRef.current || 'needle';
     updateBodyToolPlacement(idx, toolToKeep);
-  }, [isMuted, updateBodyToolPlacement]);
+  }, [isMuted, onNavigateToStage, updateBodyFacing, updateBodyToolPlacement]);
   triggerAcupointCloseUpRef.current = triggerAcupointCloseUp;
 
   // Select Acupoint from Catalog and fly into close-up with 3D Strata & Tray
@@ -1859,9 +1779,9 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           const pos = pt.modelPos || [0, 0, 0];
           const norm = pt.surfaceNormal || [0, 0, 1];
           const nLen = Math.hypot(norm[0], norm[1], norm[2]) || 1;
-          const offX = (norm[0] / nLen) * 0.012;
-          const offY = (norm[1] / nLen) * 0.012;
-          const offZ = (norm[2] / nLen) * 0.012;
+          const offX = (norm[0] / nLen) * 0.0025;
+          const offY = (norm[1] / nLen) * 0.0025;
+          const offZ = (norm[2] / nLen) * 0.0025;
           pinGroup.position.set(pos[0] + offX, pos[1] + offY, pos[2] + offZ);
           pinGroup.scale.set(1, 1, 1); // Visible in normal state!
           pinGroup.userData = {
@@ -2116,18 +2036,36 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         const hitIdx = acuHits[0].object.userData.acupointIdx;
         const pt = CLINICAL_ACUPOINTS[hitIdx];
         if (typeof hitIdx === 'number' && pt) {
-          console.log('[AcuClick] Acupoint dot clicked -> Opening 3D Tissue Strata:', pt.code);
+          console.log('[AcuClick] Acupoint dot clicked -> Diving to tissue model:', pt.code);
           setSelectedAcupointIdx(hitIdx);
-          playAcuSound('popup', isMuted);
+          playAcuSound('pickup', isMuted);
           if (onSelectAcupointCodeRef.current) {
             onSelectAcupointCodeRef.current(pt.code);
           }
-          // Direct navigation to 3D Tissue Strata Surgery!
-          if (onNavigateToStageRef.current) {
-            onNavigateToStageRef.current(3);
-          } else {
-            setViewMode('tissue');
-          }
+
+          // 1. Initiate smooth cinematic camera dolly zoom towards the dot
+          triggerAcupointCloseUp(hitIdx);
+
+          // 2. Measure distance to determine optimal transition timing
+          const mScale = 1.55 / 1.90;
+          const worldPt = new THREE.Vector3(
+            pt.modelPos[0] * mScale,
+            0.32 + pt.modelPos[1] * mScale,
+            pt.modelPos[2] * mScale
+          );
+          const currentCamPos = cameraRef.current ? cameraRef.current.position : new THREE.Vector3(0, 0, 4);
+          const dist = currentCamPos.distanceTo(worldPt);
+          // If already zoomed in, transition rapidly; if overview, let the camera dolly dive in first
+          const diveDuration = dist < 0.75 ? 180 : 360;
+
+          setTimeout(() => {
+            if (onNavigateToStageRef.current) {
+              onNavigateToStageRef.current(3);
+            } else {
+              setViewMode('tissue');
+              window.dispatchEvent(new Event('resize'));
+            }
+          }, diveDuration);
           return;
         }
       }
@@ -2821,20 +2759,28 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             const pLeftKnee = leftKneePivotRef.current;
             const pRightKnee = rightKneePivotRef.current;
 
-            if (reg === 'arm_left' && curL.armL > 0.0001) {
-              const shoulderAng = -curL.armL * 1.38;
-              const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
-              const dyS = basePos.y - pLeftShoulder.y;
-              const dzS = basePos.z - pLeftShoulder.z;
-              pin.position.y = pLeftShoulder.y + (dyS * cS - dzS * sS);
-              pin.position.z = pLeftShoulder.z + (dyS * sS + dzS * cS);
-            } else if (reg === 'arm_right' && curL.armR > 0.0001) {
-              const shoulderAng = -curL.armR * 1.38;
-              const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
-              const dyS = basePos.y - pRightShoulder.y;
-              const dzS = basePos.z - pRightShoulder.z;
-              pin.position.y = pRightShoulder.y + (dyS * cS - dzS * sS);
-              pin.position.z = pRightShoulder.z + (dyS * sS + dzS * cS);
+            if (reg === 'arm_left') {
+              if (curL.armL > 0.0001) {
+                const shoulderAng = -curL.armL * 1.38;
+                const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+                const dyS = basePos.y - pLeftShoulder.y;
+                const dzS = basePos.z - pLeftShoulder.z;
+                pin.position.y = pLeftShoulder.y + (dyS * cS - dzS * sS);
+                pin.position.z = pLeftShoulder.z + (dyS * sS + dzS * cS);
+              } else {
+                pin.position.copy(basePos);
+              }
+            } else if (reg === 'arm_right') {
+              if (curL.armR > 0.0001) {
+                const shoulderAng = -curL.armR * 1.38;
+                const sS = Math.sin(shoulderAng), cS = Math.cos(shoulderAng);
+                const dyS = basePos.y - pRightShoulder.y;
+                const dzS = basePos.z - pRightShoulder.z;
+                pin.position.y = pRightShoulder.y + (dyS * cS - dzS * sS);
+                pin.position.z = pRightShoulder.z + (dyS * sS + dzS * cS);
+              } else {
+                pin.position.copy(basePos);
+              }
             } else if (reg === 'leg_left' && curL.legL > 0.0001) {
               const hipAng = -curL.legL * 0.75;
               const kneeAng = curL.legL * 0.85; // Positive backward flexion lifts knee up!
@@ -2931,42 +2877,60 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
       // Smooth Camera & Controls Dolly Zoom (Hermite Quintic with Spherical Orbit Arc)
       if (isCameraAnimatingRef.current) {
-        camAnimProgressRef.current += dt * 1.35; // ~0.75s graceful cinematic flight
+        // Temporarily suppress user interaction so OrbitControls doesn't fight the scripted camera path
+        controls.enabled = false;
+        camAnimProgressRef.current += dt * 1.35; // ~0.74s graceful cinematic flight
         const progress = Math.min(1.0, camAnimProgressRef.current);
-        // Cinematic Quintic Ease-In-Out: Starts silky smooth, dollies swiftly, settles like glass
+        // Cinematic Quintic Ease-In-Out: ultra-smooth start and end, no visual jumps or cuts
         const t = progress < 0.5 
-          ? 4.0 * progress * progress * progress 
-          : 1.0 - Math.pow(-2.0 * progress + 2.0, 3) / 2.0;
+          ? (8.0 * progress * progress * progress * progress) 
+          : (1.0 - Math.pow(-2.0 * progress + 2.0, 4) / 2.0);
 
         const startP = camStartPosRef.current;
         const endP = targetCamPosRef.current;
+        const startTarget = camStartLookAtRef.current;
+        const endTarget = targetLookAtRef.current;
 
-        // If transitioning between front (+Z) and back (-Z), orbit around in a cylindrical arc so the camera never cuts through the body interior
-        if (startP.z * endP.z < -0.05) {
-          const startAngle = Math.atan2(startP.x, startP.z);
-          let endAngle = Math.atan2(endP.x, endP.z);
+        // Smoothly interpolate look-at target
+        controls.target.lerpVectors(startTarget, endTarget, t);
+
+        // Compute camera position relative to target
+        const startRelX = startP.x - startTarget.x;
+        const startRelZ = startP.z - startTarget.z;
+        const endRelX = endP.x - endTarget.x;
+        const endRelZ = endP.z - endTarget.z;
+
+        // If transitioning between front (+Z) and back (-Z), orbit smoothly around target
+        if (startRelZ * endRelZ < -0.01) {
+          const startAngle = Math.atan2(startRelX, startRelZ);
+          let endAngle = Math.atan2(endRelX, endRelZ);
           let diff = endAngle - startAngle;
           while (diff < -Math.PI) diff += Math.PI * 2;
           while (diff > Math.PI) diff -= Math.PI * 2;
           const currentAngle = startAngle + diff * t;
 
-          const startRadius = Math.hypot(startP.x, startP.z);
-          const endRadius = Math.hypot(endP.x, endP.z);
+          const startRadius = Math.hypot(startRelX, startRelZ);
+          const endRadius = Math.hypot(endRelX, endRelZ);
           const currentRadius = startRadius + (endRadius - startRadius) * t;
 
-          camera.position.x = Math.sin(currentAngle) * currentRadius;
+          camera.position.x = controls.target.x + Math.sin(currentAngle) * currentRadius;
           camera.position.y = startP.y + (endP.y - startP.y) * t;
-          camera.position.z = Math.cos(currentAngle) * currentRadius;
+          camera.position.z = controls.target.z + Math.cos(currentAngle) * currentRadius;
         } else {
+          // Direct linear dolly zoom path
           camera.position.lerpVectors(startP, endP, t);
         }
 
-        controls.target.lerpVectors(camStartLookAtRef.current, targetLookAtRef.current, t);
+        // Keep camera continuously locked onto target during the entire flight (no off-center drift or cuts)
+        camera.lookAt(controls.target);
 
         if (progress >= 1.0) {
           camera.position.copy(targetCamPosRef.current);
           controls.target.copy(targetLookAtRef.current);
+          camera.lookAt(controls.target);
           isCameraAnimatingRef.current = false;
+          controls.enabled = true;
+          controls.update();
         }
       } else {
         controls.update();
@@ -3056,7 +3020,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     >
       {/* 1. FULL-STAGE 3D TISSUE STRATA & PHYSICAL SURGICAL TRAY VIEW (Rendered as absolute full overlay) */}
       {viewMode === 'tissue' && (
-        <div className="absolute inset-0 z-30 w-full h-full bg-[#f8fafc] overflow-hidden">
+        <div className="absolute inset-0 z-30 w-full h-full bg-[#f8fafc] overflow-hidden animate-strata-in">
           <SkinLayersPip
             fullStage={true}
             activeTool={activeTool}
@@ -3086,19 +3050,23 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       {/* 2. WHOLE BODY 3D CLINICAL ANATOMY VIEW */}
       <div className="relative w-full h-full flex flex-col lg:flex-row">
       {/* ===================================================================== */}
-      {/* 1. LEFT COLUMN (65% width): MAIN 3D ANATOMY VIEWPORT                  */}
+      {/* 1. LEFT COLUMN: MAIN 3D ANATOMY VIEWPORT                              */}
       {/* ===================================================================== */}
-      <div className="relative flex-1 h-[55vh] lg:h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
+      <div className="relative flex-1 h-[48vh] sm:h-[52vh] lg:h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
         {/* 3D WebGL Canvas */}
-        <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+        <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing touch-none" />
 
-        {/* Top Header Bar: Clean & Minimalist inside Viewport */}
-        <div className="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+        {/* Top Header Bar: Clean & Minimalist inside Viewport (No collision on iPhone / iPad) */}
+        <div className="absolute top-3 inset-x-3 sm:inset-x-4 z-20 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-2 pointer-events-auto">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-sm font-display">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-xs font-bold text-[#09090b] shadow-xs font-display">
               <span className="w-2 h-2 rounded-full bg-[#e02868] animate-pulse" />
-              <span className="tracking-wide">ARURA 3D CLINICAL ANATOMY</span>
+              <span className="tracking-wide">ARURA 3D</span>
             </div>
+          </div>
+
+          {/* Viewport Action Group (Reset, Front/Back, 3D Strata) */}
+          <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
             <button
               type="button"
               onClick={() => {
@@ -3107,44 +3075,23 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
                 setActiveRegion('full');
                 setFilterRegion('all');
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-sm flex items-center gap-1.5"
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-neutral-700 hover:text-[#09090b] text-xs font-semibold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
               title="Reset Camera to Whole Body"
             >
               <User className="w-3.5 h-3.5 text-[#e02868]" />
-              <span>Reset View</span>
+              <span className="hidden sm:inline">Reset</span>
             </button>
-          </div>
 
-          {/* Quick Region Pills Bar */}
-          <div className="hidden sm:flex items-center gap-1 p-1 rounded-xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm pointer-events-auto overflow-x-auto max-w-[50vw]">
-            {[
-              { id: 'full', label: 'All Limbs' },
-              { id: 'face', label: 'Face' },
-              { id: 'neck', label: 'Neck' },
-              { id: 'chest', label: 'Chest' },
-              { id: 'arm_left', label: 'L-Arm' },
-              { id: 'arm_right', label: 'R-Arm' },
-              { id: 'back', label: 'Back' },
-              { id: 'leg_left', label: 'L-Leg' },
-              { id: 'leg_right', label: 'R-Leg' }
-            ].map(r => (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => navigateCameraToRegion(r.id)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
-                  activeRegion === r.id
-                    ? 'bg-[#e02868] text-white shadow-xs'
-                    : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
-                }`}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
+            <button
+              type="button"
+              onClick={toggleBodyFacing}
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-xs cursor-pointer"
+              title="Turn Body 180°"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
+              <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
+            </button>
 
-          {/* Viewport Toggles (3D Strata & Facing Flip) */}
-          <div className="flex items-center gap-2 pointer-events-auto">
             <button
               type="button"
               onClick={() => {
@@ -3155,59 +3102,71 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
                   window.dispatchEvent(new Event('resize'));
                 }
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-sm bg-white/95 text-neutral-700 border-neutral-200/90 hover:bg-white hover:text-[#e02868] cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-xs bg-white/95 text-neutral-800 border-neutral-200/90 hover:bg-white hover:text-[#e02868] cursor-pointer"
               title="Enter 3D Microscopic Tissue Strata Surgery"
             >
               <Layers className="w-3.5 h-3.5 text-[#e02868]" />
               <span className="hidden sm:inline">3D Strata</span>
             </button>
-
-            <button
-              type="button"
-              onClick={toggleBodyFacing}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md hover:bg-white border border-neutral-200/90 text-xs font-semibold text-neutral-700 hover:text-[#09090b] transition shadow-sm"
-              title="Turn Body 180°"
-            >
-              <RefreshCw className="w-3.5 h-3.5 text-[#e02868]" />
-              <span>{bodyFacing === 'front' ? 'Front' : 'Back'}</span>
-            </button>
           </div>
         </div>
 
-        {/* Bottom Anatomy Inspection Guide */}
-        <div className="absolute bottom-4 left-4 z-20 pointer-events-auto hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-lg text-xs font-medium text-neutral-700">
-          <Sparkles className="w-4 h-4 text-[#e02868] animate-pulse shrink-0" />
-          <span>Click any limb to inspect points • Click an acupoint to open 3D Tissue Strata & Surgical Tray</span>
+        {/* Bottom Floating Region Carousel (Accessible by touch on all mobile devices) */}
+        <div className="absolute bottom-3 inset-x-3 sm:inset-x-4 z-20 pointer-events-auto flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm overflow-x-auto [scrollbar-width:none]">
+          {[
+            { id: 'full', label: 'All Limbs' },
+            { id: 'face', label: 'Face' },
+            { id: 'neck', label: 'Neck' },
+            { id: 'chest', label: 'Chest' },
+            { id: 'arm_left', label: 'L-Arm' },
+            { id: 'arm_right', label: 'R-Arm' },
+            { id: 'back', label: 'Back' },
+            { id: 'leg_left', label: 'L-Leg' },
+            { id: 'leg_right', label: 'R-Leg' }
+          ].map(r => (
+            <button
+              key={r.id}
+              type="button"
+              onClick={() => navigateCameraToRegion(r.id)}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+                activeRegion === r.id
+                  ? 'bg-[#e02868] text-white shadow-xs'
+                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+              }`}
+            >
+              {r.label}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* ===================================================================== */}
-      {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR (380px)        */}
+      {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR                */}
       {/* ===================================================================== */}
-      <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 h-[45vh] lg:h-full border-t lg:border-t-0 lg:border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
+      <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 flex-1 lg:flex-none h-[52vh] sm:h-[48vh] lg:h-full border-t lg:border-t-0 lg:border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
         {/* Clinical Overview Header in Sidebar */}
-        <div className="p-3.5 border-b border-neutral-200/80 bg-neutral-50/70 flex items-center justify-between">
+        <div className="p-4 border-b border-neutral-200/80 bg-neutral-50/70 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#e02868] animate-pulse" />
             <h4 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
               Clinical Point Directory
             </h4>
           </div>
-          <span className="text-[10px] font-bold text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold text-[#e02868] bg-[#e02868]/10 px-2.5 py-1 rounded-full">
             {filteredAcupoints.length} Points Available
           </span>
         </div>
 
-        {/* 2. Target Acupoint Clinical Intelligence */}
-        <div className="p-4 border-b border-neutral-200/80 space-y-2.5">
+        {/* 2. Target Acupoint Clinical Intelligence (21st.dev / Hairline Card Architecture) */}
+        <div className="p-4 border-b border-neutral-200/80 space-y-4 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
               <h3 className="text-sm font-bold text-[#09090b]">
                 {activeAcupoint.code} • {activeAcupoint.translation}
               </h3>
             </div>
-            <span className="text-[10px] font-mono font-bold text-[#e02868] bg-[#e02868]/10 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-mono font-bold text-[#e02868] bg-[#e02868]/10 px-2.5 py-0.5 rounded-full">
               Target: {activeAcupoint.depthTarget}mm
             </span>
           </div>
@@ -3216,8 +3175,8 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             <span className="font-semibold text-neutral-800">{activeAcupoint.fullName}</span> ({activeAcupoint.meridian})
           </div>
 
-          <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs">
-            <div className="font-bold text-amber-800 flex items-center gap-1.5 mb-0.5">
+          <div className="p-3 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-xs">
+            <div className="font-bold text-amber-800 flex items-center gap-1.5 mb-1">
               <Zap className="w-3.5 h-3.5 text-amber-600" />
               <span>Target Pathology & Knot</span>
             </div>
@@ -3225,7 +3184,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+            <div className="p-2.5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-1">
               <div className="text-[10px] font-bold text-amber-600 flex items-center gap-1">
                 <Zap className="w-3 h-3" />
                 <span>Nerve Innervation:</span>
@@ -3235,7 +3194,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
               </div>
             </div>
 
-            <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+            <div className="p-2.5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-1">
               <div className="text-[10px] font-bold text-red-600 flex items-center gap-1">
                 <Activity className="w-3 h-3" />
                 <span>Vascular Supply:</span>
@@ -3252,7 +3211,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           </div>
 
           {/* Quick Stage Transitions */}
-          <div className="pt-2 space-y-1.5">
+          <div className="pt-2 space-y-2">
             <button
               type="button"
               onClick={() => {
@@ -3262,7 +3221,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
                   setViewMode('tissue');
                 }
               }}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-sm transition cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-sm transition cursor-pointer"
             >
               <Layers className="w-3.5 h-3.5" />
               <span>Enter 3D Tissue Strata Surgery →</span>
@@ -3271,7 +3230,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
               <button
                 type="button"
                 onClick={() => onNavigateToStage(2)}
-                className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-semibold transition cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-semibold transition cursor-pointer"
               >
                 <Zap className="w-3.5 h-3.5 text-amber-600" />
                 <span>View Neural Science Mechanism →</span>
@@ -3281,7 +3240,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         </div>
 
         {/* 3. Acupoints Directory for Active Region */}
-        <div className="p-4 flex-1 overflow-y-auto space-y-2 [scrollbar-width:thin]">
+        <div className="p-4 flex-1 overflow-y-auto space-y-3 [scrollbar-width:thin]">
           <div className="flex items-center justify-between pb-1">
             <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
               {activeRegion === 'full' ? 'All Acupoints (39)' : `${activeRegion.toUpperCase()} Acupoints`}
@@ -3291,7 +3250,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-1.5">
+          <div className="grid grid-cols-1 gap-2">
             {filteredAcupoints.map((pt) => {
               const isSelected = pt.code === activeAcupoint.code;
               const originalIdx = CLINICAL_ACUPOINTS.findIndex(p => p.id === pt.id);
@@ -3300,10 +3259,10 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
                   key={pt.id}
                   type="button"
                   onClick={() => triggerAcupointCloseUp(originalIdx)}
-                  className={`flex items-center justify-between p-2.5 rounded-xl border text-left transition ${
+                  className={`flex items-center justify-between p-3 rounded-2xl border text-left transition cursor-pointer ${
                     isSelected
                       ? 'bg-[#e02868] text-white border-[#e02868] shadow-sm font-bold'
-                      : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200/80'
+                      : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200/80 shadow-xs'
                   }`}
                 >
                   <div>
@@ -3312,7 +3271,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
                       {pt.painName}
                     </div>
                   </div>
-                  <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
                     isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-600'
                   }`}>
                     {pt.depthTarget}mm

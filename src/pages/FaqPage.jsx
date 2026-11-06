@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FAQS, CLINIC_INFO } from '../data/websiteContent';
-import { Search, ChevronDown, Sparkles, MessageCircle, HelpCircle } from 'lucide-react';
+import { Search, Sparkles, MessageCircle, HelpCircle } from 'lucide-react';
+import { FaqAccordion } from '../components/faq-accordion';
 
 export default function FaqPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   const filteredFaqs = FAQS.filter(faq => {
     const matchesCategory = categoryFilter === 'all' || faq.category === categoryFilter;
@@ -15,25 +15,36 @@ export default function FaqPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const toggleFaq = (idx) => {
-    setOpenFaqIndex(openFaqIndex === idx ? null : idx);
-  };
+  const faqItems = filteredFaqs.map((faq, idx) => ({
+    id: `faq-page-${idx}`,
+    question: faq.q,
+    answer: (
+      <div className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed py-2 space-y-3">
+        <p>{faq.a}</p>
+        <div className="pt-2 flex items-center gap-2">
+          <span className="text-xs font-medium text-brand bg-pink-50/70 border border-pink-200/50 px-2.5 py-0.5 rounded-full">
+            {faq.category === 'acupuncture' ? 'Acupuncture care' : 'Counselling therapy'}
+          </span>
+        </div>
+      </div>
+    )
+  }));
 
   return (
     <div className="bg-white text-[#09090b] min-h-screen">
       
       {/* Header Banner */}
-      <section className="relative pt-24 pb-20 border-b border-gray-200/80 bg-ambient-light overflow-hidden">
+      <section className="relative pt-24 pb-20 border-b border-neutral-200 bg-neutral-50/60 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#581c87] text-xs uppercase tracking-wider font-bold">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pink-50/70 border border-pink-200/60 text-brand text-xs font-medium">
               <HelpCircle className="w-3.5 h-3.5" />
-              <span>Medical & Therapy Knowledge Hub</span>
+              <span>Medical & therapy knowledge base</span>
             </div>
             
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#09090b] leading-[1.12]">
               Frequently Asked <br />
-              <span className="text-gradient-luxury">Questions (33)</span>
+              <span className="text-brand">Questions (33)</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
@@ -56,35 +67,35 @@ export default function FaqPage() {
       </section>
 
       {/* Filter Tabs */}
-      <section className="sticky top-20 z-30 bg-white/95 backdrop-blur-xl border-b border-gray-200/80 py-4 shadow-sm">
+      <section className="sticky top-20 z-30 bg-white/95 backdrop-blur-xl border-b border-neutral-200 py-3.5 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-3 text-xs overflow-x-auto pb-1 sm:pb-0">
+          <div className="flex items-center space-x-2 text-xs overflow-x-auto pb-1 sm:pb-0">
             <button
               onClick={() => setCategoryFilter('all')}
-              className={`px-5 py-2.5 rounded-xl uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-lg transition-colors whitespace-nowrap font-medium text-xs ${
                 categoryFilter === 'all'
-                  ? 'bg-[#09090b] text-white font-bold shadow-md'
-                  : 'text-gray-600 hover:text-black hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'text-neutral-600 hover:text-ink hover:bg-neutral-100 border border-neutral-200'
               }`}
             >
               All 33 FAQs
             </button>
             <button
               onClick={() => setCategoryFilter('acupuncture')}
-              className={`px-5 py-2.5 rounded-xl uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-lg transition-colors whitespace-nowrap font-medium text-xs ${
                 categoryFilter === 'acupuncture'
-                  ? 'bg-[#581c87] text-white font-bold shadow-md'
-                  : 'text-gray-600 hover:text-black hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'text-neutral-600 hover:text-ink hover:bg-neutral-100 border border-neutral-200'
               }`}
             >
               Acupuncture FAQs (12)
             </button>
             <button
               onClick={() => setCategoryFilter('counselling')}
-              className={`px-5 py-2.5 rounded-xl uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-lg transition-colors whitespace-nowrap font-medium text-xs ${
                 categoryFilter === 'counselling'
-                  ? 'bg-indigo-900 text-white font-bold shadow-md'
-                  : 'text-gray-600 hover:text-black hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'text-neutral-600 hover:text-ink hover:bg-neutral-100 border border-neutral-200'
               }`}
             >
               Counselling FAQs (21)
@@ -93,53 +104,17 @@ export default function FaqPage() {
         </div>
       </section>
 
-      {/* FAQ Accordion List */}
+      {/* FAQ Accordion List with Hairline UI FaqAccordion */}
       <section className="py-20 lg:py-28 bg-[#f8fafc]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredFaqs.length === 0 ? (
-            <div className="text-center py-24 text-gray-500 text-sm spotlight-card rounded-3xl p-10 border border-gray-200">
-              No matching questions found for "{searchTerm}". Try another search term or ask Dr. Nivedha directly on WhatsApp.
+            <div className="text-center py-20 text-neutral-500 text-sm bg-white rounded-3xl p-10 border border-border shadow-sm">
+              No matching questions found for "{searchTerm}". Try another keyword or contact Dr. Nivedha directly on WhatsApp.
             </div>
           ) : (
-            filteredFaqs.map((faq, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div 
-                  key={`faq-${idx}-${faq.q.slice(0, 15)}`} 
-                  className={`rounded-3xl spotlight-card transition-all duration-300 border ${
-                    isOpen ? 'border-[#581c87]/50 shadow-md bg-white' : 'border-gray-200/80 bg-white'
-                  }`}
-                >
-                  <button
-                    onClick={() => toggleFaq(idx)}
-                    className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-6 focus:outline-none"
-                  >
-                    <div className="flex items-start space-x-4">
-                      <span className="text-xs text-[#581c87] font-bold mt-1">
-                        {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
-                      </span>
-                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#09090b]">
-                        {faq.q}
-                      </h3>
-                    </div>
-                    <div className={`p-2 rounded-xl transition-all ${isOpen ? 'bg-purple-100 text-[#581c87] rotate-180' : 'bg-gray-100 text-gray-500'}`}>
-                      <ChevronDown className="w-5 h-5" />
-                    </div>
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-6 sm:px-7 pb-7 pt-0 text-sm sm:text-base text-gray-600 font-light leading-relaxed border-t border-gray-100">
-                      <p className="pt-5 leading-relaxed">{faq.a}</p>
-                      <div className="mt-4 flex items-center space-x-3 text-xs text-gray-500 uppercase tracking-wider">
-                        <span className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200">
-                          {faq.category}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })
+            <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-sm">
+              <FaqAccordion items={faqItems} type="single" defaultOpen={[0]} />
+            </div>
           )}
 
           {/* Still have questions banner */}
