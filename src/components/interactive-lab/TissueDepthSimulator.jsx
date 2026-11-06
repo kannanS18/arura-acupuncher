@@ -393,60 +393,63 @@ const REGION_DISPLAY_NAMES = {
   full: 'BODY'
 };
 
-// Inactive Acupoint Pill (Crisp white pill with Arura Rose text)
-function createCompactBadgeCanvas(code) {
+// Inactive Acupoint Pill (Crisp white pill with Arura Rose text, high resolution & readable)
+function createCompactBadgeCanvas(code, name) {
   const canvas = document.createElement('canvas');
-  canvas.width = 160;
-  canvas.height = 64;
+  canvas.width = 300;
+  canvas.height = 84;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 152, 56, 20);
+    ctx.roundRect(4, 4, 292, 76, 38);
   } else {
-    ctx.rect(4, 4, 152, 56);
+    ctx.rect(4, 4, 292, 76);
   }
   ctx.fill();
 
   ctx.strokeStyle = '#e02868';
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 5;
   ctx.stroke();
 
+  // Draw code and readable translation
   ctx.fillStyle = '#e02868';
-  ctx.font = '900 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = '900 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 80, 32);
+  const label = name ? `${code} · ${name}` : code;
+  ctx.fillText(label, 150, 42);
 
   return canvas;
 }
 
-// Active / Selected Acupoint Pill (Vibrant solid Arura Rose pill with white text)
-function createCalloutBadgeCanvas(code) {
+// Active / Selected Acupoint Pill (Vibrant solid Arura Rose pill with crisp white text)
+function createCalloutBadgeCanvas(code, name) {
   const canvas = document.createElement('canvas');
-  canvas.width = 176;
-  canvas.height = 70;
+  canvas.width = 320;
+  canvas.height = 92;
   const ctx = canvas.getContext('2d');
 
   ctx.fillStyle = '#e02868';
   ctx.beginPath();
   if (ctx.roundRect) {
-    ctx.roundRect(4, 4, 168, 62, 22);
+    ctx.roundRect(4, 4, 312, 84, 42);
   } else {
-    ctx.rect(4, 4, 168, 62);
+    ctx.rect(4, 4, 312, 84);
   }
   ctx.fill();
 
   ctx.strokeStyle = '#ffffff';
-  ctx.lineWidth = 3.0;
+  ctx.lineWidth = 5;
   ctx.stroke();
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = '900 34px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.font = '900 38px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(code, 88, 35);
+  const label = name ? `${code} · ${name}` : code;
+  ctx.fillText(label, 160, 46);
 
   return canvas;
 }
@@ -547,6 +550,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
   const [isSnapping, setIsSnapping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [viewMode, setViewMode] = useState('body'); // 'body' | 'tissue'
+  const [isMobileCatalogOpen, setIsMobileCatalogOpen] = useState(false);
   const viewModeRef = useRef('body');
   useEffect(() => {
     viewModeRef.current = viewMode;
@@ -1246,9 +1250,8 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, compactTex, selTex }) => {
         const isSel = (idx === selectedAcupointIdx);
         const isInActiveRegion = (pt.region === activeRegion);
-        // In active region (e.g. left arm), ALL points show names!
-        // In full body view, selected point + key landmark points show names
-        const shouldShowBadge = isSel || (activeRegion !== 'full' ? isInActiveRegion : (pt.orderIndex === 0));
+        // In active region, all points show names. In full body view, selected + landmark points show names clearly.
+        const shouldShowBadge = isSel || (activeRegion !== 'full' ? isInActiveRegion : (pt.orderIndex === 0 || isSel));
 
         if (selRing) selRing.visible = isSel;
         if (leaderLine) leaderLine.visible = isSel;
@@ -1262,9 +1265,9 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             }
           }
           if (isSel) {
-            sprite.scale.set(0.055, 0.022, 1.0);
+            sprite.scale.set(0.125, 0.036, 1.0);
           } else {
-            sprite.scale.set(0.044, 0.018, 1.0);
+            sprite.scale.set(0.095, 0.027, 1.0);
           }
         }
       });
@@ -1828,16 +1831,16 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           leaderLine.renderOrder = 998;
           pinGroup.add(leaderLine);
 
-          // 3D Canvas Callout Badge
+          // 3D Canvas Callout Badge (High resolution, crisp & readable without zooming)
           const compactTex = new THREE.CanvasTexture(
-            createCompactBadgeCanvas(pt.code)
+            createCompactBadgeCanvas(pt.code, pt.translation)
           );
           compactTex.colorSpace = THREE.SRGBColorSpace;
           compactTex.minFilter = THREE.LinearFilter;
           compactTex.magFilter = THREE.LinearFilter;
 
           const selTex = new THREE.CanvasTexture(
-            createCalloutBadgeCanvas(pt.code)
+            createCalloutBadgeCanvas(pt.code, pt.translation)
           );
           selTex.colorSpace = THREE.SRGBColorSpace;
           selTex.minFilter = THREE.LinearFilter;
@@ -1852,7 +1855,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           });
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(badgeOffX, badgeOffY, badgeOffZ + 0.008);
-          badgeSprite.scale.set(isInitiallySel ? 0.082 : 0.038, isInitiallySel ? 0.017 : 0.014, 1.0);
+          badgeSprite.scale.set(isInitiallySel ? 0.12 : 0.095, isInitiallySel ? 0.035 : 0.027, 1.0);
           badgeSprite.visible = isInitiallySel;
           badgeSprite.renderOrder = 999;
           badgeSprite.userData = { acupointIdx: idx };
@@ -3050,10 +3053,10 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       {/* 2. WHOLE BODY 3D CLINICAL ANATOMY VIEW */}
       <div className="relative w-full h-full flex flex-col lg:flex-row">
       {/* ===================================================================== */}
-      {/* 1. LEFT COLUMN: MAIN 3D ANATOMY VIEWPORT                              */}
+      {/* 1. LEFT COLUMN: MAIN 3D ANATOMY VIEWPORT (Full Window on Mobile)      */}
       {/* ===================================================================== */}
-      <div className="relative flex-1 h-[48vh] sm:h-[52vh] lg:h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
-        {/* 3D WebGL Canvas */}
+      <div className="relative flex-1 w-full h-full overflow-hidden bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9]">
+        {/* 3D WebGL Canvas (Full Window & 360 Orbit) */}
         <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing touch-none" />
 
         {/* Top Header Bar: Clean & Minimalist inside Viewport (No collision on iPhone / iPad) */}
@@ -3111,8 +3114,8 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           </div>
         </div>
 
-        {/* Bottom Floating Region Carousel (Accessible by touch on all mobile devices) */}
-        <div className="absolute bottom-3 inset-x-3 sm:inset-x-4 z-20 pointer-events-auto flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm overflow-x-auto [scrollbar-width:none]">
+        {/* Region Carousel: Top sub-bar on Mobile, Bottom strip on Desktop (Zero pointer collisions) */}
+        <div className="absolute top-14 lg:top-auto lg:bottom-4 inset-x-3 sm:inset-x-4 z-20 pointer-events-auto flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-sm overflow-x-auto [scrollbar-width:none]">
           {[
             { id: 'full', label: 'All Limbs' },
             { id: 'face', label: 'Face' },
@@ -3138,12 +3141,108 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             </button>
           ))}
         </div>
+
+        {/* Mobile Floating Clinical Dossier Card (Unobtrusive floating card giving 3D model full window) */}
+        <div className="absolute bottom-3 inset-x-3 sm:inset-x-4 z-20 lg:hidden p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl space-y-2 animate-in fade-in slide-in-from-bottom-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: activeAcupoint.colorHex || '#e02868' }} />
+              <h3 className="text-sm font-bold text-neutral-900">
+                {activeAcupoint.code} • {activeAcupoint.translation}
+              </h3>
+            </div>
+            <span className="text-[10px] font-mono font-bold text-[#e02868] bg-[#e02868]/10 px-2.5 py-0.5 rounded-full">
+              Target: {activeAcupoint.depthTarget}mm
+            </span>
+          </div>
+
+          <div className="text-[11px] text-neutral-600 truncate font-medium">
+            <span className="text-amber-800 font-semibold">{activeAcupoint.painName}</span> · {activeAcupoint.fullName}
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                if (onNavigateToStage) onNavigateToStage(3);
+                else setViewMode('tissue');
+              }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#e02868] hover:bg-[#c91f58] text-white text-xs font-bold shadow-sm transition cursor-pointer"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Enter 3D Strata</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsMobileCatalogOpen(true)}
+              className="flex items-center gap-1 py-2 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold transition cursor-pointer"
+              title="Browse all points"
+            >
+              <span>Points ({filteredAcupoints.length})</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Slide-Up Points Directory Sheet */}
+        {isMobileCatalogOpen && (
+          <div className="absolute inset-x-0 bottom-0 z-30 lg:hidden max-h-[70vh] bg-white rounded-t-3xl border-t border-neutral-200 shadow-2xl p-4 flex flex-col space-y-3 animate-in slide-in-from-bottom duration-300">
+            <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#e02868]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-neutral-900">
+                  Points Directory ({filteredAcupoints.length})
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMobileCatalogOpen(false)}
+                className="p-1.5 rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 text-xs font-bold cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto space-y-2 flex-1 [scrollbar-width:thin]">
+              {filteredAcupoints.map((pt) => {
+                const isSelected = pt.code === activeAcupoint.code;
+                const originalIdx = CLINICAL_ACUPOINTS.findIndex(p => p.id === pt.id);
+                return (
+                  <button
+                    key={pt.id}
+                    type="button"
+                    onClick={() => {
+                      triggerAcupointCloseUp(originalIdx);
+                      setIsMobileCatalogOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#e02868] text-white border-[#e02868] shadow-sm font-bold'
+                        : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200'
+                    }`}
+                  >
+                    <div>
+                      <div className="text-xs font-bold">{pt.code} • {pt.translation}</div>
+                      <div className={`text-[10px] truncate max-w-[220px] ${isSelected ? 'text-white/80' : 'text-neutral-500'}`}>
+                        {pt.painName}
+                      </div>
+                    </div>
+                    <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                      isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-600'
+                    }`}>
+                      {pt.depthTarget}mm
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ===================================================================== */}
-      {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR                */}
+      {/* 2. RIGHT COLUMN: DEDICATED STUDIO INTELLIGENCE SIDEBAR (Desktop Only) */}
       {/* ===================================================================== */}
-      <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 flex-1 lg:flex-none h-[52vh] sm:h-[48vh] lg:h-full border-t lg:border-t-0 lg:border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
+      <div className="hidden lg:flex lg:w-[380px] xl:w-[420px] shrink-0 h-full border-l border-neutral-200/90 bg-white/95 backdrop-blur-md flex-col overflow-y-auto z-20 shadow-xl [scrollbar-width:thin]">
         {/* Clinical Overview Header in Sidebar */}
         <div className="p-4 border-b border-neutral-200/80 bg-neutral-50/70 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
