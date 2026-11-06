@@ -981,18 +981,19 @@ export default function SkinLayersPip({
     };
     animate();
 
-    // Raycast click on physical tray tools
+    // Raycast click on physical tray tools & free orbit
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    let downPos = { x: 0, y: 0 };
+    let downPos = { x: 0, y: 0, time: 0 };
 
     const onPointerDown = (e) => {
-      downPos = { x: e.clientX, y: e.clientY };
+      downPos = { x: e.clientX, y: e.clientY, time: performance.now() };
     };
 
     const onClickCanvas = (e) => {
       const dist = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
-      if (dist > 8) return; // Dragged
+      const duration = performance.now() - downPos.time;
+      if (dist > 8 || duration > 300) return; // User was rotating/orbiting the 3D model!
 
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -1016,51 +1017,24 @@ export default function SkinLayersPip({
       }
     };
 
-    let isDraggingTool = false;
-    let dragStartY = 0;
-    let dragStartDepth = 0;
-
-    const onPointerDownCustom = (e) => {
-      onPointerDown(e);
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-
-      const toolHits = raycaster.intersectObjects([needleAssembly, cupGroup, moxaGroup, skinGroup], true);
-      if (toolHits.length > 0) {
-        isDraggingTool = true;
-        dragStartY = e.clientY;
-        dragStartDepth = depthRef.current;
-        controls.enabled = false;
-        renderer.domElement.style.cursor = 'ns-resize';
-      }
-    };
-
     const onPointerMove = (e) => {
-      if (isDraggingTool) {
-        const deltaY = e.clientY - dragStartY;
-        const change = deltaY * 0.08;
-        const currentTool = activeToolRef.current;
-        const maxD = currentTool === 'needle' ? 15.0 : currentTool === 'cup' ? 6.0 : 43.0;
-        const newD = Math.max(0, Math.min(maxD, dragStartDepth + change));
-        if (onDepthChangeRef.current) {
-          onDepthChangeRef.current(newD);
+      if (e.buttons > 0) return; // Orbiting actively
+      if (fullStage) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const trayHits = raycaster.intersectObjects(trayToolHitboxesRef.current, true);
+        if (trayHits.length > 0) {
+          renderer.domElement.style.cursor = 'pointer';
+          return;
         }
       }
+      renderer.domElement.style.cursor = 'grab';
     };
 
-    const onPointerUp = () => {
-      if (isDraggingTool) {
-        isDraggingTool = false;
-        controls.enabled = true;
-        renderer.domElement.style.cursor = 'grab';
-      }
-    };
-
-    renderer.domElement.addEventListener('pointerdown', onPointerDownCustom);
+    renderer.domElement.addEventListener('pointerdown', onPointerDown);
     renderer.domElement.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
     renderer.domElement.addEventListener('click', onClickCanvas);
 
     let lastW = 0, lastH = 0;
@@ -1107,9 +1081,8 @@ export default function SkinLayersPip({
       renderer.domElement.removeEventListener('wheel', onWheel);
       window.removeEventListener('resize', handleResize);
       resizeObserver.disconnect();
-      renderer.domElement.removeEventListener('pointerdown', onPointerDownCustom);
+      renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
       renderer.domElement.removeEventListener('click', onClickCanvas);
       cancelAnimationFrame(animIdRef.current);
       renderer.dispose();

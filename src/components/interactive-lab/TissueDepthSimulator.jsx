@@ -1976,10 +1976,19 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    // Track pointerdown to distinguish turning/orbiting drags from genuine clicks
-    let pointerDownPos = { x: 0, y: 0, hasDown: false };
+    // Robust pointer interaction tracking: cleanly separates 360-degree orbit turning from stationary taps
+    const pointerInteraction = {
+      startX: 0,
+      startY: 0,
+      startTime: 0,
+      isDrag: false
+    };
+
     const handlePointerDown = (e) => {
-      pointerDownPos = { x: e.clientX, y: e.clientY, hasDown: true };
+      pointerInteraction.startX = e.clientX;
+      pointerInteraction.startY = e.clientY;
+      pointerInteraction.startTime = performance.now();
+      pointerInteraction.isDrag = false;
     };
 
     let isWheeling = false;
@@ -1994,8 +2003,16 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
     let lastMoveTime = 0;
     const handlePointerMove = (e) => {
+      // Check if user is actively dragging/orbiting the 3D mannequin
+      if (e.buttons > 0) {
+        const dist = Math.hypot(e.clientX - pointerInteraction.startX, e.clientY - pointerInteraction.startY);
+        if (dist > 5) {
+          pointerInteraction.isDrag = true;
+        }
+      }
+
       // If user is actively orbiting, dragging, or wheel-zooming: bypass raycasting completely for 60fps fluidity!
-      if (pointerDownPos.hasDown || isWheeling) return;
+      if (pointerInteraction.isDrag || e.buttons > 0 || isWheeling) return;
 
       const now = performance.now();
       if (now - lastMoveTime < 32) return; // Cap hover raycasting to ~30Hz max
@@ -2040,7 +2057,6 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     };
 
     const handlePointerUp = () => {
-      pointerDownPos.hasDown = false;
       if (isStabbingRef.current) {
         isStabbingRef.current = false;
         controls.enabled = true; // Re-enable OrbitControls!
@@ -2050,16 +2066,19 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
     const handleCanvasClick = (e) => {
       if (isStabbingRef.current) return;
-      // If user moved/dragged more than 8px while holding down, it was an orbit/turn drag!
-      // In that case, ABORT immediately so turning/orbiting NEVER triggers a body part zoom!
-      if (pointerDownPos.hasDown) {
-        const dx = e.clientX - pointerDownPos.x;
-        const dy = e.clientY - pointerDownPos.y;
-        const dragDist = Math.hypot(dx, dy);
-        pointerDownPos.hasDown = false;
-        if (dragDist > 8) {
-          return; // User was freely turning/orbiting the 3D model
-        }
+
+      const dx = e.clientX - pointerInteraction.startX;
+      const dy = e.clientY - pointerInteraction.startY;
+      const dragDist = Math.hypot(dx, dy);
+      const pressDuration = performance.now() - pointerInteraction.startTime;
+
+      // If user moved/dragged more than 5px or held down to orbit (>300ms), it was an orbit/turn drag!
+      // In that case, ABORT immediately so turning/orbiting NEVER triggers a body part zoom or acupoint popup!
+      const wasDrag = pointerInteraction.isDrag || dragDist > 5 || pressDuration > 300;
+      pointerInteraction.isDrag = false;
+
+      if (wasDrag) {
+        return; // User was freely turning/orbiting the 3D model
       }
 
       const rect = renderer.domElement.getBoundingClientRect();
