@@ -1055,53 +1055,70 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     targetLimbAnglesRef.current.legL = 0.0;
     targetLimbAnglesRef.current.legR = 0.0;
 
-    let targetFacing = 'front';
+    let targetFacing = (regionKey === 'neck' || regionKey === 'back') ? 'back' : 'front';
 
     if (regionKey === 'full') {
       // Whole Body Overview
       targetCamPosRef.current.set(0.0, 0.34, 3.8);
       targetLookAtRef.current.set(0.0, 0.32, 0.0);
-      targetFacing = 'front';
-    } else if (regionKey === 'face' || regionKey === 'crown') {
-      // Head / Cranial Crown / Facial Features
-      targetLookAtRef.current.set(0.0, 0.98, 0.07);
-      targetCamPosRef.current.set(0.0, 0.98, 0.58);
-      targetFacing = 'front';
-    } else if (regionKey === 'neck') {
-      // Occiput / Cervical Spine
-      targetLookAtRef.current.set(0.0, 0.85, -0.06);
-      targetCamPosRef.current.set(0.0, 0.85, -0.58);
-      targetFacing = 'back';
-    } else if (regionKey === 'chest' || regionKey === 'torso') {
-      // Thoracic Sternum & Abdominal Midline
-      targetLookAtRef.current.set(0.0, 0.57, 0.10);
-      targetCamPosRef.current.set(0.0, 0.57, 0.78);
-      targetFacing = 'front';
-    } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
-      // Left Arm, Forearm, Wrist & Hand (Centered on forearm, wrist & dorsal webbing)
-      targetLookAtRef.current.set(0.22, 0.05, 0.04);
-      targetCamPosRef.current.set(0.24, 0.05, 0.48);
-      targetFacing = 'front';
-    } else if (regionKey === 'arm_right') {
-      // Right Arm, Forearm, Wrist & Hand
-      targetLookAtRef.current.set(-0.20, 0.05, 0.12);
-      targetCamPosRef.current.set(-0.22, 0.05, 0.52);
-      targetFacing = 'front';
-    } else if (regionKey === 'back') {
-      // Posterior Thoracic & Lumbar Meridian Chain
-      targetLookAtRef.current.set(0.0, 0.57, -0.065);
-      targetCamPosRef.current.set(0.0, 0.57, -0.78);
-      targetFacing = 'back';
-    } else if (regionKey === 'leg_left' || regionKey === 'leg') {
-      // Left Leg, Knee, Tibia & Foot Dorsum
-      targetLookAtRef.current.set(0.09, -0.18, 0.06);
-      targetCamPosRef.current.set(0.12, -0.18, 0.68);
-      targetFacing = 'front';
-    } else if (regionKey === 'leg_right') {
-      // Right Leg, Knee, Tibia & Foot Dorsum
-      targetLookAtRef.current.set(-0.09, -0.18, 0.06);
-      targetCamPosRef.current.set(-0.12, -0.18, 0.68);
-      targetFacing = 'front';
+    } else {
+      // Dynamically center on the exact 3D acupoint pins for this anatomical region
+      const matchingPins = (allPinObjectsRef.current || []).filter(
+        p => p && p.userData && p.userData.region === regionKey
+      );
+
+      if (matchingPins.length > 0) {
+        const regionCenter = new THREE.Vector3();
+        const tempP = new THREE.Vector3();
+        matchingPins.forEach(p => {
+          p.updateMatrixWorld(true);
+          p.getWorldPosition(tempP);
+          regionCenter.add(tempP);
+        });
+        regionCenter.divideScalar(matchingPins.length);
+
+        targetLookAtRef.current.copy(regionCenter);
+
+        // Distance calibrated to frame the entire region with comfortable margins
+        let dollyDist = 0.65;
+        if (regionKey === 'face' || regionKey === 'crown') dollyDist = 0.52;
+        else if (regionKey === 'neck') dollyDist = 0.52;
+        else if (regionKey === 'chest' || regionKey === 'back') dollyDist = 0.72;
+        else if (regionKey === 'arm_left' || regionKey === 'arm_right') dollyDist = 0.62;
+        else if (regionKey === 'leg_left' || regionKey === 'leg_right') dollyDist = 0.72;
+
+        const camZ = targetFacing === 'back' ? regionCenter.z - dollyDist : regionCenter.z + dollyDist;
+        targetCamPosRef.current.set(regionCenter.x, regionCenter.y + 0.02, camZ);
+      } else {
+        // Precise calibrated fallbacks
+        if (regionKey === 'face' || regionKey === 'crown') {
+          targetLookAtRef.current.set(0.0, 0.99, 0.06);
+          targetCamPosRef.current.set(0.0, 0.99, 0.58);
+        } else if (regionKey === 'neck') {
+          targetLookAtRef.current.set(0.0, 0.84, -0.06);
+          targetCamPosRef.current.set(0.0, 0.84, -0.58);
+        } else if (regionKey === 'chest' || regionKey === 'torso') {
+          targetLookAtRef.current.set(0.0, 0.57, 0.07);
+          targetCamPosRef.current.set(0.0, 0.57, 0.78);
+        } else if (regionKey === 'arm_left' || regionKey === 'hand' || regionKey === 'arm') {
+          // Left Arm: Center is at Y=0.353 (Elbow Y=0.47 down to Hand Y=0.28)
+          targetLookAtRef.current.set(0.20, 0.35, 0.03);
+          targetCamPosRef.current.set(0.20, 0.35, 0.62);
+        } else if (regionKey === 'arm_right') {
+          // Right Arm: Center is at Y=0.366 (Elbow Y=0.47 down to Hand Y=0.30)
+          targetLookAtRef.current.set(-0.18, 0.37, 0.10);
+          targetCamPosRef.current.set(-0.18, 0.37, 0.65);
+        } else if (regionKey === 'back') {
+          targetLookAtRef.current.set(0.0, 0.53, -0.11);
+          targetCamPosRef.current.set(0.0, 0.53, -0.78);
+        } else if (regionKey === 'leg_left' || regionKey === 'leg') {
+          targetLookAtRef.current.set(0.10, -0.15, -0.02);
+          targetCamPosRef.current.set(0.10, -0.15, 0.70);
+        } else if (regionKey === 'leg_right') {
+          targetLookAtRef.current.set(-0.09, -0.15, -0.02);
+          targetCamPosRef.current.set(-0.09, -0.15, 0.70);
+        }
+      }
     }
 
     // Model stays canonical; camera dollies to front (+Z) or back (-Z)
