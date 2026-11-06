@@ -644,9 +644,9 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      0.1632,
-      -0.0073,
-      0.0222
+      0.266,
+      0.002,
+      0.051
     ],
     "surfaceNormal": [
       0.959,
@@ -829,9 +829,9 @@ export const CLINICAL_ACUPOINTS = [
     "depthTarget": 8,
     "depthCun": "0.3–0.5 cun",
     "modelPos": [
-      -0.1857,
-      0.0018,
-      0.1140
+      -0.190,
+      0.018,
+      0.167
     ],
     "surfaceNormal": [
       -0.076,

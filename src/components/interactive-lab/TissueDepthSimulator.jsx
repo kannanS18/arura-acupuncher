@@ -1177,30 +1177,47 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     targetLimbAnglesRef.current.legL = 0.0;
     targetLimbAnglesRef.current.legR = 0.0;
 
-    const mScale = 1.55 / 1.90;
-    const worldPt = new THREE.Vector3(
-      pt.modelPos[0] * mScale,
-      0.32 + pt.modelPos[1] * mScale,
-      pt.modelPos[2] * mScale
-    );
+    // 1. Get the EXACT world position of the actual acupoint pin
+    const pinObj = allPinObjectsRef.current && allPinObjectsRef.current[idx];
+    const worldPt = new THREE.Vector3();
+    if (pinObj) {
+      pinObj.updateMatrixWorld(true);
+      pinObj.getWorldPosition(worldPt);
+    } else {
+      const mScale = 1.55 / 1.90;
+      worldPt.set(
+        pt.modelPos[0] * mScale,
+        0.32 + pt.modelPos[1] * mScale,
+        pt.modelPos[2] * mScale
+      );
+    }
 
-    // Focal point is the exact acupoint vertex
+    // Focal point is the exact acupoint vertex in 3D world space
     targetLookAtRef.current.copy(worldPt);
 
-    // Compute direct dolly zoom camera position at 0.42m distance
+    // Compute direct dolly zoom camera position along outward normal transformed to world space
     const isBackFacing = pt.facing === 'back';
-    const norm = new THREE.Vector3(
-      pt.surfaceNormal[0] || 0,
-      pt.surfaceNormal[1] || 0,
-      pt.surfaceNormal[2] || (isBackFacing ? -1 : 1)
-    ).normalize();
+    const localNorm = (pinObj && pinObj.userData && pinObj.userData.surfaceNormal)
+      ? pinObj.userData.surfaceNormal.clone()
+      : new THREE.Vector3(
+          pt.surfaceNormal[0] || 0,
+          pt.surfaceNormal[1] || 0,
+          pt.surfaceNormal[2] || (isBackFacing ? -1 : 1)
+        ).normalize();
 
-    // Position camera along the outward normal from the point
-    const dollyDistance = 0.45;
-    targetCamPosRef.current.copy(worldPt).addScaledVector(norm, dollyDistance);
+    const worldNorm = localNorm.clone();
+    if (bodyModelMeshRef.current) {
+      bodyModelMeshRef.current.updateMatrixWorld(true);
+      const normalMatrix = new THREE.Matrix3().getNormalMatrix(bodyModelMeshRef.current.matrixWorld);
+      worldNorm.applyMatrix3(normalMatrix).normalize();
+    }
+
+    // Position camera along the outward normal from the point at crystal-clear close-up distance
+    const dollyDistance = 0.40;
+    targetCamPosRef.current.copy(worldPt).addScaledVector(worldNorm, dollyDistance);
 
     // Ensure camera stays slightly elevated for clear perspective
-    targetCamPosRef.current.y += 0.03;
+    targetCamPosRef.current.y += 0.025;
 
     const targetFacing = isBackFacing ? 'back' : 'front';
     if (bodyModelMeshRef.current) {
@@ -1775,17 +1792,41 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
         const skinDotTex = createSkinDotTexture('#e02868', false);
         const skinDotSelTex = createSkinDotTexture('#e02868', true);
 
-        // Directly attach all 11 Acupoint Pin Groups to bodyMesh with outward surface-normal offset!
-        // Guarantees zero sinking/occlusion into mannequin polygons and 100% lockstep tracking
+        // Raycaster for surface snapping: guarantees every acupoint dot sits 100% flush on the actual 3D mannequin geometry
+        const surfaceRaycaster = new THREE.Raycaster();
+        bodyMesh.geometry.computeVertexNormals();
+
+        // Directly attach all Acupoint Pin Groups to bodyMesh with surface-snapped precision!
         CLINICAL_ACUPOINTS.forEach((pt, idx) => {
           const pinGroup = new THREE.Group();
-          const pos = pt.modelPos || [0, 0, 0];
-          const norm = pt.surfaceNormal || [0, 0, 1];
-          const nLen = Math.hypot(norm[0], norm[1], norm[2]) || 1;
-          const offX = (norm[0] / nLen) * 0.0025;
-          const offY = (norm[1] / nLen) * 0.0025;
-          const offZ = (norm[2] / nLen) * 0.0025;
-          pinGroup.position.set(pos[0] + offX, pos[1] + offY, pos[2] + offZ);
+          let pos = new THREE.Vector3(...(pt.modelPos || [0, 0, 0]));
+          let norm = new THREE.Vector3(...(pt.surfaceNormal || [0, 0, 1])).normalize();
+          if (norm.lengthSq() < 0.01) norm.set(0, 0, 1);
+
+          // Raycast snap directly onto the actual mesh surface
+          // 1. Cast inward from outside the surface
+          const rayOrigin = pos.clone().addScaledVector(norm, 0.12);
+          surfaceRaycaster.set(rayOrigin, norm.clone().negate());
+          let hits = surfaceRaycaster.intersectObject(bodyMesh, false);
+
+          // 2. If no hit, cast outward from slightly inside
+          if (!hits || hits.length === 0) {
+            const rayOriginIn = pos.clone().addScaledVector(norm, -0.12);
+            surfaceRaycaster.set(rayOriginIn, norm);
+            hits = surfaceRaycaster.intersectObject(bodyMesh, false);
+          }
+
+          if (hits && hits.length > 0) {
+            // Snap position right onto the surface polygon
+            pos.copy(hits[0].point);
+            if (hits[0].face && hits[0].face.normal) {
+              norm.copy(hits[0].face.normal).normalize();
+            }
+          }
+
+          // Subtle offset (0.0015) along surface normal so 2D dot rests flush on the skin without polygon z-fighting
+          const flushPos = pos.clone().addScaledVector(norm, 0.0015);
+          pinGroup.position.copy(flushPos);
           pinGroup.scale.set(1, 1, 1); // Visible in normal state!
           pinGroup.userData = {
             targetScale: 1.0,
@@ -1795,22 +1836,36 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             facing: pt.facing || 'front',
             orderIndex: pt.orderIndex ?? 0,
             baseLocalPos: pinGroup.position.clone(),
-            surfaceNormal: new THREE.Vector3(norm[0], norm[1], norm[2]).normalize()
+            surfaceNormal: norm.clone()
           };
 
-          // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite, depthTest: false so it never clips)
-          const dotMat = new THREE.SpriteMaterial({ map: skinDotTex, depthTest: false, depthWrite: false });
+          // Crisp 2D Pinpoint Dot flush on skin (Camera-facing high-visibility sprite with depthTest & polygonOffset)
+          const dotMat = new THREE.SpriteMaterial({ 
+            map: skinDotTex, 
+            depthTest: true, 
+            depthWrite: false 
+          });
+          dotMat.polygonOffset = true;
+          dotMat.polygonOffsetFactor = -1.0;
+          dotMat.polygonOffsetUnits = -4.0;
           const dotSprite = new THREE.Sprite(dotMat);
           dotSprite.scale.set(0.024, 0.024, 1.0);
-          dotSprite.renderOrder = 9999;
+          dotSprite.renderOrder = 999;
           pinGroup.add(dotSprite);
 
           // Active Selection Aura Ring
-          const selRingMat = new THREE.SpriteMaterial({ map: skinDotSelTex, depthTest: false, depthWrite: false });
+          const selRingMat = new THREE.SpriteMaterial({ 
+            map: skinDotSelTex, 
+            depthTest: true, 
+            depthWrite: false 
+          });
+          selRingMat.polygonOffset = true;
+          selRingMat.polygonOffsetFactor = -1.0;
+          selRingMat.polygonOffsetUnits = -4.0;
           const selRing = new THREE.Sprite(selRingMat);
           selRing.scale.set(0.036, 0.036, 1.0);
           selRing.visible = (idx === selectedAcupointIdx);
-          selRing.renderOrder = 9998;
+          selRing.renderOrder = 998;
           pinGroup.add(selRing);
 
           // Refined, close-hugging micro badge offset
@@ -2050,12 +2105,18 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           triggerAcupointCloseUp(hitIdx);
 
           // 2. Measure distance to determine optimal transition timing
-          const mScale = 1.55 / 1.90;
-          const worldPt = new THREE.Vector3(
-            pt.modelPos[0] * mScale,
-            0.32 + pt.modelPos[1] * mScale,
-            pt.modelPos[2] * mScale
-          );
+          const pinObj = allPinObjectsRef.current && allPinObjectsRef.current[hitIdx];
+          const worldPt = new THREE.Vector3();
+          if (pinObj) {
+            pinObj.getWorldPosition(worldPt);
+          } else {
+            const mScale = 1.55 / 1.90;
+            worldPt.set(
+              pt.modelPos[0] * mScale,
+              0.32 + pt.modelPos[1] * mScale,
+              pt.modelPos[2] * mScale
+            );
+          }
           const currentCamPos = cameraRef.current ? cameraRef.current.position : new THREE.Vector3(0, 0, 4);
           const dist = currentCamPos.distanceTo(worldPt);
           // If already zoomed in, transition rapidly; if overview, let the camera dolly dive in first
@@ -2662,6 +2723,8 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     const clock = new THREE.Clock();
     const pinWorldPos = new THREE.Vector3();
     const tempCamDir = new THREE.Vector3();
+    const tempWorldNorm = new THREE.Vector3();
+    const bodyNormalMatrix = new THREE.Matrix3();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
@@ -2740,6 +2803,9 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
 
       // Smooth Spring Scale & Distance-Scaled Acupoints locked to articulated limbs
       if (allPinObjectsRef.current) {
+        if (bodyModelMeshRef.current) {
+          bodyNormalMatrix.getNormalMatrix(bodyModelMeshRef.current.matrixWorld);
+        }
         const isAnim = isCameraAnimatingRef.current;
         allPinObjectsRef.current.forEach(pin => {
           const ts = pin.userData.targetScale ?? 0.0;
@@ -2841,17 +2907,17 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             }
           }
 
-          // Dynamic scale & backface culling (Reusing preallocated tempCamDir vector)
+          // Dynamic scale & true world-space backface culling (Reusing preallocated vectors)
           pin.getWorldPosition(pinWorldPos);
           const pinNorm = pin.userData.surfaceNormal;
-          const isActiveRegion = pin.userData.region === activeRegionRef.current;
           if (pinNorm) {
             tempCamDir.subVectors(camera.position, pinWorldPos).normalize();
-            const dot = pinNorm.dot(tempCamDir);
-            const curFacing = bodyFacingRef.current || 'front';
-            const isFacingCam = isActiveRegion 
-              ? (pin.userData.facing === curFacing || !pin.userData.facing || dot > 0.05) 
-              : (dot > -0.2);
+            tempWorldNorm.copy(pinNorm);
+            if (bodyModelMeshRef.current) {
+              tempWorldNorm.applyMatrix3(bodyNormalMatrix).normalize();
+            }
+            const dot = tempWorldNorm.dot(tempCamDir);
+            const isFacingCam = dot > 0.05;
             pin.visible = isFacingCam && (pin.userData.targetScale > 0.01);
           }
           const dist = camera.position.distanceTo(pinWorldPos);
@@ -2866,12 +2932,12 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             ring.scale.set(dynamicScale * 1.5, dynamicScale * 1.5, 1.0);
           }
 
-          // Dynamic distance-proportional badge scaling (Never giant billboards, never unreadable)
+          // Dynamic distance-proportional badge scaling (Crisp 3.55:1 aspect ratio matching 300x84 texture)
           const badge = pin.userData.badge;
           if (badge && badge.isSprite && badge.visible) {
             const isSel = (pin.userData.acupointIdx === selectedAcupointIdx);
-            const baseW = isSel ? 0.055 : 0.044;
-            const baseH = isSel ? 0.022 : 0.018;
+            const baseW = isSel ? 0.11 : 0.085;
+            const baseH = isSel ? 0.031 : 0.024;
             const distFactor = Math.max(0.80, Math.min(1.40, dist * 0.90));
             badge.scale.set(baseW * distFactor, baseH * distFactor, 1.0);
           }
