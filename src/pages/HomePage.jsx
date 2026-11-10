@@ -1,6 +1,5 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
-import HowAcupunctureWorksTeaser from '../components/interactive-lab/HowAcupunctureWorksTeaser';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
 import PhysicianPhilosophySection from '../components/PhysicianPhilosophySection';
 import { ArrowRight, CheckCircle2, Activity, Heart, Brain, Sparkles, CalendarCheck, ShieldCheck } from 'lucide-react';
@@ -17,10 +16,7 @@ export default function HomePage({ onOpenBooking }) {
       {/* 1. Grounded 21st.dev Hero Section */}
       <HeroSection onOpenBooking={onOpenBooking} />
 
-      {/* 2. Fast-Loading High-Converting 3D Science Lab Teaser (Full 3D model opens in dedicated window) */}
-      <HowAcupunctureWorksTeaser onOpenBooking={onOpenBooking} />
-
-      {/* 3. Anatomical Treatment Ledger */}
+      {/* 2. Anatomical Treatment Ledger */}
       <section className="py-20 lg:py-28 bg-white border-b border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <InteractiveMeridianExplorer onOpenBooking={onOpenBooking} />

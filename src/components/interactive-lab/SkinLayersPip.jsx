@@ -22,11 +22,14 @@ import {
 } from 'lucide-react';
 
 // Singleton In-Memory Cache for the 3D Tissue Strata Model
+import { getCachedSkinGltf } from './modelCache';
+
 let cachedSkinGltf = null;
 let preloadPromise = null;
 
 export function preloadSkinModel() {
-  if (cachedSkinGltf) return Promise.resolve(cachedSkinGltf);
+  const memGltf = getCachedSkinGltf() || cachedSkinGltf;
+  if (memGltf) return Promise.resolve(memGltf);
   if (preloadPromise) return preloadPromise;
 
   preloadPromise = new Promise((resolve) => {
@@ -292,9 +295,10 @@ export default function SkinLayersPip({
       }, 250);
     };
 
-    if (cachedSkinGltf) {
-      setLoadProgress(90);
-      applyModel(cachedSkinGltf);
+    const activeCached = getCachedSkinGltf() || cachedSkinGltf;
+    if (activeCached) {
+      setLoadProgress(100);
+      applyModel(activeCached);
     } else {
       let curP = 25;
       progressInterval = setInterval(() => {

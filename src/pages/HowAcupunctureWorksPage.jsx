@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import TissueDepthSimulator from '../components/interactive-lab/TissueDepthSimulator';
 import SkinLayersPip, { preloadSkinModel } from '../components/interactive-lab/SkinLayersPip';
+import AnatomyLabPreloader from '../components/interactive-lab/AnatomyLabPreloader';
 import { CLINICAL_ACUPOINTS, getClinicalOutcome } from '../components/interactive-lab/acupointsData';
 
 const CLINICAL_CONDITIONS = [
@@ -95,6 +96,9 @@ export default function HowAcupunctureWorksPage({ onOpenBooking }) {
   return (
     <div className="relative w-full h-screen min-h-[640px] bg-[#f8fafc] text-[#09090b] flex flex-col overflow-hidden font-sans select-none">
       
+      {/* Dedicated RAM Preloader for this page alone: Downloads & caches all 3D models into memory */}
+      <AnatomyLabPreloader />
+
       {/* ========================================================================= */}
       {/* TOP CLINICAL NAVIGATION & BREADCRUMB PROGRESS BAR                         */}
       {/* ========================================================================= */}

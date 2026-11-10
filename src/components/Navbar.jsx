@@ -16,6 +16,7 @@ export default function Navbar({ onOpenBooking }) {
     { value: '/about', label: 'About Us', href: '#/about' },
     { value: '/doctor', label: 'Doctor', href: '#/doctor' },
     { value: '/clinic', label: 'Clinic', href: '#/clinic' },
+    { value: '/how-acupuncture-works', label: '3D Anatomy', href: '#/how-acupuncture-works' },
     { value: '/counselling', label: 'Counselling', href: '#/counselling' },
     { value: '/blog', label: 'Blog', href: '#/blog' },
     { value: '/booking', label: 'Booking', href: '#/booking' },
@@ -28,6 +29,7 @@ export default function Navbar({ onOpenBooking }) {
     if (path.startsWith('/about') || path === '/disorders') return '/about';
     if (path.startsWith('/doctor') || path === '/therapist') return '/doctor';
     if (path.startsWith('/clinic') || path === '/pricing' || path === '/acupuncture' || path === '/safety' || path === '/faqs') return '/clinic';
+    if (path.startsWith('/how-acupuncture-works') || path.startsWith('/3d-lab')) return '/how-acupuncture-works';
     if (path.startsWith('/counselling')) return '/counselling';
     if (path.startsWith('/blog')) return '/blog';
     if (path.startsWith('/booking') || path === '/contact') return '/booking';
@@ -147,7 +149,7 @@ export default function Navbar({ onOpenBooking }) {
           </Link>
 
           {/* Desktop Navigation with Hairline Liquid Tabs */}
-          <nav className="hidden md:flex items-center justify-center">
+          <nav className="hidden lg:flex items-center justify-center">
             <LiquidTabs
               tabs={navTabs}
               value={activeTab}
@@ -155,7 +157,7 @@ export default function Navbar({ onOpenBooking }) {
                 navigate(path);
               }}
               label="Main navigation"
-              size="md"
+              size="sm"
               className="bg-slate-100/90 border border-slate-200/90 shadow-[inset_0_1px_2.5px_rgba(0,0,0,0.06)]"
             />
           </nav>
@@ -172,7 +174,7 @@ export default function Navbar({ onOpenBooking }) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
+              className="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6 text-brand" /> : <Menu className="w-6 h-6" />}
@@ -184,7 +186,7 @@ export default function Navbar({ onOpenBooking }) {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200 px-4 sm:px-6 py-6 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden bg-white border-b border-gray-200 px-4 sm:px-6 py-6 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex items-center justify-between pb-2 border-b border-gray-100">
             <span className="text-xs text-brand font-bold uppercase tracking-wider">
               Navigation Menu
@@ -198,6 +200,7 @@ export default function Navbar({ onOpenBooking }) {
           <div className="flex flex-col space-y-1 text-base font-semibold text-gray-800">
             {navTabs.map((tab) => {
               const isActive = activeTab === tab.value;
+              const is3D = tab.value === '/how-acupuncture-works';
               return (
                 <NavLink
                   key={tab.value}
@@ -209,7 +212,14 @@ export default function Navbar({ onOpenBooking }) {
                       : 'text-gray-700 hover:text-brand hover:bg-gray-50'
                   }`}
                 >
-                  <span>{tab.label}</span>
+                  <div className="flex items-center gap-2">
+                    <span>{tab.label}</span>
+                    {is3D && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#e02868]/10 text-[#e02868] border border-[#e02868]/20">
+                        3D Lab
+                      </span>
+                    )}
+                  </div>
                   {isActive && <span className="w-1.5 h-1.5 rounded-full bg-brand" />}
                 </NavLink>
               );

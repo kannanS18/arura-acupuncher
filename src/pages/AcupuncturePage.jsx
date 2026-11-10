@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
-import HowAcupunctureWorksTeaser from '../components/interactive-lab/HowAcupunctureWorksTeaser';
 import { Flame, Disc, Leaf, Zap, Sun, Activity, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -108,9 +107,6 @@ export default function AcupuncturePage({ onOpenBooking }) {
           </motion.div>
         </div>
       </section>
-
-      {/* Dedicated 3D Interactive Lab Launch Showcase */}
-      <HowAcupunctureWorksTeaser onOpenBooking={onOpenBooking} />
 
       {/* Interactive Clinical Meridian Navigator */}
       <section className="py-20 bg-surface-subtle border-b border-gray-200/80">

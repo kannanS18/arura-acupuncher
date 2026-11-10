@@ -72,6 +72,8 @@ function AppLayout({ onOpenBooking, isBookingOpen, onCloseBooking, selectedServi
             />
             <Route path="/counselling" element={<CounsellingPage onOpenBooking={onOpenBooking} />} />
             <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
+            <Route path="/anatomy" element={<Navigate to="/how-acupuncture-works" replace />} />
+            <Route path="/3d-anatomy" element={<Navigate to="/how-acupuncture-works" replace />} />
             <Route path="/safety" element={<Navigate to="/clinic" replace />} />
             <Route path="/faqs" element={<Navigate to="/clinic" replace />} />
             <Route path="/contact" element={<Navigate to="/booking" replace />} />

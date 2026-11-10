@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip, { preloadSkinModel } from './SkinLayersPip';
+import { getCachedBodyGltf, preloadAnatomyModels } from './modelCache';
 import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS } from './acupointsData';
 export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
@@ -1469,15 +1470,14 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
     const targetHeight = 1.55; // Sized for 60% screen height fit!
     const modelScale = targetHeight / 1.90; // Natural height is 1.90m
 
-    gltfLoader.load(
-      modelUrl,
-      (gltf) => {
-        let bodyMesh = null;
-        gltf.scene.traverse((c) => {
-          if (c.isMesh && !bodyMesh) bodyMesh = c;
-        });
+    const initBodyMesh = (gltf) => {
+      let bodyMesh = null;
+      const sourceScene = gltf.scene ? gltf.scene.clone(true) : gltf;
+      sourceScene.traverse((c) => {
+        if (c.isMesh && !bodyMesh) bodyMesh = c;
+      });
 
-        if (!bodyMesh) return;
+      if (!bodyMesh) return;
 
         // Compute exact anatomical limb vertex weights (Zero risk of torso/pelvis distortion)
         let geo = bodyMesh.geometry;
@@ -1963,10 +1963,21 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             });
           }
         }, 300);
-      },
-      undefined,
-      (err) => console.error('Failed to load human_body.glb:', err)
-    );
+    };
+
+    // Load from memory cache if preloaded into RAM, or initiate immediate preload
+    const cachedGltf = getCachedBodyGltf();
+    if (cachedGltf) {
+      initBodyMesh(cachedGltf);
+    } else {
+      preloadAnatomyModels().then(({ body }) => {
+        if (body) {
+          initBodyMesh(body);
+        } else {
+          gltfLoader.load(modelUrl, initBodyMesh, undefined, (err) => console.error('Failed to load human_body.glb:', err));
+        }
+      });
+    }
 
     // Raycaster for Direct Acupoint Dot Clicking, Tool Tray Picking, & Needle Stabbing
     const raycaster = new THREE.Raycaster();
