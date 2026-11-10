@@ -19,12 +19,12 @@ export default function DoctorPage({ onOpenBooking }) {
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             
-            {/* Left Column: Doctor Identity & Narrative with Scroll Reveal */}
+            {/* Left Column: Doctor Identity & Narrative */}
             <motion.div 
               className="lg:col-span-7 space-y-6"
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0.85, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
               <p className="text-xs text-brand font-semibold tracking-normal">
                 Lead Clinical Director, Virugambakkam
@@ -92,9 +92,9 @@ export default function DoctorPage({ onOpenBooking }) {
             {/* Right Column: Authentic Interactive Doctor ID Card (21st.dev + Hairline UI) */}
             <motion.div 
               className="lg:col-span-5 flex justify-center"
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              initial={{ opacity: 0.9, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
               <DoctorIdCard />
             </motion.div>
@@ -117,10 +117,10 @@ export default function DoctorPage({ onOpenBooking }) {
       <section className="py-20 lg:py-24 bg-ink text-white relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0.9, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.3 }}
             className="space-y-6"
           >
             <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">

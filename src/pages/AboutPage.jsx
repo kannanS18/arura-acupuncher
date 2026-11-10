@@ -74,12 +74,12 @@ export default function AboutPage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {/* Left Column (7 cols): Editorial Narrative with Scroll Reveal */}
+            {/* Left Column (7 cols): Editorial Narrative */}
             <motion.div 
               className="lg:col-span-7 space-y-6"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0.9 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
                 A quiet sanctuary for <br />
@@ -105,9 +105,9 @@ export default function AboutPage({ onOpenBooking }) {
             {/* Right Column (5 cols): Calm Clinical Showcase */}
             <motion.div 
               className="lg:col-span-5"
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              initial={{ opacity: 0.9, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               <div className="rounded-3xl bg-white border border-neutral-200/90 p-8 shadow-sm relative overflow-hidden group motion-safe:animate-pure-float">
                 
@@ -161,10 +161,10 @@ export default function AboutPage({ onOpenBooking }) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="bg-ink text-white rounded-3xl p-8 sm:p-14 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0.95 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.2 }}
           >
             <div className="space-y-3 text-center md:text-left relative z-10">
               <h3 className="font-display text-2xl sm:text-4xl font-bold">

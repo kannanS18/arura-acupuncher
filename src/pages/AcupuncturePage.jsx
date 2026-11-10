@@ -91,9 +91,9 @@ export default function AcupuncturePage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             className="max-w-3xl space-y-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0.95 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.2 }}
           >
             <p className="text-xs text-brand font-semibold tracking-normal">
               Classical Meridian Science
@@ -119,30 +119,20 @@ export default function AcupuncturePage({ onOpenBooking }) {
       <section className="py-20 lg:py-28 bg-white border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <motion.div 
-            className="max-w-3xl space-y-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="max-w-3xl space-y-3">
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
               Six Modalities Deployed at Arura
             </h2>
             <p className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed">
               Tailored dynamically during each treatment based on Dr. Nivedha’s diagnostic pulse evaluation:
             </p>
-          </motion.div>
+          </div>
 
           {/* Architectural Modality Cards (No nested box clutter) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {MODALITIES.map((m, idx) => (
-              <motion.div
+            {MODALITIES.map((m) => (
+              <div
                 key={m.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="group p-8 rounded-3xl bg-white border border-neutral-200 hover:border-brand/60 hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 relative overflow-hidden"
               >
                 {/* Top accent indicator */}
@@ -192,7 +182,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
                     <ArrowRight className="w-3.5 h-3.5 motion-safe:group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
@@ -203,29 +193,19 @@ export default function AcupuncturePage({ onOpenBooking }) {
       <section className="py-20 lg:py-24 bg-surface-subtle border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <motion.div 
-            className="max-w-2xl space-y-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="max-w-2xl space-y-2">
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink">
               What Happens in Your Session
             </h2>
             <p className="text-sm text-gray-600 font-normal">
               Clear, transparent clinical pacing from arrival to post-session recovery.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-            {STEPS.map((st, i) => (
-              <motion.div
+            {STEPS.map((st) => (
+              <div
                 key={st.num}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
                 className="p-6 sm:p-8 rounded-3xl bg-white border border-gray-200 space-y-4 shadow-xs"
               >
                 <div className="w-10 h-10 rounded-2xl bg-pink-50 border border-pink-200 text-brand font-bold flex items-center justify-center text-sm">
@@ -240,7 +220,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
                 <div className="text-xs text-brand font-medium pt-2 border-t border-gray-100">
                   {st.note}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 

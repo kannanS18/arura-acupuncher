@@ -33,33 +33,21 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         
         {/* Section Header */}
-        <motion.div 
-          className="text-center max-w-xl mx-auto space-y-3"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div className="text-center max-w-xl mx-auto space-y-3">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight">
             Medicine crafted for real recovery
           </h2>
           <p className="text-sm sm:text-base text-gray-600 font-normal">
             Hospital-grade sterile techniques and peaceful private suites in Chennai.
           </p>
-        </motion.div>
+        </div>
 
-        {/* 3-Column Image-Rich Visual Cards with Staggered Scroll Reveal */}
+        {/* 3-Column Image-Rich Visual Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pillars.map((item, idx) => (
-            <motion.div
+            <div
               key={idx}
-              whileHover={{ y: -2, transition: { duration: 0.15 } }}
-              whileTap={{ scale: 0.99 }}
               className="group bg-white rounded-2xl overflow-hidden border border-neutral-200 hover:border-neutral-300 transition-colors duration-150 flex flex-col justify-between cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Authentic Clinical Photograph */}
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -94,7 +82,7 @@ export default function ClinicalVisualGrid({ onOpenBooking }) {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 

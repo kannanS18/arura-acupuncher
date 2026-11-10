@@ -50,13 +50,7 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Sticky Column: Editorial Overview & Philosophy */}
-          <motion.div 
-            className="lg:col-span-5 lg:sticky lg:top-28 space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-xs font-mono font-bold text-[#ed3373] uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373]" />
@@ -101,17 +95,13 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: Redesigned Hairline UI Modality Cards */}
           <div className="lg:col-span-7 space-y-4">
-            {clinicalTechniques.map((tech, idx) => (
-              <motion.div
+            {clinicalTechniques.map((tech) => (
+              <div
                 key={tech.num}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className="group p-6 sm:p-7 rounded-2xl bg-white border border-neutral-200/90 hover:border-[#ed3373]/50 hover:shadow-md transition-all duration-200 space-y-4"
               >
                 {/* Header Row: Number, Title & Spec Badge */}
@@ -162,7 +152,7 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
                   </button>
                 </div>
 
-              </motion.div>
+              </div>
             ))}
           </div>
 

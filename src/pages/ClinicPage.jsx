@@ -99,9 +99,9 @@ export default function ClinicPage({ onOpenBooking }) {
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <motion.p 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0.9 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
             className="text-xs text-brand font-semibold tracking-normal"
           >
             Arura Wellness Sanctuary, Virugambakkam
@@ -109,18 +109,18 @@ export default function ClinicPage({ onOpenBooking }) {
 
           <div className="max-w-3xl space-y-4">
             <motion.h1 
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0.9 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.2 }}
               className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.15]"
             >
               Clinical Modalities <br />
               <span className="text-brand">& Consultation Tariff</span>
             </motion.h1>
             <motion.p 
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0.9 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.2 }}
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl"
             >
               Every treatment is conducted in private acoustic suites using 100% single-use sterile needles and unhurried clinical attention. Transparent tariffs with zero hidden charges.
@@ -240,10 +240,10 @@ export default function ClinicPage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <motion.div 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0.95 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
             className="max-w-2xl space-y-2"
           >
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink">
@@ -257,10 +257,10 @@ export default function ClinicPage({ onOpenBooking }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* DOs */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0.95 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
               className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6"
             >
               <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
@@ -279,10 +279,10 @@ export default function ClinicPage({ onOpenBooking }) {
 
             {/* DON'Ts */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0.95 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.2 }}
               className="p-8 rounded-2xl bg-white border border-neutral-200 space-y-6"
             >
               <div className="flex items-center space-x-3 text-ink border-b border-neutral-100 pb-4">
@@ -310,10 +310,10 @@ export default function ClinicPage({ onOpenBooking }) {
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
+            initial={{ opacity: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
             className="bg-ink text-white rounded-2xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 border border-neutral-800"
           >
             <div className="space-y-3 text-center md:text-left">

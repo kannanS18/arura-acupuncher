@@ -28,44 +28,24 @@ export default function BlogPage() {
   return (
     <div className="bg-white text-ink min-h-screen">
       
-      {/* Blog Hero: Clean, Centered Editorial Journal Header with Scroll Reveal */}
+      {/* Blog Hero: Clean, Centered Editorial Journal Header */}
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-xs text-brand font-semibold tracking-normal"
-          >
+          <p className="text-xs text-brand font-semibold tracking-normal">
             The Arura Clinical Journal & Patient Guides
-          </motion.p>
+          </p>
 
-          <motion.h1 
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]"
-          >
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
             Evidence-Based Guides for <br />
             <span className="text-brand">Holistic Root Healing</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl mx-auto"
-          >
+          <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl mx-auto">
             Practical, doctor-authored clinical guides on classical acupuncture, pain recovery, pulse diagnosis, and emotional psychotherapy by Dr. Nivedha Priyadharshini, MD (Acu).
-          </motion.p>
+          </p>
 
           {/* Search Input */}
-          <motion.div 
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative max-w-lg mx-auto pt-2"
-          >
+          <div className="relative max-w-lg mx-auto pt-2">
             <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -74,7 +54,7 @@ export default function BlogPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 shadow-sm transition-colors"
             />
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -112,14 +92,8 @@ export default function BlogPage() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post, idx) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
+            {filteredPosts.map((post) => (
+              <div key={post.id}>
                 <Link
                   to={`/blog/${post.id}`}
                   className="group p-8 rounded-3xl bg-surface-subtle border border-gray-200/90 hover:border-brand hover:bg-white hover:shadow-xl transition-colors duration-200 flex flex-col justify-between space-y-6 h-full"
@@ -152,7 +126,7 @@ export default function BlogPage() {
                     <ArrowRight className="w-4 h-4 transform motion-safe:group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
 

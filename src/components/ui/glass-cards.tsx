@@ -53,7 +53,7 @@ const Card: React.FC<CardProps> = ({
         });
 
         // Create scroll trigger for stacking effect (exact movement mechanics preserved)
-        ScrollTrigger.create({
+        const trigger = ScrollTrigger.create({
             trigger: container,
             start: "top center",
             end: "bottom center",
@@ -70,7 +70,7 @@ const Card: React.FC<CardProps> = ({
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            trigger.kill();
         };
     }, [index, totalCards]);
 
@@ -382,22 +382,8 @@ export const StackedCards: React.FC<StackedCardsProps> = ({ items, onOpenBooking
     const containerRef = useRef<HTMLDivElement>(null);
     const list = items || cardData;
 
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        gsap.fromTo(container,
-            { opacity: 0 },
-            {
-                opacity: 1,
-                duration: 1.2,
-                ease: "power2.out"
-            }
-        );
-    }, []);
-
     return (
-        <main ref={containerRef} style={{ background: '#ffffff' }}>
+        <main ref={containerRef} style={{ background: '#ffffff', opacity: 1 }}>
             {/* Cards Section */}
             <section style={{
                 color: '#09090b',

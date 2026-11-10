@@ -60,12 +60,8 @@ export default function DoctorCredentialsSection() {
         {/* 3 Refined Architectural Certificate Cards (No Gradients, No Clutter, Pure Clinical Elegance) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           {credentials.map((cred) => (
-            <motion.div
+            <div
               key={cred.serial}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4 }}
               className="group relative rounded-2xl bg-white border border-neutral-200/90 hover:border-neutral-400/80 hover:shadow-lg hover:shadow-neutral-950/5 transition-all duration-300 p-7 sm:p-8 flex flex-col justify-between"
             >
               {/* Subtle top rose accent hairline on hover */}
@@ -124,7 +120,7 @@ export default function DoctorCredentialsSection() {
                 </div>
               </div>
 
-            </motion.div>
+            </div>
           ))}
         </div>
 
