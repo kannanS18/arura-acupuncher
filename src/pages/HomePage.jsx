@@ -20,8 +20,8 @@ export default function HomePage({ onOpenBooking }) {
       <HeroSection onOpenBooking={onOpenBooking} />
 
       {/* 2. Anatomical Treatment Ledger */}
-      <section className="py-20 lg:py-28 bg-white border-b border-neutral-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-24 bg-white border-b border-neutral-200/80">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <InteractiveMeridianExplorer onOpenBooking={onOpenBooking} />
         </div>
       </section>

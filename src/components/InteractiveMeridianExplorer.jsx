@@ -288,7 +288,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
       {/* Main 21st.dev Feature Showcase Stage */}
       <div 
         onMouseMove={handleMouseMove}
-        className="relative max-w-6xl mx-auto rounded-3xl border border-neutral-200/90 bg-white overflow-hidden shadow-[0_12px_40px_-8px_rgba(0,0,0,0.06)]"
+        className="relative w-full max-w-[1400px] mx-auto rounded-3xl border border-neutral-200/90 bg-white overflow-hidden shadow-[0_12px_40px_-8px_rgba(0,0,0,0.06)]"
       >
         {/* Subtle Ambient Mouse Spotlight following pointer (21st.dev effect) */}
         <div
@@ -301,7 +301,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
           {/* Left Column: Clear Clinical Story & Acupoint Targets */}
-          <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between space-y-7 relative z-10">
+          <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6 relative z-10">
             
             <div className="space-y-6">
               
@@ -347,58 +347,66 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 ))}
               </div>
 
-              {/* 4. Sub-Part: Technical Mechanism & Neurology (Dedicated Medical Dossier Box) */}
-              <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-1.5">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-neutral-700 uppercase tracking-wider">
-                  <Activity className="w-3.5 h-3.5 text-[#ed3373] shrink-0" />
-                  <span>Clinical Mechanism & Neurology (Medical Dossier):</span>
+              {/* 4 & 5. Responsive 2-Column Clinical Subgrid (Length-Wise Layout) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+                {/* Mechanism Box */}
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 flex flex-col justify-between space-y-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
+                      <Activity className="w-3.5 h-3.5 text-[#ed3373] shrink-0" />
+                      <span>Clinical Mechanism:</span>
+                    </div>
+                    <p className="text-xs text-neutral-600 font-mono leading-relaxed">
+                      {activePathway.technicalMechanism}
+                    </p>
+                  </div>
+                  <div className="text-[11px] text-neutral-400 font-mono pt-2 border-t border-neutral-200/60">
+                    ↳ Spec: {activePathway.spec}
+                  </div>
                 </div>
-                <p className="text-xs sm:text-[13px] text-neutral-600 font-mono leading-relaxed">
-                  {activePathway.technicalMechanism}
-                </p>
+
+                {/* Recovery Trajectory */}
+                <div className="p-4 rounded-2xl bg-pink-50/40 border border-pink-200/60 flex flex-col justify-between space-y-2">
+                  <div>
+                    <span className="text-xs font-bold text-[#ed3373] font-mono tracking-wider uppercase block mb-2">
+                      RECOVERY TRAJECTORY:
+                    </span>
+                    <div className="space-y-2">
+                      {activePathway.milestones.map((m, mIdx) => (
+                        <div key={mIdx} className="flex items-start gap-2 text-xs text-neutral-800">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                          <div className="leading-snug">
+                            <span className="font-bold text-neutral-900">{m.phase}: </span>
+                            <span className="font-medium text-neutral-800">{m.commonOutcome}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-neutral-500 font-mono pt-2 border-t border-pink-200/50">
+                    Private acoustic suite in Virugambakkam
+                  </div>
+                </div>
               </div>
 
-              {/* 5. Sub-Part: Primary Acupoint Focus Chips */}
-              <div className="space-y-2.5">
+              {/* 6. Primary Bio-Active Acupoints (4 Horizontal Columns) */}
+              <div className="space-y-2">
                 <span className="text-xs font-bold text-neutral-400 font-mono tracking-wider uppercase flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-[#ed3373]" />
                   <span>Primary Bio-Active Acupoints:</span>
                 </span>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {activePathway.acupoints.map((pt, idx) => (
                     <div 
                       key={idx}
-                      className="p-3 rounded-2xl bg-white border border-neutral-200/80 hover:border-pink-300 hover:bg-pink-50/30 transition-colors shadow-2xs"
+                      className="p-2.5 rounded-xl bg-white border border-neutral-200/80 hover:border-pink-300 hover:bg-pink-50/30 transition-colors shadow-2xs"
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-mono font-bold text-[#ed3373] text-xs">{pt.code}</span>
                         <span className="text-[11px] font-semibold text-neutral-800">{pt.name}</span>
                       </div>
-                      <p className="text-[11px] text-neutral-500 mt-1 leading-snug">{pt.role}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 6. Sub-Part: Expected Recovery Trajectory (Common words highlighted, technical action listed) */}
-              <div className="space-y-2.5 pt-3 border-t border-neutral-100">
-                <span className="text-xs font-bold text-neutral-400 font-mono tracking-wider uppercase block">
-                  RECOVERY TRAJECTORY:
-                </span>
-                <div className="space-y-2">
-                  {activePathway.milestones.map((m, mIdx) => (
-                    <div key={mIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-800">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <div className="leading-snug">
-                        <span className="font-bold text-neutral-900">{m.phase}: </span>
-                        <span className="font-semibold text-neutral-900">{m.commonOutcome}</span>
-                        {m.technicalDetail && (
-                          <span className="block text-[11px] text-neutral-500 font-mono mt-0.5">
-                            ↳ Neural action: {m.technicalDetail}
-                          </span>
-                        )}
-                      </div>
+                      <p className="text-[10px] text-neutral-500 mt-1 leading-tight line-clamp-2">{pt.role}</p>
                     </div>
                   ))}
                 </div>
@@ -473,7 +481,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
       </div>
 
       {/* Bottom 6-Pathway Quick-Browse Strip (Hairline UI Card Thumbnails) */}
-      <div className="max-w-6xl mx-auto mt-8">
+      <div className="w-full max-w-[1400px] mx-auto mt-8">
         <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider mb-3 px-1">
           <span className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373] animate-pulse" />
