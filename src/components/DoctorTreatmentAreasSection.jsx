@@ -16,7 +16,7 @@ const specialties = [
     number: "01",
     domain: "Physical Dysfunction",
     title: "Musculoskeletal & Pain",
-    focus: "Targeting deep myofascial tension, spinal nerve compression & chronic joint inflammation.",
+    focus: "Relief for neck pain, shoulder stiffness, sciatica, lower back strain, and chronic joint inflammation.",
     protocol: "Classical Acupuncture · Local Vasodilation",
     items: [
       { name: "Cervical Spondylosis & Neck Stiffness", tag: "Cervical Spine" },
@@ -30,7 +30,7 @@ const specialties = [
     number: "02",
     domain: "Autonomic Balance",
     title: "Neurological & Stress",
-    focus: "Down-regulating sympathetic overdrive, panic loops & restoring restorative sleep architecture.",
+    focus: "Reducing headache frequency, severe migraines, insomnia, and nervous panic episodes.",
     protocol: "Neuro-Acupuncture + Cambridge CBT",
     items: [
       { name: "Chronic Migraine & Cluster Headaches", tag: "Cranial Tension" },
@@ -44,7 +44,7 @@ const specialties = [
     number: "03",
     domain: "Systemic Health",
     title: "Metabolic & Hormonal",
-    focus: "Balancing internal visceral organ meridians and restoring micro-circulation homeostasis.",
+    focus: "Soothing acid reflux burning, stomach bloating, period cramps, and chronic fatigue.",
     protocol: "Meridian Balancing + Mineral Heat",
     items: [
       { name: "Irritable Bowel Syndrome & Digestive Issues", tag: "Gut-Brain Axis" },

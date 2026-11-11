@@ -9,31 +9,31 @@ import { motion } from 'framer-motion';
 const MERIDIAN_PRESETS = [
   {
     id: 'cervical',
-    condition: 'Cervical Spondylosis',
+    condition: 'Neck Pain & Cervical Stiffness',
     frequency: '0.15 Hz Vagal Wave',
     image: getAssetUrl('hero_acupuncture_sanctuary.jpg'),
-    focus: 'Decompresses C5–C7 cervical nerve roots and releases trapezius hypertonia.'
+    focus: 'Relieves neck stiffness & trapezius knots by decompressing C5–C7 cervical nerves.'
   },
   {
     id: 'migraine',
-    condition: 'Migraine Syndromes',
+    condition: 'Migraines & Frequent Headaches',
     frequency: '0.22 Hz Cranial Calm',
     image: getAssetUrl('acupuncture_session.jpg'),
-    focus: 'Downregulates trigeminovascular nociception via GB-20 & Taiyang acupoints.'
+    focus: 'Reduces headache frequency & temple pain by calming the trigeminovascular sensory loop.'
   },
   {
     id: 'burnout',
-    condition: 'Autonomic Burnout',
+    condition: 'Stress Burnout & Anxiety',
     frequency: '0.10 Hz Parasympathetic',
     image: getAssetUrl('zen_treatment.jpg'),
-    focus: 'Activates parasympathetic vagal recovery and regulates Shen exhaustion.'
+    focus: 'Soothes racing thoughts & chest tightness by activating parasympathetic vagal recovery.'
   },
   {
     id: 'nerve',
-    condition: 'Chronic Nerve Pain',
+    condition: 'Sciatica & Chronic Nerve Pain',
     frequency: '0.18 Hz Neural Reset',
     image: getAssetUrl('clinic_interior.jpg'),
-    focus: 'Discharges myofascial trigger nodes with 0.18mm pre-sterilized single-use needles.'
+    focus: 'Eliminates sharp shooting leg pain by un-clamping the sciatic nerve sheath.'
   }
 ];
 
