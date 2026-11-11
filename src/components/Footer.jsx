@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
             
             <p className="text-sm text-gray-400 max-w-sm leading-relaxed font-normal">
-              Arura Acupuncture and Counselling Centre is Chennai’s clinical sanctuary for classical 14-meridian acupuncture and certified psychological counselling. Led by Dr. Nivedha Priyadharshini, MD (Acu).
+              Arura Wellness Studio is Chennai’s trusted <strong className="text-white font-semibold">acupuncture centre</strong> for classical 14-meridian acupuncture treatment and certified psychological counselling. Led by Dr. Nivedha Priyadharshini, MD (Acu).
             </p>
 
             <div className="flex items-center space-x-3 pt-2">
@@ -104,6 +104,77 @@ export default function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* Structured SEO Clinical Keyword Directory & Local SEO Chennai Index */}
+        <div className="py-12 border-b border-gray-800/80 space-y-8 text-xs text-gray-400">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            {/* Column 1: Primary Services */}
+            <div className="space-y-3">
+              <strong className="text-white text-xs uppercase tracking-wider block font-mono font-bold">
+                Acupuncture Treatment & Care
+              </strong>
+              <ul className="space-y-1.5 text-gray-400">
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Treatment</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Therapy (₹600)</Link></li>
+                <li><Link to="/about" className="hover:text-brand transition-colors">Traditional Acupuncture Treatment</Link></li>
+                <li><Link to="/about" className="hover:text-brand transition-colors">Holistic Acupuncture Therapy</Link></li>
+                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Specialist</Link></li>
+                <li><Link to="/doctor" className="hover:text-brand transition-colors">Best Acupuncture Doctor</Link></li>
+                <li><Link to="/booking" className="hover:text-brand transition-colors">Acupuncture Treatment Near Me</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 2: Pain Relief & Orthopedic Clusters */}
+            <div className="space-y-3">
+              <strong className="text-white text-xs uppercase tracking-wider block font-mono font-bold">
+                Pain Relief & Spine
+              </strong>
+              <ul className="space-y-1.5 text-gray-400">
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Pain Relief</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Back Pain</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Neck Pain</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Sciatica</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Knee Pain</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Shoulder Pain</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Joint Pain</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Neurological & Women's Health Clusters */}
+            <div className="space-y-3">
+              <strong className="text-white text-xs uppercase tracking-wider block font-mono font-bold">
+                Neurology & Women's Health
+              </strong>
+              <ul className="space-y-1.5 text-gray-400">
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Migraine</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Headaches</Link></li>
+                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Nerve Pain</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for Women's Health</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for PCOS</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for Menstrual Pain</Link></li>
+                <li><Link to="/counselling" className="hover:text-brand transition-colors">Acupuncture for Stress Relief & Anxiety</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 4: Local SEO Chennai */}
+            <div className="space-y-3">
+              <strong className="text-white text-xs uppercase tracking-wider block font-mono font-bold">
+                Chennai Local Sanctuary
+              </strong>
+              <ul className="space-y-1.5 text-gray-400">
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Treatment in Chennai</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Best Acupuncture Clinic in Chennai</Link></li>
+                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Specialist in Chennai</Link></li>
+                <li><Link to="/booking" className="hover:text-brand transition-colors">Acupuncture Centre in Chennai</Link></li>
+                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Doctor in Chennai</Link></li>
+                <li><Link to="/clinic" className="hover:text-brand transition-colors">Affordable Acupuncture Treatment in Chennai</Link></li>
+                <li><span className="text-neutral-500">Virugambakkam • Chinmaya Nagar • Vadapalani • Koyambedu • Anna Nagar</span></li>
+              </ul>
+            </div>
+
+          </div>
         </div>
 
         {/* Bottom Strip */}

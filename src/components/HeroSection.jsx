@@ -43,23 +43,23 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
   return (
     <div className="relative w-full bg-background overflow-hidden">
       <HeroSection
-        badge="ARURA WELLNESS STUDIO • VIRUGAMBAKKAM, CHENNAI"
+        badge="BEST ACUPUNCTURE CLINIC IN CHENNAI • VIRUGAMBAKKAM"
         logo={{
           url: getAssetUrl("logo.png"),
-          alt: "Arura Wellness Studio",
+          alt: "Arura Wellness Studio - Acupuncture Treatment Centre",
           text: "ARURA WELLNESS STUDIO"
         }}
-        slogan="CLASSICAL 14-MERIDIAN ACUPUNCTURE & PSYCHOTHERAPY"
+        slogan="TRADITIONAL ACUPUNCTURE TREATMENT & HOLISTIC THERAPY"
         words={[
-          { text: "Classical" },
-          { text: "14-meridian" },
-          { text: "acupuncture" },
+          { text: "Acupuncture" },
+          { text: "treatment" },
           { text: "&" },
-          { text: "psychological", highlight: true },
           { text: "therapy", highlight: true },
+          { text: "in", highlight: true },
+          { text: "Chennai", highlight: true },
         ]}
-        title="Classical 14-meridian acupuncture & psychological therapy"
-        subtitle="Led by Dr. Nivedha Priyadharshini, MD (Acu). Dedicated 1-on-1 clinical consultations for chronic nerve pain, migraine syndromes, cervical spondylosis, and autonomic burnout. 0.18mm pre-sterilized single-use needles in private acoustic suites."
+        title="Acupuncture Treatment & Therapy in Chennai: Classical 14-Meridian Pain Relief"
+        subtitle="Chennai's premier acupuncture specialist clinic led by Dr. Nivedha Priyadharshini, MD (Acu). Dedicated 1-on-1 consultations for natural pain relief, chronic back pain, cervical neck stiffness, severe sciatica, and migraine headaches. 0.18mm pre-sterilized single-use needles in private acoustic suites. Affordable clinical care from ₹600."
         callToAction={{
           text: "Book Priority Consultation (₹600)",
           href: "#/booking",

@@ -1,13 +1,16 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
+import ClinicalKeywordClustersSection from '../components/ClinicalKeywordClustersSection';
 import PhysicianPhilosophySection from '../components/PhysicianPhilosophySection';
-import { ArrowRight, CheckCircle2, Activity, Heart, Brain, Sparkles, CalendarCheck, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Activity, Heart, Brain, Sparkles, CalendarCheck, ShieldCheck, MapPin, HelpCircle, PhoneCall } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
 import AnimatedCounter from '../components/AnimatedCounter';
 import { Testimonials } from '../components/testimonials';
 import { COUNSELLING_CATEGORIES } from '../data/counsellingServicesData';
+import { LONG_TAIL_FAQS, LOCAL_SEO_INFO } from '../data/seoKeywordClustersData';
+import { CLINIC_INFO } from '../data/websiteContent';
 
 export default function HomePage({ onOpenBooking }) {
   return (
@@ -22,6 +25,9 @@ export default function HomePage({ onOpenBooking }) {
           <InteractiveMeridianExplorer onOpenBooking={onOpenBooking} />
         </div>
       </section>
+
+      {/* 3. Dedicated Clinical Keyword Clusters Showcase (SEO Priority 1 & 2) */}
+      <ClinicalKeywordClustersSection onOpenBooking={onOpenBooking} />
 
       {/* 4. ARURA COUNSELLING CENTRE - 15 Modalities Showcase (21st.dev Bento Feature) */}
       <section className="py-20 lg:py-28 bg-[#fafafa] border-b border-neutral-200/80 relative overflow-hidden">
@@ -164,6 +170,108 @@ export default function HomePage({ onOpenBooking }) {
                 }
               ]}
             />
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6.5 Local SEO & Common Acupuncture Treatment Questions (SEO Intent) */}
+      <section className="py-20 lg:py-24 bg-white border-b border-neutral-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-[#ed3373] text-xs font-semibold border border-pink-200/70 font-mono">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>LOCAL SEO • CHENNAI SANCTUARY</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-tight">
+                Best Acupuncture Clinic & Treatment in Chennai
+              </h2>
+              <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed">
+                Looking for an experienced <strong className="text-neutral-900 font-semibold">acupuncture specialist near me</strong> in Chennai? Arura Wellness Studio offers licensed, affordable acupuncture treatment and psychotherapy in Virugambakkam.
+              </p>
+            </div>
+
+            <Link
+              to="/clinic"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold bg-neutral-900 text-white hover:bg-neutral-800 transition-all shadow-sm shrink-0"
+            >
+              <span>View Clinic Tariff & FAQs</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Quick Local Highlights Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/70 space-y-2">
+              <span className="text-[11px] font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
+                LOCALITY & ACCESS
+              </span>
+              <h3 className="font-bold text-base text-neutral-900">
+                Virugambakkam, Chennai
+              </h3>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                Easily accessible from Chinmaya Nagar, Koyambedu, Vadapalani, Anna Nagar, Porur, and KK Nagar.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/70 space-y-2">
+              <span className="text-[11px] font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
+                ACCESSIBLE PRICING
+              </span>
+              <h3 className="font-bold text-base text-neutral-900">
+                Affordable Care (₹600)
+              </h3>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                Transparent consultation and needling fee with zero hidden charges. Single-use sterile needles included.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/70 space-y-2">
+              <span className="text-[11px] font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
+                SPECIALIST PHYSICIAN
+              </span>
+              <h3 className="font-bold text-base text-neutral-900">
+                Dr. Nivedha Priyadharshini
+              </h3>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                MD (Acu) with 8+ years clinical expertise and 1,100+ documented patient recoveries across pain & neurology.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/70 space-y-2">
+              <span className="text-[11px] font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
+                DAILY AVAILABILITY
+              </span>
+              <h3 className="font-bold text-base text-neutral-900">
+                Mon–Sun: 10AM to 8PM
+              </h3>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                Consultations conducted strictly by prior appointment in private, acoustic soundproof suites.
+              </p>
+            </div>
+          </div>
+
+          {/* 4 Featured Long-Tail Question Cards */}
+          <div className="space-y-4 pt-4">
+            <h3 className="text-xs font-mono font-bold text-neutral-500 uppercase tracking-wider">
+              Frequently Asked Patient Questions:
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {LONG_TAIL_FAQS.slice(0, 4).map((faq, idx) => (
+                <div key={idx} className="p-5 rounded-2xl bg-white border border-neutral-200/80 shadow-xs space-y-2">
+                  <h4 className="text-sm font-bold text-neutral-900 flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0 mt-0.5" />
+                    <span>{faq.q}</span>
+                  </h4>
+                  <p className="text-xs text-neutral-600 leading-relaxed pl-6">
+                    {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>

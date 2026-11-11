@@ -98,14 +98,10 @@ export default function ClinicPage({ onOpenBooking }) {
       {/* 1. Dignified Medical Header Banner */}
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <motion.p 
-            initial={{ opacity: 0.9 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className="text-xs text-brand font-semibold tracking-normal"
-          >
-            Arura Wellness Sanctuary, Virugambakkam
-          </motion.p>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>BEST ACUPUNCTURE CLINIC IN CHENNAI • AFFORDABLE CARE (₹600)</span>
+          </div>
 
           <div className="max-w-3xl space-y-4">
             <motion.h1 
@@ -114,8 +110,8 @@ export default function ClinicPage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.15]"
             >
-              Clinical Modalities <br />
-              <span className="text-brand">& Consultation Tariff</span>
+              Acupuncture Clinic & Tariff: <br />
+              <span className="text-brand">Affordable Acupuncture Treatment in Chennai</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0.9 }}
@@ -123,7 +119,7 @@ export default function ClinicPage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl"
             >
-              Every treatment is conducted in private acoustic suites using 100% single-use sterile needles and unhurried clinical attention. Transparent tariffs with zero hidden charges.
+              Looking for a certified <strong className="text-ink font-semibold">acupuncture clinic near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture specialist in Chennai</strong>? Arura Wellness Studio offers transparent, accessible <strong className="text-ink font-semibold">acupuncture treatment cost</strong> starting at ₹600 per session with 100% single-use sterile needles in private acoustic suites.
             </motion.p>
           </div>
         </div>

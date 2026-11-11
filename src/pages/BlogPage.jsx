@@ -31,17 +31,18 @@ export default function BlogPage() {
       {/* Blog Hero: Clean, Centered Editorial Journal Header */}
       <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <p className="text-xs text-brand font-semibold tracking-normal">
-            The Arura Clinical Journal & Patient Guides
-          </p>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>EDUCATIONAL CLINICAL GUIDES • DR. NIVEDHA PRIYADHARSHINI, MD (ACU)</span>
+          </div>
 
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
-            Evidence-Based Guides for <br />
-            <span className="text-brand">Holistic Root Healing</span>
+            Acupuncture Treatment & Therapy Guides: <br />
+            <span className="text-brand">Evidence-Based Natural Healing</span>
           </h1>
 
           <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl mx-auto">
-            Practical, doctor-authored clinical guides on classical acupuncture, pain recovery, pulse diagnosis, and emotional psychotherapy by Dr. Nivedha Priyadharshini, MD (Acu).
+            Practical, doctor-authored clinical guides explaining what acupuncture treatment is, how it works beneath the skin, and its proven benefits for chronic back pain, sciatica, migraines, knee osteoarthritis, PCOS, and stress relief.
           </p>
 
           {/* Search Input */}
@@ -49,7 +50,7 @@ export default function BlogPage() {
             <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search guides (e.g. neck pain, first visit, moxa, migraines)..."
+              placeholder="Search guides (e.g. back pain, sciatica, migraine, PCOS, cost, sessions)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 shadow-sm transition-colors"

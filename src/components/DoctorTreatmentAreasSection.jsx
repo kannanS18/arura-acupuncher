@@ -14,43 +14,43 @@ const specialties = [
   {
     id: "pain",
     number: "01",
-    domain: "Physical Dysfunction",
-    title: "Musculoskeletal & Pain",
-    focus: "Relief for neck pain, shoulder stiffness, sciatica, lower back strain, and chronic joint inflammation.",
-    protocol: "Classical Acupuncture · Local Vasodilation",
+    domain: "Cluster 1: Pain Relief",
+    title: "Acupuncture for Pain Relief & Joints",
+    focus: "Natural pain relief treatment for chronic back pain, cervical neck pain, severe sciatica, knee joint arthritis, and shoulder stiffness.",
+    protocol: "Classical Acupuncture · Local Vasodilation · TDP Heat",
     items: [
-      { name: "Cervical Spondylosis & Neck Stiffness", tag: "Cervical Spine" },
-      { name: "Lumbar Disc Compression & Sciatica", tag: "Lumbar & Sacral" },
-      { name: "Knee Osteoarthritis & Joint Immobility", tag: "Joint Cartilage" },
-      { name: "Frozen Shoulder & Repetitive Strain", tag: "Shoulder Capsule" }
+      { name: "Acupuncture for Back Pain & Sciatica", tag: "Lumbar & Sacral" },
+      { name: "Acupuncture for Neck Pain & Stiffness", tag: "Cervical Spine" },
+      { name: "Acupuncture for Knee Pain & Arthritis", tag: "Synovial Cartilage" },
+      { name: "Acupuncture for Shoulder Pain & Sprains", tag: "Shoulder Capsule" }
     ]
   },
   {
     id: "neuro",
     number: "02",
-    domain: "Autonomic Balance",
-    title: "Neurological & Stress",
-    focus: "Reducing headache frequency, severe migraines, insomnia, and nervous panic episodes.",
+    domain: "Cluster 3: Neurological Conditions",
+    title: "Acupuncture for Migraines & Nerve Pain",
+    focus: "Targeted neuro-acupuncture reducing headache frequency, severe migraines, nerve pain, neuropathy, and facial Bell's palsy.",
     protocol: "Neuro-Acupuncture + Cambridge CBT",
     items: [
-      { name: "Chronic Migraine & Cluster Headaches", tag: "Cranial Tension" },
-      { name: "Severe Insomnia & Sleep Disruption", tag: "Circadian Rhythm" },
-      { name: "Clinical Anxiety & Executive Burnout", tag: "Autonomic Calm" },
-      { name: "Facial Bell's Palsy Rehabilitation", tag: "Facial Nerve (CN VII)" }
+      { name: "Acupuncture for Migraine & Headaches", tag: "Trigeminovascular" },
+      { name: "Acupuncture for Sciatica & Nerve Pain", tag: "Sciatic Nerve" },
+      { name: "Acupuncture for Insomnia & Sleep Relief", tag: "Circadian Rhythm" },
+      { name: "Acupuncture for Facial Pain & Bell's Palsy", tag: "Facial Nerve (CN VII)" }
     ]
   },
   {
     id: "systemic",
     number: "03",
-    domain: "Systemic Health",
-    title: "Metabolic & Hormonal",
-    focus: "Soothing acid reflux burning, stomach bloating, period cramps, and chronic fatigue.",
-    protocol: "Meridian Balancing + Mineral Heat",
+    domain: "Cluster 2 & 4: Women's Health & Wellness",
+    title: "Acupuncture for Women's Health & Stress",
+    focus: "Comprehensive acupuncture therapy for PCOS, menstrual cramps, hormonal balance, fertility support, stress relief, and anxiety.",
+    protocol: "Meridian Balancing + Vagal Down-Regulation",
     items: [
-      { name: "Irritable Bowel Syndrome & Digestive Issues", tag: "Gut-Brain Axis" },
-      { name: "PCOS, Dysmenorrhea & Cycle Irregularities", tag: "Hormonal Balance" },
-      { name: "Chronic Sinusitis & Respiratory Stagnation", tag: "Immune / Lung" },
-      { name: "Chronic Fatigue & Post-Viral Depletion", tag: "Cellular Energy" }
+      { name: "Acupuncture for PCOS & Hormonal Balance", tag: "HPO Axis" },
+      { name: "Acupuncture for Menstrual Pain (Period Cramps)", tag: "Pelvic Perfusion" },
+      { name: "Acupuncture for Stress Relief & Anxiety", tag: "Vagus Nerve Calm" },
+      { name: "Acupuncture for Mental Wellness & Burnout", tag: "Emotional Resilience" }
     ]
   }
 ];

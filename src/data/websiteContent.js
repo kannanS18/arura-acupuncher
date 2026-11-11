@@ -187,39 +187,79 @@ export const TESTIMONIALS_DATA = [
 ];
 
 export const FAQS_DATA = [
-  // Acupuncture
+  // Primary Acupuncture Questions (Educational & Safety)
   {
-    q: "How does acupuncture work?",
-    a: "According to Traditional Chinese Medicine, acupuncture balances the flow of energy (qi) through pathways (meridians) in the body. Modern medical research demonstrates that needle insertion stimulates nerves, muscles, and connective tissue, boosting micro-circulation and triggering the body's natural painkilling endorphins.",
+    q: "What is acupuncture treatment and how does it work?",
+    a: "Acupuncture is an evidence-based clinical therapy rooted in classical 14-meridian Traditional Chinese Medicine. Modern biomedical science demonstrates that inserting hair-thin, 0.18mm sterile needles into designated neuro-vascular points stimulates sensory nerves, promotes micro-capillary vasodilation, dissipates muscular knots, and triggers central beta-endorphins and neurotransmitters that relieve pain and downregulate the autonomic nervous system.",
     category: "acupuncture"
   },
   {
-    q: "Is acupuncture safe?",
-    a: "When performed by a trained and licensed MD acupuncturist, acupuncture is exceptionally safe. All needles at Arura are sterile, single-use, and disposable surgical stainless steel, eliminating any infection risk.",
+    q: "Is acupuncture treatment safe?",
+    a: "When performed by a certified and licensed MD acupuncturist like Dr. Nivedha Priyadharshini, acupuncture is exceptionally safe with virtually zero side effects. At Arura Wellness Studio, we follow strict clinical sterility standards: 100% ethylene-oxide pre-sterilized, single-use surgical stainless steel needles opened right at your bedside and safely discarded immediately after treatment.",
     category: "acupuncture"
   },
   {
     q: "Does acupuncture hurt?",
-    a: "Most people experience minimal discomfort. The needles are hair-thin—far smaller than medical syringes. Sensations vary from a mild tingling or dull warmth to feeling nothing at all.",
+    a: "Most people feel little to no discomfort. Acupuncture needles are hair-thin (0.18mm)—roughly twenty times thinner than a standard injection syringe. Rather than pain, patients typically report a comforting, dull warmth, gentle tingling, or soothing heaviness known as 'De-Qi', followed by deep physical relaxation.",
     category: "acupuncture"
   },
   {
-    q: "How many sessions will I need?",
-    a: "The number of sessions depends on the severity and chronicity of your condition. While acute strains may improve in 2 to 4 sessions, a standard course for chronic ailments consists of 6 to 12 sessions spaced weekly.",
+    q: "How much does acupuncture treatment cost in Chennai?",
+    a: "At Arura Wellness Studio in Virugambakkam, Chennai, a targeted acupuncture therapy session is ₹600. This includes an individualized clinical pulse assessment, sterile single-use needle application, and complimentary supportive therapies such as far-infrared TDP mineral heat or glass cupping.",
     category: "acupuncture"
   },
   {
-    q: "Can acupuncture be combined with other medical treatments?",
-    a: "Yes, acupuncture complements conventional medical therapies effectively. Always inform your acupuncturist about ongoing medications and medical history.",
+    q: "How many sessions of acupuncture are required for recovery?",
+    a: "The number of sessions depends on whether your condition is acute or chronic. Acute muscle strains or recent neck spasms often resolve in 2 to 4 sessions. Chronic ailments such as long-standing sciatica, severe lumbar disc herniation, frequent migraine headaches, or PCOS typically benefit from a structured protocol of 6 to 10 sessions scheduled weekly.",
     category: "acupuncture"
   },
   {
-    q: "How should I prepare for my acupuncture session?",
-    a: "Eat a light meal 1 to 2 hours before your session (never arrive on an empty stomach). Wear loose clothing that allows easy access to elbows and knees. Avoid alcohol and heavy caffeine.",
+    q: "What happens during an acupuncture session?",
+    a: "Your visit begins with a 15-minute diagnostic intake evaluating 14 radial pulse positions on both wrists and tongue mucosal topography. Next, 6 to 18 microscopic needles are gently placed while you lie comfortably on a plush treatment bed. You then rest peacefully for 20 minutes with gentle infrared TDP mineral warmth, during which most patients fall into a rejuvenating 'acupuncture nap'.",
+    category: "acupuncture"
+  },
+  {
+    q: "What are the benefits of traditional acupuncture?",
+    a: "Traditional 14-meridian acupuncture treats the root systemic imbalance rather than simply numbing symptoms with pharmaceuticals. Key benefits include sustainable pain relief for back, neck, and joint pain, reduced reliance on painkillers, lower stress cortisol, restored sleep quality, balanced hormones and digestion, and zero gastrointestinal side effects.",
+    category: "acupuncture"
+  },
+  {
+    q: "Acupuncture vs acupressure: What is the difference?",
+    a: "Acupressure applies external fingertip or tool pressure on acupoints, which provides temporary surface muscle relaxation. Classical acupuncture uses micro-fine surgical needles that penetrate directly into deep neuro-fascial trigger planes. This activates the 'De-Qi' sensory feedback, dilates deep micro-vessels, and triggers natural endorphins for lasting clinical healing.",
+    category: "acupuncture"
+  },
+  {
+    q: "Best acupuncture treatment for chronic back pain?",
+    a: "Targeted needling along the Bladder (BL-23, BL-40) and Governing Vessel meridians decompresses pinched nerve roots, discharges deep lumbar myofascial trigger nodes, and stimulates local endorphins. Over 88% of our back pain patients in Chennai report major mobility restoration and pain reduction within 3 to 5 sessions.",
+    category: "acupuncture"
+  },
+  {
+    q: "Does acupuncture help with migraine headaches?",
+    a: "Yes. Clinical research shows acupuncture downregulates the hyperactive trigeminovascular sensory loop and reduces neurogenic CGRP release, calming cranial arterial spasms. Needling points like Fengchi (GB-20), Baihui (GV-20), and Taiyang drastically reduces migraine frequency, temple throbbing, and nausea.",
+    category: "acupuncture"
+  },
+  {
+    q: "How effective is acupuncture for knee pain?",
+    a: "Acupuncture is highly effective for knee osteoarthritis, patellar tendinitis, and joint stiffness. It stimulates synovial micro-circulation, reduces inflammatory joint effusion, and helps patients regain normal walking ability—often helping avoid or defer invasive joint surgeries.",
+    category: "acupuncture"
+  },
+  {
+    q: "Is acupuncture effective for sciatica pain?",
+    a: "Yes, acupuncture provides exceptional relief for sciatica. By targeting Huantiao (GB-30) and local sacral points, needling relaxes the deep piriformis muscle contracture that entraps the sciatic nerve, halting sharp shooting electrical pains and leg numbness.",
+    category: "acupuncture"
+  },
+  {
+    q: "Natural treatment for neck and shoulder pain?",
+    a: "Acupoints Jianjing (GB-21) and Tianzhu (BL-10) combined with far-infrared mineral heat therapy dissolve deep trapezius knots and occipital nerve compression, relieving cervical spondylosis and desk-posture neck stiffness completely naturally.",
+    category: "acupuncture"
+  },
+  {
+    q: "Best acupuncture specialist for pain management in Chennai?",
+    a: "Dr. Nivedha Priyadharshini, MD (Acu), is one of Chennai's leading acupuncture specialists with over 8 years of clinical practice and 1,100+ documented patient recoveries. Her private sanctuary in Virugambakkam integrates classical acupuncture with Cambridge psychotherapy.",
     category: "acupuncture"
   },
 
-  // Counselling
+  // Counselling & Psychological Therapy Questions
   {
     q: "What is Counselling therapy and is it a medical treatment?",
     a: "Counselling therapy is a collaborative, confidential emotional and mental wellness process. It is NOT a medical treatment; counselors do not prescribe medications. It focuses on coping mechanisms, emotional clarity, and relationship healing.",

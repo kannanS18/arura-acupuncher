@@ -81,13 +81,17 @@ export default function AboutPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>PROFESSIONAL ACUPUNCTURE SPECIALIST • CHENNAI</span>
+              </div>
+
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
-                A quiet sanctuary for <br />
-                <span className="text-brand">evidence-based healing</span>
+                Professional Acupuncture Specialist in Chennai
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
-                Established in Virugambakkam, Chennai by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong>. Arura was founded on a singular conviction: chronic human suffering cannot be solved in five-minute visits with chemical palliatives.
+                Founded by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong> in Virugambakkam, Chennai. Arura is dedicated to <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> and <strong className="text-ink font-semibold">holistic acupuncture therapy</strong>—bridging classical 14-meridian Chinese acupuncture with Cambridge psychotherapy for sustainable natural pain relief.
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-6 text-xs font-medium text-neutral-600">
@@ -97,6 +101,10 @@ export default function AboutPage({ onOpenBooking }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+                  <span>Licensed MD (Acupuncture Doctor)</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
                   <span>Cambridge Certified Psychotherapy</span>
                 </div>
               </div>
@@ -152,6 +160,99 @@ export default function AboutPage({ onOpenBooking }) {
 
       {/* 2. Narrative Manifesto & Three-Stage Clinical Intake (21st.dev + Hairline UI Architecture) */}
       <ClinicalIntakeManifesto onOpenBooking={onOpenBooking} />
+
+      {/* 2.5 Clinical Acupuncture Therapy Benefits (SEO Priority Section) */}
+      <section className="py-20 lg:py-24 bg-white border-b border-neutral-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-mono font-bold text-brand uppercase tracking-wider">
+              EVIDENCE-BASED RECOVERY
+            </span>
+            <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-ink tracking-tight">
+              Acupuncture Therapy Benefits & Natural Pain Relief
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed">
+              Why thousands in Chennai choose classical 14-meridian <strong className="text-ink font-semibold">acupuncture for pain management</strong>, chronic joint stiffness, and autonomic restoration.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                01
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Acupuncture for Pain Management
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                Directly targets chronic back pain, cervical neck pain, sciatica, and knee joint osteoarthritis by releasing ischemic myofascial trigger nodes and stimulating natural beta-endorphins.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                02
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Natural Pain Relief Treatment
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                100% drug-free restorative healing that eliminates pharmaceutical dependency, avoiding long-term NSAID gastric damage and liver-kidney toxicity.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                03
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Traditional Chinese Acupuncture
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                Rooted in authentic 14-meridian energy mapping and 14-radial pulse diagnostics. Balances Qi and blood circulation to rectify the underlying systemic root cause.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                04
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Acupuncture for Stress Relief & Anxiety
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                Stimulates the vagus nerve (cranial nerve X) to downregulate cortisol and calm autonomic fight-or-flight overdrive, providing profound mental relaxation.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                05
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Acupuncture for Muscle & Joint Pain
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                Dissolves deep lactic acid crystallization and muscular knots, improving range of motion for frozen shoulders, repetitive strain injuries, and chronic stiffness.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-neutral-50 border border-neutral-200/80 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-pink-50 text-brand flex items-center justify-center font-bold">
+                06
+              </div>
+              <h3 className="font-bold text-lg text-ink">
+                Acupuncture Treatment Cost (₹600)
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
+                Transparent and affordable clinical care in Chennai. Standard treatment fee of ₹600 includes 0.18mm pre-sterilized disposable needles and soothing TDP mineral heat.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       {/* 3. Clinical Disciplines & Modalities (21st.dev + Hairline UI Architecture) */}
       <ClinicalModalitiesSection onOpenBooking={onOpenBooking} />

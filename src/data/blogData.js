@@ -203,5 +203,137 @@ export const BLOG_POSTS = [
       "Safe for chronic, treatment-resistant migraine sufferers.",
       "Reduces dependence on daily preventative pharmaceuticals."
     ]
+  },
+  {
+    id: 'what-is-acupuncture-treatment-how-does-it-work',
+    slug: 'what-is-acupuncture-treatment-how-does-it-work',
+    title: "What is Acupuncture Treatment? How It Works, Benefits, and What to Expect",
+    subtitle: "A clinical guide to traditional acupuncture therapy, safety, and session outcomes by Dr. Nivedha.",
+    category: "First Visit Guides",
+    author: "Dr. Nivedha Priyadharshini",
+    authorTitle: "MD (Acu) • Founder & Lead Healer",
+    date: "November 2026",
+    readTime: "6 min read",
+    thumbnailText: "What is Acupuncture",
+    highlight: "Acupuncture is an evidence-based clinical modality that stimulates neuro-fascial trigger points to release natural beta-endorphins, improve microcirculation, and down-regulate chronic pain.",
+    sections: [
+      {
+        heading: "1. What is Acupuncture Treatment?",
+        body: "Acupuncture is a time-tested medical discipline originating in classical Traditional Chinese Medicine (TCM). It involves the gentle insertion of hair-thin, 0.18mm pre-sterilized disposable surgical needles into precise anatomical coordinates known as acupoints. By restoring the harmonious flow of vital bio-energy (Qi) along 14 primary meridians, acupuncture addresses the systemic root causes of disease rather than merely suppressing symptoms."
+      },
+      {
+        heading: "2. How Does Acupuncture Work Beneath the Skin?",
+        body: "Modern neuroscience demonstrates that needle insertion into neuro-vascular bundles excites A-beta sensory nerve fibers. This signals the spinal dorsal horn to close the 'pain gate' against chronic nociceptive signals. Simultaneously, it stimulates the pituitary gland and hypothalamus to release systemic beta-endorphins—the body's natural painkillers—and activates parasympathetic vagal recovery."
+      },
+      {
+        heading: "3. What Happens During an Acupuncture Session?",
+        body: "Your first visit starts with a 15-minute diagnostic intake checking 14 radial pulse points and examining tongue topography. You then lie down in a private, soundproof acoustic suite while 6 to 18 micro-fine needles are gently placed. You rest comfortably for 20 minutes with soothing far-infrared TDP mineral warmth, during which most patients enter a peaceful, rejuvenating meditative state."
+      },
+      {
+        heading: "4. How Many Acupuncture Sessions Are Needed?",
+        body: "For acute pain or tension, noticeable relief occurs within 2 to 4 sessions. Chronic complaints such as long-standing sciatica, cervical spondylosis, recurrent migraines, or PCOS typically require a structured treatment protocol of 6 to 10 sessions scheduled weekly for lasting recovery and cellular equilibrium."
+      }
+    ],
+    takeaways: [
+      "Completely drug-free, non-surgical therapy with zero systemic side effects.",
+      "100% pre-sterilized single-use surgical needles ensure total patient safety.",
+      "Transparent session fee of ₹600 at Arura Wellness Studio in Chennai."
+    ]
+  },
+  {
+    id: 'acupuncture-vs-acupressure-differences',
+    slug: 'acupuncture-vs-acupressure-differences',
+    title: "Acupuncture vs Acupressure: Key Differences, Benefits & Which is Better For You?",
+    subtitle: "Comparing deep needle neuro-stimulation against surface manual acupoint pressure.",
+    category: "Acupuncture Modalities",
+    author: "Dr. Nivedha Priyadharshini",
+    authorTitle: "MD (Acu) • Founder & Lead Healer",
+    date: "November 2026",
+    readTime: "5 min read",
+    thumbnailText: "Acupuncture vs Acupressure",
+    highlight: "While acupressure offers mild surface muscle relaxation, classical acupuncture penetrates directly into deep fascial planes to stimulate endorphins and achieve permanent clinical relief.",
+    sections: [
+      {
+        heading: "1. Surface Pressure vs Deep Neuro-Fascial Stimulation",
+        body: "Acupressure utilizes manual finger, thumb, or knuckle pressure on the skin surface over acupoints. While pleasant and helpful for mild tension, finger pressure cannot physically access deep myofascial trigger nodes, trapped sciatic nerve sheaths, or compressed vertebral junctions. Acupuncture uses microscopic 0.18mm needles that penetrate with millimeter accuracy directly into the target tissue strata."
+      },
+      {
+        heading: "2. Triggering the 'De-Qi' Healing Reflex",
+        body: "When an acupuncture needle makes contact with deep connective tissue, it elicits 'De-Qi'—a gentle dull ache or spreading warmth that confirms mechanotransduction. This mechanical stretch of fibroblasts releases adenosine, a potent local analgesic and vasodilator that promotes cellular healing."
+      },
+      {
+        heading: "3. Which Should You Choose for Chronic Conditions?",
+        body: "For everyday relaxation or home self-care, acupressure is a wonderful daily practice. However, for debilitating chronic conditions such as lumbar disc compression, severe migraine headaches, frozen shoulder, or hormonal PCOS imbalances, classical acupuncture performed by a licensed physician is far superior and clinically definitive."
+      }
+    ],
+    takeaways: [
+      "Acupressure is ideal for daily home relaxation; acupuncture is clinical medical therapy.",
+      "Acupuncture stimulates deep mechanoreceptors, beta-endorphins, and central neurotransmitters.",
+      "Consult a certified MD (Acu) specialist in Chennai for chronic pain syndromes."
+    ]
+  },
+  {
+    id: 'acupuncture-for-back-pain-sciatica-guide',
+    slug: 'acupuncture-for-back-pain-sciatica-guide',
+    title: "Best Acupuncture Treatment for Chronic Back Pain & Sciatica: A Doctor's Guide",
+    subtitle: "How targeted needle decompression interrupts disc compression and relieves nerve spasms.",
+    category: "Spine & Joint Health",
+    author: "Dr. Nivedha Priyadharshini",
+    authorTitle: "MD (Acu) • Founder & Lead Healer",
+    date: "November 2026",
+    readTime: "6 min read",
+    thumbnailText: "Back Pain & Sciatica",
+    highlight: "Over 88% of our chronic back pain and sciatica patients in Chennai report significant pain reduction and restored walking mobility within 3 to 5 clinical sessions.",
+    sections: [
+      {
+        heading: "1. Why Back Pain & Sciatica Resist Standard Painkillers",
+        body: "Oral pain tablets only temporarily dull the brain's pain perception; they do nothing to release the spastic piriformis muscle clamp, rehydrate compressed lumbar discs, or clear localized inflammatory edema around the L4–S1 nerve roots. Once the medication wears off, the burning shooting pain returns with full force."
+      },
+      {
+        heading: "2. Key Acupoints for Lumbar & Sciatic Decompression",
+        body: "In our Virugambakkam clinic, we target master points: Shenshu (BL-23) on the lower back to relieve paraspinal spasm, Huantiao (GB-30) at the piriformis notch to un-clamp the sciatic nerve, and Weizhong (BL-40) behind the knee to discharge the entire posterior muscular chain."
+      },
+      {
+        heading: "3. Paired with Far-Infrared TDP Mineral Heat Therapy",
+        body: "Needle placement is paired with an infrared TDP mineral lamp. The soothing 33-trace-mineral heat penetrates 2 to 3 inches beneath the skin, dissolving lactic acid accumulation, relaxing deep fascia, and preventing recurrence."
+      }
+    ],
+    takeaways: [
+      "Avoids heavy dependence on oral analgesics with gastric and renal side effects.",
+      "Decompresses the sciatic nerve at the piriformis notch naturally.",
+      "Over 88% of Chennai patients achieve long-term functional mobility."
+    ]
+  },
+  {
+    id: 'acupuncture-for-womens-health-pcos-hormones',
+    slug: 'acupuncture-for-womens-health-pcos-hormones',
+    title: "Acupuncture for Women's Health: Relieving PCOS, Menstrual Pain & Hormonal Imbalance",
+    subtitle: "Regulating the hypothalamic-pituitary-ovarian axis and pelvic circulation naturally.",
+    category: "Mind & Stress Therapy",
+    author: "Dr. Nivedha Priyadharshini",
+    authorTitle: "MD (Acu) • Founder & Lead Healer",
+    date: "November 2026",
+    readTime: "5 min read",
+    thumbnailText: "Women's Health & PCOS",
+    highlight: "Acupuncture modulates pelvic microcirculation and synchronizes endocrine rhythms, offering drug-free relief for severe period cramps, irregular cycles, and PCOS symptoms.",
+    sections: [
+      {
+        heading: "1. The Endocrine & Pelvic Mechanism",
+        body: "Women's reproductive balance relies heavily on uninterrupted communication between the brain (hypothalamus and pituitary) and the ovaries (the HPO axis). Chronic stress and autonomic tension elevate cortisol, which suppresses progesterone, causes ovulatory failure in PCOS, and intensifies uterine prostaglandin spasms."
+      },
+      {
+        heading: "2. Master Points for Gynecological Harmony",
+        body: "We stimulate Sanyinjiao (SP-6)—the master intersection of the Spleen, Liver, and Kidney meridians—combined with Guanyuan (CV-4) and Zigong extra points on the lower abdomen. This enhances ovarian micro-perfusion, relieves pelvic floor contractures, and normalizes menstrual flow."
+      },
+      {
+        heading: "3. Lasting Results Across Menstrual Cycles",
+        body: "Within 2 to 3 menstrual cycles of consistent acupuncture sessions, patients frequently observe a 60–80% drop in dysmenorrhea pain intensity, reduced reliance on emergency pain tablets, predictable 28–32 day cycles, and renewed hormonal vitality."
+      }
+    ],
+    takeaways: [
+      "Clinically effective complementary therapy for PCOS, irregular cycles, and menstrual cramps.",
+      "Regulates pelvic blood flow and reduces inflammatory prostaglandins (PGF2α).",
+      "Conducted in strictly private, dignified acoustic suites in Chennai."
+    ]
   }
 ];

@@ -142,16 +142,16 @@ export default function BookingPage() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Sanctuary Concierge • Virugambakkam</span>
+              <span>ACUPUNCTURE CLINIC NEAR ME • VIRUGAMBAKKAM, CHENNAI</span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
-              Schedule Your Private <br />
-              <span className="text-brand">Clinical Consultation</span>
+              Acupuncture Treatment Consultation <br />
+              <span className="text-brand">in Virugambakkam, Chennai</span>
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Select your therapeutic modality below, pick your preferred appointment slot on the interactive ticket, and confirm your visit directly with Dr. Nivedha Priyadharshini.
+              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Dr. Nivedha Priyadharshini, MD (Acu). Affordable session fee of ₹600 with 100% sterile single-use needles.
             </p>
           </motion.div>
         </div>

@@ -26,9 +26,10 @@ export default function DoctorPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <p className="text-xs text-brand font-semibold tracking-normal">
-                Lead Clinical Director, Virugambakkam
-              </p>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand text-xs font-semibold border border-white/10 font-mono">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>BEST ACUPUNCTURE DOCTOR IN CHENNAI • VIRUGAMBAKKAM</span>
+              </div>
 
               {/* Doctor Name */}
               <div className="space-y-3">
@@ -37,12 +38,12 @@ export default function DoctorPage({ onOpenBooking }) {
                   <span className="text-brand">Priyadharshini</span>
                 </h1>
                 <p className="text-sm sm:text-base font-semibold text-white/80">
-                  MD (Acu), Cambridge Intl Dip., PG Dip. Counselling Therapy
+                  Acupuncture Specialist • MD (Acu), Cambridge Intl Dip., PG Dip. Counselling Therapy
                 </p>
               </div>
 
               <p className="text-base sm:text-lg text-white/70 font-normal leading-relaxed max-w-2xl">
-                Eight years of dedicated clinical practice integrating classical 14-meridian acupuncture with Cambridge evidence-based psychotherapy. Focused on eliminating chronic musculoskeletal pain and restoring autonomic nervous system equilibrium.
+                Recognized as one of the best acupuncture doctors and pain management specialists in Chennai. Over 8 years of dedicated clinical practice integrating classical 14-meridian acupuncture with Cambridge evidence-based psychotherapy. Specialized in natural pain relief for chronic back pain, cervical neck stiffness, sciatica, migraines, and autonomic burnout.
               </p>
 
               {/* Key Verification Badges in Banner with Animated Counters */}
