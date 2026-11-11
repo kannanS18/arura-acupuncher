@@ -668,6 +668,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
   const armPinObjectsRef = useRef([]);
   const allPinObjectsRef = useRef([]);
   const badgesRef = useRef([]);
+  const hoveredAcupointIdxRef = useRef(-1);
   const strataGroupRef = useRef(null);
   const strataLayersRef = useRef({});
 
@@ -1286,11 +1287,11 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       badgesRef.current.forEach(({ idx, pt, sprite, leaderLine, selRing, compactTex, selTex }) => {
         const isSel = (idx === selIdx);
         const isInActiveRegion = (pt.region === region);
-        // Show badges for points! In full body view, ALL points on BOTH left and right sides of the body show their names!
-        const shouldShowBadge = (region === 'full') ? true : (isSel || isInActiveRegion);
+        // Initially in full body view: only dots! In regional close-up: badges appear.
+        const shouldShowBadge = (region !== 'full') && (isSel || isInActiveRegion);
 
         if (selRing) selRing.visible = isSel;
-        if (leaderLine) leaderLine.visible = isSel;
+        if (leaderLine) leaderLine.visible = isSel && (region !== 'full');
         if (sprite) {
           sprite.visible = shouldShowBadge;
           if (sprite.material) {
@@ -1937,7 +1938,7 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
           const badgeSprite = new THREE.Sprite(badgeMat);
           badgeSprite.position.set(badgeOffX, badgeOffY, badgeOffZ + 0.008);
           badgeSprite.scale.set(isInitiallySel ? 0.12 : 0.095, isInitiallySel ? 0.035 : 0.027, 1.0);
-          badgeSprite.visible = true; // All acupoints display their readable badge on the 3D body
+          badgeSprite.visible = false; // Initially only dots! Names appear on zoom or in region view
           badgeSprite.renderOrder = 999;
           badgeSprite.userData = { acupointIdx: idx };
           pinGroup.add(badgeSprite);
@@ -2059,9 +2060,11 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       });
       const acuHover = raycaster.intersectObjects(visibleHitboxes, true).filter(h => h.object.parent && h.object.parent.visible);
       if (acuHover.length > 0) {
+        hoveredAcupointIdxRef.current = acuHover[0].object.userData.acupointIdx;
         renderer.domElement.style.cursor = 'pointer';
         return;
       }
+      hoveredAcupointIdxRef.current = -1;
 
       // 2. Direct hover on human body mannequin limbs/torso
       if (bodyModelMeshRef.current) {
@@ -2973,14 +2976,29 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
             ring.scale.set(dynamicScale * 1.5, dynamicScale * 1.5, 1.0);
           }
 
-          // Dynamic distance-proportional badge scaling (Crisp 3.55:1 aspect ratio matching 300x84 texture)
+          // Dynamic Zoom Badge Reveal:
+          // Initially (zoomed out): show ONLY DOTS!
+          // On Zoom (dist < 2.0 or in region view): names appear crisp and clear right on the points!
+          const isZoomedIn = dist < 2.0;
+          const isSel = (pin.userData.acupointIdx === selectedAcupointIdx);
+          const isHovered = (pin.userData.acupointIdx === hoveredAcupointIdxRef.current);
+          const inRegion = (activeRegionRef.current !== 'full');
+          const showName = pin.visible && (isZoomedIn || (inRegion && (isSel || pin.userData.region === activeRegionRef.current)) || isHovered);
+
           const badge = pin.userData.badge;
-          if (badge && badge.isSprite && badge.visible) {
-            const isSel = (pin.userData.acupointIdx === selectedAcupointIdx);
-            const baseW = isSel ? 0.11 : 0.085;
-            const baseH = isSel ? 0.031 : 0.024;
-            const distFactor = Math.max(0.80, Math.min(1.40, dist * 0.90));
-            badge.scale.set(baseW * distFactor, baseH * distFactor, 1.0);
+          if (badge && badge.isSprite) {
+            badge.visible = showName;
+            if (showName) {
+              const baseW = isSel ? 0.11 : 0.085;
+              const baseH = isSel ? 0.031 : 0.024;
+              const distFactor = Math.max(0.80, Math.min(1.40, dist * 0.90));
+              badge.scale.set(baseW * distFactor, baseH * distFactor, 1.0);
+            }
+          }
+
+          const leader = pin.userData.leaderLine;
+          if (leader) {
+            leader.visible = isSel && showName;
           }
         });
       }
