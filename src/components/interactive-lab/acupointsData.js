@@ -520,7 +520,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "li11_l",
     "code": "LI-11",
-    "fullName": "LI-11 (Quchi)",
+    "fullName": "LI-11 (Left Quchi)",
     "pinyin": "Quchi",
     "hanzi": "曲池",
     "translation": "Pool at the Bend",
@@ -547,8 +547,8 @@ export const CLINICAL_ACUPOINTS = [
       0.05,
       0.02
     ],
-    "painName": "Lateral Epicondylitis (Tennis Elbow) & Inflammation",
-    "nerves": "Radial Nerve & Posterior Cutaneous Nerve",
+    "painName": "Left Lateral Epicondylitis (Tennis Elbow) & Inflammation",
+    "nerves": "Left Radial Nerve & Posterior Cutaneous Nerve",
     "vessels": "Radial Recurrent Artery",
     "relief": "Tennis Elbow, Joint Inflammation, Systemic Heat, Hypertension",
     "deqi": "Penetrating warmth radiating down extensor muscles of forearm.",
@@ -557,7 +557,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "pc6_l",
     "code": "PC-6",
-    "fullName": "PC-6 (Neiguan)",
+    "fullName": "PC-6 (Left Neiguan)",
     "pinyin": "Neiguan",
     "hanzi": "内关",
     "translation": "Inner Gate",
@@ -584,8 +584,8 @@ export const CLINICAL_ACUPOINTS = [
       0.03,
       0.03
     ],
-    "painName": "Median Nerve Compression & Chest Angina",
-    "nerves": "Median Nerve Trunk",
+    "painName": "Left Median Nerve Compression & Chest Angina",
+    "nerves": "Left Median Nerve Trunk",
     "vessels": "Median Antebrachial Vein & Radial Artery",
     "relief": "Nausea, Carpal Tunnel Strain, Chest Tightness, Palpitations",
     "deqi": "Smooth bio-electric sensation gliding along forearm midline.",
@@ -594,7 +594,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "lu7_l",
     "code": "LU-7",
-    "fullName": "LU-7 (Lieque)",
+    "fullName": "LU-7 (Left Lieque)",
     "pinyin": "Lieque",
     "hanzi": "列缺",
     "translation": "Broken Sequence",
@@ -612,17 +612,17 @@ export const CLINICAL_ACUPOINTS = [
       0.0294
     ],
     "surfaceNormal": [
-      0.959,
-      0.276,
-      -0.058
+      0.82,
+      0.25,
+      0.50
     ],
     "badgeOffset": [
       0.05,
       0.02,
       0.03
     ],
-    "painName": "Radial Styloid Tenosynovitis & Stiff Forearm",
-    "nerves": "Lateral Antebrachial Cutaneous Nerve",
+    "painName": "Left Radial Styloid Tenosynovitis & Stiff Forearm",
+    "nerves": "Left Lateral Antebrachial Cutaneous Nerve",
     "vessels": "Radial Artery & Cephalic Vein",
     "relief": "De Quervain Tenosynovitis, Migraines, Neck Stiffness, Cough",
     "deqi": "Fine energetic pulse coursing up radial margin to the thumb.",
@@ -631,7 +631,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "ht7_l",
     "code": "HT-7",
-    "fullName": "HT-7 (Shenmen)",
+    "fullName": "HT-7 (Left Shenmen)",
     "pinyin": "Shenmen",
     "hanzi": "神门",
     "translation": "Spirit Gate",
@@ -654,12 +654,12 @@ export const CLINICAL_ACUPOINTS = [
       0.268
     ],
     "badgeOffset": [
-      -0.03,
+      0.04,
       -0.03,
       0.03
     ],
-    "painName": "Restless Insomnia & Cardiac Palpitations",
-    "nerves": "Ulnar Nerve & Medial Antebrachial Cutaneous Nerve",
+    "painName": "Left Ulnar Wrist Strain & Autonomic Insomnia",
+    "nerves": "Left Ulnar Nerve & Medial Antebrachial Cutaneous Nerve",
     "vessels": "Ulnar Artery",
     "relief": "Severe Insomnia, Anxiety Spikes, Palpitations, Emotional Agitation",
     "deqi": "Deep settling calm wave flowing into palm and chest.",
@@ -668,7 +668,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "li4_l",
     "code": "LI-4",
-    "fullName": "LI-4 (Hegu)",
+    "fullName": "LI-4 (Left Hegu)",
     "pinyin": "Hegu",
     "hanzi": "合谷",
     "translation": "Joining Valley",
@@ -686,17 +686,17 @@ export const CLINICAL_ACUPOINTS = [
       0.0344
     ],
     "surfaceNormal": [
-      -0.277,
-      0.705,
-      0.653
+      0.15,
+      0.65,
+      0.74
     ],
     "badgeOffset": [
       0.04,
       -0.04,
       0.03
     ],
-    "painName": "Trigeminal Facial Spasm & TMJ Jaw Clenching",
-    "nerves": "Superficial Radial Nerve",
+    "painName": "Left Trigeminal Facial Spasm & TMJ Jaw Clenching",
+    "nerves": "Left Superficial Radial Nerve",
     "vessels": "First Dorsal Metacarpal Artery",
     "relief": "Frontal Migraines, TMJ Jaw Clenching, Toothache, Systemic Analgesia",
     "deqi": "Pronounced heavy warm ache spreading through palm into forearm.",
@@ -705,7 +705,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "li11_r",
     "code": "LI-11",
-    "fullName": "LI-11 (Quchi)",
+    "fullName": "LI-11 (Right Quchi)",
     "pinyin": "Quchi",
     "hanzi": "曲池",
     "translation": "Pool at the Bend",
@@ -742,7 +742,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "pc6_r",
     "code": "PC-6",
-    "fullName": "PC-6 (Neiguan)",
+    "fullName": "PC-6 (Right Neiguan)",
     "pinyin": "Neiguan",
     "hanzi": "内关",
     "translation": "Inner Gate",
@@ -779,7 +779,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "lu7_r",
     "code": "LU-7",
-    "fullName": "LU-7 (Lieque)",
+    "fullName": "LU-7 (Right Lieque)",
     "pinyin": "Lieque",
     "hanzi": "列缺",
     "translation": "Broken Sequence",
@@ -816,7 +816,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "ht7_r",
     "code": "HT-7",
-    "fullName": "HT-7 (Shenmen)",
+    "fullName": "HT-7 (Right Shenmen)",
     "pinyin": "Shenmen",
     "hanzi": "神门",
     "translation": "Spirit Gate",
@@ -853,7 +853,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "li4_r",
     "code": "LI-4",
-    "fullName": "LI-4 (Hegu)",
+    "fullName": "LI-4 (Right Hegu)",
     "pinyin": "Hegu",
     "hanzi": "合谷",
     "translation": "Joining Valley",
@@ -871,9 +871,9 @@ export const CLINICAL_ACUPOINTS = [
       0.1453
     ],
     "surfaceNormal": [
-      -0.586,
-      -0.472,
-      0.658
+      -0.35,
+      -0.15,
+      0.92
     ],
     "badgeOffset": [
       -0.07,
@@ -1075,7 +1075,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "st36_l",
     "code": "ST-36",
-    "fullName": "ST-36 (Zusanli)",
+    "fullName": "ST-36 (Left Zusanli)",
     "pinyin": "Zusanli",
     "hanzi": "足三里",
     "translation": "Leg Three Miles",
@@ -1102,8 +1102,8 @@ export const CLINICAL_ACUPOINTS = [
       0.04,
       0.03
     ],
-    "painName": "Quadriceps Motor Endplate Spasm & Gastric Cramp",
-    "nerves": "Deep Peroneal (Fibular) Nerve",
+    "painName": "Left Quadriceps Motor Endplate Spasm & Gastric Cramp",
+    "nerves": "Left Deep Peroneal (Fibular) Nerve",
     "vessels": "Anterior Tibial Artery",
     "relief": "Chronic Fatigue, Acid Reflux, Immune Depletion, Leg Weakness",
     "deqi": "Rich traveling warmth and rhythmic muscular pulsing downward into foot.",
@@ -1112,7 +1112,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "gb34_l",
     "code": "GB-34",
-    "fullName": "GB-34 (Yanglingquan)",
+    "fullName": "GB-34 (Left Yanglingquan)",
     "pinyin": "Yanglingquan",
     "hanzi": "阳陵泉",
     "translation": "Yang Mound Spring",
@@ -1132,15 +1132,15 @@ export const CLINICAL_ACUPOINTS = [
     "surfaceNormal": [
       0.667,
       0.299,
-      -0.683
+      0.55
     ],
     "badgeOffset": [
       0.08,
       0.01,
-      -0.02
+      0.03
     ],
-    "painName": "Peroneal Tendon Adhesion & Lateral Knee Stiffness",
-    "nerves": "Common Peroneal (Fibular) Nerve",
+    "painName": "Left Peroneal Tendon Adhesion & Lateral Knee Stiffness",
+    "nerves": "Left Common Peroneal (Fibular) Nerve",
     "vessels": "Inferior Lateral Genicular Artery",
     "relief": "Knee Tendonitis, Sciatica, Muscle Cramps, Iliotibial Band Syndrome",
     "deqi": "Deep electric buzz traveling down lateral lower leg to ankle.",
@@ -1149,7 +1149,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "bl40_l",
     "code": "BL-40",
-    "fullName": "BL-40 (Weizhong)",
+    "fullName": "BL-40 (Left Weizhong)",
     "pinyin": "Weizhong",
     "hanzi": "委中",
     "translation": "Middle of the Crease",
@@ -1176,8 +1176,8 @@ export const CLINICAL_ACUPOINTS = [
       0.03,
       -0.05
     ],
-    "painName": "Popliteal Fascial Restriction & Lumbar Radiculopathy",
-    "nerves": "Tibial Nerve",
+    "painName": "Left Popliteal Fascial Restriction & Lumbar Radiculopathy",
+    "nerves": "Left Tibial Nerve",
     "vessels": "Popliteal Artery & Vein",
     "relief": "Acute Lower Back Spasm, Hamstring Tightness, Sciatic Nerve Pain",
     "deqi": "Sudden relaxing release traveling up posterior leg to lumbar spine.",
@@ -1186,7 +1186,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "sp6_l",
     "code": "SP-6",
-    "fullName": "SP-6 (Sanyinjiao)",
+    "fullName": "SP-6 (Left Sanyinjiao)",
     "pinyin": "Sanyinjiao",
     "hanzi": "三阴交",
     "translation": "Three Yin Intersection",
@@ -1204,17 +1204,17 @@ export const CLINICAL_ACUPOINTS = [
       -0.0663
     ],
     "surfaceNormal": [
-      -0.992,
+      0.25,
       -0.122,
-      0.039
+      0.85
     ],
     "badgeOffset": [
       0.06,
       0.03,
       0.02
     ],
-    "painName": "Medial Tibial Stress (Shin Splint) & Pelvic Stasis",
-    "nerves": "Tibial Nerve & Saphenous Nerve",
+    "painName": "Left Medial Tibial Stress (Shin Splint) & Pelvic Stasis",
+    "nerves": "Left Tibial Nerve & Saphenous Nerve",
     "vessels": "Posterior Tibial Artery",
     "relief": "Pelvic Circulation, Insomnia, Leg Cramping, Hormonal Balance",
     "deqi": "Steady rhythmic warmth coursing up the inner calf.",
@@ -1223,7 +1223,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "lv3_l",
     "code": "LV-3",
-    "fullName": "LV-3 (Taichong)",
+    "fullName": "LV-3 (Left Taichong)",
     "pinyin": "Taichong",
     "hanzi": "太冲",
     "translation": "Great Surge",
@@ -1241,17 +1241,17 @@ export const CLINICAL_ACUPOINTS = [
       0.1179
     ],
     "surfaceNormal": [
-      -0.846,
-      0.339,
-      0.412
+      -0.20,
+      0.55,
+      0.81
     ],
     "badgeOffset": [
       0.06,
       0.04,
       0.04
     ],
-    "painName": "Tarsal Tunnel Pain & Vertex Hypertensive Pressure",
-    "nerves": "Deep Peroneal (Fibular) Nerve Branch",
+    "painName": "Left Tarsal Tunnel Pain & Vertex Hypertensive Pressure",
+    "nerves": "Left Deep Peroneal (Fibular) Nerve Branch",
     "vessels": "Dorsalis Pedis Artery",
     "relief": "Liver Qi Constraint, Hypertension, Stress Headaches, Foot Cramps",
     "deqi": "Clear descending release draining excess heat downward out of body.",
@@ -1260,7 +1260,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "st36_r",
     "code": "ST-36",
-    "fullName": "ST-36 (Zusanli)",
+    "fullName": "ST-36 (Right Zusanli)",
     "pinyin": "Zusanli",
     "hanzi": "足三里",
     "translation": "Leg Three Miles",
@@ -1297,7 +1297,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "gb34_r",
     "code": "GB-34",
-    "fullName": "GB-34 (Yanglingquan)",
+    "fullName": "GB-34 (Right Yanglingquan)",
     "pinyin": "Yanglingquan",
     "hanzi": "阳陵泉",
     "translation": "Yang Mound Spring",
@@ -1315,14 +1315,14 @@ export const CLINICAL_ACUPOINTS = [
       -0.0839
     ],
     "surfaceNormal": [
-      -0.818,
+      -0.65,
       0.28,
-      -0.502
+      0.55
     ],
     "badgeOffset": [
       -0.08,
       0.01,
-      -0.02
+      0.03
     ],
     "painName": "Right Peroneal Tendon Adhesion & Knee Stiffness",
     "nerves": "Right Common Peroneal Nerve",
@@ -1334,7 +1334,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "bl40_r",
     "code": "BL-40",
-    "fullName": "BL-40 (Weizhong)",
+    "fullName": "BL-40 (Right Weizhong)",
     "pinyin": "Weizhong",
     "hanzi": "委中",
     "translation": "Middle of the Crease",
@@ -1371,7 +1371,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "sp6_r",
     "code": "SP-6",
-    "fullName": "SP-6 (Sanyinjiao)",
+    "fullName": "SP-6 (Right Sanyinjiao)",
     "pinyin": "Sanyinjiao",
     "hanzi": "三阴交",
     "translation": "Three Yin Intersection",
@@ -1389,9 +1389,9 @@ export const CLINICAL_ACUPOINTS = [
       -0.0657
     ],
     "surfaceNormal": [
-      0.958,
+      -0.25,
       -0.113,
-      -0.262
+      0.85
     ],
     "badgeOffset": [
       -0.06,
@@ -1408,7 +1408,7 @@ export const CLINICAL_ACUPOINTS = [
   {
     "id": "lv3_r",
     "code": "LV-3",
-    "fullName": "LV-3 (Taichong)",
+    "fullName": "LV-3 (Right Taichong)",
     "pinyin": "Taichong",
     "hanzi": "太冲",
     "translation": "Great Surge",
@@ -1426,9 +1426,9 @@ export const CLINICAL_ACUPOINTS = [
       0.1119
     ],
     "surfaceNormal": [
-      0.42,
-      0.876,
-      0.237
+      0.20,
+      0.55,
+      0.81
     ],
     "badgeOffset": [
       -0.06,
