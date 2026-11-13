@@ -7,6 +7,7 @@ import AnimatedCounter from '../components/AnimatedCounter';
 import { StatsBand } from '../components/stats-band';
 import ClinicalIntakeManifesto from '../components/ClinicalIntakeManifesto';
 import ClinicalModalitiesSection from '../components/ClinicalModalitiesSection';
+import DoctorIdCard from '../components/DoctorIdCard';
 
 export default function AboutPage({ onOpenBooking }) {
   const clinicalTechniques = [
@@ -110,47 +111,27 @@ export default function AboutPage({ onOpenBooking }) {
               </div>
             </motion.div>
 
-            {/* Right Column (5 cols): Calm Clinical Showcase */}
+            {/* Right Column (5 cols): Verified Doctor Identity Credential Badge */}
             <motion.div 
-              className="lg:col-span-5"
+              className="lg:col-span-5 flex flex-col items-center justify-center"
               initial={{ opacity: 0.9, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <div className="rounded-3xl bg-white border border-neutral-200/90 p-8 shadow-sm relative overflow-hidden group motion-safe:animate-pure-float">
-                
-                <div className="flex items-center justify-between border-b border-neutral-100 pb-5">
-                  <div className="flex items-center space-x-3">
-                    <img 
-                      src={getAssetUrl('logo.png')} 
-                      alt="Arura Wellness Studio Official Logo" 
-                      className="h-10 w-auto object-contain"
-                    />
-                  </div>
-                  <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/80">
-                    Clinical Standard
-                  </span>
-                </div>
+              <DoctorIdCard />
 
-                <div className="py-6 flex flex-col items-center justify-center relative">
-                  <div className="relative w-full max-w-[320px] flex items-center justify-center">
-                    <img 
-                      src={getAssetUrl('needles_cutout_3d.png')} 
-                      alt="0.18mm Hair-Thin Surgical Acupuncture Needles" 
-                      className="w-full h-auto max-h-52 object-contain filter drop-shadow-md"
-                    />
-                  </div>
-
-                  <div className="mt-4 text-xs text-neutral-600 font-medium">
-                    <span>0.18mm Hair-Thin Surgical 316L Needles</span>
-                  </div>
-                </div>
-
-                <div className="border-t border-neutral-100 pt-4 flex items-center justify-between text-xs text-neutral-500">
-                  <span>Ethylene Oxide Pre-Sterilized</span>
-                  <span className="font-semibold text-brand">Zero Reuse Guaranteed</span>
-                </div>
-
+              <div className="mt-2 w-full max-w-sm sm:max-w-md flex flex-col sm:flex-row items-center justify-between gap-2.5 px-2">
+                <span className="text-xs font-mono text-neutral-500">
+                  Direct 1-on-1 Consultations: ₹600
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onOpenBooking('Consultation with Dr. Nivedha Priyadharshini', 600)}
+                  className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-[#ed3373] text-white hover:bg-[#c91e5c] transition-all shadow-sm hover:shadow-md active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <span>Book Consultation</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </motion.div>
 
