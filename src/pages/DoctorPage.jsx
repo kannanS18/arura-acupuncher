@@ -77,7 +77,7 @@ export default function DoctorPage({ onOpenBooking }) {
                   onClick={() => onOpenBooking('Consultation with Dr. Nivedha', 600)}
                   className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 cursor-pointer"
                 >
-                  <span>Book Consultation (₹600)</span>
+                  <span>Schedule Consultation</span>
                   <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
                 </button>
                 <a

@@ -119,20 +119,6 @@ export default function AboutPage({ onOpenBooking }) {
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
               <DoctorIdCard />
-
-              <div className="mt-2 w-full max-w-sm sm:max-w-md flex flex-col sm:flex-row items-center justify-between gap-2.5 px-2">
-                <span className="text-xs font-mono text-neutral-500">
-                  Direct 1-on-1 Consultations: ₹600
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onOpenBooking('Consultation with Dr. Nivedha Priyadharshini', 600)}
-                  className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-[#ed3373] text-white hover:bg-[#c91e5c] transition-all shadow-sm hover:shadow-md active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
-                >
-                  <span>Book Consultation</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
             </motion.div>
 
           </div>

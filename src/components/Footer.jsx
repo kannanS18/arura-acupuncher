@@ -93,15 +93,6 @@ export default function Footer() {
                 <span className="text-emerald-400 font-semibold">Strictly by Prior Appointment</span>
               </div>
             </div>
-
-            <div className="pt-2">
-              <Link
-                to="/booking"
-                className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl text-sm font-bold bg-brand text-white hover:bg-brand-dark transition-colors duration-200 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-              >
-                <span>Book consultation (₹600)</span>
-              </Link>
-            </div>
           </div>
 
         </div>

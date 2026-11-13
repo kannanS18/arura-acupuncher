@@ -434,7 +434,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/25 hover:shadow-lg hover:shadow-pink-500/35 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
               >
-                <span>Book Consultation for this Pathway</span>
+                <span>Schedule Evaluation</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

@@ -123,18 +123,13 @@ export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-              <button
-                onClick={() => onOpenBooking(activeCluster.primaryKeyword, 600)}
-                className="px-7 py-4 rounded-full text-sm font-bold bg-[#ed3373] text-white hover:bg-[#c91e5c] transition-all shadow-[0_4px_14px_rgba(237,51,115,0.3)] hover:-translate-y-0.5 active:scale-95 text-center cursor-pointer"
-              >
-                <span>Book This Treatment (₹600)</span>
-              </button>
+            <div className="shrink-0">
               <Link
                 to={activeCluster.recommendedPage}
-                className="px-6 py-4 rounded-full text-sm font-semibold bg-neutral-100 text-neutral-800 hover:bg-neutral-200 transition-colors text-center"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-semibold bg-neutral-100 text-neutral-800 hover:bg-neutral-200 transition-colors text-center"
               >
-                Learn More
+                <span>Explore Treatment Dossier</span>
+                <ArrowRight className="w-4 h-4 text-[#ed3373]" />
               </Link>
             </div>
           </div>

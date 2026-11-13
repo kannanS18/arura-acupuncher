@@ -304,7 +304,7 @@ export default function HomePage({ onOpenBooking }) {
                 to="/booking"
                 className="px-8 py-4 rounded-full text-sm sm:text-base font-bold bg-[#ed3373] text-white hover:bg-[#c91e5c] transition-all shadow-[0_4px_16px_rgba(237,51,115,0.4)] hover:-translate-y-0.5 active:scale-95 cursor-pointer"
               >
-                Book Priority Consultation (₹600)
+                Schedule an Appointment
               </Link>
               <Link
                 to="/counselling"

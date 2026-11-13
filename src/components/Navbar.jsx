@@ -80,12 +80,9 @@ export default function Navbar({ onOpenBooking }) {
                 <span className="font-semibold text-gray-800 text-xs">Location</span>
               </a>
 
-              <Link
-                to="/booking"
-                className="px-3.5 py-1.5 rounded-lg bg-brand text-white font-bold text-xs shadow-xs hover:bg-brand-dark transition-colors"
-              >
-                Book ₹600
-              </Link>
+              <span className="text-[11px] font-mono font-medium text-gray-500 px-2 py-1 bg-gray-50 rounded-lg border border-gray-200/60">
+                10 AM – 8 PM
+              </span>
             </div>
           </div>
 
@@ -113,7 +110,7 @@ export default function Navbar({ onOpenBooking }) {
               </a>
             </div>
 
-            <div className="flex items-center space-x-4 text-gray-600 text-xs">
+            <div className="flex items-center space-x-4 text-gray-600 text-xs sm:text-sm">
               <span className="flex items-center space-x-1.5">
                 <MapPin className="w-3.5 h-3.5 text-brand" />
                 <span>Chinmaya Nagar, Virugambakkam, Chennai</span>
@@ -121,12 +118,7 @@ export default function Navbar({ onOpenBooking }) {
 
               <span className="text-gray-300 hidden sm:inline">|</span>
 
-              <Link
-                to="/booking"
-                className="text-brand hover:text-brand-dark font-semibold transition-colors"
-              >
-                Book priority consultation
-              </Link>
+              <span className="text-gray-500 font-medium">Daily 10:00 AM – 8:00 PM</span>
             </div>
           </div>
 
@@ -162,19 +154,11 @@ export default function Navbar({ onOpenBooking }) {
             />
           </nav>
 
-          {/* Action Button */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
-            <Link
-              to="/booking"
-              className="hidden sm:inline-flex px-6 py-3 rounded-xl text-sm font-bold whitespace-nowrap bg-ink text-white hover:bg-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 shadow-sm"
-            >
-              Consultation (₹600)
-            </Link>
-
-            {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle */}
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
+              className="p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6 text-brand" /> : <Menu className="w-6 h-6" />}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
@@ -170,13 +171,13 @@ export default function DoctorTreatmentAreasSection({ onOpenBooking }) {
                     <span className="font-semibold text-neutral-800">{spec.protocol}</span>
                   </div>
 
-                  <button
-                    onClick={() => handleBooking(spec.title)}
-                    className="w-full py-3.5 px-5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 border bg-neutral-900 text-white hover:bg-[#ed3373] hover:border-[#ed3373] shadow-xs active:scale-[0.98] cursor-pointer"
+                  <Link
+                    to="/clinic"
+                    className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 border border-neutral-200/80 transition-colors flex items-center justify-between"
                   >
-                    <span>Schedule Clinical Evaluation</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                    <span>View Treatment Details & Protocols</span>
+                    <ArrowRight className="w-4 h-4 text-[#ed3373]" />
+                  </Link>
                 </div>
 
               </motion.div>
