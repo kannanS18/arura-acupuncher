@@ -75,16 +75,16 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
         
         {/* Section Header: Philosophy Quote */}
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-50 border border-pink-200/70 text-xs font-semibold text-[#ed3373] tracking-wider uppercase font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-50 border border-pink-200/70 text-sm font-semibold text-[#ed3373] tracking-wider uppercase font-mono">
+            <span className="w-2 h-2 rounded-full bg-[#ed3373] animate-pulse" />
             <span>INTEGRATIVE ROOT-CAUSE PHILOSOPHY</span>
           </div>
 
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight leading-[1.15]">
             “We treat what the body whispers before it screams.”
           </h2>
 
-          <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
             Every clinical session combines gentle 14-meridian point stimulation with unhurried therapeutic listening. Chronic pain and autonomic tension are resolved at their neuro-biological source.
           </p>
         </div>
@@ -109,32 +109,32 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-[#ed3373] bg-pink-50 px-2.5 py-0.5 rounded-md border border-pink-200/60 uppercase">
-                    <Award className="w-3 h-3 text-[#ed3373]" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#ed3373] bg-pink-50 px-3 py-1 rounded-md border border-pink-200/60 uppercase">
+                    <Award className="w-3.5 h-3.5 text-[#ed3373]" />
                     <span>Lead Physician</span>
                   </span>
 
-                  <h3 className="font-display text-2xl font-extrabold text-neutral-900 leading-snug">
+                  <h3 className="font-display text-2xl sm:text-[26px] font-bold text-neutral-900 leading-snug">
                     Dr. Nivedha Priyadharshini
                   </h3>
 
-                  <p className="text-xs font-bold text-neutral-800">
+                  <p className="text-sm font-bold text-neutral-800">
                     MD (Acu) • Cambridge Intl Dip.
                   </p>
                   
-                  <p className="text-xs text-neutral-500 font-medium">
+                  <p className="text-sm text-neutral-600 font-medium">
                     PG Dip. Psychological Counselling
                   </p>
                 </div>
               </div>
 
               {/* Bio-Pulse Live Indicator */}
-              <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/70 flex items-center justify-between text-xs font-mono">
+              <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/70 flex items-center justify-between text-sm font-mono">
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-[#ed3373] animate-pulse" />
                   <span className="font-semibold text-neutral-800">14-Channel Pulse Diagnostic</span>
                 </div>
-                <span className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-bold">
+                <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full font-bold">
                   Active Sanctuary
                 </span>
               </div>
@@ -142,26 +142,26 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
               {/* Key Clinical Stats (Hairline UI Counter Band) */}
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div className="p-4 rounded-2xl bg-white border border-neutral-200/80 space-y-1">
-                  <span className="font-display text-2xl font-extrabold text-neutral-900 block tracking-tight">
+                  <span className="font-display text-2xl sm:text-3xl font-bold text-neutral-900 block tracking-tight">
                     <AnimatedCounter end={8} suffix="+ Years" />
                   </span>
-                  <span className="text-[11px] text-neutral-500 font-medium block">
+                  <span className="text-xs text-neutral-600 font-medium block">
                     Classical Acupuncture
                   </span>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white border border-neutral-200/80 space-y-1">
-                  <span className="font-display text-2xl font-extrabold text-[#ed3373] block tracking-tight">
+                  <span className="font-display text-2xl sm:text-3xl font-bold text-[#ed3373] block tracking-tight">
                     <AnimatedCounter end={1100} suffix="+" />
                   </span>
-                  <span className="text-[11px] text-neutral-500 font-medium block">
+                  <span className="text-xs text-neutral-600 font-medium block">
                     Documented Recoveries
                   </span>
                 </div>
               </div>
 
               {/* Clinical Tenets Checklist */}
-              <div className="space-y-2.5 text-xs text-neutral-600 pt-2 border-t border-neutral-100">
+              <div className="space-y-3 text-sm text-neutral-700 pt-2 border-t border-neutral-100">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                   <span className="text-neutral-800 font-medium">Unhurried 1-on-1 private consultations</span>
@@ -182,10 +182,10 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
             <div className="pt-6 mt-6 border-t border-neutral-100">
               <Link
                 to="/doctor"
-                className="w-full py-3.5 rounded-full text-xs font-bold bg-neutral-900 text-white hover:bg-[#ed3373] flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+                className="w-full py-4 rounded-full text-sm font-bold bg-neutral-900 text-white hover:bg-[#ed3373] flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <span>View Doctor's Credentials & Clinical Journey</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
@@ -199,15 +199,15 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
               {/* Header Bar */}
               <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
                 <div>
-                  <h3 className="font-display text-xl sm:text-2xl font-extrabold text-neutral-900">
+                  <h3 className="font-display text-2xl font-bold text-neutral-900">
                     Transparent Clinical Tariff
                   </h3>
-                  <p className="text-xs text-neutral-500 font-medium mt-0.5">
+                  <p className="text-sm text-neutral-600 font-medium mt-0.5">
                     No hidden costs · All consultation & procedure fees fixed
                   </p>
                 </div>
 
-                <span className="font-mono text-xs font-bold text-[#ed3373] bg-pink-50 border border-pink-200 px-3 py-1 rounded-full">
+                <span className="font-mono text-sm font-bold text-[#ed3373] bg-pink-50 border border-pink-200 px-3.5 py-1.5 rounded-full">
                   ₹600 Flat
                 </span>
               </div>
@@ -233,19 +233,19 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                     >
                       {/* Left: Icon + Title + Description */}
                       <div className="flex items-start gap-3.5">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border ${
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
                           item.isGuarantee
                             ? 'bg-emerald-100/70 text-emerald-700 border-emerald-200'
                             : 'bg-white text-[#ed3373] border-neutral-200/80'
                         }`}>
-                          <Icon className="w-4 h-4" />
+                          <Icon className="w-5 h-5" />
                         </div>
 
-                        <div className="space-y-0.5">
-                          <h4 className="font-display text-sm sm:text-base font-bold text-neutral-900">
+                        <div className="space-y-1">
+                          <h4 className="font-display text-base sm:text-lg font-bold text-neutral-900">
                             {item.title}
                           </h4>
-                          <p className="text-xs text-neutral-500 font-normal leading-relaxed max-w-md">
+                          <p className="text-sm text-neutral-600 font-normal leading-relaxed max-w-md">
                             {item.subtitle}
                           </p>
                         </div>
@@ -254,15 +254,15 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                       {/* Right: Fee & Duration Chip */}
                       <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 pl-12 sm:pl-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-neutral-100">
                         {item.isGuarantee ? (
-                          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300/80 px-2.5 py-1 rounded-full font-mono">
+                          <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300/80 px-3 py-1 rounded-full font-mono">
                             {item.duration}
                           </span>
                         ) : (
                           <>
-                            <span className="font-display text-base sm:text-lg font-extrabold text-neutral-900 tabular-nums">
+                            <span className="font-display text-lg sm:text-xl font-bold text-neutral-900 tabular-nums">
                               {item.fee}
                             </span>
-                            <span className="text-[11px] text-neutral-400 font-mono">
+                            <span className="text-xs text-neutral-500 font-mono">
                               {item.duration}
                             </span>
                           </>
@@ -280,10 +280,10 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
             <div className="pt-6 mt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <Link
                 to="/clinic"
-                className="text-xs text-neutral-500 hover:text-neutral-900 font-semibold inline-flex items-center gap-1.5 transition-colors"
+                className="text-sm text-neutral-600 hover:text-neutral-900 font-semibold inline-flex items-center gap-1.5 transition-colors"
               >
                 <span>Full sanctuary guidelines & clinic facilities</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#ed3373]" />
+                <ArrowRight className="w-4 h-4 text-[#ed3373]" />
               </Link>
 
               <button
@@ -293,7 +293,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                     onOpenBooking('Clinical Consultation & Evaluation', 600);
                   }
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/20 hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/20 hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
               >
                 <CalendarCheck className="w-4 h-4" />
                 <span>Book Priority Consultation (₹600)</span>

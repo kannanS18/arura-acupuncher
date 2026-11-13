@@ -59,9 +59,9 @@ export interface LiquidTabsProps {
 }
 
 const SIZES = {
-  sm: { row: "h-8 p-[3px]", tab: "px-3 text-[12.5px] gap-1.5 [&_svg]:size-3.5" },
-  md: { row: "h-10 p-1", tab: "px-4 text-[13.5px] gap-2 [&_svg]:size-4" },
-  lg: { row: "h-12 p-[5px]", tab: "px-5 text-[15px] gap-2 [&_svg]:size-[18px]" },
+  sm: { row: "h-9 p-[3px]", tab: "px-3.5 text-sm font-semibold gap-1.5 [&_svg]:size-3.5" },
+  md: { row: "h-11 p-1", tab: "px-4.5 text-[15px] font-semibold gap-2 [&_svg]:size-4" },
+  lg: { row: "h-12 p-[5px]", tab: "px-5 text-base font-semibold gap-2 [&_svg]:size-[18px]" },
 } as const;
 
 // Both critically damped, so nothing overshoots. The front is a touch quicker, and the difference is the whole effect.

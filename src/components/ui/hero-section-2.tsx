@@ -168,7 +168,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
           <div>
             <motion.header className="mb-4 sm:mb-5" variants={itemVariants}>
               {badge && (
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-0.5 text-[11px] font-semibold text-primary uppercase tracking-wider">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1 text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                   <span>{badge}</span>
                 </div>
@@ -179,12 +179,12 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   <img src={logo.url} alt={logo.alt} className="h-8 w-auto object-contain" />
                   <div>
                     {logo.text && (
-                      <p className="font-display text-base font-bold tracking-tight text-foreground">
+                      <p className="font-display text-base sm:text-lg font-bold tracking-tight text-foreground">
                         {logo.text}
                       </p>
                     )}
                     {slogan && (
-                      <p className="text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
+                      <p className="text-xs font-semibold tracking-wider uppercase text-muted-foreground">
                         {slogan}
                       </p>
                     )}
@@ -229,7 +229,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               />
 
               <motion.p
-                className="mb-5 text-sm sm:text-[15px] leading-relaxed text-muted-foreground font-normal max-w-xl"
+                className="mb-6 text-base sm:text-lg leading-relaxed text-neutral-700 font-normal max-w-2xl"
                 variants={itemVariants}
               >
                 {subtitle}
@@ -237,7 +237,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
               {/* Call to Actions */}
               <motion.div
-                className="flex flex-wrap items-center gap-3"
+                className="flex flex-wrap items-center gap-3.5"
                 variants={itemVariants}
               >
                 <a
@@ -248,11 +248,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       callToAction.onClick();
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-primary/20 transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm sm:text-base font-bold text-white shadow-md shadow-primary/20 transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   <span>{callToAction.text}</span>
                   <svg
-                    className="h-3.5 w-3.5"
+                    className="h-4 w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -271,7 +271,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                     href={secondaryAction.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-input bg-background/80 backdrop-blur-xs px-5 py-3 text-xs sm:text-sm font-semibold text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-input bg-background/80 backdrop-blur-xs px-6 py-3.5 text-sm sm:text-base font-semibold text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98]"
                   >
                     {secondaryAction.icon}
                     <span>{secondaryAction.text}</span>
@@ -283,7 +283,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
 
           {/* Bottom Section: Footer Info */}
           <motion.footer className="mt-5 sm:mt-6 w-full pt-3.5 border-t border-border/50" variants={itemVariants}>
-            <div className="grid grid-cols-1 gap-3 text-xs text-muted-foreground sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 text-xs sm:text-sm text-neutral-600 sm:grid-cols-3">
               <div className="flex items-center">
                 <InfoIcon type="website" />
                 <span className="truncate">{contactInfo.website}</span>
@@ -321,16 +321,16 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.5 }}
-              className="absolute bottom-5 right-5 z-20 flex items-center gap-2.5 rounded-xl bg-white/95 backdrop-blur-md px-3.5 py-2.5 shadow-lg border border-pink-100/80"
+              className="absolute bottom-5 right-5 z-20 flex items-center gap-2.5 rounded-xl bg-white/95 backdrop-blur-md px-4 py-3 shadow-lg border border-pink-100/80"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-primary">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-primary">
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div className="text-left">
-                <p className="text-xs font-bold text-neutral-900">{floatingBadge.title}</p>
-                <p className="text-[10px] text-neutral-500 font-medium">{floatingBadge.subtitle}</p>
+                <p className="text-sm font-bold text-neutral-900">{floatingBadge.title}</p>
+                <p className="text-xs text-neutral-600 font-medium">{floatingBadge.subtitle}</p>
               </div>
             </motion.div>
           )}

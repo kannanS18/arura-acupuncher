@@ -33,6 +33,8 @@ body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #09090b;
   background-color: #ffffff;
+  font-size: 1.0625rem; /* 17px base for effortless reading */
+  line-height: 1.68;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -81,16 +83,17 @@ body {
   font-variant-numeric: lining-nums;
 }
 
-h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: -0.025em;
+/* Strictly 2 Font System:
+   1. Playfair Display: All Headings, Titles, Hero Typography & Display
+   2. Plus Jakarta Sans: All Paragraph, Body, Metadata, Badges, Buttons & UI text */
+h1, h2, h3, h4, h5, h6, .font-display, .font-heading, .font-serif, .font-editorial {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  letter-spacing: -0.015em;
   font-variant-numeric: lining-nums;
 }
 
-.font-serif, .font-editorial {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: -0.025em;
-  font-variant-numeric: lining-nums;
+p, span, a, button, input, textarea, select, label, .font-sans, .font-body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
 .font-mono {

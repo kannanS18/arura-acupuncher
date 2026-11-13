@@ -52,15 +52,15 @@ export default {
           bone: '#f8fafc'
         }
       },
-      // Strictly 2 Complementary Font Families:
-      // 1. Outfit (Luxury Display Headings, Titles, Hero Typography)
-      // 2. Plus Jakarta Sans (Body, Navigation, Badges, Labels, Metadata)
+      // Strictly 2 Complementary Font Families for Holistic Medical Wellness:
+      // 1. Playfair Display: Classical dignity, holistic authority, organic flow for all headings & display titles
+      // 2. Plus Jakarta Sans: Crystal-clear, open-counter humanist readability for all paragraph, body, and UI text
       fontFamily: {
-        display: ['"Outfit"', 'system-ui', 'sans-serif'],
-        heading: ['"Outfit"', 'system-ui', 'sans-serif'],
-        serif: ['"Outfit"', 'system-ui', 'sans-serif'],
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-        body: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        heading: ['"Playfair Display"', 'Georgia', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        body: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
       },
       animation: {

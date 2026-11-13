@@ -87,10 +87,10 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
       />
 
       {/* Interactive 14-Meridian Selector Strip positioned above bottom footer */}
-      <div className="border-t border-border/40 bg-pink-50/25 px-5 sm:px-8 lg:px-12 py-2.5 flex flex-wrap items-center justify-between gap-2.5 text-xs">
-        <div className="flex items-center gap-2 text-muted-foreground font-semibold">
-          <Waves className="w-3.5 h-3.5 text-primary" />
-          <span className="uppercase tracking-wider text-[11px]">Explore Clinical Meridian Pathways:</span>
+      <div className="border-t border-border/40 bg-pink-50/25 px-5 sm:px-8 lg:px-12 py-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+        <div className="flex items-center gap-2 text-neutral-600 font-semibold">
+          <Waves className="w-4 h-4 text-primary" />
+          <span className="uppercase tracking-wider text-xs sm:text-sm font-bold">Explore Clinical Meridian Pathways:</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {MERIDIAN_PRESETS.map((p) => {
@@ -100,13 +100,13 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
                 key={p.id}
                 type="button"
                 onClick={() => setActivePreset(p)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all text-xs ${
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold transition-all text-xs sm:text-sm cursor-pointer ${
                   isSelected
                     ? 'bg-primary text-white shadow-sm scale-105'
-                    : 'bg-white text-foreground hover:bg-pink-100/60 border border-border/60'
+                    : 'bg-white text-neutral-800 hover:bg-pink-100/60 border border-neutral-200'
                 }`}
               >
-                <Zap className={`w-3 h-3 ${isSelected ? 'text-white' : 'text-primary'}`} />
+                <Zap className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-primary'}`} />
                 <span>{p.condition}</span>
               </button>
             );

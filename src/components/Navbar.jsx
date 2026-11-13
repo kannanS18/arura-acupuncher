@@ -45,26 +45,26 @@ export default function Navbar({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto">
           
           {/* Mobile Icon Bar */}
-          <div className="flex sm:hidden items-center justify-between text-xs">
+          <div className="flex sm:hidden items-center justify-between text-xs sm:text-sm">
             <div className="flex items-center space-x-2">
               <a 
                 href={`tel:${CLINIC_INFO.phone}`}
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-brand shadow-xs motion-safe:active:scale-95 transition-colors"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-brand shadow-xs motion-safe:active:scale-95 transition-colors"
                 title="Call Clinic"
               >
                 <PhoneCall className="w-3.5 h-3.5 text-brand" />
-                <span className="font-semibold text-gray-800 text-[11px]">Call</span>
+                <span className="font-semibold text-gray-800 text-xs">Call</span>
               </a>
 
               <a 
                 href={CLINIC_INFO.whatsappLink} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-emerald-600 shadow-xs motion-safe:active:scale-95 transition-colors"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-emerald-600 shadow-xs motion-safe:active:scale-95 transition-colors"
                 title="WhatsApp Concierge"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="font-semibold text-gray-800 text-[11px]">WhatsApp</span>
+                <span className="font-semibold text-gray-800 text-xs">WhatsApp</span>
               </a>
             </div>
 
@@ -73,16 +73,16 @@ export default function Navbar({ onOpenBooking }) {
                 href="https://maps.google.com/?q=Arura+Acupuncture+Virugambakkam+Chennai"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 shadow-xs"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 shadow-xs"
                 title="Virugambakkam Clinic Location"
               >
                 <MapPin className="w-3.5 h-3.5 text-brand" />
-                <span className="font-semibold text-gray-800 text-[11px]">Location</span>
+                <span className="font-semibold text-gray-800 text-xs">Location</span>
               </a>
 
               <Link
                 to="/booking"
-                className="px-3 py-1.5 rounded-lg bg-brand text-white font-semibold text-[11px] shadow-xs hover:bg-brand-dark transition-colors"
+                className="px-3.5 py-1.5 rounded-lg bg-brand text-white font-bold text-xs shadow-xs hover:bg-brand-dark transition-colors"
               >
                 Book ₹600
               </Link>
@@ -166,7 +166,7 @@ export default function Navbar({ onOpenBooking }) {
           <div className="flex items-center space-x-3 flex-shrink-0">
             <Link
               to="/booking"
-              className="hidden sm:inline-flex px-5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-ink text-white hover:bg-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 shadow-sm"
+              className="hidden sm:inline-flex px-6 py-3 rounded-xl text-sm font-bold whitespace-nowrap bg-ink text-white hover:bg-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 shadow-sm"
             >
               Consultation (₹600)
             </Link>

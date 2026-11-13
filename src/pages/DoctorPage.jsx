@@ -26,8 +26,8 @@ export default function DoctorPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand text-xs font-semibold border border-white/10 font-mono">
-                <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand text-sm font-semibold border border-white/10 font-mono">
+                <ShieldCheck className="w-4 h-4" />
                 <span>BEST ACUPUNCTURE DOCTOR IN CHENNAI • VIRUGAMBAKKAM</span>
               </div>
 
@@ -37,37 +37,37 @@ export default function DoctorPage({ onOpenBooking }) {
                   Dr. Nivedha <br />
                   <span className="text-brand">Priyadharshini</span>
                 </h1>
-                <p className="text-sm sm:text-base font-semibold text-white/80">
+                <p className="text-base sm:text-lg font-semibold text-white/90">
                   Acupuncture Specialist • MD (Acu), Cambridge Intl Dip., PG Dip. Counselling Therapy
                 </p>
               </div>
 
-              <p className="text-base sm:text-lg text-white/70 font-normal leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-white/80 font-normal leading-relaxed max-w-2xl">
                 Recognized as one of the best acupuncture doctors and pain management specialists in Chennai. Over 8 years of dedicated clinical practice integrating classical 14-meridian acupuncture with Cambridge evidence-based psychotherapy. Specialized in natural pain relief for chronic back pain, cervical neck stiffness, sciatica, migraines, and autonomic burnout.
               </p>
 
               {/* Key Verification Badges in Banner with Animated Counters */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-xs text-white/50 block font-medium">Practice</span>
-                  <span className="text-xl font-bold text-white block mt-0.5">
+                  <span className="text-xs sm:text-sm text-white/60 block font-medium">Practice</span>
+                  <span className="text-2xl font-bold text-white block mt-0.5">
                     <AnimatedCounter end={8} suffix="+ Years" />
                   </span>
-                  <span className="text-xs text-white/60">Clinical Experience</span>
+                  <span className="text-xs sm:text-sm text-white/70">Clinical Experience</span>
                 </div>
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-xs text-white/50 block font-medium">Recoveries</span>
-                  <span className="text-xl font-bold text-brand block mt-0.5">
+                  <span className="text-xs sm:text-sm text-white/60 block font-medium">Recoveries</span>
+                  <span className="text-2xl font-bold text-brand block mt-0.5">
                     <AnimatedCounter end={1100} suffix="+" />
                   </span>
-                  <span className="text-xs text-white/60">Documented Patients</span>
+                  <span className="text-xs sm:text-sm text-white/70">Documented Patients</span>
                 </div>
                 <div className="col-span-2 sm:col-span-1 p-4 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-xs text-white/50 block font-medium">Protocol</span>
-                  <span className="text-xl font-bold text-white block mt-0.5">
+                  <span className="text-xs sm:text-sm text-white/60 block font-medium">Protocol</span>
+                  <span className="text-2xl font-bold text-white block mt-0.5">
                     <AnimatedCounter end={100} suffix="%" />
                   </span>
-                  <span className="text-xs text-white/60">Single-Use Sterile</span>
+                  <span className="text-xs sm:text-sm text-white/70">Single-Use Sterile</span>
                 </div>
               </div>
 
@@ -75,14 +75,14 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
                   onClick={() => onOpenBooking('Consultation with Dr. Nivedha', 600)}
-                  className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50"
+                  className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 cursor-pointer"
                 >
                   <span>Book Consultation (₹600)</span>
                   <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
                 </button>
                 <a
                   href="#credentials"
-                  className="px-6 py-4 rounded-xl text-xs font-semibold text-white/80 bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 transition-colors text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="px-7 py-4 rounded-xl text-sm sm:text-base font-bold text-white/90 bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 transition-colors text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
                   View Clinical Dossier
                 </a>

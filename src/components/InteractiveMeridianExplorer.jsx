@@ -307,40 +307,40 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
               
               {/* Top Pathway Eyebrow + Relief Badge */}
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="font-mono text-xs font-bold text-[#ed3373] bg-pink-50 px-3 py-1 rounded-full border border-pink-200/70">
+                <span className="font-mono text-sm font-bold text-[#ed3373] bg-pink-50 px-3.5 py-1.5 rounded-full border border-pink-200/70">
                   {activePathway.code} • {activePathway.category}
                 </span>
 
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-800 bg-neutral-100 px-3.5 py-1 rounded-full font-mono border border-neutral-200/60">
-                  <Clock className="w-3.5 h-3.5 text-[#ed3373]" />
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-800 bg-neutral-100 px-4 py-1.5 rounded-full font-mono border border-neutral-200/60">
+                  <Clock className="w-4 h-4 text-[#ed3373]" />
                   <span>{activePathway.relief}</span>
                 </span>
               </div>
 
               {/* 1. Main Condition Headline — BIG, PROMINENT COMMON WORDS */}
               <div className="space-y-1.5">
-                <h3 className="font-display text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-neutral-900 tracking-tight leading-snug">
+                <h3 className="font-display text-2xl sm:text-3xl lg:text-[34px] font-bold text-neutral-900 tracking-tight leading-snug">
                   {activePathway.commonTitle}
                 </h3>
-                <p className="text-xs sm:text-sm font-semibold text-[#ed3373]">
+                <p className="text-sm sm:text-base font-semibold text-[#ed3373]">
                   Common Indications: {activePathway.subtitle}
                 </p>
               </div>
 
               {/* 2. Plain-English Patient Summary — BIGGER, RELATABLE FONT */}
-              <p className="text-base sm:text-[17px] text-neutral-800 leading-relaxed font-normal">
+              <p className="text-base sm:text-lg text-neutral-800 leading-relaxed font-normal">
                 {activePathway.commonSummary}
               </p>
 
               {/* 3. Common Searchable Conditions (SEO Packed Pill Tags) */}
-              <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                <span className="text-[11px] font-mono text-neutral-400 font-bold uppercase mr-1">
+              <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider mr-1">
                   SEO Keywords:
                 </span>
                 {activePathway.searchKeywords.map((tag, tIdx) => (
                   <span 
                     key={tIdx}
-                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-pink-50/80 text-[#ed3373] border border-pink-200/60"
+                    className="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg bg-pink-50/80 text-[#ed3373] border border-pink-200/60"
                   >
                     #{tag}
                   </span>
@@ -348,19 +348,19 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
               </div>
 
               {/* 4 & 5. Responsive 2-Column Clinical Subgrid (Length-Wise Layout) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
                 {/* Mechanism Box */}
                 <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 flex flex-col justify-between space-y-2">
                   <div>
-                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                      <Activity className="w-3.5 h-3.5 text-[#ed3373] shrink-0" />
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-neutral-800 uppercase tracking-wider mb-2">
+                      <Activity className="w-4 h-4 text-[#ed3373] shrink-0" />
                       <span>Clinical Mechanism:</span>
                     </div>
-                    <p className="text-xs text-neutral-600 font-mono leading-relaxed">
+                    <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed">
                       {activePathway.technicalMechanism}
                     </p>
                   </div>
-                  <div className="text-[11px] text-neutral-400 font-mono pt-2 border-t border-neutral-200/60">
+                  <div className="text-xs text-neutral-500 pt-2 border-t border-neutral-200/60">
                     ↳ Spec: {activePathway.spec}
                   </div>
                 </div>
@@ -368,13 +368,13 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 {/* Recovery Trajectory */}
                 <div className="p-4 rounded-2xl bg-pink-50/40 border border-pink-200/60 flex flex-col justify-between space-y-2">
                   <div>
-                    <span className="text-xs font-bold text-[#ed3373] font-mono tracking-wider uppercase block mb-2">
+                    <span className="text-xs sm:text-sm font-bold text-[#ed3373] tracking-wider uppercase block mb-2">
                       RECOVERY TRAJECTORY:
                     </span>
-                    <div className="space-y-2">
+                    <div className="space-y-2.5">
                       {activePathway.milestones.map((m, mIdx) => (
-                        <div key={mIdx} className="flex items-start gap-2 text-xs text-neutral-800">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <div key={mIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-800">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                           <div className="leading-snug">
                             <span className="font-bold text-neutral-900">{m.phase}: </span>
                             <span className="font-medium text-neutral-800">{m.commonOutcome}</span>
@@ -383,7 +383,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                       ))}
                     </div>
                   </div>
-                  <div className="text-[11px] text-neutral-500 font-mono pt-2 border-t border-pink-200/50">
+                  <div className="text-xs text-neutral-600 pt-2 border-t border-pink-200/50">
                     Private acoustic suite in Virugambakkam
                   </div>
                 </div>
@@ -391,22 +391,22 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
 
               {/* 6. Primary Bio-Active Acupoints (4 Horizontal Columns) */}
               <div className="space-y-2">
-                <span className="text-xs font-bold text-neutral-400 font-mono tracking-wider uppercase flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-[#ed3373]" />
+                <span className="text-xs sm:text-sm font-bold text-neutral-500 tracking-wider uppercase flex items-center gap-1.5">
+                  <Zap className="w-4 h-4 text-[#ed3373]" />
                   <span>Primary Bio-Active Acupoints:</span>
                 </span>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {activePathway.acupoints.map((pt, idx) => (
                     <div 
                       key={idx}
-                      className="p-2.5 rounded-xl bg-white border border-neutral-200/80 hover:border-pink-300 hover:bg-pink-50/30 transition-colors shadow-2xs"
+                      className="p-3 rounded-xl bg-white border border-neutral-200/80 hover:border-pink-300 hover:bg-pink-50/30 transition-colors shadow-2xs"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-mono font-bold text-[#ed3373] text-xs">{pt.code}</span>
-                        <span className="text-[11px] font-semibold text-neutral-800">{pt.name}</span>
+                        <span className="font-bold text-[#ed3373] text-sm">{pt.code}</span>
+                        <span className="text-xs sm:text-sm font-semibold text-neutral-800">{pt.name}</span>
                       </div>
-                      <p className="text-[10px] text-neutral-500 mt-1 leading-tight line-clamp-2">{pt.role}</p>
+                      <p className="text-xs text-neutral-600 mt-1 leading-snug line-clamp-2">{pt.role}</p>
                     </div>
                   ))}
                 </div>
@@ -417,10 +417,10 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             {/* Bottom Tariff & Action Bar */}
             <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <span className="text-sm font-bold text-neutral-900 block font-mono">
+                <span className="text-lg font-bold text-neutral-900 block font-mono">
                   {activePathway.fee}
                 </span>
-                <span className="text-xs text-neutral-400 block">
+                <span className="text-xs sm:text-sm text-neutral-500 block">
                   {activePathway.duration} • 1-on-1 with Dr. Nivedha, MD (Acu)
                 </span>
               </div>
@@ -432,7 +432,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                     onOpenBooking(`Consultation: ${activePathway.commonTitle}`, 600);
                   }
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/25 hover:shadow-lg hover:shadow-pink-500/35 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/25 hover:shadow-lg hover:shadow-pink-500/35 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
               >
                 <span>Book Consultation for this Pathway</span>
                 <ArrowRight className="w-4 h-4" />
@@ -452,8 +452,8 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             </div>
 
             {/* Bio-Electric Wave Overlay Graphic */}
-            <div className="absolute top-6 left-6 z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="absolute top-6 left-6 z-10 flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-mono">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>14-Meridian Resonance</span>
             </div>
 
@@ -461,15 +461,15 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
             <div className="absolute bottom-6 left-6 right-6 z-10 space-y-2">
               <div className="p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-pink-100 shadow-xl space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-neutral-900 font-display flex items-center gap-1.5">
+                  <span className="text-sm font-bold text-neutral-900 font-display flex items-center gap-2">
                     <Stethoscope className="w-4 h-4 text-[#ed3373]" />
                     <span>Dr. Nivedha Priyadharshini, MD (Acu)</span>
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">
+                  <span className="text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold">
                     Verified
                   </span>
                 </div>
-                <p className="text-[11px] text-neutral-500 leading-snug">
+                <p className="text-xs sm:text-sm text-neutral-600 leading-snug">
                   {activePathway.spec}
                 </p>
               </div>
@@ -482,9 +482,9 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
 
       {/* Bottom 6-Pathway Quick-Browse Strip (Hairline UI Card Thumbnails) */}
       <div className="w-full max-w-[1400px] mx-auto mt-8">
-        <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider mb-3 px-1">
+        <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-neutral-500 uppercase tracking-wider mb-3 px-1">
           <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#ed3373] animate-pulse" />
             <span>Select Clinical Pathway:</span>
           </span>
           <span className="text-[#ed3373] font-semibold">{activePathway.code} Active</span>
@@ -498,19 +498,19 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
               key={p.id}
               type="button"
               onClick={() => setActivePathway(p)}
-              className={`text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+              className={`text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
                 isSelected
                   ? 'bg-pink-50/60 border-[#ed3373] shadow-sm ring-1 ring-[#ed3373]/30 scale-[1.02]'
                   : 'bg-white border-neutral-200/80 hover:border-neutral-300 hover:bg-neutral-50/70'
               }`}
             >
-              <span className="font-mono text-[10px] font-bold text-[#ed3373] block">
+              <span className="font-mono text-xs font-bold text-[#ed3373] block">
                 {p.id}
               </span>
-              <p className="font-display text-xs font-bold text-neutral-900 mt-1 line-clamp-1">
+              <p className="font-display text-sm font-bold text-neutral-900 mt-1 line-clamp-1">
                 {p.shortLabel}
               </p>
-              <p className="text-[10px] text-neutral-500 mt-0.5 line-clamp-1 font-mono">
+              <p className="text-xs text-neutral-600 mt-0.5 line-clamp-1 font-mono">
                 {p.relief}
               </p>
             </button>
