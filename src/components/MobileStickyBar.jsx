@@ -44,16 +44,16 @@ export default function MobileStickyBar() {
           </Link>
         </div>
 
-        {/* 4. Clinic Modalities & Tariff */}
+        {/* 4. Acupuncture Modalities & Tariff */}
         <Link 
           to="/clinic"
           className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] transition-colors duration-200 motion-safe:active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
             location.pathname === '/clinic' ? 'text-brand font-bold' : 'text-gray-700 hover:text-brand'
           }`}
-          title="Clinical Modalities & Fees"
+          title="Acupuncture Modalities & Fees"
         >
           <Activity className="w-4 h-4 text-brand mb-0.5" />
-          <span className="text-[11px] font-semibold">Clinic</span>
+          <span className="text-xs font-semibold">Acupuncture</span>
         </Link>
 
         {/* 5. Clinic Map & Navigation */}

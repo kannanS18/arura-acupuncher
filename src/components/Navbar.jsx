@@ -10,14 +10,14 @@ export default function Navbar({ onOpenBooking }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Exactly the essential clinic navigation destinations
+  // Exactly the essential clinic navigation destinations in user-requested order:
+  // Home, About Us, Acupuncture (formerly Clinic), Counselling, 3D Anatomy, Blog, Booking
   const navTabs = [
     { value: '/', label: 'Home', href: '#/' },
     { value: '/about', label: 'About Us', href: '#/about' },
-    { value: '/doctor', label: 'Doctor', href: '#/doctor' },
-    { value: '/clinic', label: 'Clinic', href: '#/clinic' },
-    { value: '/how-acupuncture-works', label: '3D Anatomy', href: '#/how-acupuncture-works' },
+    { value: '/clinic', label: 'Acupuncture', href: '#/clinic' },
     { value: '/counselling', label: 'Counselling', href: '#/counselling' },
+    { value: '/how-acupuncture-works', label: '3D Anatomy', href: '#/how-acupuncture-works' },
     { value: '/blog', label: 'Blog', href: '#/blog' },
     { value: '/booking', label: 'Booking', href: '#/booking' },
   ];
@@ -27,10 +27,10 @@ export default function Navbar({ onOpenBooking }) {
     const path = location.pathname;
     if (path === '/' || path === '') return '/';
     if (path.startsWith('/about') || path === '/disorders') return '/about';
-    if (path.startsWith('/doctor') || path === '/therapist') return '/doctor';
-    if (path.startsWith('/clinic') || path === '/pricing' || path === '/acupuncture' || path === '/safety' || path === '/faqs') return '/clinic';
-    if (path.startsWith('/how-acupuncture-works') || path.startsWith('/3d-lab')) return '/how-acupuncture-works';
+    if (path.startsWith('/doctor') || path === '/therapist') return '/about';
+    if (path.startsWith('/clinic') || path.startsWith('/acupuncture') || path === '/pricing' || path === '/safety' || path === '/faqs') return '/clinic';
     if (path.startsWith('/counselling')) return '/counselling';
+    if (path.startsWith('/how-acupuncture-works') || path.startsWith('/3d-lab') || path.startsWith('/anatomy') || path.startsWith('/3d-anatomy')) return '/how-acupuncture-works';
     if (path.startsWith('/blog')) return '/blog';
     if (path.startsWith('/booking') || path === '/contact') return '/booking';
     return '/';
