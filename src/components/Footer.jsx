@@ -66,11 +66,11 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-gray-300 font-normal">
               <li><Link to="/" className="hover:text-brand transition-colors">Home</Link></li>
               <li><Link to="/about" className="hover:text-brand transition-colors">About Us</Link></li>
-              <li><Link to="/doctor" className="hover:text-brand transition-colors">Doctor (Dr. Nivedha)</Link></li>
-              <li><Link to="/clinic" className="hover:text-brand transition-colors">Clinic and Tariff Schedule</Link></li>
-              <li><Link to="/counselling" className="hover:text-brand transition-colors">Counselling Centre (15 Modalities)</Link></li>
+              <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture (Tariff & Protocols)</Link></li>
+              <li><Link to="/counselling" className="hover:text-brand transition-colors">Counselling (15 Modalities)</Link></li>
+              <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">3D Anatomy Lab</Link></li>
               <li><Link to="/blog" className="hover:text-brand transition-colors">Clinical Blog</Link></li>
-              <li><Link to="/booking" className="hover:text-brand transition-colors">Book Priority Consultation</Link></li>
+              <li><Link to="/booking" className="hover:text-brand transition-colors">Booking & Appointments</Link></li>
             </ul>
           </div>
 
@@ -95,77 +95,6 @@ export default function Footer() {
             </div>
           </div>
 
-        </div>
-
-        {/* Structured SEO Clinical Keyword Directory & Local SEO Chennai Index */}
-        <div className="py-12 border-b border-gray-800/80 space-y-8 text-sm text-gray-300">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            
-            {/* Column 1: Primary Services */}
-            <div className="space-y-3">
-              <strong className="text-white text-sm uppercase tracking-wider block font-mono font-bold">
-                Acupuncture Treatment & Care
-              </strong>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Treatment</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Therapy (₹600)</Link></li>
-                <li><Link to="/about" className="hover:text-brand transition-colors">Traditional Acupuncture Treatment</Link></li>
-                <li><Link to="/about" className="hover:text-brand transition-colors">Holistic Acupuncture Therapy</Link></li>
-                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Specialist</Link></li>
-                <li><Link to="/doctor" className="hover:text-brand transition-colors">Best Acupuncture Doctor</Link></li>
-                <li><Link to="/booking" className="hover:text-brand transition-colors">Acupuncture Treatment Near Me</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 2: Pain Relief & Orthopedic Clusters */}
-            <div className="space-y-3">
-              <strong className="text-white text-sm uppercase tracking-wider block font-mono font-bold">
-                Pain Relief & Spine
-              </strong>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Pain Relief</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Back Pain</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Neck Pain</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Sciatica</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Knee Pain</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Shoulder Pain</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Joint Pain</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Neurological & Women's Health Clusters */}
-            <div className="space-y-3">
-              <strong className="text-white text-sm uppercase tracking-wider block font-mono font-bold">
-                Neurology & Women's Health
-              </strong>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Migraine</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Headaches</Link></li>
-                <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">Acupuncture for Nerve Pain</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for Women's Health</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for PCOS</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture for Menstrual Pain</Link></li>
-                <li><Link to="/counselling" className="hover:text-brand transition-colors">Acupuncture for Stress Relief & Anxiety</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 4: Local SEO Chennai */}
-            <div className="space-y-3">
-              <strong className="text-white text-sm uppercase tracking-wider block font-mono font-bold">
-                Chennai Local Sanctuary
-              </strong>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture Treatment in Chennai</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Best Acupuncture Clinic in Chennai</Link></li>
-                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Specialist in Chennai</Link></li>
-                <li><Link to="/booking" className="hover:text-brand transition-colors">Acupuncture Centre in Chennai</Link></li>
-                <li><Link to="/doctor" className="hover:text-brand transition-colors">Acupuncture Doctor in Chennai</Link></li>
-                <li><Link to="/clinic" className="hover:text-brand transition-colors">Affordable Acupuncture Treatment in Chennai</Link></li>
-                <li><span className="text-neutral-400 text-xs">Virugambakkam • Chinmaya Nagar • Vadapalani • Koyambedu • Anna Nagar</span></li>
-              </ul>
-            </div>
-
-          </div>
         </div>
 
         {/* Bottom Strip */}
