@@ -25,7 +25,7 @@ const PATHWAYS = [
     subtitle: 'Throbbing Temple Pressure, Cluster Headaches & Sleep Disruption',
     relief: 'Noticeable Relief in 1–2 Sessions',
     image: getAssetUrl('hero_acupuncture_sanctuary.jpg'),
-    commonSummary: 'Rapidly reduces severe headache frequency, relieves throbbing pressure behind the eyes, and eases tight neck muscles so you can sleep deeply without daily painkillers.',
+    commonSummary: 'Rapidly reduces headache frequency, relieves throbbing temple pressure behind the eyes, and eases neck stiffness for deep, restful sleep.',
     searchKeywords: [
       'Headache Frequency',
       'Migraine Relief',
@@ -65,7 +65,7 @@ const PATHWAYS = [
     subtitle: 'Cervical Spondylosis, Tech Neck & Trapezius Muscle Knots',
     relief: 'Mobility Restored in 3–5 Sessions',
     image: getAssetUrl('acupuncture_session.jpg'),
-    commonSummary: 'Melts painful muscle knots across the upper back and neck, eliminates arm numbness from long computer hours, and restores painless head rotation.',
+    commonSummary: 'Delivers lasting neck pain relief and loosens stiff shoulders, melting trapezius knots and arm numbness caused by tech neck.',
     searchKeywords: [
       'Neck Pain Relief',
       'Stiff Shoulder',
@@ -105,7 +105,7 @@ const PATHWAYS = [
     subtitle: 'Racing Thoughts, Panic Surges & Executive Work Burnout',
     relief: 'Immediate Parasympathetic Calm',
     image: getAssetUrl('zen_treatment.jpg'),
-    commonSummary: 'Soothes racing thoughts and heart palpitations, expands restricted breathing, and resets your nervous system from chronic panic into restorative calm.',
+    commonSummary: 'Provides holistic anxiety relief for stress burnout, soothing chest tightness and panic surges through deep vagus nerve calm.',
     searchKeywords: [
       'Anxiety Relief',
       'Stress Burnout',
@@ -144,7 +144,7 @@ const PATHWAYS = [
     subtitle: 'GERD, Irritable Bowel (IBS) & Sluggish Gut Motility',
     relief: 'Digestive Rhythm in 3–5 Sessions',
     image: getAssetUrl('clinic_interior.jpg'),
-    commonSummary: 'Cools severe acid reflux burning, flattens painful bloating after meals, and restores smooth, regular bowel movements naturally without antacid dependence.',
+    commonSummary: 'Effective acid reflux relief and IBS treatment that reduces stomach bloating, eases GERD symptoms, and restores gut health.',
     searchKeywords: [
       'Acid Reflux Relief',
       'Stomach Bloating',
@@ -183,7 +183,7 @@ const PATHWAYS = [
     subtitle: 'Dysmenorrhea Spasms, Cycle Irregularity & Pelvic Fullness',
     relief: 'Cycle Stabilization across 2 Cycles',
     image: getAssetUrl('wellness_holistic.jpg'),
-    commonSummary: 'Dismantles painful monthly cramps, eliminates reliance on heavy painkillers, and re-establishes predictable, balanced menstrual rhythms.',
+    commonSummary: 'Natural period pain relief that calms severe menstrual cramps, soothes pelvic pain, and balances hormones to relieve PCOS symptoms.',
     searchKeywords: [
       'Period Pain Relief',
       'Menstrual Cramps',
@@ -222,7 +222,7 @@ const PATHWAYS = [
     subtitle: 'L4–S1 Nerve Compression, Buttock Spasms & Leg Numbness',
     relief: 'Deep Decompression in 4–6 Sessions',
     image: getAssetUrl('acu_treatment1.jpg'),
-    commonSummary: 'Un-clamps trapped sciatic nerves, eliminates sharp shooting pain and burning shocks down the leg, and restores pain-free sitting, standing, and walking.',
+    commonSummary: 'Relieves lower back pain and sciatica nerve pain, un-clamping shooting leg pain and disc bulges to restore spine mobility.',
     searchKeywords: [
       'Sciatica Nerve Pain',
       'Lower Back Pain',
@@ -332,17 +332,14 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 {activePathway.commonSummary}
               </p>
 
-              {/* 3. Common Searchable Conditions (SEO Packed Pill Tags) */}
+              {/* 3. General Condition Hashtags */}
               <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider mr-1">
-                  SEO Keywords:
-                </span>
                 {activePathway.searchKeywords.map((tag, tIdx) => (
                   <span 
                     key={tIdx}
-                    className="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg bg-pink-50/80 text-[#ed3373] border border-pink-200/60"
+                    className="text-xs sm:text-sm font-semibold px-3 py-1 rounded-full bg-pink-50 text-[#ed3373] border border-pink-200/60 hover:bg-pink-100/60 transition-colors"
                   >
-                    #{tag}
+                    #{tag.replace(/\s+/g, '')}
                   </span>
                 ))}
               </div>

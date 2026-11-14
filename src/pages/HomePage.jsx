@@ -183,7 +183,7 @@ export default function HomePage({ onOpenBooking }) {
             <div className="max-w-2xl space-y-3">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 text-[#ed3373] text-sm font-semibold border border-pink-200/70 font-mono">
                 <MapPin className="w-4 h-4" />
-                <span>LOCAL SEO • CHENNAI SANCTUARY</span>
+                <span>LOCAL CLINICAL SANCTUARY • CHENNAI</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight leading-tight">
                 Best Acupuncture Clinic & Treatment in Chennai
