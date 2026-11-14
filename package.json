@@ -9,7 +9,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
-    "test": "playwright test"
+    "test": "playwright test",
+    "notify": "powershell -ExecutionPolicy Bypass -File scripts/notify.ps1"
   },
   "dependencies": {
     "clsx": "^2.1.1",
