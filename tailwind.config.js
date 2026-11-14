@@ -53,12 +53,12 @@ export default {
         }
       },
       // Strictly 2 Complementary Font Families for Holistic Medical Wellness:
-      // 1. Playfair Display: Classical dignity, holistic authority, organic flow for all headings & display titles
-      // 2. Plus Jakarta Sans: Crystal-clear, open-counter humanist readability for all paragraph, body, and UI text
+      // 1. Lora: Warm calligraphy roots, balanced organic curves, and clinical trust for all headings & display titles
+      // 2. Plus Jakarta Sans: High-contrast, open-counter humanist readability for all paragraph, body, and UI text
       fontFamily: {
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
-        heading: ['"Playfair Display"', 'Georgia', 'serif'],
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        display: ['"Lora"', 'Georgia', 'serif'],
+        heading: ['"Lora"', 'Georgia', 'serif'],
+        serif: ['"Lora"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         body: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
