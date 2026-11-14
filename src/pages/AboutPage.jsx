@@ -17,7 +17,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Classical 14-Meridian Acupuncture",
       category: "Primary Restorative Discipline",
       spec: "0.18mm Hair-Thin Surgical Needles",
-      desc: "Millimeter-accurate needle insertion along traditional acupuncture pathways. Stimulates sensory nerve fibers, dilates micro-vasculature, dissipates lactic stagnation, and triggers natural endorphin release.",
+      desc: "Millimeter-accurate needle insertion along traditional pathways, stimulating nerves and releasing natural endorphins for pain relief.",
       benefit: "Sustained relief for chronic migraines, frozen shoulder, lumbar strain, and cervical spondylosis."
     },
     {
@@ -26,7 +26,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Cambridge Psychotherapy & CBT",
       category: "Autonomic Nervous System Regulation",
       spec: "Evidence-Based Cognitive Restructuring",
-      desc: "Structured cognitive behavioural therapy (CBT) and rational emotive behavioural therapy (REBT) frameworks designed to identify psychosomatic triggers, anxiety loops, and insomnia patterns.",
+      desc: "Structured CBT and REBT frameworks designed to identify psychosomatic triggers, anxiety loops, and insomnia patterns.",
       benefit: "Reprograms chronic fight-or-flight sympathetic overdrive into parasympathetic restorative calm."
     },
     {
@@ -35,7 +35,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Micro-Current Electro-Acupuncture",
       category: "Neuromuscular Rehabilitation",
       spec: "Calibrated Frequency-Controlled Micro-Current",
-      desc: "Safe micro-current electrical stimulation applied across needle pairs to enhance nervous system signaling, relieve deep muscle spasm, and accelerate tissue recovery.",
+      desc: "Calibrated micro-current stimulation across needle pairs to relieve muscle spasms and accelerate nerve tissue recovery.",
       benefit: "Highly effective for severe sciatica, lumbar disc herniation, and chronic nerve compression."
     },
     {
@@ -44,7 +44,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Laser Acupuncture & TDP Mineral Heat",
       category: "Photobiomodulation & Thermal Recovery",
       spec: "100% Needle-Free Low-Level Laser Beam",
-      desc: "Painless, non-invasive low-level laser beam stimulating strategic acupoints without needles, combined with far-infrared 33-trace-mineral heat aligned with human bio-frequency.",
+      desc: "Painless, non-invasive laser acupoint stimulation paired with far-infrared mineral heat for needle-sensitive patients.",
       benefit: "Painless restorative therapy for needle-sensitive patients, pediatric care, and localized joint inflammation."
     }
   ];
@@ -92,7 +92,7 @@ export default function AboutPage({ onOpenBooking }) {
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
-                Founded by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong> in Virugambakkam, Chennai. Arura is dedicated to <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> and <strong className="text-ink font-semibold">holistic acupuncture therapy</strong>—bridging classical 14-meridian Chinese acupuncture with Cambridge psychotherapy for sustainable natural pain relief.
+                Founded by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong> in Chennai. Bridging classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> with Cambridge psychotherapy for lasting natural pain relief.
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-6 text-sm font-medium text-neutral-600">
@@ -153,7 +153,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Acupuncture for Pain Management
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Directly targets chronic back pain, cervical neck pain, sciatica, and knee joint osteoarthritis by releasing ischemic myofascial trigger nodes and stimulating natural beta-endorphins.
+                Relieves chronic back pain, neck stiffness, sciatica, and knee pain by unlocking myofascial nodes and triggering endorphins.
               </p>
             </div>
 
@@ -165,7 +165,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Natural Pain Relief Treatment
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                100% drug-free restorative healing that eliminates pharmaceutical dependency, avoiding long-term NSAID gastric damage and liver-kidney toxicity.
+                100% drug-free restorative healing that eliminates pharmaceutical dependency and avoids harmful NSAID side effects.
               </p>
             </div>
 
@@ -177,7 +177,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Traditional Chinese Acupuncture
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Rooted in authentic 14-meridian energy mapping and 14-radial pulse diagnostics. Balances Qi and blood circulation to rectify the underlying systemic root cause.
+                Rooted in 14-meridian mapping and radial pulse diagnostics to balance blood circulation and resolve the root cause.
               </p>
             </div>
 
@@ -189,7 +189,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Acupuncture for Stress Relief & Anxiety
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Stimulates the vagus nerve (cranial nerve X) to downregulate cortisol and calm autonomic fight-or-flight overdrive, providing profound mental relaxation.
+                Activates the vagus nerve to lower cortisol and reset fight-or-flight tension into deep mental calm.
               </p>
             </div>
 
@@ -201,7 +201,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Acupuncture for Muscle & Joint Pain
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Dissolves deep lactic acid crystallization and muscular knots, improving range of motion for frozen shoulders, repetitive strain injuries, and chronic stiffness.
+                Clears lactic crystallization and tight knots, restoring painless mobility for frozen shoulders and joint stiffness.
               </p>
             </div>
 
@@ -213,7 +213,7 @@ export default function AboutPage({ onOpenBooking }) {
                 Acupuncture Treatment Cost (₹600)
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Transparent and affordable clinical care in Chennai. Standard treatment fee of ₹600 includes 0.18mm pre-sterilized disposable needles and soothing TDP mineral heat.
+                Transparent fee of ₹600 per session includes 0.18mm pre-sterilized disposable needles and soothing TDP mineral heat.
               </p>
             </div>
           </div>

@@ -38,7 +38,7 @@ export default function DoctorPhilosophySection() {
           </div>
 
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-            Precise anatomical micro-needles stimulate localized nerve fibers, dilating micro-vasculature, dissipating lactic acid stagnation, and releasing muscle fascia tension across cervical, lumbar, and joint pathways.
+            Precise micro-needles stimulate nerve fibers, dilating micro-vasculature and dissipating muscle fascia tension across cervical and lumbar pathways.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -91,7 +91,7 @@ export default function DoctorPhilosophySection() {
           </div>
 
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-            Cognitive and behavioral therapy (CBT/REBT) frameworks that identify and resolve psychosomatic stressors, sleep architecture disruptions, and autonomic sympathetic overdrive without pharmaceutical dependence.
+            CBT and REBT frameworks resolving psychosomatic stressors, sleep disruptions, and sympathetic overdrive without pharmaceutical dependence.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -150,7 +150,7 @@ export default function DoctorPhilosophySection() {
           </div>
 
           <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-normal relative z-10">
-            Patients experience sustained relief from chronic pain and fatigue because both the physiological nerve pathways and the autonomic stress drivers are treated simultaneously in every consultation.
+            Sustained relief from chronic pain and fatigue by treating physiological nerve pathways and autonomic stress drivers simultaneously.
           </p>
 
           <div className="p-4 rounded-xl bg-neutral-900/90 border border-neutral-800 space-y-2 relative z-10">

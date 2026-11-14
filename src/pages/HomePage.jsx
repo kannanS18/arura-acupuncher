@@ -49,7 +49,7 @@ export default function HomePage({ onOpenBooking }) {
                 15 Specialized Psychological Disciplines
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                From adolescent guidance and marital harmony to grief processing and corporate burnout recovery. Led by Dr. Nivedha Priyadharshini in our soundproof acoustic suites.
+                Comprehensive adolescent, marriage, and burnout guidance led by Dr. Nivedha in soundproof acoustic suites.
               </p>
             </div>
 
@@ -144,27 +144,27 @@ export default function HomePage({ onOpenBooking }) {
               className="mx-auto"
               items={[
                 {
-                  quote: "With her treatment my mom was able to walk properly. Many orthopaedic surgeons had told us for knee replacement, but due to Arura's holistic needle therapy, now my mom is very much fine without surgery.",
+                  quote: "My mom can walk properly now. Surgeons recommended knee replacement, but Arura's acupuncture resolved it without surgery.",
                   name: "Sowmiya Janu",
                   role: "Knee Surgery Avoided · Chennai"
                 },
                 {
-                  quote: "A basic acupuncture clinic is all about the environment. Nivedha's Arura sanctuary is so calm and soothing with personal care. I was skeptical at first, but trust me it worked and I surely did find a lasting difference.",
+                  quote: "Dr. Nivedha's clinic is soothing and deeply personal. I was skeptical at first, but it made a lasting difference.",
                   name: "Nila",
                   role: "Calm Environment & Care · Chennai"
                 },
                 {
-                  quote: "I visited for chronic GERD and severe acidity. After 7–8 sessions of meridian needling and dietary tuning, I felt completely relieved. Dr. Nivedha's kind gesture, smiling face and clinical knowledge are unmatched.",
+                  quote: "Relieved my chronic GERD and acidity after 7 sessions. Dr. Nivedha's clinical care and guidance are unmatched.",
                   name: "Ramkumar Ananth",
                   role: "GERD & Acidity Relief · Chennai"
                 },
                 {
-                  quote: "Years of debilitating tension migraines and neck stiffness dissipated within 4 weeks of targeted acupuncture. Her acoustic private suites ensure pure restorative peace.",
+                  quote: "Debilitating migraines and neck stiffness vanished within 4 weeks of targeted acupuncture. Pure restorative peace.",
                   name: "Karthik Subramanian",
                   role: "Migraine & Cervical Relief · Chennai"
                 },
                 {
-                  quote: "Combining classical acupuncture with Cambridge-aligned CBT dialogue dismantled my severe insomnia and work burnout. A truly integrated mind-body healing sanctuary.",
+                  quote: "Combining acupuncture with CBT dismantled my severe insomnia and work burnout. A truly healing sanctuary.",
                   name: "Priyadarshini R.",
                   role: "Autonomic Burnout Recovery · Chennai"
                 }
@@ -189,7 +189,7 @@ export default function HomePage({ onOpenBooking }) {
                 Best Acupuncture Clinic & Treatment in Chennai
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                Looking for an experienced <strong className="text-neutral-900 font-semibold">acupuncture specialist near me</strong> in Chennai? Arura Wellness Studio offers licensed, affordable acupuncture treatment and psychotherapy in Virugambakkam.
+                Chennai's trusted <strong className="text-neutral-900 font-semibold">acupuncture specialist near me</strong> offering licensed, affordable care and psychotherapy in Virugambakkam.
               </p>
             </div>
 
@@ -295,7 +295,7 @@ export default function HomePage({ onOpenBooking }) {
                 Begin Your Journey to Root Recovery Today
               </h2>
               <p className="text-base sm:text-lg text-neutral-300 max-w-xl mx-auto font-normal leading-relaxed">
-                Consultations and treatments are conducted privately in acoustic suites at our Virugambakkam sanctuary. Open daily 10:00 AM to 8:00 PM.
+                Private consultations in acoustic suites at Virugambakkam, Chennai. Open daily 10:00 AM to 8:00 PM.
               </p>
             </div>
 

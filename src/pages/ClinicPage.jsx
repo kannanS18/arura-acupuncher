@@ -20,8 +20,8 @@ export default function ClinicPage({ onOpenBooking }) {
       feeNum: 600,
       image: "doctor_nivedha_portrait.jpg",
       badge: "Clinical Intake & Diagnostics",
-      summary: "Comprehensive 14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to pinpoint your original root imbalance before any needling begins.",
-      description: "Comprehensive 14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to pinpoint your original root imbalance before any needling begins.",
+      summary: "14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to identify root meridian imbalances before needling.",
+      description: "14-radial pulse assessment and tongue diagnosis by Dr. Nivedha to identify root meridian imbalances before needling.",
       features: [
         "14-Channel Radial Pulse Mapping",
         "Tongue Topography Analysis",
@@ -40,8 +40,8 @@ export default function ClinicPage({ onOpenBooking }) {
       feeNum: 600,
       image: "authentic_acupuncture_needles.jpg",
       badge: "0.18mm Sterile Single-Use",
-      summary: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along designated meridian points, paired with soothing localized infrared TDP mineral heat.",
-      description: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along designated meridian points, paired with soothing localized infrared TDP mineral heat.",
+      summary: "Gentle insertion of 0.18mm sterile disposable needles along meridian points, paired with soothing TDP mineral heat.",
+      description: "Gentle insertion of 0.18mm sterile disposable needles along meridian points, paired with soothing TDP mineral heat.",
       features: [
         "Ethylene-Oxide Pre-Sterilized Needles",
         "Single-Use Only (Opened at Bedside)",
@@ -60,8 +60,8 @@ export default function ClinicPage({ onOpenBooking }) {
       feeNum: 1800,
       image: "zen_treatment.jpg",
       badge: "Private Acoustic Suite",
-      summary: "Unhurried, strictly confidential psychotherapy in our sound-dampened acoustic room, integrating Cambridge-aligned CBT, REBT, and nervous system regulation.",
-      description: "Unhurried, strictly confidential psychotherapy in our sound-dampened acoustic room, integrating Cambridge-aligned CBT, REBT, and nervous system regulation.",
+      summary: "Confidential psychotherapy in a soundproof acoustic suite, integrating Cambridge-aligned CBT and nervous system regulation.",
+      description: "Confidential psychotherapy in a soundproof acoustic suite, integrating Cambridge-aligned CBT and nervous system regulation.",
       features: [
         "Evidence-Based CBT & REBT Protocols",
         "Private Sound-Dampened Acoustic Suite",
@@ -80,8 +80,8 @@ export default function ClinicPage({ onOpenBooking }) {
       feeNum: 2400,
       image: "acu_treatment1.jpg",
       badge: "Dual Multi-System Synergy",
-      summary: "Our complete holistic treatment combining 40 minutes of cognitive dialogue with immediate full-body meridian acupuncture to dismantle chronic pain-spasm cycles.",
-      description: "Our complete holistic treatment combining 40 minutes of cognitive dialogue with immediate full-body meridian acupuncture to dismantle chronic pain-spasm cycles.",
+      summary: "Comprehensive holistic treatment combining cognitive dialogue with full-body acupuncture to stop chronic pain cycles.",
+      description: "Comprehensive holistic treatment combining cognitive dialogue with full-body acupuncture to stop chronic pain cycles.",
       features: [
         "40 Min Focused Psychotherapy Dialogue",
         "Full-Body Classical Meridian Needling",
@@ -119,7 +119,7 @@ export default function ClinicPage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl"
             >
-              Looking for a certified <strong className="text-ink font-semibold">acupuncture clinic near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture specialist in Chennai</strong>? Arura Wellness Studio offers transparent, accessible <strong className="text-ink font-semibold">acupuncture treatment cost</strong> starting at ₹600 per session with 100% single-use sterile needles in private acoustic suites.
+              Chennai's trusted <strong className="text-ink font-semibold">acupuncture clinic near me</strong> offering transparent <strong className="text-ink font-semibold">acupuncture treatment cost</strong> from ₹600 with 100% single-use sterile needles.
             </motion.p>
           </div>
         </div>
@@ -317,7 +317,7 @@ export default function ClinicPage({ onOpenBooking }) {
                 {CLINIC_INFO.address}
               </h3>
               <p className="text-sm text-neutral-300 font-normal max-w-lg">
-                Daily clinical consultations from 10:00 AM to 8:00 PM. Prior appointment booking required to preserve private acoustic suite confidentiality.
+                Daily consultations from 10:00 AM to 8:00 PM. Prior appointment required to preserve private suite confidentiality.
               </p>
             </div>
 

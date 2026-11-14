@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
             
             <p className="text-base text-gray-300 max-w-md leading-relaxed font-normal">
-              Arura Wellness Studio is Chennai’s trusted <strong className="text-white font-semibold">acupuncture centre</strong> for classical 14-meridian acupuncture treatment and certified psychological counselling. Led by Dr. Nivedha Priyadharshini, MD (Acu).
+              Chennai’s trusted <strong className="text-white font-semibold">acupuncture centre</strong> for 14-meridian treatment and counselling led by Dr. Nivedha Priyadharshini, MD (Acu).
             </p>
 
             <div className="flex items-center space-x-3 pt-2">

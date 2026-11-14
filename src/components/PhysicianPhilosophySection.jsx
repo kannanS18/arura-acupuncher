@@ -85,7 +85,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
           </h2>
 
           <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-            Every clinical session combines gentle 14-meridian point stimulation with unhurried therapeutic listening. Chronic pain and autonomic tension are resolved at their neuro-biological source.
+            Combining gentle 14-meridian point stimulation with unhurried therapeutic listening to resolve pain at its neuro-biological source.
           </p>
         </div>
 

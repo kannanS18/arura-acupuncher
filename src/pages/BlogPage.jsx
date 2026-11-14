@@ -42,7 +42,7 @@ export default function BlogPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl mx-auto">
-            Practical, doctor-authored clinical guides explaining what acupuncture treatment is, how it works beneath the skin, and its proven benefits for chronic back pain, sciatica, migraines, knee osteoarthritis, PCOS, and stress relief.
+            Doctor-authored guides on how acupuncture works beneath the skin and its clinical benefits for back pain, sciatica, migraines, and stress.
           </p>
 
           {/* Search Input */}

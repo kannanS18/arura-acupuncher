@@ -11,7 +11,7 @@ export const SEO_KEYWORD_CLUSTERS = [
     heading: "Acupuncture for Pain Relief & Musculoskeletal Recovery",
     metaTitle: "Acupuncture for Pain Relief | Chronic Back, Knee & Neck Pain Treatment",
     primaryKeyword: "Acupuncture for Pain Relief",
-    summary: "Targeted 14-meridian acupuncture therapy for chronic back pain, knee joint stiffness, frozen shoulder, and cervical spine spasms. Restores mobility naturally without surgical risks or long-term pharmaceutical side effects.",
+    summary: "Targeted 14-meridian acupuncture therapy for chronic back pain, knee stiffness, and neck spasms to restore painless mobility naturally.",
     subKeywords: [
       {
         keyword: "Acupuncture for back pain",
@@ -52,7 +52,7 @@ export const SEO_KEYWORD_CLUSTERS = [
     heading: "Acupuncture for Women's Health, Hormonal Balance & PCOS",
     metaTitle: "Acupuncture for Women's Health | PCOS, Menstrual Pain & Fertility",
     primaryKeyword: "Acupuncture for Women's Health",
-    summary: "Holistic acupuncture therapy regulating the hypothalamic-pituitary-ovarian (HPO) axis. Treats painful menstrual cramps, irregular periods, PCOS, ovarian cysts, and provides natural fertility support.",
+    summary: "Holistic acupuncture regulating the HPO axis to treat menstrual pain, irregular periods, PCOS, and support natural fertility.",
     subKeywords: [
       {
         keyword: "Acupuncture for PCOS",
@@ -89,7 +89,7 @@ export const SEO_KEYWORD_CLUSTERS = [
     heading: "Acupuncture for Neurological Conditions & Nerve Pain",
     metaTitle: "Acupuncture for Neurological Conditions | Migraines, Sciatica & Nerve Pain",
     primaryKeyword: "Acupuncture for Neurological Conditions",
-    summary: "Evidence-based neuro-acupuncture relieving migraine headaches, sharp shooting sciatica, peripheral neuropathy, and facial Bell's palsy by dampening hyperactive neurovascular loops.",
+    summary: "Evidence-based neuro-acupuncture relieving migraines, shooting sciatica, neuropathy, and facial Bell's palsy by dampening hyperactive nerve loops.",
     subKeywords: [
       {
         keyword: "Acupuncture for migraine",
@@ -126,7 +126,7 @@ export const SEO_KEYWORD_CLUSTERS = [
     heading: "Acupuncture for Mental Wellness, Stress Relief & Anxiety",
     metaTitle: "Acupuncture for Mental Wellness | Stress Relief, Anxiety & Sleep Therapy",
     primaryKeyword: "Acupuncture for Mental Wellness",
-    summary: "Synergistic mind-body healing combining classical Shen-calming acupuncture with Cambridge-certified psychotherapy. Regulates vagus nerve tone, lowers cortisol, and cures chronic insomnia.",
+    summary: "Synergistic mind-body healing combining Shen-calming acupuncture with Cambridge psychotherapy to lower cortisol and restore deep sleep.",
     subKeywords: [
       {
         keyword: "Acupuncture for stress relief",

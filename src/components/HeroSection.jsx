@@ -59,7 +59,7 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
           { text: "Chennai", highlight: true },
         ]}
         title="Acupuncture Treatment & Therapy in Chennai: Classical 14-Meridian Pain Relief"
-        subtitle="Chennai's premier acupuncture specialist clinic led by Dr. Nivedha Priyadharshini, MD (Acu). Dedicated 1-on-1 consultations for natural pain relief, chronic back pain, cervical neck stiffness, severe sciatica, and migraine headaches. 0.18mm pre-sterilized single-use needles in private acoustic suites. Affordable clinical care from ₹600."
+        subtitle="Chennai's premier clinic led by Dr. Nivedha Priyadharshini, MD (Acu). Natural pain relief for back pain, neck stiffness, sciatica, and migraines. Private acoustic suites from ₹600."
         callToAction={{
           text: "Book Priority Consultation (₹600)",
           href: "#/booking",

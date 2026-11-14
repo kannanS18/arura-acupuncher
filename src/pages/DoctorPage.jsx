@@ -43,7 +43,7 @@ export default function DoctorPage({ onOpenBooking }) {
               </div>
 
               <p className="text-base sm:text-lg text-white/80 font-normal leading-relaxed max-w-2xl">
-                Recognized as one of the best acupuncture doctors and pain management specialists in Chennai. Over 8 years of dedicated clinical practice integrating classical 14-meridian acupuncture with Cambridge evidence-based psychotherapy. Specialized in natural pain relief for chronic back pain, cervical neck stiffness, sciatica, migraines, and autonomic burnout.
+                Chennai's trusted acupuncture specialist with 8+ years clinical expertise. Integrates 14-meridian acupuncture with Cambridge psychotherapy for chronic pain, sciatica, and migraines.
               </p>
 
               {/* Key Verification Badges in Banner with Animated Counters */}

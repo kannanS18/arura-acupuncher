@@ -85,7 +85,7 @@ export default function CounsellingPage({ onOpenBooking }) {
           { text: "Balance.", highlight: true },
         ]}
         title="A Confidential Sanctuary for Mind, Emotion, and Autonomic Balance."
-        subtitle="Directed by Dr. Nivedha Priyadharshini (Cambridge Intl. Dip. & PG Dip. Counselling Therapy). Evidence-based cognitive and somatic psychotherapy conducted in a private, sound-dampened acoustic room in Virugambakkam, Chennai."
+        subtitle="Directed by Dr. Nivedha Priyadharshini (Cambridge Intl. Dip). Evidence-based psychotherapy in a private soundproof acoustic suite in Chennai."
         callToAction={{
           text: "Book Confidential Session (₹600)",
           href: "#/booking",
