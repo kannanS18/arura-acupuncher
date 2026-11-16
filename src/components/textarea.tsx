@@ -150,7 +150,7 @@ export function Textarea({
   const setRefs = (el: HTMLTextAreaElement | null) => {
     area.current = el;
     if (typeof ref === "function") ref(el);
-    else if (ref) (ref as React.RefObject<HTMLTextAreaElement | null>).current = el;
+    else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
   };
 
   const count = current.length;

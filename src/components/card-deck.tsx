@@ -33,7 +33,7 @@ function DepartingCard({ motion, reduced, children }: { motion: DeckThrow; reduc
     ], { duration: dur, easing: EASE_OUT, fill: 'forwards' });
     return () => animation.cancel();
   }, [motion, reduced]);
-  return <div ref={ref} aria-hidden="true" inert="" className="pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[22px] border border-border bg-card text-card-foreground shadow-xl">{children}</div>;
+  return <div ref={ref} aria-hidden="true" inert={true} className="pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[22px] border border-border bg-card text-card-foreground shadow-xl">{children}</div>;
 }
 
 /** Where a card behind the front one sits: lower and smaller by depth, rising as the front card leaves. */
@@ -118,7 +118,7 @@ export function CardDeck<T extends { id: string }>({ items, renderCard, getLabel
             return (
               <div key={item.id} ref={active ? frontRef : (el) => { if (el) backs.current.set(depth, el); }} tabIndex={active ? 0 : -1} role="group" aria-roledescription="card"
                 aria-label={active ? `${getLabel(item)}, ${index + 1} of ${items.length}. Use Left and Right to browse.` : undefined}
-                aria-hidden={!active || undefined} inert={!active ? "" : undefined} data-deck-active={active || undefined}
+                aria-hidden={!active || undefined} inert={!active || undefined} data-deck-active={active || undefined}
                 onKeyDown={active ? (event) => {
                   if (event.target !== event.currentTarget) return;
                   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); choose(event.key === 'ArrowRight' ? 1 : -1); }

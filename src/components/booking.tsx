@@ -9,6 +9,7 @@ import { StatusButton, type ActionStatus } from "./status-button";
 import { Textarea } from "./textarea";
 import { TextMorph } from "./text-morph";
 import { EASE_THROW, INTERACTION_FOCUS, INTERACTION_PRESS, useInteractionReducedMotion } from "./ui-interaction-motion";
+import { CLINIC_INFO } from "../data/websiteContent";
 
 /* ─────────────────────────────────────────────────────────
  * BOOKING: a time you pick prints onto your ticket
@@ -932,7 +933,7 @@ export function Booking({
                   </div>
 
                   <a
-                    href={`https://wa.me/917358031752?text=${encodeURIComponent(
+                    href={`https://wa.me/${CLINIC_INFO.phoneRaw}?text=${encodeURIComponent(
                       `Hello Dr. Nivedha,\n\nI have scheduled an appointment at Arura Wellness Studio:\n\n` +
                       `• Patient: ${call.name}\n` +
                       `• Service: ${title}\n` +

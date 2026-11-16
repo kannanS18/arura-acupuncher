@@ -69,7 +69,7 @@ export function Faces({
           ref={(el) => {
             refs.current[i] = el;
           }}
-          inert={active !== i ? "" : undefined}
+          inert={active !== i || undefined}
           aria-hidden={active !== i || undefined}
           className={active === i ? "relative" : "pointer-events-none absolute inset-x-0 top-0"}
           style={face(i)}

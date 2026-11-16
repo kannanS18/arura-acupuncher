@@ -89,10 +89,10 @@ h1, h2, h3, h4, .font-display, .font-heading {
 }
 
 /* Strictly 2 Font System:
-   1. Playfair Display: All Headings, Titles, Hero Typography & Display
+   1. Lora: All Headings, Titles, Hero Typography & Display
    2. Plus Jakarta Sans: All Paragraph, Body, Metadata, Badges, Buttons & UI text */
 h1, h2, h3, h4, h5, h6, .font-display, .font-heading, .font-serif, .font-editorial {
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: 'Lora', Georgia, serif !important;
   letter-spacing: -0.015em;
   font-variant-numeric: lining-nums;
 }

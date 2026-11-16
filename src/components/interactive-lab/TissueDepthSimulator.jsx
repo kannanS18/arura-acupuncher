@@ -5,7 +5,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip, { preloadSkinModel } from './SkinLayersPip';
 import { getCachedBodyGltf, preloadAnatomyModels } from './modelCache';
 import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome } from './acupointsData';
-export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
   Maximize2, 
   Minimize2, 
@@ -788,26 +787,6 @@ export default function TissueDepthSimulator({ onOpenBooking, selectedPointCode,
       moxaHoloSpriteRef.current.material.map = new THREE.CanvasTexture(
         createToolDepthBadgeCanvas('moxa', 20, 43.0, false, pt.painName)
       );
-    }
-
-    // Update highlights on Physical 3D Tray
-    const halos = trayHaloMeshesRef.current;
-    if (halos.needle) halos.needle.material.opacity = (toolId === 'needle' ? 0.85 : 0.0);
-    if (halos.cup) halos.cup.material.opacity = (toolId === 'cup' ? 0.85 : 0.0);
-    if (halos.moxa) halos.moxa.material.opacity = (toolId === 'moxa' ? 0.85 : 0.0);
-
-    const labels = trayLabelSpritesRef.current;
-    if (labels.needle) {
-      labels.needle.material.map.image = createTrayToolLabelCanvas('0.18mm Needle', 'Solid Seirin', toolId === 'needle');
-      labels.needle.material.map.needsUpdate = true;
-    }
-    if (labels.cup) {
-      labels.cup.material.map.image = createTrayToolLabelCanvas('Glass Cup', 'Vacuum Fire', toolId === 'cup');
-      labels.cup.material.map.needsUpdate = true;
-    }
-    if (labels.moxa) {
-      labels.moxa.material.map.image = createTrayToolLabelCanvas('Herbal Moxa', 'Warm Artemisia', toolId === 'moxa');
-      labels.moxa.material.map.needsUpdate = true;
     }
   }, []);
 

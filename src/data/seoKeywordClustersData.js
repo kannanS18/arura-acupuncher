@@ -158,36 +158,6 @@ export const SEO_KEYWORD_CLUSTERS = [
   }
 ];
 
-export const LOCAL_SEO_INFO = {
-  city: "Chennai",
-  state: "Tamil Nadu",
-  country: "India",
-  primaryNeighborhood: "Virugambakkam",
-  nearbyAreas: [
-    "Chinmaya Nagar",
-    "Koyambedu",
-    "Vadapalani",
-    "Anna Nagar",
-    "KK Nagar",
-    "Ashok Nagar",
-    "Porur",
-    "Valasaravakkam",
-    "Saligramam",
-    "Arumbakkam"
-  ],
-  keywords: [
-    "Acupuncture treatment in Chennai",
-    "Best acupuncture clinic in Chennai",
-    "Acupuncture specialist in Chennai",
-    "Acupuncture centre in Chennai",
-    "Acupuncture doctor in Chennai",
-    "Acupuncture therapy in Chennai",
-    "Acupuncture for back pain in Chennai",
-    "Affordable acupuncture treatment in Chennai"
-  ],
-  pricingSummary: "Standard Clinical Acupuncture Consultation & Needle Therapy: ₹600 per session. Transparent, accessible, and 100% sterile single-use."
-};
-
 export const LONG_TAIL_FAQS = [
   {
     q: "Best acupuncture treatment for chronic back pain?",

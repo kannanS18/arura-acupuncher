@@ -34,7 +34,7 @@ export interface AnimatedWord {
 }
 
 // Prop types for the HeroSection component
-export interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface HeroSectionProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   logo?: {
     url: string;
     alt: string;
@@ -141,6 +141,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       },
     };
 
+    const { onAnimationStart: _unusedAnim, ...motionProps } = props as any;
+
     return (
       <motion.section
         ref={ref}
@@ -151,7 +153,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        {...props}
+        {...motionProps}
       >
         {/* Ambient subtle glow background */}
         <div 

@@ -104,7 +104,7 @@ export function FaqAccordion({ items, type = "single", defaultOpen = [], classNa
               id={`${key}-a`}
               role="region"
               aria-labelledby={`${key}-q`}
-              inert={!isOpen ? "" : undefined}
+              inert={!isOpen || undefined}
               className="grid"
               style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", transition: reduced ? "none" : `grid-template-rows 460ms ${EASE}` }}
             >

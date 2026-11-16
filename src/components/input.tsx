@@ -77,7 +77,7 @@ export function Input({
   const setRefs = (el: HTMLInputElement | null) => {
     inner.current = el;
     if (typeof ref === "function") ref(el);
-    else if (ref) (ref as React.RefObject<HTMLInputElement | null>).current = el;
+    else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = el;
   };
 
   const describedBy = [hint && !error ? ids.hint : null, error ? ids.error : null].filter(Boolean).join(" ") || undefined;
