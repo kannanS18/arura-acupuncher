@@ -4,7 +4,7 @@
 "use client";
 
 import * as React from "react";
-import { INTERACTION_FOCUS, MATERIAL_RECESS, createSpring, rubberBand, useInteractionReducedMotion, type Spring } from "./ui-interaction-motion";
+import { INTERACTION_FOCUS, MATERIAL_RECESS, createSpring, rubberBand, useInteractionReducedMotion, type Spring } from "../ui-interaction-motion";
 
 /* âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
  * LIQUID TABS: a selection with a little surface tension
