@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import SkinLayersPip, { preloadSkinModel } from './SkinLayersPip';
 import { getCachedBodyGltf, preloadAnatomyModels } from './modelCache';
-import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome, CLINICAL_TOOLS } from './acupointsData';
+import { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS, getAllowedToolsForPoint, getClinicalOutcome } from './acupointsData';
 export { CLINICAL_ACUPOINTS, ACUPOINT_CLOSEUPS };
 import { 
   Maximize2, 

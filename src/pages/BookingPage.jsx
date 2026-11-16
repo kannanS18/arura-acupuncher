@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, MessageCircle, PhoneCall, MapPin, CheckCircle2, Sparkles, Clock } from 'lucide-react';
+import { ShieldCheck, MessageCircle, CheckCircle2, Sparkles, Clock } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Booking } from '../components/booking';
 import { getAssetUrl } from '../utils/assetUrl';

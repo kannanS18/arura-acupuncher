@@ -11,7 +11,7 @@ import {
   Stethoscope,
   Waves
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { getAssetUrl } from '../utils/assetUrl';
 
 // 6 Signature 14-Meridian Clinical Pathways with Dedicated Images, SEO Search Terms, and Plain-English + Technical Breakdown

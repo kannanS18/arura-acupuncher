@@ -6,18 +6,18 @@ import MobileStickyBar from './components/MobileStickyBar';
 import BookingModal from './components/BookingModal';
 import PageTransition from './components/PageTransition';
 
-// Strictly the 6 Dedicated Pages requested by user
+// Dedicated pages strictly matching the Navigation:
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import DoctorPage from './pages/DoctorPage';
-import ClinicPage from './pages/ClinicPage';
+import AboutUsPage from './pages/AboutUsPage';
+import AcupuncturePage from './pages/AcupuncturePage';
+import CounsellingPage from './pages/CounsellingPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import BookingPage from './pages/BookingPage';
-import CounsellingPage from './pages/CounsellingPage';
+import DoctorPage from './pages/DoctorPage';
 
-// Lazy-loaded dedicated 3D interactive science lab (code-split from main bundle)
-const HowAcupunctureWorksPage = React.lazy(() => import('./pages/HowAcupunctureWorksPage'));
+// Lazy-loaded dedicated 3D interactive science lab (matching nav "3D Anatomy")
+const ThreeDAnatomyPage = React.lazy(() => import('./pages/ThreeDAnatomyPage'));
 
 /**
  * Scroll to top on route change
@@ -34,29 +34,28 @@ function ScrollToTop() {
 
 function AppLayout({ onOpenBooking, isBookingOpen, onCloseBooking, selectedService, selectedPrice }) {
   const location = useLocation();
-  const isLabPage = location.pathname.includes('how-acupuncture-works') || location.pathname.includes('3d-lab');
+  const isLabPage = location.pathname.includes('3d-anatomy') || location.pathname.includes('how-acupuncture-works') || location.pathname.includes('3d-lab') || location.pathname.includes('anatomy');
 
   return (
     <div className="min-h-screen bg-white text-[#09090b] flex flex-col font-sans selection:bg-[#e02868] selection:text-white relative">
-      {/* Navigation Bar strictly showing Home, About Us, Doctor, Clinic, Blog, Booking (hidden on dedicated 3D lab) */}
+      {/* Navigation Bar strictly matching the 7 nav destinations (hidden on dedicated 3D lab) */}
       {!isLabPage && <Navbar onOpenBooking={onOpenBooking} />}
 
       {/* Dynamic Multi-Page Router Outlet */}
       <main className="flex-1">
         <PageTransition>
           <Routes>
-            {/* The 6 Core Pages strictly requested */}
+            {/* The 7 Core Navigation Pages strictly matching the Navbar */}
             <Route path="/" element={<HomePage onOpenBooking={onOpenBooking} />} />
-            <Route path="/about" element={<AboutPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/doctor" element={<DoctorPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/clinic" element={<ClinicPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/blog" element={<BlogPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/blog/:id" element={<BlogPostPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/booking" element={<BookingPage onOpenBooking={onOpenBooking} />} />
-
-            {/* Dedicated Fullscreen 3D Science Lab Experience */}
+            <Route path="/about" element={<AboutUsPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/about-us" element={<Navigate to="/about" replace />} />
+            <Route path="/acupuncture" element={<AcupuncturePage onOpenBooking={onOpenBooking} />} />
+            <Route path="/clinic" element={<Navigate to="/acupuncture" replace />} />
+            <Route path="/counselling" element={<CounsellingPage onOpenBooking={onOpenBooking} />} />
+            
+            {/* Dedicated Fullscreen 3D Science Lab Experience (Navbar "3D Anatomy") */}
             <Route 
-              path="/how-acupuncture-works" 
+              path="/3d-anatomy" 
               element={
                 <React.Suspense fallback={
                   <div className="h-screen w-full flex items-center justify-center bg-white">
@@ -66,17 +65,25 @@ function AppLayout({ onOpenBooking, isBookingOpen, onCloseBooking, selectedServi
                     </div>
                   </div>
                 }>
-                  <HowAcupunctureWorksPage onOpenBooking={onOpenBooking} />
+                  <ThreeDAnatomyPage onOpenBooking={onOpenBooking} />
                 </React.Suspense>
               } 
             />
-            <Route path="/counselling" element={<CounsellingPage onOpenBooking={onOpenBooking} />} />
-            <Route path="/acupuncture" element={<Navigate to="/clinic" replace />} />
-            <Route path="/3d-lab" element={<Navigate to="/how-acupuncture-works" replace />} />
-            <Route path="/anatomy" element={<Navigate to="/how-acupuncture-works" replace />} />
-            <Route path="/3d-anatomy" element={<Navigate to="/how-acupuncture-works" replace />} />
-            <Route path="/safety" element={<Navigate to="/clinic" replace />} />
-            <Route path="/faqs" element={<Navigate to="/clinic" replace />} />
+            <Route path="/how-acupuncture-works" element={<Navigate to="/3d-anatomy" replace />} />
+            <Route path="/3d-lab" element={<Navigate to="/3d-anatomy" replace />} />
+            <Route path="/anatomy" element={<Navigate to="/3d-anatomy" replace />} />
+
+            <Route path="/blog" element={<BlogPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/blog/:id" element={<BlogPostPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/booking" element={<BookingPage onOpenBooking={onOpenBooking} />} />
+            <Route path="/doctor" element={<DoctorPage onOpenBooking={onOpenBooking} />} />
+
+            {/* Backwards compatibility redirects */}
+            <Route path="/safety" element={<Navigate to="/acupuncture" replace />} />
+            <Route path="/faqs" element={<Navigate to="/acupuncture" replace />} />
+            <Route path="/pricing" element={<Navigate to="/acupuncture" replace />} />
+            <Route path="/disorders" element={<Navigate to="/about" replace />} />
+            <Route path="/therapist" element={<Navigate to="/about" replace />} />
             <Route path="/contact" element={<Navigate to="/booking" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

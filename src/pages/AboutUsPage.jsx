@@ -1,15 +1,13 @@
 import React from 'react';
-import { ShieldCheck, CheckCircle2, ArrowRight, Activity, Brain, Zap, Sun } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
-import { StatsBand } from '../components/stats-band';
 import ClinicalIntakeManifesto from '../components/ClinicalIntakeManifesto';
 import ClinicalModalitiesSection from '../components/ClinicalModalitiesSection';
 import DoctorIdCard from '../components/DoctorIdCard';
 
-export default function AboutPage({ onOpenBooking }) {
+export default function AboutUsPage({ onOpenBooking }) {
   const clinicalTechniques = [
     {
       num: "01",

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Award, GraduationCap, ShieldCheck, ArrowRight, CheckCircle2, Stethoscope, HeartPulse } from 'lucide-react';
+import { ShieldCheck, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getAssetUrl } from '../utils/assetUrl';
 import { motion } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
 import DoctorIdCard from '../components/DoctorIdCard';

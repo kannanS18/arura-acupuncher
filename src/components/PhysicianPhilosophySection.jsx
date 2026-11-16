@@ -279,7 +279,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
             {/* Bottom Actions */}
             <div className="pt-6 mt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <Link
-                to="/clinic"
+                to="/acupuncture"
                 className="text-sm text-neutral-600 hover:text-neutral-900 font-semibold inline-flex items-center gap-1.5 transition-colors"
               >
                 <span>Full sanctuary guidelines & clinic facilities</span>

@@ -28,7 +28,7 @@ const CLINICAL_CONDITIONS = [
   { code: 'BL-23', label: 'Lumbar Strain' }
 ];
 
-export default function HowAcupunctureWorksPage({ onOpenBooking }) {
+export default function ThreeDAnatomyPage({ onOpenBooking }) {
   // 3-Stage Storyboard: 1 = Macro Body, 2 = Neural Science, 3 = Micro Tissue Strata
   const [currentStage, setCurrentStage] = useState(1);
   const [selectedPointCode, setSelectedPointCode] = useState('GV-20');

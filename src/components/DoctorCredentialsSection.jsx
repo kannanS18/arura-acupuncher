@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ShieldCheck, ExternalLink } from 'lucide-react';
 
 const credentials = [
   {

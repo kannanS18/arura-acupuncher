@@ -109,8 +109,6 @@ export function FeatureTabs({
 
   const [leaving, setLeaving] = React.useState<Leaving[]>([]);
   const [dir, setDir] = React.useState(0);
-  const [cycle, setCycle] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
   const [line, setLine] = React.useState({ left: 0, width: 0, ready: false });
   const [height, setHeight] = React.useState<number | null>(null);
   const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
@@ -123,7 +121,6 @@ export function FeatureTabs({
   const select = (next: number, focus = false) => {
     const tab = tabs[(next + tabs.length) % tabs.length];
     if (!tab) return;
-    setCycle((c) => c + 1);
     if (tab.id === active) return;
     const nextIndex = tabs.indexOf(tab);
     setDir(Math.sign(nextIndex - index) || 1);
@@ -177,16 +174,11 @@ export function FeatureTabs({
     select(moves[e.key], true);
   };
 
-  const playing = Boolean(autoplay) && !reduced && !paused;
   const current = tabs[index];
 
   return (
     <div
       className={`w-full ${className}`}
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setPaused(false)}
       {...props}
     >
       <div

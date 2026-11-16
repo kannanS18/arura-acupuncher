@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Activity, 
   Heart, 
@@ -16,7 +16,7 @@ import {
   Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { SEO_KEYWORD_CLUSTERS, LOCAL_SEO_INFO } from '../data/seoKeywordClustersData';
+import { SEO_KEYWORD_CLUSTERS } from '../data/seoKeywordClustersData';
 
 const ICONS = {
   'pain-relief': Activity,

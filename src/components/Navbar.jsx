@@ -11,13 +11,13 @@ export default function Navbar({ onOpenBooking }) {
   const navigate = useNavigate();
 
   // Exactly the essential clinic navigation destinations in user-requested order:
-  // Home, About Us, Acupuncture (formerly Clinic), Counselling, 3D Anatomy, Blog, Booking
+  // Home, About Us, Acupuncture, Counselling, 3D Anatomy, Blog, Booking
   const navTabs = [
     { value: '/', label: 'Home', href: '#/' },
     { value: '/about', label: 'About Us', href: '#/about' },
-    { value: '/clinic', label: 'Acupuncture', href: '#/clinic' },
+    { value: '/acupuncture', label: 'Acupuncture', href: '#/acupuncture' },
     { value: '/counselling', label: 'Counselling', href: '#/counselling' },
-    { value: '/how-acupuncture-works', label: '3D Anatomy', href: '#/how-acupuncture-works' },
+    { value: '/3d-anatomy', label: '3D Anatomy', href: '#/3d-anatomy' },
     { value: '/blog', label: 'Blog', href: '#/blog' },
     { value: '/booking', label: 'Booking', href: '#/booking' },
   ];
@@ -26,11 +26,11 @@ export default function Navbar({ onOpenBooking }) {
   const getActiveTab = () => {
     const path = location.pathname;
     if (path === '/' || path === '') return '/';
-    if (path.startsWith('/about') || path === '/disorders') return '/about';
+    if (path.startsWith('/about') || path.startsWith('/about-us') || path === '/disorders') return '/about';
     if (path.startsWith('/doctor') || path === '/therapist') return '/about';
-    if (path.startsWith('/clinic') || path.startsWith('/acupuncture') || path === '/pricing' || path === '/safety' || path === '/faqs') return '/clinic';
+    if (path.startsWith('/acupuncture') || path.startsWith('/clinic') || path === '/pricing' || path === '/safety' || path === '/faqs') return '/acupuncture';
     if (path.startsWith('/counselling')) return '/counselling';
-    if (path.startsWith('/how-acupuncture-works') || path.startsWith('/3d-lab') || path.startsWith('/anatomy') || path.startsWith('/3d-anatomy')) return '/how-acupuncture-works';
+    if (path.startsWith('/3d-anatomy') || path.startsWith('/how-acupuncture-works') || path.startsWith('/3d-lab') || path.startsWith('/anatomy')) return '/3d-anatomy';
     if (path.startsWith('/blog')) return '/blog';
     if (path.startsWith('/booking') || path === '/contact') return '/booking';
     return '/';
@@ -184,7 +184,7 @@ export default function Navbar({ onOpenBooking }) {
           <div className="flex flex-col space-y-1 text-base font-semibold text-gray-800">
             {navTabs.map((tab) => {
               const isActive = activeTab === tab.value;
-              const is3D = tab.value === '/how-acupuncture-works';
+              const is3D = tab.value === '/3d-anatomy';
               return (
                 <NavLink
                   key={tab.value}

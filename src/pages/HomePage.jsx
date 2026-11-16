@@ -3,14 +3,12 @@ import HeroSection from '../components/HeroSection';
 import InteractiveMeridianExplorer from '../components/InteractiveMeridianExplorer';
 import ClinicalKeywordClustersSection from '../components/ClinicalKeywordClustersSection';
 import PhysicianPhilosophySection from '../components/PhysicianPhilosophySection';
-import { ArrowRight, CheckCircle2, Activity, Heart, Brain, Sparkles, CalendarCheck, ShieldCheck, MapPin, HelpCircle, PhoneCall } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Brain, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getAssetUrl } from '../utils/assetUrl';
 import AnimatedCounter from '../components/AnimatedCounter';
 import { Testimonials } from '../components/testimonials';
 import { COUNSELLING_CATEGORIES } from '../data/counsellingServicesData';
-import { LONG_TAIL_FAQS, LOCAL_SEO_INFO } from '../data/seoKeywordClustersData';
-import { CLINIC_INFO } from '../data/websiteContent';
+import { LONG_TAIL_FAQS } from '../data/seoKeywordClustersData';
 
 export default function HomePage({ onOpenBooking }) {
   return (
@@ -194,7 +192,7 @@ export default function HomePage({ onOpenBooking }) {
             </div>
 
             <Link
-              to="/clinic"
+              to="/acupuncture"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold bg-neutral-900 text-white hover:bg-neutral-800 transition-all shadow-sm shrink-0"
             >
               <span>View Clinic Tariff & FAQs</span>

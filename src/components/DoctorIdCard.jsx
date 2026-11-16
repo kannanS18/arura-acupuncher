@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, CheckCircle2, QrCode, Sparkles, Building2, Award, Calendar } from 'lucide-react';
+import { CheckCircle2, Sparkles } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetUrl';
 
 export default function DoctorIdCard() {

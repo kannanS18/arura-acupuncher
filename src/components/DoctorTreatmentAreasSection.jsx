@@ -172,7 +172,7 @@ export default function DoctorTreatmentAreasSection({ onOpenBooking }) {
                   </div>
 
                   <Link
-                    to="/clinic"
+                    to="/acupuncture"
                     className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 border border-neutral-200/80 transition-colors flex items-center justify-between"
                   >
                     <span>View Treatment Details & Protocols</span>

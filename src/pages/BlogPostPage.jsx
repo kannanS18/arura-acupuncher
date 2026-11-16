@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, CheckCircle2, ShieldCheck, ArrowRight, Share2, BookOpen } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, CheckCircle2, ArrowRight, BookOpen } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogData';
-import { CLINIC_INFO } from '../data/websiteContent';
 
 export default function BlogPostPage({ onOpenBooking }) {
   const { id } = useParams();
@@ -165,7 +164,7 @@ export default function BlogPostPage({ onOpenBooking }) {
             </Link>
 
             <Link
-              to="/clinic"
+              to="/acupuncture"
               className="text-xs font-semibold text-brand hover:underline"
             >
               View clinical tariff & modalities

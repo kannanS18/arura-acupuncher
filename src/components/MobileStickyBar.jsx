@@ -46,9 +46,9 @@ export default function MobileStickyBar() {
 
         {/* 4. Acupuncture Modalities & Tariff */}
         <Link 
-          to="/clinic"
+          to="/acupuncture"
           className={`flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] transition-colors duration-200 motion-safe:active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
-            location.pathname === '/clinic' ? 'text-brand font-bold' : 'text-gray-700 hover:text-brand'
+            location.pathname === '/acupuncture' || location.pathname === '/clinic' ? 'text-brand font-bold' : 'text-gray-700 hover:text-brand'
           }`}
           title="Acupuncture Modalities & Fees"
         >

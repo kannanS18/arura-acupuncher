@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { X, ShieldCheck, MessageCircle, PhoneCall } from 'lucide-react';
+import { X, ShieldCheck, MessageCircle } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { Booking } from './booking';
 import { getAssetUrl } from '../utils/assetUrl';

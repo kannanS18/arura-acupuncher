@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, BookOpen, Search, Calendar, User, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Clock, BookOpen, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../data/blogData';
 

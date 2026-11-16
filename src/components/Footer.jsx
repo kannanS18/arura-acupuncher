@@ -66,9 +66,9 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-gray-300 font-normal">
               <li><Link to="/" className="hover:text-brand transition-colors">Home</Link></li>
               <li><Link to="/about" className="hover:text-brand transition-colors">About Us</Link></li>
-              <li><Link to="/clinic" className="hover:text-brand transition-colors">Acupuncture (Tariff & Protocols)</Link></li>
+              <li><Link to="/acupuncture" className="hover:text-brand transition-colors">Acupuncture (Tariff & Protocols)</Link></li>
               <li><Link to="/counselling" className="hover:text-brand transition-colors">Counselling (15 Modalities)</Link></li>
-              <li><Link to="/how-acupuncture-works" className="hover:text-brand transition-colors">3D Anatomy Lab</Link></li>
+              <li><Link to="/3d-anatomy" className="hover:text-brand transition-colors">3D Anatomy Lab</Link></li>
               <li><Link to="/blog" className="hover:text-brand transition-colors">Clinical Blog</Link></li>
               <li><Link to="/booking" className="hover:text-brand transition-colors">Booking & Appointments</Link></li>
             </ul>

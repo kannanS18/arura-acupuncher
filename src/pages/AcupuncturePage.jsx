@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, MapPin, PhoneCall, HeartPulse, Stethoscope, Droplets, Smile } from 'lucide-react';
+import { Clock, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 import { CLINIC_INFO, DOS_DONTS } from '../data/websiteContent';
 import { Link } from 'react-router-dom';
 import { getAssetUrl } from '../utils/assetUrl';
@@ -8,7 +8,7 @@ import StackedCards from '../components/ui/glass-cards';
 import { CardDeck } from '../components/card-deck';
 import FaqSection from '../components/FaqSection';
 
-export default function ClinicPage({ onOpenBooking }) {
+export default function AcupuncturePage({ onOpenBooking }) {
   const clinicalTreatments = [
     {
       id: "1",
