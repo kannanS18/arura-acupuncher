@@ -127,23 +127,21 @@ export default function Navbar({ onOpenBooking }) {
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+        <div className="flex items-center justify-between h-20 gap-8">
           
-          {/* Logo (Left Anchor) */}
-          <div className="flex-shrink-0 lg:w-48 flex items-center">
-            <Link to="/" className="flex items-center space-x-3 group">
-              <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-brand transition-colors shadow-xs">
-                <img 
-                  src={getAssetUrl('logo.png')} 
-                  alt="Arura Wellness Studio" 
-                  className="h-10 sm:h-11 w-auto object-contain" 
-                />
-              </div>
-            </Link>
-          </div>
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3 flex-shrink-0 group">
+            <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-brand transition-colors shadow-xs">
+              <img 
+                src={getAssetUrl('logo.png')} 
+                alt="Arura Wellness Studio" 
+                className="h-10 sm:h-11 w-auto object-contain" 
+              />
+            </div>
+          </Link>
 
-          {/* Desktop Navigation with Hairline Liquid Tabs (True Center) */}
-          <nav className="hidden lg:flex items-center justify-center flex-1">
+          {/* Desktop Navigation with Hairline Liquid Tabs */}
+          <nav className="hidden lg:flex items-center justify-center">
             <LiquidTabs
               tabs={navTabs}
               value={activeTab}
@@ -155,9 +153,6 @@ export default function Navbar({ onOpenBooking }) {
               className="bg-slate-100/90 border border-slate-200/90 shadow-[inset_0_1px_2.5px_rgba(0,0,0,0.06)]"
             />
           </nav>
-
-          {/* Desktop Right Anchor Spacer (ensures true mathematical center equilibrium) */}
-          <div className="hidden lg:flex lg:w-48 justify-end" aria-hidden="true" />
 
           {/* Mobile Menu Toggle */}
           <div className="lg:hidden flex items-center">
