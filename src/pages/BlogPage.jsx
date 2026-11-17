@@ -29,7 +29,7 @@ export default function BlogPage() {
     <div className="bg-white text-ink min-h-screen">
       
       {/* Blog Hero: Clean, Centered Editorial Journal Header */}
-      <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
+      <section className="pt-6 sm:pt-8 pb-10 sm:pb-12 bg-surface-subtle border-b border-gray-200 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
             <BookOpen className="w-3.5 h-3.5" />

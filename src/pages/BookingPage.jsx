@@ -136,7 +136,7 @@ export default function BookingPage() {
     <div className="bg-white text-ink min-h-screen">
       
       {/* Header Banner */}
-      <section className="pt-20 pb-14 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
+      <section className="pt-6 sm:pt-8 pb-10 sm:pb-12 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial={{ opacity: 0.95 }}

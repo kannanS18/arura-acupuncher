@@ -96,7 +96,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
     <div className="bg-white text-ink min-h-screen">
       
       {/* 1. Dignified Medical Header Banner */}
-      <section className="pt-20 pb-16 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
+      <section className="pt-6 sm:pt-8 pb-12 sm:pb-14 bg-surface-subtle border-b border-gray-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
             <ShieldCheck className="w-3.5 h-3.5" />

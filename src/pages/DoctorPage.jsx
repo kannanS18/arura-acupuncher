@@ -13,10 +13,10 @@ export default function DoctorPage({ onOpenBooking }) {
     <div className="bg-white text-ink min-h-screen">
       
       {/* 1. Doctor Profile Hero Banner */}
-      <section className="relative bg-ink text-white pt-20 pb-20 lg:pt-28 lg:pb-24 border-b border-white/10 overflow-hidden">
+      <section className="relative bg-ink text-white pt-8 sm:pt-10 pb-14 lg:pt-12 lg:pb-16 border-b border-white/10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             
             {/* Left Column: Doctor Identity & Narrative */}
             <motion.div 

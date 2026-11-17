@@ -16,7 +16,7 @@ export default function DoctorIdCard() {
   };
 
   return (
-    <div className="w-full flex justify-center py-4">
+    <div className="w-full flex justify-center pt-0 pb-2">
       {/* 3D Perspective Card Container */}
       <motion.div
         className="w-full max-w-sm sm:max-w-md perspective-1000 cursor-pointer select-none"
