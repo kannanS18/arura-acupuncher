@@ -115,7 +115,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Do you offer home visits or house visits?",
-    a: "No, we do not provide house visits or home visits. All consultations, classical 14-meridian pulse diagnostics, and acupuncture treatments are conducted strictly in-clinic at our private clinical sanctuary (Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092). This ensures strict hospital-grade sterility, single-use disposable needles opened at bedside, calibrated TDP infrared mineral heat lamps, and a quiet, sound-insulated acoustic suite.",
+    a: "No, we do not provide house visits or home visits. All consultations, classical 14-meridian pulse diagnostics, and acupuncture treatments are conducted strictly in-clinic at our private clinical sanctuary (Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092). This ensures strict hospital-grade sterility, single-use disposable needles opened at bedside, calibrated TDP infrared mineral heat lamps, and a quiet, soundproof treatment room.",
     category: "acupuncture"
   },
   {
@@ -125,7 +125,7 @@ export const FAQS_DATA = [
   },
   {
     q: "What are the payment terms and refund policy for counselling?",
-    a: "Consultation and therapy booking slots are confirmed via advance payment or UPI to secure dedicated time in the acoustic suite. There is no refund or cancellation policy for confirmed reserved bookings.",
+    a: "Consultation and therapy booking slots are confirmed via advance payment or UPI to secure dedicated time in the private suite. There is no refund or cancellation policy for confirmed reserved bookings.",
     category: "counselling"
   },
   {

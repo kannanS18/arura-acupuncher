@@ -72,15 +72,15 @@ export const cardData: TreatmentCardItem[] = [
     code: "03 / 04",
     title: "Clinical Psychotherapy Session",
     subtitle: "Cognitive & Emotional Equilibrium",
-    description: "Unhurried, strictly confidential psychotherapy in our private acoustic room, integrating evidence-based CBT, REBT, and autonomic de-escalation.",
+    description: "Unhurried, strictly confidential psychotherapy in a private, quiet room, integrating evidence-based CBT, REBT, and autonomic de-escalation.",
     duration: "50 mins",
     fee: "₹1,800",
     feeNum: 1800,
     image: "zen_treatment.jpg",
-    badge: "Private Acoustic Suite",
+    badge: "Private Therapy Room",
     features: [
       "Evidence-Based CBT & REBT Protocols",
-      "Private Sound-Dampened Acoustic Suite",
+      "Private Soundproof Therapy Room",
       "Somatic Autonomic De-escalation",
       "100% Strict Confidential Medical Ethics"
     ],

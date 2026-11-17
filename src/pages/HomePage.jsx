@@ -47,7 +47,7 @@ export default function HomePage({ onOpenBooking }) {
                 15 Specialized Psychological Disciplines
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                Comprehensive adolescent, marriage, and burnout guidance led by Ms. Nivedha Priyadarshini in soundproof acoustic suites.
+                Comprehensive adolescent, marriage, and burnout guidance led by Ms. Nivedha Priyadarshini in peaceful, private rooms.
               </p>
             </div>
 
@@ -293,7 +293,7 @@ export default function HomePage({ onOpenBooking }) {
                 Begin Your Journey to Root Recovery Today
               </h2>
               <p className="text-base sm:text-lg text-neutral-300 max-w-xl mx-auto font-normal leading-relaxed">
-                Private consultations in acoustic suites at Virugambakkam, Chennai. Open daily 10:00 AM to 8:00 PM.
+                Private 1-on-1 consultations in peaceful, quiet clinic rooms at Virugambakkam, Chennai. Open daily 10:00 AM to 8:00 PM.
               </p>
             </div>
 

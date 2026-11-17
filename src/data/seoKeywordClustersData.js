@@ -146,7 +146,7 @@ export const SEO_KEYWORD_CLUSTERS = [
       },
       {
         keyword: "Acupuncture for relaxation",
-        description: "Releases systemic endorphins during 20-minute quiet needle retention in our soundproof acoustic suites."
+        description: "Releases systemic endorphins during 20-minute quiet needle retention in our soundproof treatment rooms."
       },
       {
         keyword: "Acupuncture for mental wellness",
@@ -185,7 +185,7 @@ export const LONG_TAIL_FAQS = [
   },
   {
     q: "Best acupuncture specialist for pain management in Chennai?",
-    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with counselling and psychotherapy in private, soundproof acoustic suites."
+    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with counselling and psychotherapy in private, quiet clinic rooms."
   },
   {
     q: "Is acupuncture effective for sciatica pain?",

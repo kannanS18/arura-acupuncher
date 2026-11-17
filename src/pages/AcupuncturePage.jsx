@@ -59,12 +59,12 @@ export default function AcupuncturePage({ onOpenBooking }) {
       fee: "₹1,800",
       feeNum: 1800,
       image: "zen_treatment.jpg",
-      badge: "Private Acoustic Suite",
-      summary: "Confidential psychotherapy in a soundproof acoustic suite, integrating evidence-based CBT and nervous system regulation.",
-      description: "Confidential psychotherapy in a soundproof acoustic suite, integrating evidence-based CBT and nervous system regulation.",
+      badge: "Private Therapy Room",
+      summary: "Confidential psychotherapy in a quiet, private room, integrating evidence-based CBT and nervous system regulation.",
+      description: "Confidential psychotherapy in a quiet, private room, integrating evidence-based CBT and nervous system regulation.",
       features: [
         "Evidence-Based CBT & REBT Protocols",
-        "Private Sound-Dampened Acoustic Suite",
+        "Private Soundproof Therapy Room",
         "Somatic Autonomic De-escalation",
         "100% Strict Confidential Medical Ethics"
       ],

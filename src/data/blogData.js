@@ -227,7 +227,7 @@ export const BLOG_POSTS = [
       },
       {
         heading: "3. What Happens During an Acupuncture Session?",
-        body: "Your first visit starts with a 15-minute diagnostic intake checking 14 radial pulse points and examining tongue topography. You then lie down in a private, soundproof acoustic suite while 6 to 18 micro-fine needles are gently placed. You rest comfortably for 20 minutes with soothing far-infrared TDP mineral warmth, during which most patients enter a peaceful, rejuvenating meditative state."
+        body: "Your first visit starts with a 15-minute diagnostic intake checking 14 radial pulse points and examining tongue topography. You then lie down in a private, quiet treatment room while 6 to 18 micro-fine needles are gently placed. You rest comfortably for 20 minutes with soothing far-infrared TDP mineral warmth, during which most patients enter a peaceful, rejuvenating meditative state."
       },
       {
         heading: "4. How Many Acupuncture Sessions Are Needed?",
@@ -333,7 +333,7 @@ export const BLOG_POSTS = [
     takeaways: [
       "Clinically effective complementary therapy for PCOS, irregular cycles, and menstrual cramps.",
       "Regulates pelvic blood flow and reduces inflammatory prostaglandins (PGF2α).",
-      "Conducted in strictly private, dignified acoustic suites in Chennai."
+      "Conducted in strictly private, dignified clinic rooms in Chennai."
     ]
   }
 ];

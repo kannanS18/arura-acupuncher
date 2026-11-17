@@ -85,21 +85,21 @@ export default function CounsellingPage({ onOpenBooking }) {
           { text: "Balance.", highlight: true },
         ]}
         title="A Confidential Sanctuary for Mind, Emotion, and Autonomic Balance."
-        subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private soundproof acoustic suite in Chennai."
+        subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private, quiet therapy room in Chennai."
         callToAction={{
           text: "Book Confidential Session (₹1,800)",
           href: "#/booking",
           onClick: () => handleBooking('Psychological Counselling Initial Session')
         }}
         secondaryAction={{
-          text: "100% Private Acoustic Suite",
+          text: "100% Private, Quiet Room",
           href: "#/clinic",
           icon: <Lock className="h-4 w-4 text-emerald-600 shrink-0" />
         }}
         backgroundImage={getAssetUrl('clinic_interior.jpg')}
         floatingBadge={{
           title: "100% Strict Clinical Privacy",
-          subtitle: "Virugambakkam Acoustic Room · ₹1,800 / 50 Mins"
+          subtitle: "Virugambakkam Private Room · ₹1,800 / 50 Mins"
         }}
         contactInfo={{
           website: "15 Disciplines · 213 Protocols",

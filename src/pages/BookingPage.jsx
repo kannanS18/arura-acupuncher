@@ -32,7 +32,7 @@ export default function BookingPage() {
       duration: 50,
       durationText: '50 mins (Weekly Limit: 20 Sessions)',
       paymentTerm: 'Payable at clinic during visit',
-      desc: 'Confidential CBT, REBT & Gestalt therapy in private acoustic suite with Ms. Nivedha Priyadarshini.'
+      desc: 'Confidential CBT, REBT & Gestalt therapy in a private, quiet room with Ms. Nivedha Priyadarshini.'
     },
     {
       id: 'dual',

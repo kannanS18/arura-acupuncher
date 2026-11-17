@@ -142,7 +142,7 @@ export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
                 <span>Frequently Treated Conditions in This Cluster:</span>
               </div>
               <span className="text-xs sm:text-sm text-[#ed3373] font-mono font-semibold">
-                Chennai Sanctuary • Private Acoustic Suites
+                Chennai Sanctuary • Private Clinic Rooms
               </span>
             </div>
 
