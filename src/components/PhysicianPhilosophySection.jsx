@@ -20,29 +20,38 @@ import AnimatedCounter from './AnimatedCounter';
 const TARIFF_ITEMS = [
   {
     id: 'pulse',
-    title: 'Diagnostic Pulse Evaluation',
+    title: 'Diagnostic Consultation & Pulse Assessment',
     subtitle: 'Unhurried 14-meridian radial pulse reading & comprehensive medical history',
-    fee: '₹600',
-    duration: '15–20 Mins',
+    fee: '₹500',
+    duration: '20 Mins',
     icon: Activity,
     highlight: false
   },
   {
     id: 'acu',
-    title: 'Classical Acupuncture Session',
+    title: 'Targeted Acupuncture Therapy',
     subtitle: 'Millimeter-precise point stimulation & localized TDP mineral infrared warmth',
     fee: '₹600',
-    duration: '45 Mins',
+    duration: '25–30 Mins',
     icon: Sparkles,
     highlight: true
   },
   {
     id: 'counsel',
-    title: 'Psychological Counselling Session',
+    title: 'Clinical Psychotherapy & Counselling',
     subtitle: 'Certified CBT, REBT & trauma-informed active listening in soundproof suites',
-    fee: '₹600',
-    duration: '45–60 Mins',
+    fee: '₹1,800',
+    duration: '50 Mins',
     icon: Heart,
+    highlight: false
+  },
+  {
+    id: 'dual',
+    title: 'Full Body & Mind Dual Therapy',
+    subtitle: 'Comprehensive acupuncture needling combined with focused cognitive psychotherapy',
+    fee: '₹2,400',
+    duration: '75–90 Mins',
+    icon: Sparkles,
     highlight: false
   },
   {
@@ -208,7 +217,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 </div>
 
                 <span className="font-mono text-sm font-bold text-[#ed3373] bg-pink-50 border border-pink-200 px-3.5 py-1.5 rounded-full">
-                  ₹600 Flat
+                  From ₹500
                 </span>
               </div>
 
@@ -290,13 +299,13 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 type="button"
                 onClick={() => {
                   if (onOpenBooking) {
-                    onOpenBooking('Clinical Consultation & Evaluation', 600);
+                    onOpenBooking('Clinical Consultation & Evaluation', 500);
                   }
                 }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-sm font-bold bg-[#ed3373] text-white hover:bg-[#d92662] transition-all duration-200 shadow-md shadow-pink-500/20 hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
               >
                 <CalendarCheck className="w-4 h-4" />
-                <span>Book Priority Consultation (₹600)</span>
+                <span>Book Priority Consultation (₹500)</span>
               </button>
             </div>
 

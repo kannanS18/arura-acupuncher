@@ -35,7 +35,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Directly downregulates the hyperactive trigeminovascular sensory loop, decreasing neurogenic CGRP release and stopping cranial arterial spasm at the root.',
     spec: '0.18mm hair-thin calming needles · Shallow sensory de-afferentation',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'GV-20', name: 'Baihui', role: 'Calms intracranial cranial tension & nervous Shen' },
@@ -75,7 +75,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Decompresses pinched C5–C7 cervical nerve roots, discharges deep myofascial trigger nodes in the trapezius, and relieves radiating arm tingling without surgical intervention.',
     spec: 'Trapezius myofascial release paired with localized TDP mineral infrared warmth',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'GB-21', name: 'Jianjing', role: 'Master release of chronic upper trapezius knotting' },
@@ -115,7 +115,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Stimulates the afferent vagus nerve (CN X) to trigger central acetylcholine release, shifting heart rate variability (HRV) from chronic sympathetic fight-or-flight into parasympathetic calm.',
     spec: 'Gentle non-invasive sternal & median nerve acupuncture paired with integrative psychotherapy',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'PC-6', name: 'Neiguan', role: 'Vagus nerve cardiac soothing & anti-panic stabilization' },
@@ -154,7 +154,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Harmonizes the gut-brain axis through the dorsal vagal complex, balancing gastric acid secretions, improving mucosal perfusion, and normalizing smooth bowel motility.',
     spec: 'Enteric nervous system harmonization paired with gentle micro-thermal moxibustion',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'ST-36', name: 'Zusanli', role: 'Master gastrointestinal motility & gut mucosal barrier' },
@@ -193,7 +193,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Modulates the hypothalamic-pituitary-ovarian (HPO) axis while enhancing micro-pelvic perfusion to relieve dysmenorrhea spasms and restore predictable menstrual rhythms.',
     spec: 'Hypogastric neuro-vascular needling with targeted restorative thermal warmth',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'SP-6', name: 'Sanyinjiao', role: 'Master crossing of Spleen, Liver & Kidney meridians' },
@@ -232,7 +232,7 @@ const PATHWAYS = [
     ],
     technicalMechanism: 'Releases chronic spasm in the piriformis and paraspinal muscles, un-clamping the sciatic nerve sheath and restoring pain-free spinal flexion and gait mechanics.',
     spec: 'Precision deep-fascial needle guidance & non-convulsive micro-current wave therapy',
-    duration: '45–60 Mins',
+    duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [
       { code: 'GB-30', name: 'Huantiao', role: 'Un-pinches sciatic nerve at the piriformis notch' },

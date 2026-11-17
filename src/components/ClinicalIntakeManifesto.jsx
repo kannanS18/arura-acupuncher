@@ -22,7 +22,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       id: "01",
       number: "01",
       title: "Pulse & Somatic Diagnostic Intake",
-      duration: "15–20 Mins",
+      duration: "20 Mins",
       eyebrow: "STAGE 01 · RADIAL EXAMINATION",
       summary: "Before any needle is placed, Ms. Nivedha Priyadarshini palpates 14 radial pulse positions across both wrists at three distinct depths to map exact internal meridian blockages.",
       details: [
@@ -48,7 +48,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       id: "02",
       number: "02",
       title: "Micro-Needle Biological Stimulation",
-      duration: "20–30 Mins",
+      duration: "25–30 Mins",
       eyebrow: "STAGE 02 · MERIDIAN ACTIVATION",
       summary: "Using microscopic 0.18mm sterile surgical steel (4.5× finer than medical syringes), targeted meridian points are gently stimulated without sharp pain.",
       details: [

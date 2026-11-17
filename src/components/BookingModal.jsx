@@ -7,8 +7,12 @@ import { getAssetUrl } from '../utils/assetUrl';
 export default function BookingModal({ isOpen, onClose, preselectedService, preselectedPrice }) {
   if (!isOpen) return null;
 
-  const serviceTitle = preselectedService || 'Diagnostic Clinical Consultation (₹600)';
-  const serviceDuration = serviceTitle.includes('Psychotherapy') ? 50 : serviceTitle.includes('Dual') ? 90 : 45;
+  const serviceTitle = preselectedService || 'Clinical Consultation & Pulse Assessment (₹500)';
+  const serviceDuration = 
+    serviceTitle.toLowerCase().includes('counsel') || serviceTitle.toLowerCase().includes('psychotherapy') ? 50 :
+    serviceTitle.toLowerCase().includes('dual') || serviceTitle.toLowerCase().includes('mind') || serviceTitle.toLowerCase().includes('full body') ? 90 :
+    serviceTitle.toLowerCase().includes('acupuncture') ? 30 :
+    20;
 
   const getClinicSlots = async ({ from, to, timeZone }, signal) => {
     const dailySlotTemplates = [

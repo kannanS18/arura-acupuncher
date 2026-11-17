@@ -230,7 +230,7 @@ export default function Navbar({ onOpenBooking }) {
               onClick={() => setMobileMenuOpen(false)}
               className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center block bg-brand text-white hover:bg-brand-dark transition-colors shadow-sm cursor-pointer"
             >
-              Book Priority Consultation (₹600)
+              Book Priority Consultation (₹500)
             </Link>
             <a
               href={CLINIC_INFO.whatsappLink}

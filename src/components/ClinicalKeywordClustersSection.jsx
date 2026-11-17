@@ -175,7 +175,7 @@ export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
               <span>Available in Virugambakkam, Chennai (Serving Chinmaya Nagar, Koyambedu, Vadapalani, Anna Nagar & Porur)</span>
             </div>
             <div className="flex items-center gap-3 font-semibold text-neutral-700">
-              <span>Standard Session: ₹600</span>
+              <span>Acupuncture Session: ₹600 (25–30 min)</span>
               <span className="text-neutral-300">•</span>
               <span>100% Single-Use Sterile Needles</span>
               <span className="text-neutral-300">•</span>

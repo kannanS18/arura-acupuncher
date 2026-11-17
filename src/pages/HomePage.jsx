@@ -100,7 +100,7 @@ export default function HomePage({ onOpenBooking }) {
                 </div>
 
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                  <span className="text-xs sm:text-sm text-neutral-600 font-medium">Session: ₹600 • 50 Mins</span>
+                  <span className="text-xs sm:text-sm text-neutral-600 font-medium">Session: ₹1,800 • 50 Mins</span>
                   <Link
                     to="/counselling"
                     className="text-sm font-bold text-[#ed3373] hover:text-neutral-900 inline-flex items-center gap-1 transition-colors"
@@ -219,10 +219,10 @@ export default function HomePage({ onOpenBooking }) {
                 ACCESSIBLE PRICING
               </span>
               <h3 className="font-bold text-lg text-neutral-900">
-                Affordable Care (₹600)
+                Transparent Tariff (From ₹500)
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                Transparent consultation and needling fee with zero hidden charges. Single-use sterile needles included.
+                Consultation at ₹500 (20 min) and acupuncture at ₹600 (25–30 min) with zero hidden charges. Single-use sterile needles included.
               </p>
             </div>
 

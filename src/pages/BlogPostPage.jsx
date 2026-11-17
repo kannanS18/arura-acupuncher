@@ -141,7 +141,7 @@ export default function BlogPostPage({ onOpenBooking }) {
                 Consult with Ms. Nivedha Priyadarshini
               </h3>
               <p className="text-xs sm:text-sm text-gray-300 font-normal max-w-md">
-                1-on-1 private evaluation in our Virugambakkam sanctuary. Flat ₹600 fee with radial pulse assessment included.
+                1-on-1 private evaluation in our Virugambakkam sanctuary. Flat ₹500 fee (20 min) with radial pulse assessment included.
               </p>
             </div>
 
@@ -149,7 +149,7 @@ export default function BlogPostPage({ onOpenBooking }) {
               to="/booking"
               className="btn-shimmer bg-brand text-white hover:bg-brand-dark px-7 py-4 rounded-xl text-xs font-semibold whitespace-nowrap shadow-lg flex-shrink-0"
             >
-              Book Consultation (₹600)
+              Book Consultation (₹500)
             </Link>
           </div>
 

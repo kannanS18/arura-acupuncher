@@ -43,7 +43,7 @@ export const FAQS_DATA = [
   },
   {
     q: "How much does acupuncture treatment cost in Chennai?",
-    a: "At Arura Wellness Studio in Virugambakkam, Chennai, a targeted acupuncture therapy session is ₹600. This includes an individualized clinical pulse assessment, sterile single-use needle application, and complimentary supportive therapies such as far-infrared TDP mineral heat or glass cupping.",
+    a: "At Arura Wellness Studio in Virugambakkam, Chennai, an initial diagnostic pulse consultation (20 min) is ₹500, a targeted 14-meridian acupuncture therapy session (25–30 min) is ₹600, clinical psychotherapy (50 min) is ₹1,800, and full body & mind dual therapy (75–90 min) is ₹2,400. All needle sessions use 100% sterile single-use disposable needles opened at bedside.",
     category: "acupuncture"
   },
   {

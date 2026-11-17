@@ -51,7 +51,7 @@ export default function AboutUsPage({ onOpenBooking }) {
     {
       num: "01",
       title: "Pulse & Somatic Diagnostic Intake",
-      desc: "We spend 15 to 20 minutes evaluating 14 radial pulse positions, lifestyle stressors, and tongue topography to locate exact meridian blockages."
+      desc: "We spend 20 minutes evaluating 14 radial pulse positions, lifestyle stressors, and tongue topography to locate exact meridian blockages."
     },
     {
       num: "02",
@@ -245,7 +245,7 @@ export default function AboutUsPage({ onOpenBooking }) {
               to="/booking"
               className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark whitespace-nowrap shadow-xl relative z-10 transition-colors duration-200 motion-safe:active:scale-[0.98]"
             >
-              Book Private Consultation (₹600)
+              Book Private Consultation (₹500)
             </Link>
           </motion.div>
         </div>

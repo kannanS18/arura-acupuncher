@@ -9,23 +9,23 @@ export default function BookingPage() {
   const services = [
     {
       id: 'diagnostic',
-      title: 'Diagnostic Clinical Consultation',
-      fee: 600,
-      duration: 45,
-      durationText: '45 mins',
-      desc: 'Comprehensive medical history, 14-meridian pulse diagnosis, tongue examination & treatment plan.'
+      title: 'Clinical Consultation & Pulse Assessment',
+      fee: 500,
+      duration: 20,
+      durationText: '20 mins',
+      desc: 'Comprehensive medical history, 14-radial pulse diagnosis, tongue examination & treatment plan.'
     },
     {
       id: 'acupuncture',
       title: 'Acupuncture Therapy Session',
       fee: 600,
       duration: 30,
-      durationText: '30 mins (Daily Limit: 50 Sessions)',
+      durationText: '25 – 30 mins (Daily Limit: 50 Sessions)',
       desc: '0.18mm hair-thin single-use sterile needles, TDP infrared therapy & optional glass cupping.'
     },
     {
       id: 'counselling',
-      title: 'Clinical Psychotherapy',
+      title: 'Clinical Psychotherapy & Counselling',
       fee: 1800,
       duration: 50,
       durationText: '50 mins (Weekly Limit: 20 Sessions)',
@@ -33,10 +33,10 @@ export default function BookingPage() {
     },
     {
       id: 'dual',
-      title: 'Mind-Body Dual Therapy',
+      title: 'Mind-Body Dual Therapy (Full Body & Mind)',
       fee: 2400,
       duration: 90,
-      durationText: '90 mins',
+      durationText: '75 – 90 mins',
       desc: 'Combined cognitive psychotherapy + full somatic acupuncture needling session back-to-back.'
     }
   ];
@@ -151,7 +151,7 @@ export default function BookingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Affordable session fee of ₹600 with 100% sterile single-use needles.
+              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Transparent consultation at ₹500 (20 min) and acupuncture therapy at ₹600 (25–30 min) with 100% sterile single-use needles.
             </p>
           </motion.div>
         </div>

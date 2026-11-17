@@ -55,7 +55,7 @@ export default function CounsellingPage({ onOpenBooking }) {
 
   const handleBooking = (serviceName) => {
     if (typeof onOpenBooking === 'function') {
-      onOpenBooking(`Counselling: ${serviceName}`, 600);
+      onOpenBooking(`Counselling: ${serviceName}`, 1800);
     } else {
       window.location.hash = '#/booking';
     }
@@ -87,7 +87,7 @@ export default function CounsellingPage({ onOpenBooking }) {
         title="A Confidential Sanctuary for Mind, Emotion, and Autonomic Balance."
         subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private soundproof acoustic suite in Chennai."
         callToAction={{
-          text: "Book Confidential Session (₹600)",
+          text: "Book Confidential Session (₹1,800)",
           href: "#/booking",
           onClick: () => handleBooking('Psychological Counselling Initial Session')
         }}
@@ -99,7 +99,7 @@ export default function CounsellingPage({ onOpenBooking }) {
         backgroundImage={getAssetUrl('clinic_interior.jpg')}
         floatingBadge={{
           title: "100% Strict Clinical Privacy",
-          subtitle: "Virugambakkam Acoustic Room · ₹600 / 50 Mins"
+          subtitle: "Virugambakkam Acoustic Room · ₹1,800 / 50 Mins"
         }}
         contactInfo={{
           website: "15 Disciplines · 213 Protocols",
@@ -182,7 +182,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                         </span>
                       </div>
                       <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-400 group-hover:text-[#ed3373]">
-                        <span className="font-mono">₹600 / 50 min</span>
+                        <span className="font-mono">₹1,800 / 50 min</span>
                         <span className="flex items-center gap-1 font-semibold">Book <ArrowRight className="w-3 h-3" /></span>
                       </div>
                     </button>
@@ -249,7 +249,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                       Clinical Discipline {activeCategory.num} of 15
                     </span>
                     <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-700">
-                      Standard · 50 Mins · ₹600
+                      Standard · 50 Mins · ₹1,800
                     </span>
                   </div>
 
@@ -310,7 +310,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                     onClick={() => handleBooking(`${activeCategory.title} Consultation`)}
                     className="px-6 py-3 rounded-xl bg-neutral-900 hover:bg-[#ed3373] text-white text-xs font-bold transition-colors shadow-2xs whitespace-nowrap flex items-center justify-center gap-2"
                   >
-                    <span>Schedule Consultation (₹600)</span>
+                    <span>Schedule Consultation (₹1,800)</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -403,7 +403,7 @@ export default function CounsellingPage({ onOpenBooking }) {
               onClick={() => handleBooking('Confidential Initial Consultation')}
               className="relative z-10 px-8 py-4 rounded-full bg-[#ed3373] text-white font-bold text-xs hover:bg-[#c91e5c] transition-all whitespace-nowrap shadow-sm active:scale-95 cursor-pointer"
             >
-              Schedule Confidential Session (₹600)
+              Schedule Confidential Session (₹1,800)
             </button>
           </div>
 

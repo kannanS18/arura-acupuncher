@@ -73,7 +73,7 @@ export default function DoctorPage({ onOpenBooking }) {
               {/* CTA Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
-                  onClick={() => onOpenBooking('Consultation with Ms. Nivedha Priyadarshini', 600)}
+                  onClick={() => onOpenBooking('Consultation with Ms. Nivedha Priyadarshini', 500)}
                   className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 cursor-pointer"
                 >
                   <span>Schedule Consultation</span>
@@ -134,7 +134,7 @@ export default function DoctorPage({ onOpenBooking }) {
                 to="/booking"
                 className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg inline-flex items-center space-x-2 transition-colors duration-200 motion-safe:active:scale-[0.98]"
               >
-                <span>Book Consultation with Ms. Nivedha Priyadarshini (₹600)</span>
+                <span>Book Consultation with Ms. Nivedha Priyadarshini (₹500)</span>
                 <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

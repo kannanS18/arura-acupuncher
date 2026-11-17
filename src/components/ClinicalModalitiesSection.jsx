@@ -74,8 +74,8 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
                 Pre-sterilized single-use 0.18mm surgical stainless needles opened in your presence and discarded into biohazard containers immediately after use.
               </p>
               <div className="pt-3 border-t border-neutral-200/80 flex items-center justify-between text-xs font-mono">
-                <span className="text-neutral-500">Standard consultation:</span>
-                <span className="text-base font-bold text-neutral-900">₹600</span>
+                <span className="text-neutral-500">Standard consultation (20 min):</span>
+                <span className="text-base font-bold text-neutral-900">₹500</span>
               </div>
             </div>
 
@@ -85,12 +85,12 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
                 type="button"
                 onClick={() => {
                   if (onOpenBooking) {
-                    onOpenBooking('Clinical Consultation', 600);
+                    onOpenBooking('Clinical Consultation', 500);
                   }
                 }}
                 className="w-full py-3.5 px-6 rounded-full text-xs sm:text-sm font-bold bg-neutral-900 text-white hover:bg-[#ed3373] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm cursor-pointer"
               >
-                <span>Book Private Consultation (₹600)</span>
+                <span>Book Private Consultation (₹500)</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

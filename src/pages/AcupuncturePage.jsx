@@ -15,9 +15,9 @@ export default function AcupuncturePage({ onOpenBooking }) {
       code: "01 / 04",
       title: "Initial Diagnostic Consultation & Pulse Mapping",
       subtitle: "First Visit Clinical Assessment",
-      duration: "30 – 45 mins",
-      fee: "₹600",
-      feeNum: 600,
+      duration: "20 mins",
+      fee: "₹500",
+      feeNum: 500,
       image: "doctor_nivedha_portrait.jpg",
       badge: "Clinical Intake & Diagnostics",
       summary: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadarshini to identify root meridian imbalances before needling.",
@@ -35,7 +35,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
       code: "02 / 04",
       title: "Targeted Acupuncture Therapy",
       subtitle: "Meridian Pain & Autonomic Regulation",
-      duration: "25 mins (Daily Cap: 50 Patients)",
+      duration: "25 – 30 mins (Daily Cap: 50 Patients)",
       fee: "₹600",
       feeNum: 600,
       image: "authentic_acupuncture_needles.jpg",
@@ -100,7 +100,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>BEST ACUPUNCTURE CLINIC IN CHENNAI • AFFORDABLE CARE (₹600)</span>
+            <span>BEST ACUPUNCTURE CLINIC IN CHENNAI • ACUPUNCTURE (₹600) • CONSULTATION (₹500)</span>
           </div>
 
           <div className="max-w-3xl space-y-4">
@@ -119,7 +119,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl"
             >
-              Chennai's trusted <strong className="text-ink font-semibold">acupuncture clinic near me</strong> offering transparent <strong className="text-ink font-semibold">acupuncture treatment cost</strong> from ₹600 with 100% single-use sterile needles.
+              Chennai's trusted <strong className="text-ink font-semibold">acupuncture clinic near me</strong> offering transparent <strong className="text-ink font-semibold">acupuncture treatment cost</strong> from ₹500 with 100% single-use sterile needles.
             </motion.p>
           </div>
         </div>
