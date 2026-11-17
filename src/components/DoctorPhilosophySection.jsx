@@ -232,7 +232,7 @@ export default function DoctorPhilosophySection() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] font-mono font-bold text-emerald-700">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  TN/ACU/2016
+                  Active Clinical Practice
                 </span>
               </div>
 

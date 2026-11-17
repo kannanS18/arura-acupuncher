@@ -98,8 +98,8 @@ export default function DoctorIdCard() {
                   {/* Registration Chip Box */}
                   <div className="pt-1 flex flex-wrap items-center gap-1.5">
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 border border-neutral-200 text-xs font-mono text-neutral-800">
-                      <span className="text-neutral-500 font-bold">REG:</span>
-                      <strong className="text-neutral-900 font-bold">TN/ACU/2016</strong>
+                      <span className="text-neutral-500 font-bold">DEGREE:</span>
+                      <strong className="text-neutral-900 font-bold">MD (Acu)</strong>
                     </div>
                     <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-pink-50 border border-pink-200 text-xs font-mono text-[#ed3373]">
                       <span className="font-semibold text-neutral-600">IAOTH:</span>
@@ -170,7 +170,7 @@ export default function DoctorIdCard() {
                     ))}
                   </div>
                   <span className="text-[10px] font-mono text-neutral-500 tracking-widest block mt-0.5">
-                    TN-ACU-2016-0842
+                    ARURA-CLINICAL-CH092
                   </span>
                 </div>
 
@@ -202,14 +202,14 @@ export default function DoctorIdCard() {
                 <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1 flex flex-col justify-between">
                   <div>
                     <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
-                      Practitioner Registration
+                      Acupuncture Qualification
                     </span>
                     <p className="font-mono text-sm font-bold text-neutral-900 mt-0.5">
-                      Reg No: TN/ACU/2016
+                      MD (Acu) — Classical Acupuncture
                     </p>
                   </div>
                   <p className="text-xs text-neutral-600">
-                    Registered under Tamil Nadu Clinical Acupuncture Practice Standards.
+                    14-Channel Radial Pulse Diagnosis & Classical Meridian Therapeutics.
                   </p>
                 </div>
 

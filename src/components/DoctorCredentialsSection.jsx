@@ -6,11 +6,11 @@ import { getAssetUrl } from '../utils/assetUrl';
 const credentials = [
   {
     serial: "01",
-    category: "Medical Degree",
+    category: "Acupuncture Qualification",
     title: "Doctor of Medicine in Classical Acupuncture",
     degreeCode: "MD (Acu)",
-    conferringBody: "Tamil Nadu Board of Alternative Medicine",
-    regNumber: "REG: TN/ACU/2016",
+    conferringBody: "Classical Acupuncture Clinical Practice",
+    regNumber: "MD (Acu) · Classical Practice",
     scope: "14-Channel Radial Pulse Diagnosis & Sterile Meridian Therapeutics",
     standing: "Active Clinical Standing"
   },
@@ -47,7 +47,7 @@ export default function DoctorCredentialsSection() {
           
           <div className="flex items-center gap-2 text-xs font-mono text-neutral-500 bg-white px-3.5 py-1.5 rounded-full border border-neutral-200 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Active Practitioner · Reg: TN/ACU/2016</span>
+            <span>Active Clinical Practice · Ms. Nivedha Priyadarshini</span>
           </div>
         </div>
 
