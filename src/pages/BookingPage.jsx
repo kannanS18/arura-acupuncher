@@ -146,16 +146,16 @@ export default function BookingPage() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>ACUPUNCTURE CLINIC NEAR ME • VIRUGAMBAKKAM, CHENNAI</span>
+              <span>ACUPUNCTURE & COUNSELLING CENTRE • VIRUGAMBAKKAM, CHENNAI</span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
-              Acupuncture Treatment Consultation <br />
+              Acupuncture & Counselling Consultation <br />
               <span className="text-brand">in Virugambakkam, Chennai</span>
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private in-clinic consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Located at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-clinic visits only • No house visits). Consultation at ₹500 (20 min, advance paid to lock slot) and acupuncture therapy at ₹600 (25–30 min, payable at clinic).
+              Looking for an <strong className="text-ink font-semibold">acupuncture and counselling centre near me</strong> in Chennai? Book your 1-on-1 private in-clinic consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Located at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-clinic visits only • No house visits). Consultation at ₹500 (20 min, advance paid to lock slot), acupuncture therapy at ₹600 (25–30 min), and clinical counselling at ₹1,800 (50 min).
             </p>
           </motion.div>
         </div>

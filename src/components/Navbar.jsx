@@ -134,9 +134,17 @@ export default function Navbar({ onOpenBooking }) {
             <div className="p-1 rounded-xl bg-white border border-gray-200 group-hover:border-brand transition-colors shadow-xs">
               <img 
                 src={getAssetUrl('logo.png')} 
-                alt="Arura Wellness Studio" 
+                alt="Arura Wellness Studio - Acupuncture & Counselling Centre" 
                 className="h-10 sm:h-11 w-auto object-contain" 
               />
+            </div>
+            <div className="hidden sm:flex flex-col text-left">
+              <span className="font-display font-bold text-sm tracking-tight text-ink group-hover:text-brand transition-colors leading-none">
+                ARURA
+              </span>
+              <span className="text-[10px] font-semibold text-gray-500 tracking-wider uppercase mt-0.5">
+                Acupuncture & Counselling
+              </span>
             </div>
           </Link>
 

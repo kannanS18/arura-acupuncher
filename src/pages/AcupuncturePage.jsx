@@ -100,7 +100,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>BEST ACUPUNCTURE CLINIC IN CHENNAI • ACUPUNCTURE (₹600) • CONSULTATION (₹500)</span>
+            <span>BEST ACUPUNCTURE & COUNSELLING CENTRE • ACUPUNCTURE (₹600) • CONSULTATION (₹500)</span>
           </div>
 
           <div className="max-w-3xl space-y-4">
@@ -110,8 +110,8 @@ export default function AcupuncturePage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.15]"
             >
-              Acupuncture Clinic & Tariff: <br />
-              <span className="text-brand">Affordable Acupuncture Treatment in Chennai</span>
+              Acupuncture & Counselling Tariff: <br />
+              <span className="text-brand">Affordable Treatment in Chennai</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0.9 }}
@@ -119,7 +119,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
               transition={{ duration: 0.2 }}
               className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl"
             >
-              Chennai's trusted <strong className="text-ink font-semibold">acupuncture clinic near me</strong> offering transparent <strong className="text-ink font-semibold">acupuncture treatment cost</strong> from ₹500 with 100% single-use sterile needles.
+              Chennai's trusted <strong className="text-ink font-semibold">acupuncture & counselling clinic near me</strong> offering transparent <strong className="text-ink font-semibold">treatment cost</strong> from ₹500 with 100% single-use sterile needles.
             </motion.p>
           </div>
         </div>

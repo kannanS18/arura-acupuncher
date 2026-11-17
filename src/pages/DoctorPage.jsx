@@ -27,7 +27,7 @@ export default function DoctorPage({ onOpenBooking }) {
             >
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand text-sm font-semibold border border-white/10 font-mono">
                 <ShieldCheck className="w-4 h-4" />
-                <span>BEST ACUPUNCTURE DOCTOR IN CHENNAI • VIRUGAMBAKKAM</span>
+                <span>BEST ACUPUNCTURIST & COUNSELLOR IN CHENNAI • VIRUGAMBAKKAM</span>
               </div>
 
               {/* Doctor Name */}
@@ -37,12 +37,12 @@ export default function DoctorPage({ onOpenBooking }) {
                   <span className="text-brand">Priyadarshini</span>
                 </h1>
                 <p className="text-base sm:text-lg font-semibold text-white/90">
-                  Acupuncture Specialist • MD (Acu), PG Diploma in Counselling and psychotherapy
+                  Acupuncture & Counselling Specialist • MD (Acu), PG Diploma in Counselling and psychotherapy
                 </p>
               </div>
 
               <p className="text-base sm:text-lg text-white/80 font-normal leading-relaxed max-w-2xl">
-                Chennai's trusted acupuncture specialist with 8+ years clinical expertise. Integrates 14-meridian acupuncture with counselling and psychotherapy for chronic pain, sciatica, and migraines.
+                Chennai's trusted acupuncture & counselling specialist with 8+ years clinical expertise. Integrates 14-meridian acupuncture with psychotherapy for chronic pain, sciatica, migraines, stress, and emotional wellbeing.
               </p>
 
               {/* Key Verification Badges in Banner with Animated Counters */}

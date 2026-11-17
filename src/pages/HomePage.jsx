@@ -184,10 +184,10 @@ export default function HomePage({ onOpenBooking }) {
                 <span>LOCAL CLINICAL SANCTUARY • CHENNAI</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight leading-tight">
-                Best Acupuncture Clinic & Treatment in Chennai
+                Best Acupuncture & Counselling Centre in Chennai
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                Chennai's trusted <strong className="text-neutral-900 font-semibold">acupuncture specialist near me</strong> offering licensed, affordable care and psychotherapy in Virugambakkam.
+                Chennai's trusted <strong className="text-neutral-900 font-semibold">acupuncture & counselling specialist near me</strong> offering licensed, affordable meridian care and psychotherapy in Virugambakkam.
               </p>
             </div>
 

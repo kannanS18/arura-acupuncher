@@ -86,7 +86,7 @@ export default function DoctorIdCard() {
                 {/* Identity Text */}
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <span className="text-xs font-mono text-neutral-500 uppercase tracking-wider block font-medium">
-                    Lead Clinical Acupuncturist
+                    Lead Acupuncturist & Psychotherapist
                   </span>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 leading-tight">
                     Ms. Nivedha Priyadarshini

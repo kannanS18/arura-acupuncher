@@ -82,15 +82,15 @@ export default function AboutUsPage({ onOpenBooking }) {
             >
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-50 text-brand text-sm font-semibold border border-pink-200/70 font-mono">
                 <ShieldCheck className="w-4 h-4" />
-                <span>PROFESSIONAL ACUPUNCTURE SPECIALIST • CHENNAI</span>
+                <span>PROFESSIONAL ACUPUNCTURE & COUNSELLING CENTRE • CHENNAI</span>
               </div>
 
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
-                Professional Acupuncture Specialist in Chennai
+                Professional Acupuncture & Counselling Specialist in Chennai
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
-                Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Bridging classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> with counselling and psychotherapy for lasting natural pain relief.
+                Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Integrating classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture therapy</strong> with clinical counselling and psychotherapy for complete physical and emotional health.
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-6 text-sm font-medium text-neutral-600">

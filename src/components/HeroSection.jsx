@@ -43,23 +43,22 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
   return (
     <div className="relative w-full bg-background overflow-hidden">
       <HeroSection
-        badge="BEST ACUPUNCTURE CLINIC IN CHENNAI • VIRUGAMBAKKAM"
+        badge="BEST ACUPUNCTURE & COUNSELLING CENTRE • VIRUGAMBAKKAM, CHENNAI"
         logo={{
           url: getAssetUrl("logo.png"),
-          alt: "Arura Wellness Studio - Acupuncture Treatment Centre",
+          alt: "Arura Wellness Studio - Acupuncture & Counselling Centre",
           text: "ARURA WELLNESS STUDIO"
         }}
-        slogan="TRADITIONAL ACUPUNCTURE TREATMENT & HOLISTIC THERAPY"
+        slogan="ACUPUNCTURE TREATMENT & CLINICAL COUNSELLING CENTRE"
         words={[
           { text: "Acupuncture" },
-          { text: "treatment" },
           { text: "&" },
-          { text: "therapy", highlight: true },
+          { text: "Counselling" },
           { text: "in", highlight: true },
           { text: "Chennai", highlight: true },
         ]}
-        title="Acupuncture Treatment & Therapy in Chennai: Classical 14-Meridian Pain Relief"
-        subtitle="Chennai's premier clinic led by Ms. Nivedha Priyadarshini. Natural pain relief for back pain, neck stiffness, sciatica, and migraines. Private 1-on-1 consultations from ₹500."
+        title="Acupuncture & Counselling in Chennai: Classical Needling & Psychological Care"
+        subtitle="Chennai's premier clinic led by Ms. Nivedha Priyadarshini. Natural pain relief for back pain, neck stiffness, sciatica, and migraines with integrated counselling. Private 1-on-1 consultations from ₹500."
         callToAction={{
           text: "Book Priority Consultation (₹500)",
           href: "#/booking",
