@@ -1,9 +1,9 @@
 # Arura Wellness Studio — Acupuncture & Counselling Centre
 
-Official web application for **Arura Wellness Studio** (Virugambakkam, Chennai), led by **Dr. Nivedha Priyadharshini** (`MD (Acu)`, `Cambridge Intl Dip.`, `PG Dip. Counselling Therapy`).
+Official web application for **Arura Wellness Studio** (Virugambakkam, Chennai), led by **Ms. Nivedha Priyadarshini** (`MD (Acu)`, `PG Diploma in Counselling and psychotherapy`).
 
 ## ✨ Features
-- **Authentic Clinical Directives:** Full integration of classical 14-meridian acupuncture physics and Cambridge evidence-based psychotherapy.
+- **Authentic Clinical Directives:** Full integration of classical 14-meridian acupuncture physics and evidence-based psychotherapy.
 - **Dedicated Distinct Pages:**
   - `Home`: Clinical overview, philosophy, authentic needle imagery, and transparent patient care.
   - `About Us`: Clinical background, aseptic standards, and treatment room acoustic specifications.
