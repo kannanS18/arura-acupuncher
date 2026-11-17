@@ -1,5 +1,7 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileCheck, X, ExternalLink, ShieldCheck } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetUrl';
 
 const credentials = [
   {
@@ -15,16 +17,19 @@ const credentials = [
   {
     serial: "02",
     category: "Post Graduate Diploma",
-    title: "PG Diploma in Counselling and psychotherapy",
+    title: "PG Diploma in School, Corporate and Family Counselling & Psychotherapy with Internship",
     degreeCode: "PG Dip",
-    conferringBody: "Certified Cognitive Behavioral & REBT Psychotherapy Council",
-    regNumber: "PGD-CP · REBT/CBT",
-    scope: "Autonomic Nervous Regulation & Trauma-Informed Somatic De-escalation",
-    standing: "Board Certified"
+    conferringBody: "CCS Academy (Chennai Counseling Services) · Accredited Training Provider: IAOTH (Reg. 2973-8538)",
+    regNumber: "Cert: I3977/2026 · MSME: UDYAM-TN-02-0007295",
+    scope: "Supervised theory & practice in the EasyIntegration Counselling Model under R M. Karthik Lakshmanan (Member, American Psychological Association)",
+    standing: "IAOTH Accredited",
+    certificateImg: "counselling_certification.jpg"
   }
 ];
 
 export default function DoctorCredentialsSection() {
+  const [showCertificateModal, setShowCertificateModal] = useState(false);
+
   return (
     <section id="credentials" className="py-20 lg:py-28 bg-[#fafafa] border-b border-neutral-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -89,10 +94,21 @@ export default function DoctorCredentialsSection() {
                 </div>
 
                 {/* Clinical Scope Statement */}
-                <div className="pt-2">
+                <div className="pt-2 space-y-3">
                   <div className="p-3.5 rounded-xl bg-neutral-50/80 border border-neutral-200/70 text-xs text-neutral-600 leading-relaxed font-normal">
                     {cred.scope}
                   </div>
+
+                  {cred.certificateImg && (
+                    <button
+                      type="button"
+                      onClick={() => setShowCertificateModal(true)}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ed3373] hover:text-[#c91e5c] transition-colors cursor-pointer"
+                    >
+                      <FileCheck className="w-4 h-4 text-[#ed3373]" />
+                      <span>View Verified Certificate (Cert No. I3977/2026) →</span>
+                    </button>
+                  )}
                 </div>
 
               </div>
@@ -114,6 +130,57 @@ export default function DoctorCredentialsSection() {
         </div>
 
       </div>
+
+      {/* Interactive Certificate View Modal */}
+      <AnimatePresence>
+        {showCertificateModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="relative max-w-2xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-neutral-200"
+            >
+              <div className="p-4 bg-neutral-900 text-white flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#ed3373]" />
+                  <span className="text-xs sm:text-sm font-bold font-mono">
+                    Official Counselling & Psychotherapy Certificate · CCS Academy
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCertificateModal(false)}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  aria-label="Close Certificate Modal"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="p-4 bg-neutral-100 flex justify-center">
+                <img
+                  src={getAssetUrl('counselling_certification.jpg')}
+                  alt="PG Diploma in School, Corporate and Family Counselling & Psychotherapy Certificate - Ms. Nivedha Priyadharshini"
+                  className="max-h-[75vh] w-auto object-contain rounded-lg shadow-md border border-neutral-200"
+                />
+              </div>
+
+              <div className="p-4 bg-white border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-600">
+                <span>Cert. No: I3977/2026 · IAOTH Reg: 2973-8538 · MSME: UDYAM-TN-02-0007295</span>
+                <button
+                  type="button"
+                  onClick={() => setShowCertificateModal(false)}
+                  className="px-4 py-2 rounded-lg bg-neutral-900 text-white font-bold hover:bg-[#ed3373] transition-colors cursor-pointer"
+                >
+                  Close Certificate
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

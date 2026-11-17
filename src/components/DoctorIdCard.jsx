@@ -213,6 +213,18 @@ export default function DoctorIdCard() {
 
                 <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
                   <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
+                    Psychotherapy Accreditation
+                  </span>
+                  <p className="font-mono text-sm font-bold text-neutral-900">
+                    Cert No: I3977/2026 · IAOTH Reg: 2973-8538
+                  </p>
+                  <p className="text-xs text-neutral-600">
+                    PG Diploma in School, Corporate & Family Counselling & Psychotherapy · CCS Academy (MSME UDYAM-TN-02-0007295).
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
                     Clinical Sanctuary Location
                   </span>
                   <p className="font-mono text-xs font-bold text-neutral-800">

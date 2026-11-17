@@ -91,7 +91,7 @@ export default function DoctorPhilosophySection() {
           </div>
 
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-            CBT and REBT frameworks resolving psychosomatic stressors, sleep disruptions, and sympathetic overdrive without pharmaceutical dependence.
+            EasyIntegration counselling model addressing school, corporate, and family stressors, sleep disruptions, and sympathetic overdrive without pharmaceutical dependence.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -100,7 +100,7 @@ export default function DoctorPhilosophySection() {
                 Clinical Framework
               </span>
               <p className="text-xs font-semibold text-neutral-800">
-                Certified CBT & REBT Protocols
+                EasyIntegration Counselling Model · IAOTH Accredited
               </p>
             </div>
             <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/70 space-y-1">

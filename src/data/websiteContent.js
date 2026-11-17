@@ -129,6 +129,11 @@ export const FAQS_DATA = [
     category: "counselling"
   },
   {
+    q: "What are Ms. Nivedha Priyadarshini's qualifications in Counselling and Psychotherapy?",
+    a: "Ms. Nivedha Priyadarshini holds a PG Diploma in School, Corporate and Family Counselling & Psychotherapy with Internship from CCS Academy (Chennai Counseling Services), an Accredited Training Provider under the International Association of Therapists (IAOTH, Reg. No. 2973-8538) and registered with MSME (UDYAM-TN-02-0007295, Certificate No. I3977/2026). She completed supervised clinical training in the EasyIntegration Counselling Model under senior counselling psychologist R M. Karthik Lakshmanan (Member, American Psychological Association).",
+    category: "counselling"
+  },
+  {
     q: "Can therapy sessions be conducted online?",
     a: "Yes! Online counseling is available via secure audio/video platforms for clients across India or abroad.",
     category: "counselling"

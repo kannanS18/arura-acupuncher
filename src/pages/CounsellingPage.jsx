@@ -335,7 +335,7 @@ export default function CounsellingPage({ onOpenBooking }) {
               Therapeutic Integrity & Clinical Ethics
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-              Ms. Nivedha Priyadarshini integrates structured Western cognitive-behavioral principles (CBT/REBT) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
+              Ms. Nivedha Priyadarshini integrates the EasyIntegration counselling model (certified by CCS Academy, IAOTH accredited) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
             </p>
           </div>
 
