@@ -110,7 +110,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
               <div className="flex items-start gap-5">
                 <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden border-2 border-pink-100 flex-shrink-0 shadow-sm bg-neutral-100">
                   <img 
-                    src={getAssetUrl('doctor_nivedha_portrait.jpg')} 
+                    src={getAssetUrl('doctor_nivedha_portrait.jpg?v=2')} 
                     alt="Ms. Nivedha Priyadarshini, MD (Acu)"
                     className="w-full h-full object-cover object-top"
                   />

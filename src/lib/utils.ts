@@ -38,7 +38,7 @@ export const cardData: TreatmentCardItem[] = [
     duration: "20 mins",
     fee: "₹500",
     feeNum: 500,
-    image: "doctor_nivedha_portrait.jpg",
+    image: "doctor_nivedha_portrait.jpg?v=2",
     badge: "Clinical Intake & Diagnostics",
     features: [
       "14-Channel Radial Pulse Mapping",

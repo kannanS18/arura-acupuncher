@@ -18,7 +18,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
       duration: "20 mins",
       fee: "₹500",
       feeNum: 500,
-      image: "doctor_nivedha_portrait.jpg",
+      image: "doctor_nivedha_portrait.jpg?v=2",
       badge: "Clinical Intake & Diagnostics",
       summary: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadarshini to identify root meridian imbalances before needling.",
       description: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadarshini to identify root meridian imbalances before needling.",

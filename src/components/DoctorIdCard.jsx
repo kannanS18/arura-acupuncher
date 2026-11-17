@@ -73,7 +73,7 @@ export default function DoctorIdCard() {
                 {/* Official Passport Photo with Gold Security Border */}
                 <div className="relative w-28 h-36 rounded-2xl overflow-hidden border-2 border-[#ed3373] shadow-md shrink-0 bg-neutral-100">
                   <img
-                    src={getAssetUrl('doctor_nivedha_portrait.jpg')}
+                    src={getAssetUrl('doctor_nivedha_portrait.jpg?v=2')}
                     alt="Ms. Nivedha Priyadarshini"
                     className="w-full h-full object-cover object-top"
                   />
@@ -96,10 +96,14 @@ export default function DoctorIdCard() {
                   </p>
                   
                   {/* Registration Chip Box */}
-                  <div className="pt-1">
+                  <div className="pt-1 flex flex-wrap items-center gap-1.5">
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 border border-neutral-200 text-xs font-mono text-neutral-800">
                       <span className="text-neutral-500 font-bold">REG:</span>
                       <strong className="text-neutral-900 font-bold">TN/ACU/2016</strong>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-pink-50 border border-pink-200 text-xs font-mono text-[#ed3373]">
+                      <span className="font-semibold text-neutral-600">IAOTH:</span>
+                      <strong className="font-bold">2973-8538</strong>
                     </div>
                   </div>
 
@@ -129,7 +133,7 @@ export default function DoctorIdCard() {
                 <span className="text-xs font-mono font-bold text-neutral-500 uppercase tracking-wider block">
                   Accredited Qualifications
                 </span>
-                <div className="space-y-1.5 text-sm text-neutral-800">
+                <div className="space-y-2 text-xs sm:text-sm text-neutral-800">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
                     <span className="font-medium">14-Channel Classical Pulse & Meridian Therapy</span>
@@ -138,9 +142,16 @@ export default function DoctorIdCard() {
                     <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
                     <span className="font-medium">MD (Acu) — Classical Acupuncture</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
-                    <span className="font-medium">PG Diploma in Counselling and psychotherapy</span>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <span className="font-semibold block text-neutral-900 leading-snug">
+                        PG Diploma in School, Corporate & Family Counselling & Psychotherapy
+                      </span>
+                      <span className="text-[11px] font-mono text-[#ed3373] block font-semibold">
+                        CCS Academy · IAOTH Accredited (Reg: 2973-8538 · Cert: I3977/2026)
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

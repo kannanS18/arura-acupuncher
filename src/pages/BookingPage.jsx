@@ -251,7 +251,7 @@ export default function BookingPage() {
                 host={{
                   name: CLINIC_INFO.founder,
                   role: 'MD (Acu) • Chief Healer & Psychotherapist',
-                  src: getAssetUrl('doctor_nivedha_portrait.jpg')
+                  src: getAssetUrl('doctor_nivedha_portrait.jpg?v=2')
                 }}
                 title={selectedService.title}
                 description={selectedService.desc}
