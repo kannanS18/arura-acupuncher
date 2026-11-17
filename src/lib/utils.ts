@@ -53,7 +53,7 @@ export const cardData: TreatmentCardItem[] = [
     code: "02 / 04",
     title: "Classical 14-Meridian Acupuncture",
     subtitle: "Meridian Pain & Autonomic Regulation",
-    description: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along targeted meridian pathways, paired with localized infrared TDP mineral heat.",
+    description: "Gentle insertion of hair-thin, 100% pre-sterilized disposable needles along targeted meridian pathways for natural pain and systemic recovery.",
     duration: "25 – 30 mins (Daily Cap: 50 Patients)",
     fee: "₹600",
     feeNum: 600,
@@ -62,8 +62,8 @@ export const cardData: TreatmentCardItem[] = [
     features: [
       "Ethylene-Oxide Pre-Sterilized Needles",
       "Single-Use Only (Opened at Bedside)",
-      "TDP Mineral Infrared Heat Therapy",
-      "Complimentary Glass Cupping / Moxa"
+      "Targeted 14-Meridian Pathway Stimulation",
+      "Deep Neuromuscular Decompression"
     ],
     color: "rgba(5, 150, 105, 0.8)"
   },

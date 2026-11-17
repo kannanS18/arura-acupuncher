@@ -53,7 +53,7 @@ export const FAQS_DATA = [
   },
   {
     q: "What happens during an acupuncture session?",
-    a: "Your visit begins with a 15-minute diagnostic intake evaluating 14 radial pulse positions on both wrists and tongue mucosal topography. Next, 6 to 18 microscopic needles are gently placed while you lie comfortably on a plush treatment bed. You then rest peacefully for 20 minutes with gentle infrared TDP mineral warmth, during which most patients fall into a rejuvenating 'acupuncture nap'.",
+    a: "Your visit begins with a 15-minute diagnostic intake evaluating 14 radial pulse positions on both wrists and tongue mucosal topography. Next, 6 to 18 microscopic needles are gently placed while you lie comfortably on a plush treatment bed. You then rest peacefully for 20 minutes, during which most patients fall into a rejuvenating 'acupuncture nap'.",
     category: "acupuncture"
   },
   {
@@ -88,7 +88,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Natural treatment for neck and shoulder pain?",
-    a: "Acupoints Jianjing (GB-21) and Tianzhu (BL-10) combined with far-infrared mineral heat therapy dissolve deep trapezius knots and occipital nerve compression, relieving cervical spondylosis and desk-posture neck stiffness completely naturally.",
+    a: "Acupoints Jianjing (GB-21) and Tianzhu (BL-10) dissolve deep trapezius knots and occipital nerve compression, relieving cervical spondylosis and desk-posture neck stiffness completely naturally.",
     category: "acupuncture"
   },
   {
@@ -115,7 +115,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Do you offer home visits or house visits?",
-    a: "No, we do not provide house visits or home visits. All consultations, classical 14-meridian pulse diagnostics, and acupuncture treatments are conducted strictly in-clinic at our private clinical sanctuary (Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092). This ensures strict hospital-grade sterility, single-use disposable needles opened at bedside, calibrated TDP infrared mineral heat lamps, and a quiet, soundproof treatment room.",
+    a: "No, we do not provide house visits or home visits. All consultations, classical 14-meridian pulse diagnostics, and acupuncture treatments are conducted strictly in-clinic at our private clinical sanctuary (Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092). This ensures strict hospital-grade sterility, single-use disposable needles opened at bedside, and a quiet, soundproof treatment room.",
     category: "acupuncture"
   },
   {

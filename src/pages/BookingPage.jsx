@@ -23,7 +23,7 @@ export default function BookingPage() {
       duration: 30,
       durationText: '25 – 30 mins (Daily Limit: 50 Sessions)',
       paymentTerm: 'Payable at clinic during visit',
-      desc: '0.18mm hair-thin single-use sterile needles, TDP infrared therapy & optional glass cupping.'
+      desc: '0.18mm hair-thin single-use sterile needles along targeted 14-meridian pathways.'
     },
     {
       id: 'counselling',

@@ -33,20 +33,20 @@ export default function AcupuncturePage({ onOpenBooking }) {
     {
       id: "2",
       code: "02 / 04",
-      title: "Targeted Acupuncture Therapy",
+      title: "Classical Acupuncture Therapy",
       subtitle: "Meridian Pain & Autonomic Regulation",
       duration: "25 – 30 mins (Daily Cap: 50 Patients)",
       fee: "₹600",
       feeNum: 600,
       image: "authentic_acupuncture_needles.jpg",
       badge: "0.18mm Sterile Single-Use",
-      summary: "Gentle insertion of 0.18mm sterile disposable needles along meridian points, paired with soothing TDP mineral heat.",
-      description: "Gentle insertion of 0.18mm sterile disposable needles along meridian points, paired with soothing TDP mineral heat.",
+      summary: "Gentle insertion of 0.18mm sterile disposable needles along targeted classical meridian pathways.",
+      description: "Gentle insertion of 0.18mm sterile disposable needles along targeted classical meridian pathways.",
       features: [
         "Ethylene-Oxide Pre-Sterilized Needles",
         "Single-Use Only (Opened at Bedside)",
-        "TDP Mineral Infrared Heat Therapy",
-        "Complimentary Glass Cupping / Moxa"
+        "Targeted 14-Meridian Pathway Stimulation",
+        "Deep Neuromuscular Decompression"
       ],
       color: "rgba(5, 150, 105, 0.8)"
     },

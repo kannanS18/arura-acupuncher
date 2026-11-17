@@ -20,9 +20,13 @@ import { SEO_KEYWORD_CLUSTERS } from '../data/seoKeywordClustersData';
 
 const ICONS = {
   'pain-relief': Activity,
-  'womens-health': Heart,
   'neurological': Zap,
-  'mental-wellness': Brain
+  'mental-wellness': Brain,
+  'womens-health': Heart,
+  'digestive': Flame,
+  'respiratory': ShieldCheck,
+  'techniques': Sparkles,
+  'lifestyle-recovery': Clock
 };
 
 export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
@@ -45,15 +49,15 @@ export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 text-[#ed3373] text-sm font-semibold border border-pink-200/70 font-mono">
             <Sparkles className="w-4 h-4" />
-            <span>CLINICAL TREATMENT CLUSTERS • VIRUGAMBAKKAM, CHENNAI</span>
+            <span>CLINICAL TREATMENT DOMAINS • VIRUGAMBAKKAM, CHENNAI</span>
           </div>
 
           <h2 className="font-display text-3xl sm:text-5xl lg:text-[46px] font-bold text-neutral-900 tracking-tight leading-tight">
-            Specialized Acupuncture Treatment & Holistic Therapy
+            Specialized Acupuncture Treatment & Clinical Conditions
           </h2>
 
           <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-            Explore our dedicated clinical clusters for <strong className="text-neutral-900 font-semibold">pain relief</strong>, <strong className="text-neutral-900 font-semibold">women’s health</strong>, <strong className="text-neutral-900 font-semibold">neurological recovery</strong>, and <strong className="text-neutral-900 font-semibold">mental wellness</strong> in Chennai.
+            Explore our specialized clinical domains covering <strong className="text-neutral-900 font-semibold">pain & musculoskeletal</strong>, <strong className="text-neutral-900 font-semibold">neurological</strong>, <strong className="text-neutral-900 font-semibold">mental wellness</strong>, <strong className="text-neutral-900 font-semibold">women’s health</strong>, <strong className="text-neutral-900 font-semibold">digestive</strong>, <strong className="text-neutral-900 font-semibold">respiratory</strong>, and <strong className="text-neutral-900 font-semibold">systemic recovery</strong>.
           </p>
         </div>
 

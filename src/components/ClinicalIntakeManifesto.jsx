@@ -54,7 +54,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       details: [
         "0.18mm × 30mm Japanese surgical-grade 316L stainless steel needles",
         "Individual sterile blister packs opened fresh in your presence",
-        "TDP far-infrared mineral heat to dissipate muscular lactic stagnation"
+        "Targeted meridian stimulation to dissipate muscular lactic stagnation"
       ],
       quote: "“Micro-needles part muscle fibers rather than cutting tissue, triggering natural endorphins within minutes.”",
       icon: Activity,
@@ -66,7 +66,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
           { label: "Needle Caliber", value: "0.18mm (Hair-Thin 38 Gauge)" },
           { label: "Standard Syringe", value: "0.80mm (4.5× Thicker · Cutting Tip)" },
           { label: "Insertion Guide", value: "Japanese Micro-Guide Tube (Pain-Free Tap)" },
-          { label: "Thermal Therapy", value: "TDP Far-Infrared 33-Mineral Plate" }
+          { label: "Needle Protocol", value: "100% Sterile Single-Use Bedside Unsealed" }
         ],
         protocolNotes: "100% single-use EO gas pre-sterilized. Every needle is unsealed in front of you and disposed immediately into biomedical sharps containers."
       }

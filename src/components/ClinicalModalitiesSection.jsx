@@ -34,11 +34,11 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
     {
       num: "04",
       roman: "IV",
-      title: "Laser Acupuncture & TDP Mineral Heat",
-      category: "Photobiomodulation & Thermal Recovery",
-      spec: "100% Needle-Free Low-Level Laser Beam",
-      desc: "Painless, non-invasive low-level laser beam stimulating strategic acupoints without needles, combined with far-infrared 33-trace-mineral heat aligned with human bio-frequency.",
-      benefit: "Painless restorative therapy for needle-sensitive patients, pediatric care, and localized joint inflammation."
+      title: "Somatic Meridian Balancing",
+      category: "Classical Systemic Regulation",
+      spec: "Targeted 14-Meridian Stimulation",
+      desc: "Precise anatomical acupoint stimulation designed to activate sensory pathways, improve micro-circulation, and restore full bodily equilibrium.",
+      benefit: "Effective restorative care for chronic pain, tension headaches, and musculoskeletal imbalances."
     }
   ];
 

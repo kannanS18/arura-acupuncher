@@ -31,7 +31,7 @@ export const BLOG_POSTS = [
       },
       {
         heading: "4. The 20-Minute Deep Parasympathetic Rest",
-        body: "Once all needles are placed (typically 6 to 18 points), you rest comfortably in our sound-dampened acoustic room with soothing infrared heat. During these 20 minutes, your central nervous system switches from sympathetic fight-or-flight into restorative parasympathetic dominance, releasing natural beta-endorphins."
+        body: "Once all needles are placed (typically 6 to 18 points), you rest comfortably in our sound-dampened quiet room. During these 20 minutes, your central nervous system switches from sympathetic fight-or-flight into restorative parasympathetic dominance, releasing natural beta-endorphins."
       }
     ],
     takeaways: [
@@ -62,8 +62,8 @@ export const BLOG_POSTS = [
         body: "We target primary meridian points: Jianjing (GB21) on the shoulder summit to release trapezius constriction, Tianzhu (BL10) at the skull base to relieve occipital pressure, and Dazhui (GV14) at the cervical-thoracic junction to restore spinal energy flow and nerve conduction."
       },
       {
-        heading: "3. Synergistic TDP Mineral Heat Therapy",
-        body: "Needle placement is paired with an infrared TDP mineral lamp. The warm far-infrared waves penetrate 2 to 3 inches beneath the skin, dissolving lactic acid accumulation and softening stubborn fibrotic adhesions."
+        heading: "3. Targeted Deep Fascial Release",
+        body: "Needle placement activates deep sensory fibers and neuro-fascial trigger points, dissolving lactic acid accumulation and softening stubborn fibrotic adhesions naturally."
       }
     ],
     takeaways: [
@@ -227,7 +227,7 @@ export const BLOG_POSTS = [
       },
       {
         heading: "3. What Happens During an Acupuncture Session?",
-        body: "Your first visit starts with a 15-minute diagnostic intake checking 14 radial pulse points and examining tongue topography. You then lie down in a private, quiet treatment room while 6 to 18 micro-fine needles are gently placed. You rest comfortably for 20 minutes with soothing far-infrared TDP mineral warmth, during which most patients enter a peaceful, rejuvenating meditative state."
+        body: "Your first visit starts with a 15-minute diagnostic intake checking 14 radial pulse points and examining tongue topography. You then lie down in a private, quiet treatment room while 6 to 18 micro-fine needles are gently placed. You rest comfortably for 20 minutes in a peaceful, rejuvenating meditative state."
       },
       {
         heading: "4. How Many Acupuncture Sessions Are Needed?",
@@ -294,8 +294,8 @@ export const BLOG_POSTS = [
         body: "In our Virugambakkam clinic, we target master points: Shenshu (BL-23) on the lower back to relieve paraspinal spasm, Huantiao (GB-30) at the piriformis notch to un-clamp the sciatic nerve, and Weizhong (BL-40) behind the knee to discharge the entire posterior muscular chain."
       },
       {
-        heading: "3. Paired with Far-Infrared TDP Mineral Heat Therapy",
-        body: "Needle placement is paired with an infrared TDP mineral lamp. The soothing 33-trace-mineral heat penetrates 2 to 3 inches beneath the skin, dissolving lactic acid accumulation, relaxing deep fascia, and preventing recurrence."
+        heading: "3. Deep Neuro-Fascial Trigger Decompression",
+        body: "Targeted point stimulation releases deep neuromuscular tension, dissolving lactic acid accumulation, relaxing the piriformis muscle sheath, and preventing sciatic recurrence."
       }
     ],
     takeaways: [

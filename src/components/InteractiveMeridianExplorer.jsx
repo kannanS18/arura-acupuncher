@@ -74,7 +74,7 @@ const PATHWAYS = [
       'Arm Numbness'
     ],
     technicalMechanism: 'Decompresses pinched C5–C7 cervical nerve roots, discharges deep myofascial trigger nodes in the trapezius, and relieves radiating arm tingling without surgical intervention.',
-    spec: 'Trapezius myofascial release paired with localized TDP mineral infrared warmth',
+    spec: 'Trapezius myofascial release with precise 0.18mm sterile single-use needling',
     duration: '25–30 Mins',
     fee: '₹600 / Session',
     acupoints: [

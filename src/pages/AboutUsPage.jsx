@@ -39,11 +39,11 @@ export default function AboutUsPage({ onOpenBooking }) {
     {
       num: "04",
       roman: "IV",
-      title: "Laser Acupuncture & TDP Mineral Heat",
-      category: "Photobiomodulation & Thermal Recovery",
-      spec: "100% Needle-Free Low-Level Laser Beam",
-      desc: "Painless, non-invasive laser acupoint stimulation paired with far-infrared mineral heat for needle-sensitive patients.",
-      benefit: "Painless restorative therapy for needle-sensitive patients, pediatric care, and localized joint inflammation."
+      title: "Somatic Meridian Therapy",
+      category: "Holistic Physical Rebalancing",
+      spec: "Targeted 14-Meridian Stimulation",
+      desc: "Gentle classical acupoint stimulation designed to restore natural meridian flow and release chronic muscular tension.",
+      benefit: "Sustained relief for spinal stiffness, tension headaches, and systemic musculoskeletal imbalances."
     }
   ];
 
@@ -211,7 +211,7 @@ export default function AboutUsPage({ onOpenBooking }) {
                 Acupuncture Treatment Cost (₹600)
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Transparent fee of ₹600 per session includes 0.18mm pre-sterilized disposable needles and soothing TDP mineral heat.
+                Transparent fee of ₹600 per session includes 0.18mm pre-sterilized disposable needles and targeted meridian therapy.
               </p>
             </div>
           </div>

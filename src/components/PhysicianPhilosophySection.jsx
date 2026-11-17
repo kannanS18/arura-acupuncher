@@ -29,8 +29,8 @@ const TARIFF_ITEMS = [
   },
   {
     id: 'acu',
-    title: 'Targeted Acupuncture Therapy',
-    subtitle: 'Millimeter-precise point stimulation & localized TDP mineral infrared warmth',
+    title: 'Classical Acupuncture Therapy',
+    subtitle: 'Targeted 14-meridian point needling with sterile single-use 0.18mm needles',
     fee: '₹600',
     duration: '25–30 Mins',
     icon: Sparkles,

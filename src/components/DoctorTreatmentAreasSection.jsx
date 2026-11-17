@@ -18,7 +18,7 @@ const specialties = [
     domain: "Cluster 1: Pain Relief",
     title: "Acupuncture for Pain Relief & Joints",
     focus: "Natural pain relief treatment for chronic back pain, cervical neck pain, severe sciatica, knee joint arthritis, and shoulder stiffness.",
-    protocol: "Classical Acupuncture · Local Vasodilation · TDP Heat",
+    protocol: "Classical Acupuncture · Local Vasodilation · Meridian Decompression",
     items: [
       { name: "Acupuncture for Back Pain & Sciatica", tag: "Lumbar & Sacral" },
       { name: "Acupuncture for Neck Pain & Stiffness", tag: "Cervical Spine" },
