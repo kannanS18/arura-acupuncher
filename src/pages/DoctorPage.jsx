@@ -16,11 +16,11 @@ export default function DoctorPage({ onOpenBooking }) {
       <section className="relative bg-ink text-white pt-8 sm:pt-10 pb-14 lg:pt-12 lg:pb-16 border-b border-white/10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             
             {/* Left Column: Doctor Identity & Narrative */}
             <motion.div 
-              className="lg:col-span-7 space-y-6"
+              className="lg:col-span-6 space-y-6"
               initial={{ opacity: 0.85, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
@@ -91,7 +91,7 @@ export default function DoctorPage({ onOpenBooking }) {
 
             {/* Right Column: Authentic Interactive Doctor ID Card (21st.dev + Hairline UI) */}
             <motion.div 
-              className="lg:col-span-5 flex justify-center"
+              className="lg:col-span-6 flex justify-center lg:justify-end"
               initial={{ opacity: 0.9, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}

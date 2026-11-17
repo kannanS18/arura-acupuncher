@@ -71,11 +71,11 @@ export default function AboutUsPage({ onOpenBooking }) {
       {/* 1. Minimalist Editorial Header */}
       <section className="pt-6 sm:pt-8 pb-12 sm:pb-16 bg-sanctuary-texture border-b border-neutral-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            {/* Left Column (7 cols): Editorial Narrative */}
+            {/* Left Column (6 cols): Editorial Narrative */}
             <motion.div 
-              className="lg:col-span-7 space-y-6"
+              className="lg:col-span-6 space-y-5"
               initial={{ opacity: 0.9 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
@@ -85,15 +85,15 @@ export default function AboutUsPage({ onOpenBooking }) {
                 <span>PROFESSIONAL ACUPUNCTURE & COUNSELLING CENTRE • CHENNAI</span>
               </div>
 
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.2]">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-ink leading-[1.2]">
                 Professional Acupuncture & Counselling Specialist in Chennai
               </h1>
 
-              <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-xl">
                 Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Integrating classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture therapy</strong> with clinical counselling and psychotherapy for complete physical and emotional health.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-6 text-sm font-medium text-neutral-600">
+              <div className="pt-1 flex flex-wrap items-center gap-5 text-sm font-medium text-neutral-600">
                 <div className="flex items-center space-x-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-600" />
                   <span>100% Single-Use Sterile Needles</span>
@@ -109,9 +109,9 @@ export default function AboutUsPage({ onOpenBooking }) {
               </div>
             </motion.div>
 
-            {/* Right Column (5 cols): Verified Doctor Identity Credential Badge */}
+            {/* Right Column (6 cols): Verified Doctor Identity Credential Badge */}
             <motion.div 
-              className="lg:col-span-5 flex flex-col items-center justify-center"
+              className="lg:col-span-6 flex flex-col items-center lg:items-end justify-start"
               initial={{ opacity: 0.9, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}

@@ -16,10 +16,10 @@ export default function DoctorIdCard() {
   };
 
   return (
-    <div className="w-full flex justify-center pt-0 pb-2">
+    <div className="w-full flex justify-center pt-0 pb-1">
       {/* 3D Perspective Card Container */}
       <motion.div
-        className="w-full max-w-sm sm:max-w-md perspective-1000 cursor-pointer select-none"
+        className="w-full max-w-lg lg:max-w-xl perspective-1000 cursor-pointer select-none"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
@@ -29,13 +29,13 @@ export default function DoctorIdCard() {
         animate={{
           rotateY: isHovered ? mousePos.x * 12 : 0,
           rotateX: isHovered ? -mousePos.y * 12 : 0,
-          scale: isHovered ? 1.02 : 1
+          scale: isHovered ? 1.015 : 1
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         onClick={() => setIsFlipped(!isFlipped)}
       >
         {/* Physical Badge Body */}
-        <div className="relative rounded-3xl bg-white text-neutral-900 border border-neutral-200/90 shadow-2xl shadow-neutral-950/40 overflow-hidden p-6 sm:p-7">
+        <div className="relative rounded-3xl bg-white text-neutral-900 border border-neutral-200/90 shadow-xl shadow-neutral-950/20 overflow-hidden p-5 sm:p-6">
           
           {/* Holographic Iridescent Sheen on Hover (21st.dev signature touch) */}
           <div 
@@ -47,11 +47,11 @@ export default function DoctorIdCard() {
           />
 
           {/* Top Lanyard Slot Clip Assembly */}
-          <div className="flex flex-col items-center mb-5">
-            <div className="w-14 h-2.5 rounded-full bg-neutral-900 border border-neutral-700/80 shadow-inner flex items-center justify-center">
-              <div className="w-8 h-1 rounded-full bg-neutral-950/90" />
+          <div className="flex flex-col items-center mb-3.5">
+            <div className="w-14 h-2 rounded-full bg-neutral-900 border border-neutral-700/80 shadow-inner flex items-center justify-center">
+              <div className="w-8 h-0.5 rounded-full bg-neutral-950/90" />
             </div>
-            <div className="flex items-center justify-between w-full pt-3 border-b border-neutral-100 pb-3">
+            <div className="flex items-center justify-between w-full pt-2.5 border-b border-neutral-100 pb-2.5">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#ed3373] animate-pulse" />
                 <span className="font-mono text-xs font-bold text-neutral-900 tracking-wider uppercase">
@@ -66,12 +66,12 @@ export default function DoctorIdCard() {
 
           {!isFlipped ? (
             /* FRONT FACE: Official Medical Practitioner ID */
-            <div className="space-y-5">
+            <div className="space-y-4">
               
               {/* Photo & Identity Header */}
               <div className="flex items-start gap-4">
                 {/* Official Passport Photo with Gold Security Border */}
-                <div className="relative w-28 h-36 rounded-2xl overflow-hidden border-2 border-[#ed3373] shadow-md shrink-0 bg-neutral-100">
+                <div className="relative w-24 h-32 sm:w-28 sm:h-36 rounded-2xl overflow-hidden border-2 border-[#ed3373] shadow-md shrink-0 bg-neutral-100">
                   <img
                     src={getAssetUrl('doctor_nivedha_portrait.jpg?v=2')}
                     alt="Ms. Nivedha Priyadarshini"
@@ -115,7 +115,7 @@ export default function DoctorIdCard() {
               </div>
 
               {/* Key Verification Metrics Strip */}
-              <div className="grid grid-cols-2 gap-3 py-3 px-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/80">
+              <div className="grid grid-cols-2 gap-3 py-2.5 px-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/80">
                 <div>
                   <span className="text-xs font-mono text-neutral-500 uppercase block">Clinical Practice</span>
                   <span className="font-display text-lg font-bold text-neutral-900 block">8+ Years</span>
@@ -129,11 +129,11 @@ export default function DoctorIdCard() {
               </div>
 
               {/* Verified Clinical Accreditations */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <span className="text-xs font-mono font-bold text-neutral-500 uppercase tracking-wider block">
                   Accredited Qualifications
                 </span>
-                <div className="space-y-2 text-xs sm:text-sm text-neutral-800">
+                <div className="space-y-1.5 text-xs sm:text-sm text-neutral-800">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
                     <span className="font-medium">14-Channel Classical Pulse & Meridian Therapy</span>
@@ -157,15 +157,15 @@ export default function DoctorIdCard() {
               </div>
 
               {/* Security Barcode & Clinic Location Footer */}
-              <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+              <div className="pt-2.5 border-t border-neutral-100 flex items-center justify-between">
                 <div>
                   {/* Stylized Security Barcode */}
-                  <div className="h-6 flex items-center gap-[2px]">
+                  <div className="h-5 flex items-center gap-[2px]">
                     {[4, 2, 6, 1, 4, 3, 2, 5, 2, 4, 1, 3, 5, 2, 4, 2, 3, 6, 1, 4, 2, 5, 3].map((h, bIdx) => (
                       <span
                         key={bIdx}
                         className="bg-neutral-900 w-[1.5px] rounded-xs"
-                        style={{ height: `${h * 4}px` }}
+                        style={{ height: `${h * 3.5}px` }}
                       />
                     ))}
                   </div>
@@ -186,68 +186,77 @@ export default function DoctorIdCard() {
 
             </div>
           ) : (
-            /* REVERSE FACE: Clinical Licensing & Practice Standards */
-            <div className="space-y-5 py-2">
-              <div className="text-center space-y-1 pb-2 border-b border-neutral-100">
+            /* REVERSE FACE: Clinical Licensing & Practice Standards (2x2 Grid for compact balanced height) */
+            <div className="space-y-3.5 py-1">
+              <div className="text-center space-y-0.5 pb-2 border-b border-neutral-100">
                 <span className="text-xs font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
                   CLINICAL LICENSING & PRACTICE STANDARDS
                 </span>
-                <h4 className="font-display text-lg font-bold text-neutral-900">
-                  Arura Acupuncture & Somatic Sanctuary
+                <h4 className="font-display text-base sm:text-lg font-bold text-neutral-900">
+                  Arura Acupuncture & Counselling Studio
                 </h4>
               </div>
 
-              <div className="space-y-3 text-xs sm:text-sm">
-                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
-                    Practitioner Registration
-                  </span>
-                  <p className="font-mono text-sm font-bold text-neutral-900">
-                    Reg No: TN/ACU/2016
-                  </p>
+              {/* 2x2 Grid Layout for Compact Proportions */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
+                      Practitioner Registration
+                    </span>
+                    <p className="font-mono text-sm font-bold text-neutral-900 mt-0.5">
+                      Reg No: TN/ACU/2016
+                    </p>
+                  </div>
                   <p className="text-xs text-neutral-600">
                     Registered under Tamil Nadu Clinical Acupuncture Practice Standards.
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
-                    Sterility & Biohazard Protocol
-                  </span>
-                  <p className="font-mono text-sm font-bold text-emerald-600">
-                    100% Single-Use Sterile Guarantee
-                  </p>
+                <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
+                      Sterility & Biohazard Protocol
+                    </span>
+                    <p className="font-mono text-sm font-bold text-emerald-600 mt-0.5">
+                      100% Single-Use Sterile Guarantee
+                    </p>
+                  </div>
                   <p className="text-xs text-neutral-600">
-                    EO-Gas pre-sterilized 0.18mm surgical stainless steel. Zero needle reuse guaranteed.
+                    EO-Gas pre-sterilized 0.18mm surgical stainless steel. Zero needle reuse.
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
-                    Psychotherapy Accreditation
-                  </span>
-                  <p className="font-mono text-sm font-bold text-neutral-900">
-                    Cert No: I3977/2026 · IAOTH Reg: 2973-8538
-                  </p>
+                <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
+                      Psychotherapy Accreditation
+                    </span>
+                    <p className="font-mono text-sm font-bold text-neutral-900 mt-0.5">
+                      Cert: I3977/2026 · IAOTH: 2973-8538
+                    </p>
+                  </div>
                   <p className="text-xs text-neutral-600">
-                    PG Diploma in School, Corporate & Family Counselling & Psychotherapy · CCS Academy (MSME UDYAM-TN-02-0007295).
+                    PG Dip School, Corporate & Family Counselling · CCS Academy (MSME UDYAM-TN-02-0007295).
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
-                    Clinical Sanctuary Location
-                  </span>
-                  <p className="font-mono text-xs font-bold text-neutral-800">
-                    Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai - 600092
-                  </p>
+                <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
+                      Clinical Sanctuary Location
+                    </span>
+                    <p className="font-mono text-xs font-bold text-neutral-800 mt-0.5">
+                      Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Virugambakkam
+                    </p>
+                  </div>
                   <p className="text-xs text-neutral-600 font-medium">
-                    In-Clinic Consultations Only (No House Visits) · Mon–Sun 10AM–8PM
+                    In-Clinic Consultations Only (No House Visits) · Daily 10AM–8PM
                   </p>
                 </div>
               </div>
 
-              <div className="pt-2 text-center">
+              <div className="pt-1 text-center">
                 <span className="text-xs font-mono text-neutral-500">
                   Click card again to flip back to badge front
                 </span>
@@ -256,7 +265,7 @@ export default function DoctorIdCard() {
           )}
 
           {/* Micro flip hint pill */}
-          <div className="mt-3 pt-2 text-center border-t border-neutral-100">
+          <div className="mt-2.5 pt-2 text-center border-t border-neutral-100">
             <span className="text-xs font-mono text-neutral-500 inline-flex items-center gap-1 hover:text-[#ed3373] transition-colors">
               <Sparkles className="w-3.5 h-3.5 text-[#ed3373]" />
               <span>Interactive ID Badge · Click card to {isFlipped ? 'view front' : 'view accreditation details'}</span>
