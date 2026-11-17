@@ -126,7 +126,7 @@ export const SEO_KEYWORD_CLUSTERS = [
     heading: "Acupuncture for Mental Wellness, Stress Relief & Anxiety",
     metaTitle: "Acupuncture for Mental Wellness | Stress Relief, Anxiety & Sleep Therapy",
     primaryKeyword: "Acupuncture for Mental Wellness",
-    summary: "Synergistic mind-body healing combining Shen-calming acupuncture with Cambridge psychotherapy to lower cortisol and restore deep sleep.",
+    summary: "Synergistic mind-body healing combining Shen-calming acupuncture with psychotherapy to lower cortisol and restore deep sleep.",
     subKeywords: [
       {
         keyword: "Acupuncture for stress relief",
@@ -185,7 +185,7 @@ export const LONG_TAIL_FAQS = [
   },
   {
     q: "Best acupuncture specialist for pain management in Chennai?",
-    a: "Dr. Nivedha Priyadharshini, MD (Acu), is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with Cambridge psychotherapy in private, soundproof acoustic suites."
+    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with counselling and psychotherapy in private, soundproof acoustic suites."
   },
   {
     q: "Is acupuncture effective for sciatica pain?",

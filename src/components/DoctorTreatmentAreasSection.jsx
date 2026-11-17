@@ -32,7 +32,7 @@ const specialties = [
     domain: "Cluster 3: Neurological Conditions",
     title: "Acupuncture for Migraines & Nerve Pain",
     focus: "Targeted neuro-acupuncture reducing headache frequency, severe migraines, nerve pain, neuropathy, and facial Bell's palsy.",
-    protocol: "Neuro-Acupuncture + Cambridge CBT",
+    protocol: "Neuro-Acupuncture + Psychotherapy",
     items: [
       { name: "Acupuncture for Migraine & Headaches", tag: "Trigeminovascular" },
       { name: "Acupuncture for Sciatica & Nerve Pain", tag: "Sciatic Nerve" },
@@ -82,7 +82,7 @@ export default function DoctorTreatmentAreasSection({ onOpenBooking }) {
             </h2>
           </div>
           <p className="text-sm sm:text-base text-neutral-600 max-w-lg font-normal leading-relaxed">
-            Evidence-based protocols combining 14-meridian acupuncture with Cambridge psychotherapy.
+            Evidence-based protocols combining 14-meridian acupuncture with counselling and psychotherapy.
           </p>
         </div>
 

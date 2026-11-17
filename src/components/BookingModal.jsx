@@ -105,7 +105,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
             <span>Priority Consultation Reservation</span>
           </span>
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-            Book With Dr. Nivedha Priyadharshini
+            Book With Ms. Nivedha Priyadarshini
           </h3>
           <p className="text-xs sm:text-sm text-gray-600 font-normal mt-0.5">
             Strict 1-on-1 private appointments at our Virugambakkam sanctuary. Choose your date & time below.

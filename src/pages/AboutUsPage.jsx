@@ -21,7 +21,7 @@ export default function AboutUsPage({ onOpenBooking }) {
     {
       num: "02",
       roman: "II",
-      title: "Cambridge Psychotherapy & CBT",
+      title: "Psychotherapy & CBT",
       category: "Autonomic Nervous System Regulation",
       spec: "Evidence-Based Cognitive Restructuring",
       desc: "Structured CBT and REBT frameworks designed to identify psychosomatic triggers, anxiety loops, and insomnia patterns.",
@@ -90,7 +90,7 @@ export default function AboutUsPage({ onOpenBooking }) {
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-2xl">
-                Founded by <strong className="text-ink font-semibold">Dr. Nivedha Priyadharshini, MD (Acu)</strong> in Chennai. Bridging classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> with Cambridge psychotherapy for lasting natural pain relief.
+                Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Bridging classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture treatment</strong> with counselling and psychotherapy for lasting natural pain relief.
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-6 text-sm font-medium text-neutral-600">
@@ -100,11 +100,11 @@ export default function AboutUsPage({ onOpenBooking }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="w-2 h-2 rounded-full bg-brand" />
-                  <span>Licensed MD (Acupuncture Doctor)</span>
+                  <span>Licensed MD (Acu) Specialist</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="w-2 h-2 rounded-full bg-purple-600" />
-                  <span>Cambridge Certified Psychotherapy</span>
+                  <span>Certified Counselling & Psychotherapy</span>
                 </div>
               </div>
             </motion.div>

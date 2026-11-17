@@ -39,7 +39,7 @@ const TARIFF_ITEMS = [
   {
     id: 'counsel',
     title: 'Psychological Counselling Session',
-    subtitle: 'Cambridge-certified CBT, REBT & trauma-informed active listening in soundproof suites',
+    subtitle: 'Certified CBT, REBT & trauma-informed active listening in soundproof suites',
     fee: '₹600',
     duration: '45–60 Mins',
     icon: Heart,
@@ -102,7 +102,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden border-2 border-pink-100 flex-shrink-0 shadow-sm bg-neutral-100">
                   <img 
                     src={getAssetUrl('doctor_nivedha_portrait.jpg')} 
-                    alt="Dr. Nivedha Priyadharshini, MD (Acu)"
+                    alt="Ms. Nivedha Priyadarshini, MD (Acu)"
                     className="w-full h-full object-cover object-top"
                   />
                   <div className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white" title="Active Clinical Practice" />
@@ -115,15 +115,15 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                   </span>
 
                   <h3 className="font-display text-2xl sm:text-[26px] font-bold text-neutral-900 leading-snug">
-                    Dr. Nivedha Priyadharshini
+                    Ms. Nivedha Priyadarshini
                   </h3>
 
                   <p className="text-sm font-bold text-neutral-800">
-                    MD (Acu) • Cambridge Intl Dip.
+                    MD (Acu)
                   </p>
                   
-                  <p className="text-sm text-neutral-600 font-medium">
-                    PG Dip. Psychological Counselling
+                  <p className="text-xs text-neutral-600 font-semibold leading-relaxed">
+                    PG Diploma in Counselling and psychotherapy
                   </p>
                 </div>
               </div>

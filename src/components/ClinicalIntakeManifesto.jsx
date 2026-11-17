@@ -24,7 +24,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       title: "Pulse & Somatic Diagnostic Intake",
       duration: "15–20 Mins",
       eyebrow: "STAGE 01 · RADIAL EXAMINATION",
-      summary: "Before any needle is placed, Dr. Nivedha palpates 14 radial pulse positions across both wrists at three distinct depths to map exact internal meridian blockages.",
+      summary: "Before any needle is placed, Ms. Nivedha Priyadarshini palpates 14 radial pulse positions across both wrists at three distinct depths to map exact internal meridian blockages.",
       details: [
         "Bilateral palpation of Cun (寸), Guan (关), and Chi (尺) positions",
         "Tongue topography and sublingual vein micro-circulation check",
@@ -77,9 +77,9 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       title: "Psychological Integration & Home Care",
       duration: "15 Mins",
       eyebrow: "STAGE 03 · AUTONOMIC RECOVERY",
-      summary: "Acupuncture calms the nervous system into a restorative parasympathetic state. Dr. Nivedha debriefs physical releases with Cambridge cognitive frameworks.",
+      summary: "Acupuncture calms the nervous system into a restorative parasympathetic state. Ms. Nivedha Priyadarshini debriefs physical releases with cognitive and psychotherapy frameworks.",
       details: [
-        "Cambridge-certified CBT/REBT psychosomatic debrief",
+        "Evidence-based CBT/REBT psychosomatic debrief",
         "Postural realignment and ergonomic workplace guidance",
         "Personalized circadian sleep and meridian nutrition plan"
       ],
@@ -88,7 +88,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       image: getAssetUrl('zen_treatment.jpg'),
       imageCaption: "Quiet Recovery Sanctuary · Parasympathetic Stabilization",
       authenticClinicalData: {
-        title: "Cambridge Cognitive & Somatic Blueprint",
+        title: "Cognitive & Somatic Blueprint",
         carePillars: [
           { label: "Autonomic Recovery", desc: "15-minute resting phase consolidating central endorphin and vagus nerve decompression." },
           { label: "CBT Debrief", desc: "Connecting mental stress triggers with somatic neck, jaw, or lumbar tightness." },
@@ -360,7 +360,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
                     </motion.div>
                   )}
 
-                  {/* STAGE 03: Cambridge Psychological Integration & Somatic Home Care */}
+                  {/* STAGE 03: Psychological Integration & Somatic Home Care */}
                   {activeStep === 2 && (
                     <motion.div
                       key="stage-03"
@@ -384,7 +384,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
                         </div>
                       </div>
 
-                      {/* Genuine Cambridge Protocol Pillars */}
+                      {/* Clinical Protocol Pillars */}
                       <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-3">
                         <h4 className="font-display text-sm font-bold text-neutral-900">
                           {current.authenticClinicalData.title}
@@ -420,7 +420,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
                   <span>100% Single-Use Sterile EO Gas Protocol</span>
                 </span>
                 <span className="font-mono text-neutral-400">
-                  Chinmaya Nagar, Chennai · Dr. Nivedha Priyadharshini, MD (Acu)
+                  Chinmaya Nagar, Chennai · Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                 </span>
               </div>
 

@@ -1,5 +1,5 @@
 // ARURA COUNSELLING CENTRE - Official Comprehensive 15-Category Counselling Service Taxonomy
-// Verified with Cambridge Pedagogy & Evidence-Based Psychotherapeutic Frameworks
+// Verified with Evidence-Based Counselling & Psychotherapy Frameworks
 
 export const COUNSELLING_CATEGORIES = [
   {

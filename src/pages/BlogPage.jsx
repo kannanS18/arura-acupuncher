@@ -33,7 +33,7 @@ export default function BlogPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs font-semibold border border-pink-200/70 font-mono">
             <BookOpen className="w-3.5 h-3.5" />
-            <span>EDUCATIONAL CLINICAL GUIDES • DR. NIVEDHA PRIYADHARSHINI, MD (ACU)</span>
+            <span>EDUCATIONAL CLINICAL GUIDES • MS. NIVEDHA PRIYADARSHINI, MD (ACU)</span>
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">

@@ -66,13 +66,13 @@ export default function CounsellingPage({ onOpenBooking }) {
       
       {/* 1. Dignified Clinical Sanctuary Hero Banner (HeroSection 2 Architecture) */}
       <HeroSection
-        badge="CAMBRIDGE CLINICAL PSYCHOTHERAPY · 15 DISCIPLINES"
+        badge="CLINICAL COUNSELLING & PSYCHOTHERAPY · 15 DISCIPLINES"
         logo={{
           url: getAssetUrl("logo.png"),
           alt: "Arura Wellness Studio",
           text: "ARURA COUNSELLING CENTRE"
         }}
-        slogan="CAMBRIDGE PEDAGOGY & EVIDENCE-BASED PSYCHOTHERAPY"
+        slogan="EVIDENCE-BASED COUNSELLING & PSYCHOTHERAPY"
         words={[
           { text: "A" },
           { text: "Confidential" },
@@ -85,7 +85,7 @@ export default function CounsellingPage({ onOpenBooking }) {
           { text: "Balance.", highlight: true },
         ]}
         title="A Confidential Sanctuary for Mind, Emotion, and Autonomic Balance."
-        subtitle="Directed by Dr. Nivedha Priyadharshini (Cambridge Intl. Dip). Evidence-based psychotherapy in a private soundproof acoustic suite in Chennai."
+        subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private soundproof acoustic suite in Chennai."
         callToAction={{
           text: "Book Confidential Session (₹600)",
           href: "#/booking",
@@ -302,7 +302,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                       <span>One-on-One Acoustic Sanctuary Consultation</span>
                     </div>
                     <p className="text-[11px] text-neutral-500 font-mono">
-                      Lead Practitioner: Dr. Nivedha Priyadharshini, MD (Acu), PG Dip (Counselling)
+                      Lead Practitioner: Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                     </p>
                   </div>
 
@@ -323,7 +323,7 @@ export default function CounsellingPage({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* 3. Cambridge Clinical Ethics & Sanctuary Principles (Architectural Pillars - No Clunky Boxes) */}
+      {/* 3. Clinical Ethics & Sanctuary Principles (Architectural Pillars - No Clunky Boxes) */}
       <section className="py-20 lg:py-28 bg-white border-t border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           
@@ -332,10 +332,10 @@ export default function CounsellingPage({ onOpenBooking }) {
               Clinical Methodology & Ethics
             </span>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
-              Cambridge-Aligned Therapeutic Integrity
+              Therapeutic Integrity & Clinical Ethics
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-              Dr. Nivedha Priyadharshini integrates structured Western cognitive-behavioral principles (CBT/REBT) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
+              Ms. Nivedha Priyadarshini integrates structured Western cognitive-behavioral principles (CBT/REBT) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
             </p>
           </div>
 

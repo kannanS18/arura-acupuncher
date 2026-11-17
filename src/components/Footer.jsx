@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
             
             <p className="text-base text-gray-300 max-w-md leading-relaxed font-normal">
-              Chennai’s trusted <strong className="text-white font-semibold">acupuncture centre</strong> for 14-meridian treatment and counselling led by Dr. Nivedha Priyadharshini, MD (Acu).
+              Chennai’s trusted <strong className="text-white font-semibold">acupuncture centre</strong> for 14-meridian treatment and counselling led by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy.
             </p>
 
             <div className="flex items-center space-x-3 pt-2">
@@ -102,7 +102,7 @@ export default function Footer() {
           <p>© 2026 Arura Acupuncture & Counselling Centre. Virugambakkam, Chennai 600092.</p>
           <div className="flex items-center space-x-6">
             <span className="hover:text-gray-300 transition-colors">100% Single-Use Sterile Needles</span>
-            <span className="hover:text-gray-300 transition-colors">Cambridge-Certified Counselling</span>
+            <span className="hover:text-gray-300 transition-colors">Counselling & Psychotherapy</span>
             <button
               onClick={scrollToTop}
               className="p-2 rounded-lg bg-white/5 hover:bg-brand text-gray-400 hover:text-white transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-95 disabled:opacity-50"

@@ -82,7 +82,7 @@ export default function DoctorPhilosophySection() {
                 Autonomic Nervous System Regulation
               </span>
               <h3 className="font-display text-2xl font-bold text-neutral-900">
-                Cambridge Evidence-Based Counselling
+                Evidence-Based Counselling & Psychotherapy
               </h3>
             </div>
             <div className="w-11 h-11 rounded-xl bg-pink-50 border border-pink-200/80 flex items-center justify-center text-[#ed3373] shrink-0">
@@ -100,7 +100,7 @@ export default function DoctorPhilosophySection() {
                 Clinical Framework
               </span>
               <p className="text-xs font-semibold text-neutral-800">
-                Cambridge Certified CBT & REBT Protocols
+                Certified CBT & REBT Protocols
               </p>
             </div>
             <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200/70 space-y-1">
@@ -246,7 +246,7 @@ export default function DoctorPhilosophySection() {
               </blockquote>
 
               <p className="text-xs font-mono font-semibold text-neutral-500 uppercase tracking-wider">
-                — Dr. Nivedha Priyadharshini, MD (Acu)
+                — Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
               </p>
 
               {/* Succinct, high-impact clinical copy preserving 100% meaning */}
@@ -255,7 +255,7 @@ export default function DoctorPhilosophySection() {
                   Chronic cervical pain, lumbar spasms, and gut distress rarely occur in isolation from sympathetic overdrive and unresolved mental tension.
                 </p>
                 <p className="text-xs text-neutral-500">
-                  Dr. Nivedha combines classical meridian neuro-modulation with Cambridge clinical counselling to eliminate physical inflammation and autonomic stress simultaneously.
+                  Ms. Nivedha Priyadarshini combines classical meridian neuro-modulation with clinical counselling and psychotherapy to eliminate physical inflammation and autonomic stress simultaneously.
                 </p>
               </div>
             </div>
@@ -275,7 +275,7 @@ export default function DoctorPhilosophySection() {
                   Psychotherapy
                 </span>
                 <span className="text-xs font-bold text-neutral-900">
-                  Cambridge CBT/REBT
+                  CBT / REBT Counselling
                 </span>
               </div>
             </div>

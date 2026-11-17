@@ -29,7 +29,7 @@ export default function BookingPage() {
       fee: 1800,
       duration: 50,
       durationText: '50 mins (Weekly Limit: 20 Sessions)',
-      desc: 'Confidential CBT, REBT & Gestalt therapy in private acoustic suite with Dr. Nivedha.'
+      desc: 'Confidential CBT, REBT & Gestalt therapy in private acoustic suite with Ms. Nivedha Priyadarshini.'
     },
     {
       id: 'dual',
@@ -151,7 +151,7 @@ export default function BookingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Dr. Nivedha Priyadharshini, MD (Acu). Affordable session fee of ₹600 with 100% sterile single-use needles.
+              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Affordable session fee of ₹600 with 100% sterile single-use needles.
             </p>
           </motion.div>
         </div>
@@ -281,7 +281,7 @@ export default function BookingPage() {
               <div>
                 <h4 className="font-bold text-sm text-gray-900">Direct WhatsApp Concierge</h4>
                 <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Need an urgent emergency slot or route directions? Chat directly with Dr. Nivedha's clinical desk.
+                  Need an urgent emergency slot or route directions? Chat directly with Ms. Nivedha Priyadarshini's clinical desk.
                 </p>
                 <a
                   href={CLINIC_INFO.whatsappLink}

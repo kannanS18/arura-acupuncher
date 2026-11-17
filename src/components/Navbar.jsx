@@ -140,19 +140,33 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* Desktop Navigation with Hairline Liquid Tabs */}
-          <nav className="hidden lg:flex items-center justify-center">
-            <LiquidTabs
-              tabs={navTabs}
-              value={activeTab}
-              onValueChange={(path) => {
-                navigate(path);
-              }}
-              label="Main navigation"
-              size="sm"
-              className="bg-slate-100/90 border border-slate-200/90 shadow-[inset_0_1px_2.5px_rgba(0,0,0,0.06)]"
-            />
-          </nav>
+          {/* Desktop Navigation with Hairline Liquid Tabs & Quick Call Phone Access */}
+          <div className="hidden lg:flex items-center gap-3">
+            <nav className="flex items-center justify-center">
+              <LiquidTabs
+                tabs={navTabs}
+                value={activeTab}
+                onValueChange={(path) => {
+                  navigate(path);
+                }}
+                label="Main navigation"
+                size="sm"
+                className="bg-slate-100/90 border border-slate-200/90 shadow-[inset_0_1px_2.5px_rgba(0,0,0,0.06)]"
+              />
+            </nav>
+
+            {/* Quick Phone Call Button Near Booking Nav (PC Version Alone) */}
+            <a
+              href={`tel:${CLINIC_INFO.phone}`}
+              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full bg-brand text-white hover:bg-brand-dark shadow-2xs hover:shadow transition-all duration-200 text-xs font-bold active:scale-95 group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand cursor-pointer"
+              title={`Call Clinic: ${CLINIC_INFO.phone}`}
+              aria-label={`Call Clinic: ${CLINIC_INFO.phone}`}
+            >
+              <PhoneCall className="w-3.5 h-3.5 text-white transition-transform group-hover:rotate-12 group-hover:scale-110" />
+              <span className="hidden xl:inline font-mono tracking-tight">{CLINIC_INFO.phone}</span>
+              <span className="xl:hidden font-semibold">Call</span>
+            </a>
+          </div>
 
           {/* Mobile Menu Toggle */}
           <div className="lg:hidden flex items-center">

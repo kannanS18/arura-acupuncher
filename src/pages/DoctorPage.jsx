@@ -33,16 +33,16 @@ export default function DoctorPage({ onOpenBooking }) {
               {/* Doctor Name */}
               <div className="space-y-3">
                 <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08]">
-                  Dr. Nivedha <br />
-                  <span className="text-brand">Priyadharshini</span>
+                  Ms. Nivedha <br />
+                  <span className="text-brand">Priyadarshini</span>
                 </h1>
                 <p className="text-base sm:text-lg font-semibold text-white/90">
-                  Acupuncture Specialist • MD (Acu), Cambridge Intl Dip., PG Dip. Counselling Therapy
+                  Acupuncture Specialist • MD (Acu), PG Diploma in Counselling and psychotherapy
                 </p>
               </div>
 
               <p className="text-base sm:text-lg text-white/80 font-normal leading-relaxed max-w-2xl">
-                Chennai's trusted acupuncture specialist with 8+ years clinical expertise. Integrates 14-meridian acupuncture with Cambridge psychotherapy for chronic pain, sciatica, and migraines.
+                Chennai's trusted acupuncture specialist with 8+ years clinical expertise. Integrates 14-meridian acupuncture with counselling and psychotherapy for chronic pain, sciatica, and migraines.
               </p>
 
               {/* Key Verification Badges in Banner with Animated Counters */}
@@ -73,7 +73,7 @@ export default function DoctorPage({ onOpenBooking }) {
               {/* CTA Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
-                  onClick={() => onOpenBooking('Consultation with Dr. Nivedha', 600)}
+                  onClick={() => onOpenBooking('Consultation with Ms. Nivedha Priyadarshini', 600)}
                   className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 cursor-pointer"
                 >
                   <span>Schedule Consultation</span>
@@ -124,7 +124,7 @@ export default function DoctorPage({ onOpenBooking }) {
             className="space-y-6"
           >
             <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
-              Schedule Your Evaluation with Dr. Nivedha
+              Schedule Your Evaluation with Ms. Nivedha Priyadarshini
             </h2>
             <p className="text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed font-normal">
               Private 1-on-1 pulse evaluation, comprehensive medical history, and gentle needle therapy at Arura Acupuncture & Counselling Centre, Virugambakkam, Chennai.
@@ -134,7 +134,7 @@ export default function DoctorPage({ onOpenBooking }) {
                 to="/booking"
                 className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg inline-flex items-center space-x-2 transition-colors duration-200 motion-safe:active:scale-[0.98]"
               >
-                <span>Book Consultation with Dr. Nivedha (₹600)</span>
+                <span>Book Consultation with Ms. Nivedha Priyadarshini (₹600)</span>
                 <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

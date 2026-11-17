@@ -6,9 +6,9 @@
 export const CLINIC_INFO = {
   name: "Arura Wellness Studio",
   subtitle: "Acupuncture & Counselling Centre",
-  founder: "Dr. Nivedha Priyadharshini",
+  founder: "Ms. Nivedha Priyadarshini",
   founderTitle: "Founder & Lead Holistic Healer",
-  founderDegrees: "MD (Acu) • Cambridge Intl Dip. in Teaching & Learning • PG Dip. in Counselling Therapy",
+  founderDegrees: "MD (Acu), PG Diploma in Counselling and psychotherapy",
   phone: "+91 73580 31752",
   phoneRaw: "917358031752",
   address: "No 45A, Ground floor, Vaikasi Street, Chinmaya Nagar, Virugambakkam, Chennai - 600092",
@@ -33,7 +33,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Is acupuncture treatment safe?",
-    a: "When performed by a certified and licensed MD acupuncturist like Dr. Nivedha Priyadharshini, acupuncture is exceptionally safe with virtually zero side effects. At Arura Wellness Studio, we follow strict clinical sterility standards: 100% ethylene-oxide pre-sterilized, single-use surgical stainless steel needles opened right at your bedside and safely discarded immediately after treatment.",
+    a: "When performed by a certified and licensed MD acupuncturist like Ms. Nivedha Priyadarshini, acupuncture is exceptionally safe with virtually zero side effects. At Arura Wellness Studio, we follow strict clinical sterility standards: 100% ethylene-oxide pre-sterilized, single-use surgical stainless steel needles opened right at your bedside and safely discarded immediately after treatment.",
     category: "acupuncture"
   },
   {
@@ -93,7 +93,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Best acupuncture specialist for pain management in Chennai?",
-    a: "Dr. Nivedha Priyadharshini, MD (Acu), is one of Chennai's leading acupuncture specialists with over 8 years of clinical practice and 1,100+ documented patient recoveries. Her private sanctuary in Virugambakkam integrates classical acupuncture with Cambridge psychotherapy.",
+    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's leading acupuncture specialists with over 8 years of clinical practice and 1,100+ documented patient recoveries. Her private sanctuary in Virugambakkam integrates classical acupuncture with counselling and psychotherapy.",
     category: "acupuncture"
   },
 

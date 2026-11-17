@@ -47,7 +47,7 @@ export default function HomePage({ onOpenBooking }) {
                 15 Specialized Psychological Disciplines
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                Comprehensive adolescent, marriage, and burnout guidance led by Dr. Nivedha in soundproof acoustic suites.
+                Comprehensive adolescent, marriage, and burnout guidance led by Ms. Nivedha Priyadarshini in soundproof acoustic suites.
               </p>
             </div>
 
@@ -147,12 +147,12 @@ export default function HomePage({ onOpenBooking }) {
                   role: "Knee Surgery Avoided · Chennai"
                 },
                 {
-                  quote: "Dr. Nivedha's clinic is soothing and deeply personal. I was skeptical at first, but it made a lasting difference.",
+                  quote: "Ms. Nivedha Priyadarshini's clinic is soothing and deeply personal. I was skeptical at first, but it made a lasting difference.",
                   name: "Nila",
                   role: "Calm Environment & Care · Chennai"
                 },
                 {
-                  quote: "Relieved my chronic GERD and acidity after 7 sessions. Dr. Nivedha's clinical care and guidance are unmatched.",
+                  quote: "Relieved my chronic GERD and acidity after 7 sessions. Ms. Nivedha Priyadarshini's clinical care and guidance are unmatched.",
                   name: "Ramkumar Ananth",
                   role: "GERD & Acidity Relief · Chennai"
                 },
@@ -231,10 +231,10 @@ export default function HomePage({ onOpenBooking }) {
                 SPECIALIST PHYSICIAN
               </span>
               <h3 className="font-bold text-lg text-neutral-900">
-                Dr. Nivedha Priyadharshini
+                Ms. Nivedha Priyadarshini
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                MD (Acu) with 8+ years clinical expertise and 1,100+ documented patient recoveries across pain & neurology.
+                MD (Acu), PG Diploma in Counselling and psychotherapy with 8+ years clinical expertise and 1,100+ documented patient recoveries across pain & neurology.
               </p>
             </div>
 

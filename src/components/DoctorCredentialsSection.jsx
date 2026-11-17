@@ -14,21 +14,11 @@ const credentials = [
   },
   {
     serial: "02",
-    category: "International Diploma",
-    title: "Cambridge International Diploma in Teaching & Learning",
-    degreeCode: "CIDTL (UK)",
-    conferringBody: "Cambridge Assessment International Education · University of Cambridge",
-    regNumber: "CIDTL · Cambridge Framework",
-    scope: "Structured Clinical Communication & Patient Pathophysiology Pedagogy",
-    standing: "University Recognized"
-  },
-  {
-    serial: "03",
     category: "Post Graduate Diploma",
-    title: "Post Graduate Diploma in Counselling Therapy",
-    degreeCode: "PG Dip (Counselling)",
+    title: "PG Diploma in Counselling and psychotherapy",
+    degreeCode: "PG Dip",
     conferringBody: "Certified Cognitive Behavioral & REBT Psychotherapy Council",
-    regNumber: "PGD-CT · REBT/CBT",
+    regNumber: "PGD-CP · REBT/CBT",
     scope: "Autonomic Nervous Regulation & Trauma-Informed Somatic De-escalation",
     standing: "Board Certified"
   }
@@ -56,8 +46,8 @@ export default function DoctorCredentialsSection() {
           </div>
         </div>
 
-        {/* 3 Refined Architectural Certificate Cards (No Gradients, No Clutter, Pure Clinical Elegance) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        {/* 2 Refined Architectural Certificate Cards (Pure Clinical Elegance) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-4xl mx-auto">
           {credentials.map((cred) => (
             <div
               key={cred.serial}

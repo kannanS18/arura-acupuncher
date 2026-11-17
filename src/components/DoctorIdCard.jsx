@@ -74,7 +74,7 @@ export default function DoctorIdCard() {
                 <div className="relative w-28 h-36 rounded-2xl overflow-hidden border-2 border-[#ed3373] shadow-md shrink-0 bg-neutral-100">
                   <img
                     src={getAssetUrl('doctor_nivedha_portrait.jpg')}
-                    alt="Dr. Nivedha Priyadharshini"
+                    alt="Ms. Nivedha Priyadarshini"
                     className="w-full h-full object-cover object-top"
                   />
                   {/* Security Verification Ribbon */}
@@ -89,10 +89,10 @@ export default function DoctorIdCard() {
                     Lead Clinical Acupuncturist
                   </span>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 leading-tight">
-                    Dr. Nivedha Priyadharshini
+                    Ms. Nivedha Priyadarshini
                   </h3>
-                  <p className="text-sm font-bold text-[#ed3373] font-mono">
-                    MD (Acu)
+                  <p className="text-xs font-bold text-[#ed3373] font-mono leading-snug">
+                    MD (Acu), PG Diploma in Counselling and psychotherapy
                   </p>
                   
                   {/* Registration Chip Box */}
@@ -136,11 +136,11 @@ export default function DoctorIdCard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
-                    <span className="font-medium">Cambridge Intl Dip. in Teaching & Learning</span>
+                    <span className="font-medium">MD (Acu) — Classical Acupuncture</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#ed3373] shrink-0" />
-                    <span className="font-medium">PG Diploma in Counselling Therapy (CBT / REBT)</span>
+                    <span className="font-medium">PG Diploma in Counselling and psychotherapy</span>
                   </div>
                 </div>
               </div>
