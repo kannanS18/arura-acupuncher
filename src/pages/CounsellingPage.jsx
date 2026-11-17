@@ -57,7 +57,7 @@ export default function CounsellingPage({ onOpenBooking }) {
     if (typeof onOpenBooking === 'function') {
       onOpenBooking(`Counselling: ${serviceName}`, 1800);
     } else {
-      window.location.hash = '#/booking';
+      window.location.hash = '#/booking?service=counselling';
     }
   };
 
@@ -88,12 +88,16 @@ export default function CounsellingPage({ onOpenBooking }) {
         subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private, quiet therapy room in Chennai."
         callToAction={{
           text: "Book Confidential Session (₹1,800)",
-          href: "#/booking",
+          href: "#/booking?service=counselling",
           onClick: () => handleBooking('Psychological Counselling Initial Session')
         }}
         secondaryAction={{
           text: "100% Private, Quiet Room",
-          href: "#/clinic",
+          href: "#ethics",
+          onClick: () => {
+            const el = document.getElementById('ethics');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          },
           icon: <Lock className="h-4 w-4 text-emerald-600 shrink-0" />
         }}
         backgroundImage={getAssetUrl('clinic_interior.jpg')}
@@ -324,7 +328,7 @@ export default function CounsellingPage({ onOpenBooking }) {
       </section>
 
       {/* 3. Clinical Ethics & Sanctuary Principles (Architectural Pillars - No Clunky Boxes) */}
-      <section className="py-20 lg:py-28 bg-white border-t border-neutral-200/80">
+      <section id="ethics" className="py-20 lg:py-28 bg-white border-t border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           
           <div className="max-w-3xl space-y-3">

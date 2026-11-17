@@ -7,12 +7,17 @@ import { getAssetUrl } from '../utils/assetUrl';
 export default function BookingModal({ isOpen, onClose, preselectedService, preselectedPrice }) {
   if (!isOpen) return null;
 
-  const serviceTitle = preselectedService || 'Clinical Consultation & Pulse Assessment (₹500)';
+  const rawTitle = preselectedService || 'Clinical Consultation & Pulse Assessment (₹500)';
+  const serviceTitle = preselectedPrice && !rawTitle.includes('₹') ? `${rawTitle} (₹${preselectedPrice})` : rawTitle;
+  const isCounselling = serviceTitle.toLowerCase().includes('counsel') || serviceTitle.toLowerCase().includes('psychotherapy');
   const serviceDuration = 
-    serviceTitle.toLowerCase().includes('counsel') || serviceTitle.toLowerCase().includes('psychotherapy') ? 50 :
+    isCounselling ? 50 :
     serviceTitle.toLowerCase().includes('dual') || serviceTitle.toLowerCase().includes('mind') || serviceTitle.toLowerCase().includes('full body') ? 90 :
     serviceTitle.toLowerCase().includes('acupuncture') ? 30 :
     20;
+  const serviceDescription = isCounselling
+    ? "Confidential 1-on-1 psychotherapy & psychological counselling session in a private, quiet therapy room."
+    : "14-pulse assessment, tongue diagnosis & private acupuncture consultation.";
 
   const getClinicSlots = async ({ from, to, timeZone }, signal) => {
     const dailySlotTemplates = [
@@ -125,7 +130,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
               src: getAssetUrl('doctor_nivedha_portrait.jpg?v=2')
             }}
             title={serviceTitle}
-            description="14-pulse assessment, tongue diagnosis & private acupuncture consultation."
+            description={serviceDescription}
             duration={serviceDuration}
             location="Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-Clinic Only • No House Visits)"
             getSlots={getClinicSlots}
@@ -144,7 +149,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
               📍 Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092
             </span>
             <span className="text-amber-700 font-medium">
-              🔒 In-Clinic Appointments Only (No House Visits) • Consultation (₹500) requires advance payment to confirm slot; other therapies payable at clinic.
+              🔒 In-Clinic Appointments Only (No House Visits) • {isCounselling ? "Counselling session (₹1,800) payable at clinic." : "Consultation (₹500) requires advance payment to confirm slot; other therapies payable at clinic."}
             </span>
           </div>
           <a

@@ -52,8 +52,10 @@ export interface HeroSectionProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   };
   secondaryAction?: {
     text: string;
-    href: string;
+    href?: string;
+    onClick?: () => void;
     icon?: React.ReactNode;
+    target?: string;
   };
   backgroundImage: string;
   floatingBadge?: {
@@ -269,15 +271,26 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 </a>
 
                 {secondaryAction && (
-                  <a
-                    href={secondaryAction.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-input bg-background/80 backdrop-blur-xs px-6 py-3.5 text-sm sm:text-base font-semibold text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98]"
-                  >
-                    {secondaryAction.icon}
-                    <span>{secondaryAction.text}</span>
-                  </a>
+                  secondaryAction.onClick ? (
+                    <button
+                      type="button"
+                      onClick={secondaryAction.onClick}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-input bg-background/80 backdrop-blur-xs px-6 py-3.5 text-sm sm:text-base font-semibold text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                    >
+                      {secondaryAction.icon}
+                      <span>{secondaryAction.text}</span>
+                    </button>
+                  ) : (
+                    <a
+                      href={secondaryAction.href || '#'}
+                      target={secondaryAction.target || '_self'}
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-input bg-background/80 backdrop-blur-xs px-6 py-3.5 text-sm sm:text-base font-semibold text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98]"
+                    >
+                      {secondaryAction.icon}
+                      <span>{secondaryAction.text}</span>
+                    </a>
+                  )
                 )}
               </motion.div>
             </motion.main>

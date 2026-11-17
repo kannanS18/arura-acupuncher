@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShieldCheck, MessageCircle, CheckCircle2, Sparkles, Clock } from 'lucide-react';
 import { CLINIC_INFO } from '../data/websiteContent';
@@ -6,6 +7,9 @@ import { Booking } from '../components/booking';
 import { getAssetUrl } from '../utils/assetUrl';
 
 export default function BookingPage() {
+  const [searchParams] = useSearchParams();
+  const serviceParam = searchParams.get('service');
+
   const services = [
     {
       id: 'diagnostic',
@@ -45,7 +49,26 @@ export default function BookingPage() {
     }
   ];
 
-  const [selectedService, setSelectedService] = useState(services[0]);
+  const getInitialService = () => {
+    if (serviceParam) {
+      const match = services.find(
+        (s) => s.id === serviceParam.toLowerCase() || s.title.toLowerCase().includes(serviceParam.toLowerCase())
+      );
+      if (match) return match;
+    }
+    return services[0];
+  };
+
+  const [selectedService, setSelectedService] = useState(getInitialService);
+
+  useEffect(() => {
+    if (serviceParam) {
+      const match = services.find(
+        (s) => s.id === serviceParam.toLowerCase() || s.title.toLowerCase().includes(serviceParam.toLowerCase())
+      );
+      if (match) setSelectedService(match);
+    }
+  }, [serviceParam]);
 
   // Generates real clinical appointment slots according to clinic working hours
   const getClinicSlots = useCallback(async ({ from, to, timeZone }, signal) => {
