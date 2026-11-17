@@ -108,7 +108,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
               initial={{ opacity: 0.9 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.15]"
+              className="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.2]"
             >
               Acupuncture & Counselling Tariff: <br />
               <span className="text-brand">Affordable Treatment in Chennai</span>

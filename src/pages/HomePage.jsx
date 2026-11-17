@@ -43,7 +43,7 @@ export default function HomePage({ onOpenBooking }) {
                 <Brain className="w-4 h-4" />
                 <span>ARURA COUNSELLING CENTRE</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-5xl lg:text-[46px] font-bold text-neutral-900 tracking-tight leading-tight">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight leading-tight">
                 15 Specialized Psychological Disciplines
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
@@ -127,7 +127,7 @@ export default function HomePage({ onOpenBooking }) {
             <span className="text-sm font-bold text-[#ed3373] uppercase tracking-wider font-mono">
               PATIENT RECOVERIES
             </span>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-[46px] font-bold text-neutral-900 tracking-tight">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight">
               Verified Patient Transformations
             </h2>
             <p className="text-base sm:text-lg text-neutral-700 font-normal">
@@ -289,7 +289,7 @@ export default function HomePage({ onOpenBooking }) {
               <span className="text-sm font-mono font-bold text-[#ed3373] tracking-widest uppercase">
                 ARURA WELLNESS STUDIO
               </span>
-              <h2 className="font-display text-3xl sm:text-5xl lg:text-[46px] font-bold text-white tracking-tight leading-tight">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight">
                 Begin Your Journey to Root Recovery Today
               </h2>
               <p className="text-base sm:text-lg text-neutral-300 max-w-xl mx-auto font-normal leading-relaxed">

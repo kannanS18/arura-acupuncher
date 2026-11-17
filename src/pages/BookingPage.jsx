@@ -149,7 +149,7 @@ export default function BookingPage() {
               <span>ACUPUNCTURE & COUNSELLING CENTRE • VIRUGAMBAKKAM, CHENNAI</span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.2]">
               Acupuncture & Counselling Consultation <br />
               <span className="text-brand">in Virugambakkam, Chennai</span>
             </h1>

@@ -36,7 +36,7 @@ export default function BlogPage() {
             <span>EDUCATIONAL CLINICAL GUIDES • MS. NIVEDHA PRIYADARSHINI, MD (ACU)</span>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.2]">
             Acupuncture Treatment & Therapy Guides: <br />
             <span className="text-brand">Evidence-Based Natural Healing</span>
           </h1>

@@ -80,12 +80,12 @@ export default function AboutUsPage({ onOpenBooking }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-50 text-brand text-sm font-semibold border border-pink-200/70 font-mono">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 text-brand text-xs sm:text-sm font-semibold border border-pink-200/70 font-mono">
                 <ShieldCheck className="w-4 h-4" />
                 <span>PROFESSIONAL ACUPUNCTURE & COUNSELLING CENTRE • CHENNAI</span>
               </div>
 
-              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.08]">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.2]">
                 Professional Acupuncture & Counselling Specialist in Chennai
               </h1>
 
@@ -134,7 +134,7 @@ export default function AboutUsPage({ onOpenBooking }) {
             <span className="text-sm font-mono font-bold text-brand uppercase tracking-wider">
               EVIDENCE-BASED RECOVERY
             </span>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-[46px] font-bold text-ink tracking-tight">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-ink tracking-tight">
               Acupuncture Therapy Benefits & Natural Pain Relief
             </h2>
             <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">

@@ -100,7 +100,7 @@ export const BLOG_POSTS = [
     ],
     takeaways: [
       "True healing requires treating the emotional architect alongside the biological symptom.",
-      "Sound-dampened acoustic rooms protect strict clinical confidentiality.",
+      "Quiet, private consultation rooms protect strict patient confidentiality.",
       "Integrated dual therapy creates lasting recovery rather than temporary masking."
     ]
   },

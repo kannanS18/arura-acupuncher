@@ -195,13 +195,13 @@ export default function CounsellingPage({ onOpenBooking }) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* Left Column (4 cols): Sticky Taxonomy Rail */}
-              <div className="lg:col-span-4 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs overflow-hidden lg:sticky lg:top-24 max-h-[320px] lg:max-h-[750px] flex flex-col">
-                <div className="p-4 border-b border-neutral-100 bg-neutral-50/60 flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold text-neutral-500 uppercase tracking-wider">
+              <div className="lg:col-span-4 rounded-2xl bg-white border border-neutral-200 shadow-xs overflow-hidden lg:sticky lg:top-24 max-h-[360px] lg:max-h-[750px] flex flex-col">
+                <div className="p-4 border-b border-neutral-200 bg-neutral-50 flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-neutral-800 uppercase tracking-wider">
                     Disciplines (15)
                   </span>
-                  <span className="text-[10px] font-mono text-neutral-400">
-                    Click to inspect
+                  <span className="text-xs font-mono text-neutral-500 font-medium">
+                    Select to explore
                   </span>
                 </div>
 
@@ -213,22 +213,22 @@ export default function CounsellingPage({ onOpenBooking }) {
                       <button
                         key={cat.id}
                         onClick={() => setActiveCategoryId(cat.id)}
-                        className={`w-full text-left p-3.5 transition-all flex items-center justify-between gap-3 text-xs ${
+                        className={`w-full text-left p-3.5 sm:p-4 transition-all flex items-center justify-between gap-3 cursor-pointer ${
                           isSelected
-                            ? 'bg-pink-50/60 text-neutral-950 font-bold border-l-3 border-[#ed3373]'
-                            : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 border-l-3 border-transparent'
+                            ? 'bg-pink-50/90 text-neutral-950 font-bold border-l-4 border-[#ed3373]'
+                            : 'text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 border-l-4 border-transparent'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className={`text-[11px] font-mono shrink-0 ${isSelected ? 'text-[#ed3373] font-bold' : 'text-neutral-400'}`}>
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className={`text-xs font-mono font-bold shrink-0 ${isSelected ? 'text-[#ed3373]' : 'text-neutral-400'}`}>
                             {cat.num}
                           </span>
-                          <span className="truncate">{cat.title}</span>
+                          <span className="text-sm font-semibold truncate leading-snug">{cat.title}</span>
                         </div>
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0 border ${
+                        <span className={`text-xs font-mono px-2.5 py-0.5 rounded-full shrink-0 border ${
                           isSelected 
-                            ? 'bg-white text-[#ed3373] border-pink-200 font-bold' 
-                            : 'bg-neutral-100 text-neutral-400 border-neutral-200/60'
+                            ? 'bg-white text-[#ed3373] border-pink-200 font-bold shadow-xs' 
+                            : 'bg-neutral-100 text-neutral-600 border-neutral-200'
                         }`}>
                           {cat.services.length}
                         </span>
@@ -239,79 +239,79 @@ export default function CounsellingPage({ onOpenBooking }) {
               </div>
 
               {/* Right Column (8 cols): Active Discipline Dossier Canvas */}
-              <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200/90 shadow-sm p-7 sm:p-10 space-y-8">
+              <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200 shadow-sm p-6 sm:p-9 space-y-7">
                 
                 {/* Dossier Header */}
                 <div className="space-y-4 border-b border-neutral-100 pb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#ed3373] flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#ed3373]" />
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#ed3373] flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#ed3373]" />
                       Clinical Discipline {activeCategory.num} of 15
                     </span>
-                    <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-700">
+                    <span className="text-xs font-mono font-bold px-3.5 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-800">
                       Standard · 50 Mins · ₹1,800
                     </span>
                   </div>
 
-                  <h3 className="font-display text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-tight">
+                  <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 tracking-tight leading-snug">
                     {activeCategory.title}
                   </h3>
 
-                  <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
+                  <p className="text-base text-neutral-700 leading-relaxed font-normal">
                     {activeCategory.summary}
                   </p>
                 </div>
 
                 {/* Focus Areas Directory Grid */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400">
+                <div className="space-y-3.5">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-neutral-700">
                       Available Therapeutic Focus Areas ({activeCategory.services.length})
                     </span>
-                    <span className="text-[11px] font-mono text-[#ed3373]">
+                    <span className="text-xs font-semibold text-[#ed3373]">
                       Click any focus area to book
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {activeCategory.services.map((service, sIdx) => (
                       <button
                         key={sIdx}
                         onClick={() => handleBooking(service)}
-                        className="group/item p-3.5 rounded-xl bg-neutral-50/70 hover:bg-pink-50/50 border border-neutral-200/70 hover:border-pink-300 transition-all text-left flex items-center justify-between gap-3 cursor-pointer"
+                        className="group/item p-4 rounded-xl bg-white hover:bg-pink-50/70 border border-neutral-200 hover:border-[#ed3373]/50 transition-all text-left flex items-center justify-between gap-3 cursor-pointer shadow-xs hover:shadow-sm"
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="text-[10px] font-mono text-neutral-400 group-hover/item:text-[#ed3373] shrink-0">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-xs font-mono font-bold text-neutral-400 group-hover/item:text-[#ed3373] shrink-0">
                             {(sIdx + 1).toString().padStart(2, '0')}.
                           </span>
-                          <span className="text-xs font-semibold text-neutral-800 group-hover/item:text-neutral-950 truncate">
+                          <span className="text-sm font-semibold text-neutral-800 group-hover/item:text-neutral-950 leading-snug">
                             {service}
                           </span>
                         </div>
-                        <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover/item:text-[#ed3373] group-hover/item:translate-x-0.5 transition-all shrink-0" />
+                        <ArrowRight className="w-4 h-4 text-neutral-400 group-hover/item:text-[#ed3373] group-hover/item:translate-x-0.5 transition-all shrink-0" />
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Direct Action & Sanctuary Assurance Bar */}
-                <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-neutral-50/80 p-5 rounded-2xl border border-neutral-200/80">
+                {/* Direct Action & Privacy Assurance Bar */}
+                <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-neutral-50/90 p-5 sm:p-6 rounded-2xl border border-neutral-200">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs font-bold text-neutral-900">
-                      <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>One-on-One Acoustic Sanctuary Consultation</span>
+                    <div className="flex items-center gap-2 text-sm font-bold text-neutral-900">
+                      <Lock className="w-4 h-4 text-emerald-600" />
+                      <span>Private 1-on-1 In-Clinic Consultation</span>
                     </div>
-                    <p className="text-[11px] text-neutral-500 font-mono">
+                    <p className="text-xs sm:text-sm text-neutral-600 font-medium">
                       Lead Practitioner: Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                     </p>
                   </div>
 
                   <button
                     onClick={() => handleBooking(`${activeCategory.title} Consultation`)}
-                    className="px-6 py-3 rounded-xl bg-neutral-900 hover:bg-[#ed3373] text-white text-xs font-bold transition-colors shadow-2xs whitespace-nowrap flex items-center justify-center gap-2"
+                    className="px-6 py-3.5 rounded-xl bg-neutral-900 hover:bg-[#ed3373] text-white text-sm font-bold transition-colors shadow-xs whitespace-nowrap flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Schedule Consultation (₹1,800)</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -361,7 +361,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                 100% Strict Confidentiality
               </h4>
               <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
-                Every dialogue is protected under strict clinical ethics. Private sound-dampened acoustic room ensures complete peace of mind.
+                Every dialogue is protected under strict clinical ethics. Private, quiet consultation rooms ensure complete peace of mind.
               </p>
             </div>
 

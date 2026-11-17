@@ -181,7 +181,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck className="w-4 h-4 text-[#ed3373] flex-shrink-0" />
-                  <span className="text-neutral-800 font-medium">Acoustic soundproof clinical suites</span>
+                  <span className="text-neutral-800 font-medium">Quiet, private soundproof rooms</span>
                 </div>
               </div>
 

@@ -32,7 +32,7 @@ export default function DoctorPage({ onOpenBooking }) {
 
               {/* Doctor Name */}
               <div className="space-y-3">
-                <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08]">
+                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
                   Ms. Nivedha <br />
                   <span className="text-brand">Priyadarshini</span>
                 </h1>
