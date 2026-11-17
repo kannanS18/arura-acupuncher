@@ -82,7 +82,7 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
         contactInfo={{
           website: "arura.in • Daily 10AM–8PM",
           phone: "+91 73580 31752",
-          address: "No 45A, Vaikasi St, Chinmaya Nagar",
+          address: "45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar",
         }}
       />
 

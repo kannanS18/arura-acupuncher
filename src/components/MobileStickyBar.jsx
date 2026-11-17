@@ -58,7 +58,7 @@ export default function MobileStickyBar() {
 
         {/* 5. Clinic Map & Navigation */}
         <a 
-          href="https://maps.google.com/?q=Arura+Acupuncture+Virugambakkam+Chennai"
+          href="https://maps.google.com/?q=Ground+floor,+45A,+Vaikasi+St,+Chinmaya+Nagar,+Ramalinga+Nagar,+Virugambakkam,+Chennai,+Tamil+Nadu+600092"
           target="_blank"
           rel="noreferrer"
           className="flex-1 flex flex-col items-center justify-center py-1 min-h-[44px] text-gray-700 hover:text-brand transition-colors duration-200 motion-safe:active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"

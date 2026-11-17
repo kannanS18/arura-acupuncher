@@ -33,7 +33,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       quote: "“We listen before we touch. The pulse reveals tensions long before physical symptoms appear.”",
       icon: HeartPulse,
       image: getAssetUrl('clinic_interior.jpg'),
-      imageCaption: "Private Sanctuary Consultation Suite · Chinmaya Nagar, Chennai",
+      imageCaption: "Private Sanctuary Consultation Suite · Chinmaya Nagar, Ramalinga Nagar, Chennai",
       authenticClinicalData: {
         title: "Classical Radial Artery Diagnostics",
         positions: [
@@ -420,7 +420,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
                   <span>100% Single-Use Sterile EO Gas Protocol</span>
                 </span>
                 <span className="font-mono text-neutral-400">
-                  Chinmaya Nagar, Chennai · Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
+                  Chinmaya Nagar, Ramalinga Nagar, Chennai · Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                 </span>
               </div>
 

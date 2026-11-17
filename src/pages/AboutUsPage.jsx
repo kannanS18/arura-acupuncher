@@ -233,11 +233,11 @@ export default function AboutUsPage({ onOpenBooking }) {
             transition={{ duration: 0.2 }}
           >
             <div className="space-y-3 text-center md:text-left relative z-10">
-              <h3 className="font-display text-2xl sm:text-4xl font-bold">
-                Chinmaya Nagar, Virugambakkam, Chennai
+              <h3 className="font-display text-2xl sm:text-3xl font-bold">
+                Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092
               </h3>
               <p className="text-sm text-neutral-300 font-normal max-w-lg">
-                Daily consultations from 10:00 AM to 8:00 PM. Private acoustic suites to protect patient confidentiality.
+                Daily consultations from 10:00 AM to 8:00 PM. In-clinic private acoustic suites only (no house visits). Prior appointment required.
               </p>
             </div>
 

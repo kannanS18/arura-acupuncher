@@ -381,7 +381,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                     </div>
                   </div>
                   <div className="text-xs text-neutral-600 pt-2 border-t border-pink-200/50">
-                    Private acoustic suite in Virugambakkam
+                    Private acoustic suite in Virugambakkam (In-Clinic Only • No House Visits)
                   </div>
                 </div>
               </div>

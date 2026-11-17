@@ -915,6 +915,22 @@ export function Booking({
                 </dl>
               )}
 
+              {call && (
+                <div className="mt-3 rounded-2xl border border-amber-300 bg-amber-50/80 p-3.5 text-xs text-amber-950 space-y-1.5">
+                  <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                    <span>📍 In-Clinic Only • No House Visits</span>
+                  </div>
+                  <p className="text-[12px] text-amber-800 leading-relaxed font-normal">
+                    <strong>Clinic Address:</strong> Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092.
+                  </p>
+                  <p className="text-[12px] text-amber-900 font-semibold leading-relaxed">
+                    {title.toLowerCase().includes('consultation') || title.toLowerCase().includes('pulse')
+                      ? '⚠️ Diagnostic consultation fee (₹500) must be paid in advance via UPI / GPay (73580 31752) to confirm and lock this private slot. Please share screenshot on WhatsApp.'
+                      : '✓ Therapy session fee is payable in-person directly at the clinic during your visit.'}
+                  </p>
+                </div>
+              )}
+
               {call && booked && (
                 <div className="mt-4 flex flex-col gap-2">
                   <div className="grid gap-2 @[420px]:grid-cols-2">
@@ -934,10 +950,12 @@ export function Booking({
 
                   <a
                     href={`https://wa.me/${CLINIC_INFO.phoneRaw}?text=${encodeURIComponent(
-                      `Hello Ms. Nivedha Priyadarshini,\n\nI have scheduled an appointment at Arura Wellness Studio:\n\n` +
+                      `Hello Ms. Nivedha Priyadarshini,\n\nI have scheduled an in-clinic appointment at Arura Wellness Studio:\n\n` +
                       `• Patient: ${call.name}\n` +
                       `• Service: ${title}\n` +
                       `• Date: ${fmt.short.format(noon(dayIn(call.start.getTime(), call.timeZone)))}, ${timeShort(call.start.getTime())}\n` +
+                      `• Clinic Location: Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-Clinic Only • No House Visits)\n` +
+                      `• Payment: ${title.toLowerCase().includes('consultation') || title.toLowerCase().includes('pulse') ? 'Consultation Fee ₹500 (Advance paid via UPI)' : 'Session fee payable at clinic'}\n` +
                       `• Email: ${call.email}\n` +
                       (call.note ? `• Notes: ${call.note}\n` : '') +
                       `\nKindly confirm my reservation. Thank you!`

@@ -126,8 +126,8 @@ export default function DoctorPage({ onOpenBooking }) {
             <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
               Schedule Your Evaluation with Ms. Nivedha Priyadarshini
             </h2>
-            <p className="text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed font-normal">
-              Private 1-on-1 pulse evaluation, comprehensive medical history, and gentle needle therapy at Arura Acupuncture & Counselling Centre, Virugambakkam, Chennai.
+            <p className="text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed font-normal">
+              Private 1-on-1 in-clinic pulse evaluation, comprehensive medical history, and gentle needle therapy at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai (In-clinic visits only • No house visits).
             </p>
             <div className="pt-2">
               <Link

@@ -141,7 +141,7 @@ export default function BlogPostPage({ onOpenBooking }) {
                 Consult with Ms. Nivedha Priyadarshini
               </h3>
               <p className="text-xs sm:text-sm text-gray-300 font-normal max-w-md">
-                1-on-1 private evaluation in our Virugambakkam sanctuary. Flat ₹500 fee (20 min) with radial pulse assessment included.
+                1-on-1 private evaluation in our Virugambakkam sanctuary (45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar). Consultation fee ₹500 (20 min, advance paid). In-clinic only (no house visits).
               </p>
             </div>
 

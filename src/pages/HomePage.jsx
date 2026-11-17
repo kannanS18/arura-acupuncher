@@ -204,13 +204,13 @@ export default function HomePage({ onOpenBooking }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/70 space-y-2">
               <span className="text-xs font-mono font-bold text-[#ed3373] uppercase tracking-wider block">
-                LOCALITY & ACCESS
+                CLINIC SANCTUARY
               </span>
               <h3 className="font-bold text-lg text-neutral-900">
-                Virugambakkam, Chennai
+                Chinmaya Nagar & Ramalinga Nagar
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                Easily accessible from Chinmaya Nagar, Koyambedu, Vadapalani, Anna Nagar, Porur, and KK Nagar.
+                Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092. In-clinic consultations only (no house visits).
               </p>
             </div>
 
@@ -222,7 +222,7 @@ export default function HomePage({ onOpenBooking }) {
                 Transparent Tariff (From ₹500)
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                Consultation at ₹500 (20 min) and acupuncture at ₹600 (25–30 min) with zero hidden charges. Single-use sterile needles included.
+                Consultation at ₹500 (20 min, advance paid to confirm slot). Acupuncture at ₹600 (25–30 min) and other therapies payable at clinic.
               </p>
             </div>
 
@@ -246,7 +246,7 @@ export default function HomePage({ onOpenBooking }) {
                 Mon–Sun: 10AM to 8PM
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
-                Consultations conducted strictly by prior appointment in private, acoustic soundproof suites.
+                Consultations conducted strictly by prior appointment in private soundproof suites. In-clinic visits only (no house visits).
               </p>
             </div>
           </div>

@@ -112,7 +112,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
             Book With Ms. Nivedha Priyadarshini
           </h3>
           <p className="text-xs sm:text-sm text-gray-600 font-normal mt-0.5">
-            Strict 1-on-1 private appointments at our Virugambakkam sanctuary. Choose your date & time below.
+            Strict 1-on-1 in-clinic appointments at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (No house visits). Choose your date & time below.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
             title={serviceTitle}
             description="14-pulse assessment, tongue diagnosis & private acupuncture consultation."
             duration={serviceDuration}
-            location="Arura Studio • Chinmaya Nagar, Virugambakkam"
+            location="Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-Clinic Only • No House Visits)"
             getSlots={getClinicSlots}
             onBook={handleBook}
             onCancel={handleCancel}
@@ -138,13 +138,20 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
         </div>
 
         {/* Quick Footer Links */}
-        <div className="w-full pt-4 mt-4 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
-          <span>Fee collected after personal session • No advance payment lock</span>
+        <div className="w-full pt-4 mt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+          <div className="flex flex-col gap-0.5 text-center sm:text-left">
+            <span className="font-semibold text-gray-700">
+              📍 Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092
+            </span>
+            <span className="text-amber-700 font-medium">
+              🔒 In-Clinic Appointments Only (No House Visits) • Consultation (₹500) requires advance payment to confirm slot; other therapies payable at clinic.
+            </span>
+          </div>
           <a
             href={CLINIC_INFO.whatsappLink}
             target="_blank"
             rel="noreferrer"
-            className="text-emerald-700 hover:text-emerald-800 font-semibold inline-flex items-center gap-1"
+            className="text-emerald-700 hover:text-emerald-800 font-semibold inline-flex items-center gap-1 shrink-0"
           >
             <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
             <span>WhatsApp Quick Desk</span>

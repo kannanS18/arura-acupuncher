@@ -215,11 +215,11 @@ export default function DoctorIdCard() {
                   <span className="text-xs font-mono font-bold text-neutral-500 uppercase block">
                     Clinical Sanctuary Location
                   </span>
-                  <p className="font-mono text-sm text-neutral-800">
-                    Chinmaya Nagar, Virugambakkam, Chennai - 600092
+                  <p className="font-mono text-xs font-bold text-neutral-800">
+                    Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai - 600092
                   </p>
-                  <p className="text-xs text-neutral-600">
-                    Hours: Mon–Sun · 10:00 AM to 8:00 PM (By Prior Appointment)
+                  <p className="text-xs text-neutral-600 font-medium">
+                    In-Clinic Consultations Only (No House Visits) · Mon–Sun 10AM–8PM
                   </p>
                 </div>
               </div>

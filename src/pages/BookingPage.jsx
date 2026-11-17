@@ -13,6 +13,7 @@ export default function BookingPage() {
       fee: 500,
       duration: 20,
       durationText: '20 mins',
+      paymentTerm: 'Advance paid to confirm slot',
       desc: 'Comprehensive medical history, 14-radial pulse diagnosis, tongue examination & treatment plan.'
     },
     {
@@ -21,6 +22,7 @@ export default function BookingPage() {
       fee: 600,
       duration: 30,
       durationText: '25 – 30 mins (Daily Limit: 50 Sessions)',
+      paymentTerm: 'Payable at clinic during visit',
       desc: '0.18mm hair-thin single-use sterile needles, TDP infrared therapy & optional glass cupping.'
     },
     {
@@ -29,6 +31,7 @@ export default function BookingPage() {
       fee: 1800,
       duration: 50,
       durationText: '50 mins (Weekly Limit: 20 Sessions)',
+      paymentTerm: 'Payable at clinic during visit',
       desc: 'Confidential CBT, REBT & Gestalt therapy in private acoustic suite with Ms. Nivedha Priyadarshini.'
     },
     {
@@ -37,6 +40,7 @@ export default function BookingPage() {
       fee: 2400,
       duration: 90,
       durationText: '75 – 90 mins',
+      paymentTerm: 'Payable at clinic during visit',
       desc: 'Combined cognitive psychotherapy + full somatic acupuncture needling session back-to-back.'
     }
   ];
@@ -151,7 +155,7 @@ export default function BookingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Transparent consultation at ₹500 (20 min) and acupuncture therapy at ₹600 (25–30 min) with 100% sterile single-use needles.
+              Looking for an <strong className="text-ink font-semibold">acupuncture centre near me</strong> or an experienced <strong className="text-ink font-semibold">acupuncture doctor in Chennai</strong>? Book your 1-on-1 private in-clinic consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Located at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-clinic visits only • No house visits). Consultation at ₹500 (20 min, advance paid to lock slot) and acupuncture therapy at ₹600 (25–30 min, payable at clinic).
             </p>
           </motion.div>
         </div>
@@ -207,6 +211,15 @@ export default function BookingPage() {
                         <Clock className="w-3 h-3 text-neutral-400" />
                         <span>{srv.durationText}</span>
                       </p>
+                      <div className="mt-2">
+                        <span className={`inline-block text-[11px] font-semibold px-2 py-0.5 rounded-md ${
+                          srv.id === 'diagnostic'
+                            ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                            : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                        }`}>
+                          {srv.paymentTerm}
+                        </span>
+                      </div>
                     </div>
 
                     <p className="text-xs text-neutral-600 leading-relaxed">
@@ -228,7 +241,7 @@ export default function BookingPage() {
                 Select date and printable ticket
               </h2>
               <p className="text-xs text-neutral-500 mt-1">
-                Click a date on the calendar, select an available hour, and your appointment time will print onto the clinical ticket stub.
+                Click a date on the calendar, select an available hour, and your appointment time will print onto the clinical ticket stub. All sessions are strictly in-clinic at Chinmaya Nagar & Ramalinga Nagar, Virugambakkam (No house visits).
               </p>
             </div>
 
@@ -243,7 +256,7 @@ export default function BookingPage() {
                 title={selectedService.title}
                 description={selectedService.desc}
                 duration={selectedService.duration}
-                location="Arura Studio • Chinmaya Nagar, Virugambakkam"
+                location="Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-Clinic Only • No House Visits)"
                 getSlots={getClinicSlots}
                 onBook={handleBook}
                 onCancel={handleCancel}
@@ -259,9 +272,9 @@ export default function BookingPage() {
             <div className="p-5 rounded-2xl bg-surface-subtle border border-gray-200 flex items-start space-x-3.5">
               <ShieldCheck className="w-5 h-5 text-brand shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-bold text-sm text-gray-900">Strict Aseptic Needling</h4>
+                <h4 className="font-bold text-sm text-gray-900">In-Clinic Sanctuary (No House Visits)</h4>
                 <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Single-use 0.18mm surgical stainless steel needles unsealed fresh at your bedside. Zero reuse policy.
+                  All consultations and treatments are conducted strictly in-clinic: Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam. No house visits.
                 </p>
               </div>
             </div>
@@ -269,9 +282,9 @@ export default function BookingPage() {
             <div className="p-5 rounded-2xl bg-surface-subtle border border-gray-200 flex items-start space-x-3.5">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-bold text-sm text-gray-900">No Advance Payment</h4>
+                <h4 className="font-bold text-sm text-gray-900">Advance Paid Consultation (₹500)</h4>
                 <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Total consultation fee is collected only after direct personal clinical assessment. No pre-payment locks.
+                  Diagnostic pulse consultation (₹500) requires advance payment via UPI/GPay to secure your slot. All other therapies (acupuncture, counselling, dual therapy) are paid at clinic.
                 </p>
               </div>
             </div>
@@ -281,7 +294,7 @@ export default function BookingPage() {
               <div>
                 <h4 className="font-bold text-sm text-gray-900">Direct WhatsApp Concierge</h4>
                 <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Need an urgent emergency slot or route directions? Chat directly with Ms. Nivedha Priyadarshini's clinical desk.
+                  Need directions to Vaikasi St or have an appointment query? Chat directly with Ms. Nivedha Priyadarshini's clinic desk at +91 73580 31752.
                 </p>
                 <a
                   href={CLINIC_INFO.whatsappLink}

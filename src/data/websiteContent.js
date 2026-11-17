@@ -11,7 +11,7 @@ export const CLINIC_INFO = {
   founderDegrees: "MD (Acu), PG Diploma in Counselling and psychotherapy",
   phone: "+91 73580 31752",
   phoneRaw: "917358031752",
-  address: "No 45A, Ground floor, Vaikasi Street, Chinmaya Nagar, Virugambakkam, Chennai - 600092",
+  address: "Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai, Tamil Nadu 600092",
   website: "www.arura.in",
   instagram: "https://www.instagram.com/arura.acupuncture/",
   instagramHandle: "@arura.acupuncture",
@@ -114,8 +114,18 @@ export const FAQS_DATA = [
     category: "counselling"
   },
   {
-    q: "What are the payment terms and refund policy?",
-    a: "Session charges are confirmed in advance via website payment link, GPay, or UPI to secure your appointment slot. There is no refund or cancellation policy for confirmed bookings.",
+    q: "Do you offer home visits or house visits?",
+    a: "No, we do not provide house visits or home visits. All consultations, classical 14-meridian pulse diagnostics, and acupuncture treatments are conducted strictly in-clinic at our private clinical sanctuary (Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai 600092). This ensures strict hospital-grade sterility, single-use disposable needles opened at bedside, calibrated TDP infrared mineral heat lamps, and a quiet, sound-insulated acoustic suite.",
+    category: "acupuncture"
+  },
+  {
+    q: "What are the payment terms? Is advance payment required?",
+    a: "The diagnostic consultation fee (₹500) is paid in advance via UPI / GPay (73580 31752) or payment link to confirm and reserve your private consultation slot with Ms. Nivedha Priyadarshini. Other clinical treatments (such as acupuncture sessions at ₹600, psychotherapy at ₹1,800, or mind-body dual therapy at ₹2,400) are not advance paid—they are paid directly in-person at the clinic during your appointment.",
+    category: "acupuncture"
+  },
+  {
+    q: "What are the payment terms and refund policy for counselling?",
+    a: "Consultation and therapy booking slots are confirmed via advance payment or UPI to secure dedicated time in the acoustic suite. There is no refund or cancellation policy for confirmed reserved bookings.",
     category: "counselling"
   },
   {

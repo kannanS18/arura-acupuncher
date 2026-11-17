@@ -395,7 +395,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                 Begin Your Healing Dialogue in Private Sanctuary
               </h3>
               <p className="text-xs sm:text-sm text-neutral-400 max-w-2xl leading-relaxed font-normal">
-                No 45A, Ground floor, Vaikasi Street, Chinmaya Nagar, Virugambakkam, Chennai - 600092. Direct consultation by prior appointment.
+                Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai, Tamil Nadu 600092. In-clinic consultations only (no house visits). Direct consultation by prior appointment.
               </p>
             </div>
 

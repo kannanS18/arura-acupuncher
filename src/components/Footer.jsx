@@ -92,6 +92,11 @@ export default function Footer() {
                 <CalendarCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                 <span className="text-emerald-400 font-semibold">Strictly by Prior Appointment</span>
               </div>
+              <div className="pt-1">
+                <span className="text-amber-300 font-semibold text-xs bg-amber-950/60 border border-amber-800/80 px-2.5 py-1 rounded-full inline-block">
+                  In-Clinic Sanctuary Only • No House Visits
+                </span>
+              </div>
             </div>
           </div>
 

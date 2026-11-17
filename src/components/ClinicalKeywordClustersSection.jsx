@@ -172,7 +172,7 @@ export default function ClinicalKeywordClustersSection({ onOpenBooking }) {
           <div className="pt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-neutral-600">
             <div className="flex items-center gap-2 font-medium">
               <MapPin className="w-4 h-4 text-[#ed3373]" />
-              <span>Available in Virugambakkam, Chennai (Serving Chinmaya Nagar, Koyambedu, Vadapalani, Anna Nagar & Porur)</span>
+              <span>In-Clinic Sanctuary: Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (No House Visits)</span>
             </div>
             <div className="flex items-center gap-3 font-semibold text-neutral-700">
               <span>Acupuncture Session: ₹600 (25–30 min)</span>

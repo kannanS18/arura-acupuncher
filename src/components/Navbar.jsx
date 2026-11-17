@@ -70,7 +70,7 @@ export default function Navbar({ onOpenBooking }) {
 
             <div className="flex items-center space-x-2">
               <a
-                href="https://maps.google.com/?q=Arura+Acupuncture+Virugambakkam+Chennai"
+                href="https://maps.google.com/?q=Ground+floor,+45A,+Vaikasi+St,+Chinmaya+Nagar,+Ramalinga+Nagar,+Virugambakkam,+Chennai,+Tamil+Nadu+600092"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 shadow-xs"
@@ -113,7 +113,7 @@ export default function Navbar({ onOpenBooking }) {
             <div className="flex items-center space-x-4 text-gray-600 text-xs sm:text-sm">
               <span className="flex items-center space-x-1.5">
                 <MapPin className="w-3.5 h-3.5 text-brand" />
-                <span>Chinmaya Nagar, Virugambakkam, Chennai</span>
+                <span>Chinmaya Nagar, Ramalinga Nagar, Virugambakkam</span>
               </span>
 
               <span className="text-gray-300 hidden sm:inline">|</span>

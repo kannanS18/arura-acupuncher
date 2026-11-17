@@ -285,6 +285,16 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
 
             </div>
 
+            {/* Clinical Location & Payment Notice */}
+            <div className="pt-3 pb-1 text-xs text-neutral-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-neutral-100">
+              <span className="font-semibold text-neutral-800">
+                📍 Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-Clinic Only • No House Visits)
+              </span>
+              <span className="text-amber-800 font-medium">
+                🔒 Consultation (₹500) is advance paid to lock slot; therapies payable at clinic.
+              </span>
+            </div>
+
             {/* Bottom Actions */}
             <div className="pt-6 mt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <Link
