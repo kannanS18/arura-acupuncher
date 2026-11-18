@@ -90,7 +90,7 @@ export default function AboutUsPage({ onOpenBooking }) {
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed max-w-xl">
-                Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Integrating classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture therapy</strong> with clinical counselling and psychotherapy for complete physical and emotional health.
+                Founded by <strong className="text-ink font-semibold">Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy</strong> in Chennai. Integrating classical 14-meridian <strong className="text-ink font-semibold">traditional acupuncture therapy</strong> with clinical counselling and psychotherapy for complete physical and emotional health.
               </p>
 
               <div className="pt-1 flex flex-wrap items-center gap-5 text-sm font-medium text-neutral-600">

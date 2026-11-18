@@ -24,7 +24,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       title: "Pulse & Somatic Diagnostic Intake",
       duration: "20 Mins",
       eyebrow: "STAGE 01 · RADIAL EXAMINATION",
-      summary: "Before any needle is placed, Ms. Nivedha Priyadarshini palpates 14 radial pulse positions across both wrists at three distinct depths to map exact internal meridian blockages.",
+      summary: "Before any needle is placed, Ms. Nivedha Priyadharshini palpates 14 radial pulse positions across both wrists at three distinct depths to map exact internal meridian blockages.",
       details: [
         "Bilateral palpation of Cun (寸), Guan (关), and Chi (尺) positions",
         "Tongue topography and sublingual vein micro-circulation check",
@@ -77,7 +77,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       title: "Psychological Integration & Home Care",
       duration: "15 Mins",
       eyebrow: "STAGE 03 · AUTONOMIC RECOVERY",
-      summary: "Acupuncture calms the nervous system into a restorative parasympathetic state. Ms. Nivedha Priyadarshini debriefs physical releases with cognitive and psychotherapy frameworks.",
+      summary: "Acupuncture calms the nervous system into a restorative parasympathetic state. Ms. Nivedha Priyadharshini debriefs physical releases with cognitive and psychotherapy frameworks.",
       details: [
         "Evidence-based CBT/REBT psychosomatic debrief",
         "Postural realignment and ergonomic workplace guidance",
@@ -420,7 +420,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
                   <span>100% Single-Use Sterile EO Gas Protocol</span>
                 </span>
                 <span className="font-mono text-neutral-400">
-                  Chinmaya Nagar, Ramalinga Nagar, Chennai · Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
+                  Chinmaya Nagar, Ramalinga Nagar, Chennai · Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                 </span>
               </div>
 

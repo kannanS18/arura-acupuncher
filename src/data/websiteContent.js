@@ -6,7 +6,7 @@
 export const CLINIC_INFO = {
   name: "Arura Wellness Studio",
   subtitle: "Acupuncture & Counselling Centre",
-  founder: "Ms. Nivedha Priyadarshini",
+  founder: "Ms. Nivedha Priyadharshini",
   founderTitle: "Founder & Lead Holistic Healer",
   founderDegrees: "MD (Acu), PG Diploma in Counselling and psychotherapy",
   phone: "+91 73580 31752",
@@ -33,7 +33,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Is acupuncture treatment safe?",
-    a: "When performed by a certified and licensed MD acupuncturist like Ms. Nivedha Priyadarshini, acupuncture is exceptionally safe with virtually zero side effects. At Arura Wellness Studio, we follow strict clinical sterility standards: 100% ethylene-oxide pre-sterilized, single-use surgical stainless steel needles opened right at your bedside and safely discarded immediately after treatment.",
+    a: "When performed by a certified and licensed MD acupuncturist like Ms. Nivedha Priyadharshini, acupuncture is exceptionally safe with virtually zero side effects. At Arura Wellness Studio, we follow strict clinical sterility standards: 100% ethylene-oxide pre-sterilized, single-use surgical stainless steel needles opened right at your bedside and safely discarded immediately after treatment.",
     category: "acupuncture"
   },
   {
@@ -93,7 +93,7 @@ export const FAQS_DATA = [
   },
   {
     q: "Best acupuncture specialist for pain management in Chennai?",
-    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's leading acupuncture specialists with over 8 years of clinical practice and 1,100+ documented patient recoveries. Her private sanctuary in Virugambakkam integrates classical acupuncture with counselling and psychotherapy.",
+    a: "Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's leading acupuncture specialists with over 8 years of clinical practice and 1,100+ documented patient recoveries. Her private sanctuary in Virugambakkam integrates classical acupuncture with counselling and psychotherapy.",
     category: "acupuncture"
   },
 
@@ -120,7 +120,7 @@ export const FAQS_DATA = [
   },
   {
     q: "What are the payment terms? Is advance payment required?",
-    a: "The diagnostic consultation fee (₹500) is paid in advance via UPI / GPay (73580 31752) or payment link to confirm and reserve your private consultation slot with Ms. Nivedha Priyadarshini. Other clinical treatments (such as acupuncture sessions at ₹600, psychotherapy at ₹1,800, or mind-body dual therapy at ₹2,400) are not advance paid—they are paid directly in-person at the clinic during your appointment.",
+    a: "The diagnostic consultation fee (₹500) is paid in advance via UPI / GPay (73580 31752) or payment link to confirm and reserve your private consultation slot with Ms. Nivedha Priyadharshini. Other clinical treatments (such as acupuncture sessions at ₹600, psychotherapy at ₹1,800, or mind-body dual therapy at ₹2,400) are not advance paid—they are paid directly in-person at the clinic during your appointment.",
     category: "acupuncture"
   },
   {
@@ -129,8 +129,8 @@ export const FAQS_DATA = [
     category: "counselling"
   },
   {
-    q: "What are Ms. Nivedha Priyadarshini's qualifications in Counselling and Psychotherapy?",
-    a: "Ms. Nivedha Priyadarshini holds a PG Diploma in School, Corporate and Family Counselling & Psychotherapy with Internship from CCS Academy (Chennai Counseling Services), an Accredited Training Provider under the International Association of Therapists (IAOTH, Reg. No. 2973-8538) and registered with MSME (UDYAM-TN-02-0007295, Certificate No. I3977/2026). She completed supervised clinical training in the EasyIntegration Counselling Model under senior counselling psychologist R M. Karthik Lakshmanan (Member, American Psychological Association).",
+    q: "What are Ms. Nivedha Priyadharshini's qualifications in Counselling and Psychotherapy?",
+    a: "Ms. Nivedha Priyadharshini holds a PG Diploma in School, Corporate and Family Counselling & Psychotherapy with Internship from CCS Academy (Chennai Counseling Services), an Accredited Training Provider under the International Association of Therapists (IAOTH, Reg. No. 2973-8538) and registered with MSME (UDYAM-TN-02-0007295, Certificate No. I3977/2026). She completed supervised clinical training in the EasyIntegration Counselling Model under senior counselling psychologist R M. Karthik Lakshmanan (Member, American Psychological Association).",
     category: "counselling"
   },
   {

@@ -20,8 +20,8 @@ export default function AcupuncturePage({ onOpenBooking }) {
       feeNum: 500,
       image: "doctor_nivedha_portrait.jpg?v=2",
       badge: "Clinical Intake & Diagnostics",
-      summary: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadarshini to identify root meridian imbalances before needling.",
-      description: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadarshini to identify root meridian imbalances before needling.",
+      summary: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadharshini to identify root meridian imbalances before needling.",
+      description: "14-radial pulse assessment and tongue diagnosis by Ms. Nivedha Priyadharshini to identify root meridian imbalances before needling.",
       features: [
         "14-Channel Radial Pulse Mapping",
         "Tongue Topography Analysis",
@@ -142,7 +142,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
               Clinical Treatments
             </h2>
             <p className="text-xs text-gray-500 max-w-xs mx-auto">
-              Swipe or flick cards to explore Ms. Nivedha Priyadarshini's clinical therapies in sequence.
+              Swipe or flick cards to explore Ms. Nivedha Priyadharshini's clinical therapies in sequence.
             </p>
           </div>
 
@@ -246,7 +246,7 @@ export default function AcupuncturePage({ onOpenBooking }) {
               Preparation & Home Care Guidelines
             </h2>
             <p className="text-sm sm:text-base text-gray-600 font-normal">
-              Clear clinical guidelines from Ms. Nivedha Priyadarshini to ensure maximum therapeutic benefit from your session.
+              Clear clinical guidelines from Ms. Nivedha Priyadharshini to ensure maximum therapeutic benefit from your session.
             </p>
           </motion.div>
 

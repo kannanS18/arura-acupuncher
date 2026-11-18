@@ -47,7 +47,7 @@ export default function DoctorCredentialsSection() {
           
           <div className="flex items-center gap-2 text-xs font-mono text-neutral-500 bg-white px-3.5 py-1.5 rounded-full border border-neutral-200 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Active Clinical Practice · Ms. Nivedha Priyadarshini</span>
+            <span>Active Clinical Practice · Ms. Nivedha Priyadharshini</span>
           </div>
         </div>
 

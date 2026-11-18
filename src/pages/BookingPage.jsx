@@ -36,7 +36,7 @@ export default function BookingPage() {
       duration: 50,
       durationText: '50 mins (Weekly Limit: 20 Sessions)',
       paymentTerm: 'Payable at clinic during visit',
-      desc: 'Confidential CBT, REBT & Gestalt therapy in a private, quiet room with Ms. Nivedha Priyadarshini.'
+      desc: 'Confidential CBT, REBT & Gestalt therapy in a private, quiet room with Ms. Nivedha Priyadharshini.'
     },
     {
       id: 'dual',
@@ -178,7 +178,7 @@ export default function BookingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-2xl">
-              Looking for an <strong className="text-ink font-semibold">acupuncture and counselling centre near me</strong> in Chennai? Book your 1-on-1 private in-clinic consultation with Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Located at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-clinic visits only • No house visits). Consultation at ₹500 (20 min, advance paid to lock slot), acupuncture therapy at ₹600 (25–30 min), and clinical counselling at ₹1,800 (50 min).
+              Looking for an <strong className="text-ink font-semibold">acupuncture and counselling centre near me</strong> in Chennai? Book your 1-on-1 private in-clinic consultation with Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Located at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (In-clinic visits only • No house visits). Consultation at ₹500 (20 min, advance paid to lock slot), acupuncture therapy at ₹600 (25–30 min), and clinical counselling at ₹1,800 (50 min).
             </p>
           </motion.div>
         </div>
@@ -317,7 +317,7 @@ export default function BookingPage() {
               <div>
                 <h4 className="font-bold text-sm text-gray-900">Direct WhatsApp Concierge</h4>
                 <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Need directions to Vaikasi St or have an appointment query? Chat directly with Ms. Nivedha Priyadarshini's clinic desk at +91 73580 31752.
+                  Need directions to Vaikasi St or have an appointment query? Chat directly with Ms. Nivedha Priyadharshini's clinic desk at +91 73580 31752.
                 </p>
                 <a
                   href={CLINIC_INFO.whatsappLink}

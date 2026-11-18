@@ -34,7 +34,7 @@ export const cardData: TreatmentCardItem[] = [
     code: "01 / 04",
     title: "Diagnostic Consultation & Pulse Mapping",
     subtitle: "First Visit Clinical Assessment",
-    description: "Comprehensive 14-radial pulse assessment and tongue topography analysis by Ms. Nivedha Priyadarshini to identify original root imbalances before any needle is placed.",
+    description: "Comprehensive 14-radial pulse assessment and tongue topography analysis by Ms. Nivedha Priyadharshini to identify original root imbalances before any needle is placed.",
     duration: "20 mins",
     fee: "₹500",
     feeNum: 500,

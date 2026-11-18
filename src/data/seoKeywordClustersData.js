@@ -222,7 +222,7 @@ export const LONG_TAIL_FAQS = [
   },
   {
     q: "Best acupuncture specialist for pain management in Chennai?",
-    a: "Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with counselling and psychotherapy in private, quiet clinic rooms."
+    a: "Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy, is one of Chennai's most respected acupuncture specialists with over 8 years of dedicated clinical practice and more than 1,100 documented patient recoveries. Her integrative approach bridges classical Chinese acupuncture with counselling and psychotherapy in private, quiet clinic rooms."
   },
   {
     q: "Is acupuncture effective for sciatica pain?",

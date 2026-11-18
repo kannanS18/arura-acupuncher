@@ -85,7 +85,7 @@ export default function CounsellingPage({ onOpenBooking }) {
           { text: "Balance.", highlight: true },
         ]}
         title="A Confidential Sanctuary for Mind, Emotion, and Autonomic Balance."
-        subtitle="Directed by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private, quiet therapy room in Chennai."
+        subtitle="Directed by Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy. Evidence-based psychotherapy in a private, quiet therapy room in Chennai."
         callToAction={{
           text: "Book Confidential Session (₹1,800)",
           href: "#/booking?service=counselling",
@@ -306,7 +306,7 @@ export default function CounsellingPage({ onOpenBooking }) {
                       <span>Private 1-on-1 In-Clinic Consultation</span>
                     </div>
                     <p className="text-xs sm:text-sm text-neutral-600 font-medium">
-                      Lead Practitioner: Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
+                      Lead Practitioner: Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy
                     </p>
                   </div>
 
@@ -339,7 +339,7 @@ export default function CounsellingPage({ onOpenBooking }) {
               Therapeutic Integrity & Clinical Ethics
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-              Ms. Nivedha Priyadarshini integrates the EasyIntegration counselling model (certified by CCS Academy, IAOTH accredited) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
+              Ms. Nivedha Priyadharshini integrates the EasyIntegration counselling model (certified by CCS Academy, IAOTH accredited) with profound somatic autonomic stabilization, creating a peaceful, non-judgmental environment.
             </p>
           </div>
 

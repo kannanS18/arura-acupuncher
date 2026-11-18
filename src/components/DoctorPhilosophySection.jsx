@@ -246,7 +246,7 @@ export default function DoctorPhilosophySection() {
               </blockquote>
 
               <p className="text-xs font-mono font-semibold text-neutral-500 uppercase tracking-wider">
-                — Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy
+                — Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy
               </p>
 
               {/* Succinct, high-impact clinical copy preserving 100% meaning */}
@@ -255,7 +255,7 @@ export default function DoctorPhilosophySection() {
                   Chronic cervical pain, lumbar spasms, and gut distress rarely occur in isolation from sympathetic overdrive and unresolved mental tension.
                 </p>
                 <p className="text-xs text-neutral-500">
-                  Ms. Nivedha Priyadarshini combines classical meridian neuro-modulation with clinical counselling and psychotherapy to eliminate physical inflammation and autonomic stress simultaneously.
+                  Ms. Nivedha Priyadharshini combines classical meridian neuro-modulation with clinical counselling and psychotherapy to eliminate physical inflammation and autonomic stress simultaneously.
                 </p>
               </div>
             </div>

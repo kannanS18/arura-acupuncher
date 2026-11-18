@@ -418,7 +418,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                   {activePathway.fee}
                 </span>
                 <span className="text-xs sm:text-sm text-neutral-500 block">
-                  {activePathway.duration} • 1-on-1 with Ms. Nivedha Priyadarshini, MD (Acu)
+                  {activePathway.duration} • 1-on-1 with Ms. Nivedha Priyadharshini, MD (Acu)
                 </span>
               </div>
 
@@ -460,7 +460,7 @@ export default function InteractiveMeridianExplorer({ onOpenBooking }) {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-bold text-neutral-900 font-display flex items-center gap-2">
                     <Stethoscope className="w-4 h-4 text-[#ed3373]" />
-                    <span>Ms. Nivedha Priyadarshini, MD (Acu)</span>
+                    <span>Ms. Nivedha Priyadharshini, MD (Acu)</span>
                   </span>
                   <span className="text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold">
                     Verified

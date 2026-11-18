@@ -47,7 +47,7 @@ export default function HomePage({ onOpenBooking }) {
                 15 Specialized Psychological Disciplines
               </h2>
               <p className="text-base sm:text-lg text-neutral-700 font-normal leading-relaxed">
-                Comprehensive adolescent, marriage, and burnout guidance led by Ms. Nivedha Priyadarshini in peaceful, private rooms.
+                Comprehensive adolescent, marriage, and burnout guidance led by Ms. Nivedha Priyadharshini in peaceful, private rooms.
               </p>
             </div>
 
@@ -147,12 +147,12 @@ export default function HomePage({ onOpenBooking }) {
                   role: "Knee Surgery Avoided · Chennai"
                 },
                 {
-                  quote: "Ms. Nivedha Priyadarshini's clinic is soothing and deeply personal. I was skeptical at first, but it made a lasting difference.",
+                  quote: "Ms. Nivedha Priyadharshini's clinic is soothing and deeply personal. I was skeptical at first, but it made a lasting difference.",
                   name: "Nila",
                   role: "Calm Environment & Care · Chennai"
                 },
                 {
-                  quote: "Relieved my chronic GERD and acidity after 7 sessions. Ms. Nivedha Priyadarshini's clinical care and guidance are unmatched.",
+                  quote: "Relieved my chronic GERD and acidity after 7 sessions. Ms. Nivedha Priyadharshini's clinical care and guidance are unmatched.",
                   name: "Ramkumar Ananth",
                   role: "GERD & Acidity Relief · Chennai"
                 },
@@ -163,7 +163,7 @@ export default function HomePage({ onOpenBooking }) {
                 },
                 {
                   quote: "Combining acupuncture with CBT dismantled my severe insomnia and work burnout. A truly healing sanctuary.",
-                  name: "Priyadarshini R.",
+                  name: "Priyadharshini R.",
                   role: "Autonomic Burnout Recovery · Chennai"
                 }
               ]}
@@ -231,7 +231,7 @@ export default function HomePage({ onOpenBooking }) {
                 SPECIALIST PHYSICIAN
               </span>
               <h3 className="font-bold text-lg text-neutral-900">
-                Ms. Nivedha Priyadarshini
+                Ms. Nivedha Priyadharshini
               </h3>
               <p className="text-sm text-neutral-600 leading-relaxed">
                 MD (Acu), PG Diploma in Counselling and psychotherapy with 8+ years clinical expertise and 1,100+ documented patient recoveries across pain & neurology.

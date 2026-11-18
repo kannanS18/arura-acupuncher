@@ -34,7 +34,7 @@ export default function DoctorPage({ onOpenBooking }) {
               <div className="space-y-3">
                 <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
                   Ms. Nivedha <br />
-                  <span className="text-brand">Priyadarshini</span>
+                  <span className="text-brand">Priyadharshini</span>
                 </h1>
                 <p className="text-base sm:text-lg font-semibold text-white/90">
                   Acupuncture & Counselling Specialist • MD (Acu), PG Diploma in Counselling and psychotherapy
@@ -73,7 +73,7 @@ export default function DoctorPage({ onOpenBooking }) {
               {/* CTA Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
-                  onClick={() => onOpenBooking('Consultation with Ms. Nivedha Priyadarshini', 500)}
+                  onClick={() => onOpenBooking('Consultation with Ms. Nivedha Priyadharshini', 500)}
                   className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-brand text-white hover:bg-brand-dark shadow-lg flex items-center justify-center space-x-2 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 cursor-pointer"
                 >
                   <span>Schedule Consultation</span>
@@ -124,7 +124,7 @@ export default function DoctorPage({ onOpenBooking }) {
             className="space-y-6"
           >
             <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
-              Schedule Your Evaluation with Ms. Nivedha Priyadarshini
+              Schedule Your Evaluation with Ms. Nivedha Priyadharshini
             </h2>
             <p className="text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed font-normal">
               Private 1-on-1 in-clinic pulse evaluation, comprehensive medical history, and gentle needle therapy at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam, Chennai (In-clinic visits only • No house visits).
@@ -134,7 +134,7 @@ export default function DoctorPage({ onOpenBooking }) {
                 to="/booking"
                 className="px-8 py-4 rounded-xl text-xs font-semibold bg-brand text-white hover:bg-brand-dark shadow-lg inline-flex items-center space-x-2 transition-colors duration-200 motion-safe:active:scale-[0.98]"
               >
-                <span>Book Consultation with Ms. Nivedha Priyadarshini (₹500)</span>
+                <span>Book Consultation with Ms. Nivedha Priyadharshini (₹500)</span>
                 <ArrowRight className="w-4 h-4 motion-safe:group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

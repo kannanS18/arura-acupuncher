@@ -950,7 +950,7 @@ export function Booking({
 
                   <a
                     href={`https://wa.me/${CLINIC_INFO.phoneRaw}?text=${encodeURIComponent(
-                      `Hello Ms. Nivedha Priyadarshini,\n\nI have scheduled an in-clinic appointment at Arura Wellness Studio:\n\n` +
+                      `Hello Ms. Nivedha Priyadharshini,\n\nI have scheduled an in-clinic appointment at Arura Wellness Studio:\n\n` +
                       `• Patient: ${call.name}\n` +
                       `• Service: ${title}\n` +
                       `• Date: ${fmt.short.format(noon(dayIn(call.start.getTime(), call.timeZone)))}, ${timeShort(call.start.getTime())}\n` +

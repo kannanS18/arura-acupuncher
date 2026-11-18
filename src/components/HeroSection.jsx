@@ -58,7 +58,7 @@ export default function HeroSectionWrapper({ onOpenBooking }) {
           { text: "Chennai", highlight: true },
         ]}
         title="Acupuncture & Counselling in Chennai: Classical Needling & Psychological Care"
-        subtitle="Chennai's premier clinic led by Ms. Nivedha Priyadarshini. Natural pain relief for back pain, neck stiffness, sciatica, and migraines with integrated counselling. Private 1-on-1 consultations from ₹500."
+        subtitle="Chennai's premier clinic led by Ms. Nivedha Priyadharshini. Natural pain relief for back pain, neck stiffness, sciatica, and migraines with integrated counselling. Private 1-on-1 consultations from ₹500."
         callToAction={{
           text: "Book Priority Consultation (₹500)",
           href: "#/booking",

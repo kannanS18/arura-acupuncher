@@ -114,7 +114,7 @@ export default function BookingModal({ isOpen, onClose, preselectedService, pres
             <span>Priority Consultation Reservation</span>
           </span>
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-            Book With Ms. Nivedha Priyadarshini
+            Book With Ms. Nivedha Priyadharshini
           </h3>
           <p className="text-xs sm:text-sm text-gray-600 font-normal mt-0.5">
             Strict 1-on-1 in-clinic appointments at Ground floor, 45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar, Virugambakkam (No house visits). Choose your date & time below.

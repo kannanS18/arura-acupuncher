@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
             
             <p className="text-base text-gray-300 max-w-md leading-relaxed font-normal">
-              Chennai’s trusted <strong className="text-white font-semibold">acupuncture & counselling centre</strong> for 14-meridian treatment and psychotherapy led by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy.
+              Chennai’s trusted <strong className="text-white font-semibold">acupuncture & counselling centre</strong> for 14-meridian treatment and psychotherapy led by Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy.
             </p>
 
             <div className="flex items-center space-x-3 pt-2">

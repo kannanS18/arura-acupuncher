@@ -74,7 +74,7 @@ export default function DoctorIdCard() {
                 <div className="relative w-24 h-32 sm:w-28 sm:h-36 rounded-2xl overflow-hidden border-2 border-[#ed3373] shadow-md shrink-0 bg-neutral-100">
                   <img
                     src={getAssetUrl('doctor_nivedha_portrait.jpg?v=2')}
-                    alt="Ms. Nivedha Priyadarshini"
+                    alt="Ms. Nivedha Priyadharshini"
                     className="w-full h-full object-cover object-top"
                   />
                   {/* Security Verification Ribbon */}
@@ -89,7 +89,7 @@ export default function DoctorIdCard() {
                     Lead Acupuncturist & Psychotherapist
                   </span>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 leading-tight">
-                    Ms. Nivedha Priyadarshini
+                    Ms. Nivedha Priyadharshini
                   </h3>
                   <p className="text-xs font-bold text-[#ed3373] font-mono leading-snug">
                     MD (Acu), PG Diploma in Counselling and psychotherapy

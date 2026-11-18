@@ -111,7 +111,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                 <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden border-2 border-pink-100 flex-shrink-0 shadow-sm bg-neutral-100">
                   <img 
                     src={getAssetUrl('doctor_nivedha_portrait.jpg?v=2')} 
-                    alt="Ms. Nivedha Priyadarshini, MD (Acu)"
+                    alt="Ms. Nivedha Priyadharshini, MD (Acu)"
                     className="w-full h-full object-cover object-top"
                   />
                   <div className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white" title="Active Clinical Practice" />
@@ -124,7 +124,7 @@ export default function PhysicianPhilosophySection({ onOpenBooking }) {
                   </span>
 
                   <h3 className="font-display text-2xl sm:text-[26px] font-bold text-neutral-900 leading-snug">
-                    Ms. Nivedha Priyadarshini
+                    Ms. Nivedha Priyadharshini
                   </h3>
 
                   <p className="text-sm font-bold text-neutral-800">

@@ -1,6 +1,6 @@
 /**
  * Official Clinical Blog Posts for Arura Wellness Studio
- * Authored by Ms. Nivedha Priyadarshini, MD (Acu), PG Diploma in Counselling and psychotherapy • Virugambakkam, Chennai
+ * Authored by Ms. Nivedha Priyadharshini, MD (Acu), PG Diploma in Counselling and psychotherapy • Virugambakkam, Chennai
  */
 
 export const BLOG_POSTS = [
@@ -10,7 +10,7 @@ export const BLOG_POSTS = [
     title: "What Actually Happens During Your First Acupuncture Session? A Doctor's Step-by-Step Guide",
     subtitle: "From pulse diagnosis to needle sensation: everything first-time patients need to know.",
     category: "First Visit Guides",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "4 min read",
@@ -19,7 +19,7 @@ export const BLOG_POSTS = [
     sections: [
       {
         heading: "1. The Initial 15-Minute Radial Pulse & Tongue Diagnostic Intake",
-        body: "When you first arrive at our Virugambakkam sanctuary, we never rush you to a treatment table. Ms. Nivedha Priyadarshini conducts a thorough clinical intake evaluating 14 classical radial pulse positions on both wrists and examines tongue mucosal topography. This reveals internal heat, blood stagnation, and organ fatigue before any needle is selected."
+        body: "When you first arrive at our Virugambakkam sanctuary, we never rush you to a treatment table. Ms. Nivedha Priyadharshini conducts a thorough clinical intake evaluating 14 classical radial pulse positions on both wrists and examines tongue mucosal topography. This reveals internal heat, blood stagnation, and organ fatigue before any needle is selected."
       },
       {
         heading: "2. Why the Needles Do Not Cause Injection Pain",
@@ -46,7 +46,7 @@ export const BLOG_POSTS = [
     title: "Relieving Cervical Spondylosis & Trapezius Spasms Without Heavy Medications",
     subtitle: "How targeted micro-needling releases frozen trigger knots and restores vertebral blood flow.",
     category: "Spine & Joint Health",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "5 min read",
@@ -78,7 +78,7 @@ export const BLOG_POSTS = [
     title: "Why the Mind and Spine Must Be Treated Together: The Vagus Nerve & Somatic Loop",
     subtitle: "Bridging psychotherapy with classical meridian biology in Chennai.",
     category: "Mind & Stress Therapy",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "5 min read",
@@ -87,7 +87,7 @@ export const BLOG_POSTS = [
     sections: [
       {
         heading: "1. Emotional Stress Somatizes Into Physical Constriction",
-        body: "In eight years of clinical practice, Ms. Nivedha Priyadarshini observed that patients with chronic lumbar stiffness or fibromyalgia almost always carried unaddressed emotional grief, prolonged workplace burnout, or anxiety. Conversely, psychological anxiety causes chronic gut irritation and diaphragm tightness."
+        body: "In eight years of clinical practice, Ms. Nivedha Priyadharshini observed that patients with chronic lumbar stiffness or fibromyalgia almost always carried unaddressed emotional grief, prolonged workplace burnout, or anxiety. Conversely, psychological anxiety causes chronic gut irritation and diaphragm tightness."
       },
       {
         heading: "2. Vagus Nerve Down-Regulation",
@@ -110,7 +110,7 @@ export const BLOG_POSTS = [
     title: "Moxibustion ('Moxa') and Glass Cupping: The Secret to Dispelling Deep Muscle Cold",
     subtitle: "Exploring traditional thermal heat and myofascial suction therapy.",
     category: "Acupuncture Modalities",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "4 min read",
@@ -140,9 +140,9 @@ export const BLOG_POSTS = [
     id: 'pre-post-acupuncture-patient-care',
     slug: 'pre-post-acupuncture-patient-care',
     title: "The Essential Pre-Care and Post-Care Guide: 8 Golden Rules for Every Patient",
-    subtitle: "Ms. Nivedha Priyadarshini's official preparation and after-care instructions for maximum therapeutic benefit.",
+    subtitle: "Ms. Nivedha Priyadharshini's official preparation and after-care instructions for maximum therapeutic benefit.",
     category: "Patient Care & Preparation",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "4 min read",
@@ -178,7 +178,7 @@ export const BLOG_POSTS = [
     title: "Can Acupuncture Prevent Recurrent Migraines? The Cranial Blood Flow Mechanism",
     subtitle: "How radial pulse targeting normalizes trigeminal nerve sensitivity and cerebral vessels.",
     category: "Spine & Joint Health",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "October 2026",
     readTime: "5 min read",
@@ -208,9 +208,9 @@ export const BLOG_POSTS = [
     id: 'what-is-acupuncture-treatment-how-does-it-work',
     slug: 'what-is-acupuncture-treatment-how-does-it-work',
     title: "What is Acupuncture Treatment? How It Works, Benefits, and What to Expect",
-    subtitle: "A clinical guide to traditional acupuncture therapy, safety, and session outcomes by Ms. Nivedha Priyadarshini.",
+    subtitle: "A clinical guide to traditional acupuncture therapy, safety, and session outcomes by Ms. Nivedha Priyadharshini.",
     category: "First Visit Guides",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "November 2026",
     readTime: "6 min read",
@@ -246,7 +246,7 @@ export const BLOG_POSTS = [
     title: "Acupuncture vs Acupressure: Key Differences, Benefits & Which is Better For You?",
     subtitle: "Comparing deep needle neuro-stimulation against surface manual acupoint pressure.",
     category: "Acupuncture Modalities",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "November 2026",
     readTime: "5 min read",
@@ -278,7 +278,7 @@ export const BLOG_POSTS = [
     title: "Best Acupuncture Treatment for Chronic Back Pain & Sciatica: A Doctor's Guide",
     subtitle: "How targeted needle decompression interrupts disc compression and relieves nerve spasms.",
     category: "Spine & Joint Health",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "November 2026",
     readTime: "6 min read",
@@ -310,7 +310,7 @@ export const BLOG_POSTS = [
     title: "Acupuncture for Women's Health: Relieving PCOS, Menstrual Pain & Hormonal Imbalance",
     subtitle: "Regulating the hypothalamic-pituitary-ovarian axis and pelvic circulation naturally.",
     category: "Mind & Stress Therapy",
-    author: "Ms. Nivedha Priyadarshini",
+    author: "Ms. Nivedha Priyadharshini",
     authorTitle: "MD (Acu), PG Diploma in Counselling and psychotherapy • Founder & Lead Healer",
     date: "November 2026",
     readTime: "5 min read",

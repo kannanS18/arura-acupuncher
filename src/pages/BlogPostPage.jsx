@@ -138,7 +138,7 @@ export default function BlogPostPage({ onOpenBooking }) {
           <div className="p-8 rounded-3xl bg-ink text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center sm:text-left">
               <h3 className="font-display text-2xl font-bold text-white">
-                Consult with Ms. Nivedha Priyadarshini
+                Consult with Ms. Nivedha Priyadharshini
               </h3>
               <p className="text-xs sm:text-sm text-gray-300 font-normal max-w-md">
                 1-on-1 private evaluation in our Virugambakkam sanctuary (45A, Vaikasi St, Chinmaya Nagar, Ramalinga Nagar). Consultation fee ₹500 (20 min, advance paid). In-clinic only (no house visits).

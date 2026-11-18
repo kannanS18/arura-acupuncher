@@ -60,7 +60,7 @@ export default function ClinicalModalitiesSection({ onOpenBooking }) {
                 <span className="text-neutral-500 font-bold">zero chemical masking</span>
               </h2>
               <p className="text-base text-neutral-600 font-normal leading-relaxed pt-1">
-                Each session is custom-formulated from Ms. Nivedha Priyadarshini’s diagnostic pulse mapping. We activate strategic peripheral nerves to dissipate myofascial tension and calm chronic sympathetic overdrive.
+                Each session is custom-formulated from Ms. Nivedha Priyadharshini’s diagnostic pulse mapping. We activate strategic peripheral nerves to dissipate myofascial tension and calm chronic sympathetic overdrive.
               </p>
             </div>
 
