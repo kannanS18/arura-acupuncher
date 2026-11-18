@@ -13,7 +13,6 @@ import {
   Waves
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { getAssetUrl } from '../utils/assetUrl';
 import AnimatedCounter from './AnimatedCounter';
 

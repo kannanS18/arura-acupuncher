@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function ClinicalModalitiesSection({ onOpenBooking }) {

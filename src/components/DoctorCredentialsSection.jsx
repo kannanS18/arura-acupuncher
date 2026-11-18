@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileCheck, X, ExternalLink, ShieldCheck } from 'lucide-react';
+import { FileCheck, X, ShieldCheck } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetUrl';
 
 const credentials = [

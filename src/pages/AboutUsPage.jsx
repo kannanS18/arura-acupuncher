@@ -2,7 +2,6 @@ import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import AnimatedCounter from '../components/AnimatedCounter';
 import ClinicalIntakeManifesto from '../components/ClinicalIntakeManifesto';
 import ClinicalModalitiesSection from '../components/ClinicalModalitiesSection';
 import DoctorIdCard from '../components/DoctorIdCard';

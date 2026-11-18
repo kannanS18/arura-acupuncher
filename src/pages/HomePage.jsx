@@ -5,7 +5,6 @@ import ClinicalKeywordClustersSection from '../components/ClinicalKeywordCluster
 import PhysicianPhilosophySection from '../components/PhysicianPhilosophySection';
 import { ArrowRight, CheckCircle2, Brain, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AnimatedCounter from '../components/AnimatedCounter';
 import { Testimonials } from '../components/testimonials';
 import { COUNSELLING_CATEGORIES } from '../data/counsellingServicesData';
 import { LONG_TAIL_FAQS } from '../data/seoKeywordClustersData';

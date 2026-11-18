@@ -3,7 +3,6 @@ import { HeroSection } from './ui/hero-section-2';
 import { CLINIC_INFO } from '../data/websiteContent';
 import { getAssetUrl } from '../utils/assetUrl';
 import { Zap, Waves } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 // 14-Meridian Presets with matching imagery & resonance
 const MERIDIAN_PRESETS = [
