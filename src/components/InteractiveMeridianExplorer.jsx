@@ -64,7 +64,7 @@ const PATHWAYS = [
     commonTitle: 'Neck Pain, Stiff Shoulders & Radiating Arm Tingling',
     subtitle: 'Cervical Spondylosis, Tech Neck & Trapezius Muscle Knots',
     relief: 'Mobility Restored in 3–5 Sessions',
-    image: getAssetUrl('acupuncture_session.jpg'),
+    image: getAssetUrl('acu_hegu.jpg'),
     commonSummary: 'Delivers lasting neck pain relief and loosens stiff shoulders, melting trapezius knots and arm numbness caused by tech neck.',
     searchKeywords: [
       'Neck Pain Relief',
@@ -143,7 +143,7 @@ const PATHWAYS = [
     commonTitle: 'Acid Reflux, Epigastric Burning & Abdominal Bloating',
     subtitle: 'GERD, Irritable Bowel (IBS) & Sluggish Gut Motility',
     relief: 'Digestive Rhythm in 3–5 Sessions',
-    image: getAssetUrl('clinic_interior.jpg'),
+    image: getAssetUrl('authentic_acupuncture_needles.jpg'),
     commonSummary: 'Effective acid reflux relief and IBS treatment that reduces stomach bloating, eases GERD symptoms, and restores gut health.',
     searchKeywords: [
       'Acid Reflux Relief',
@@ -182,7 +182,7 @@ const PATHWAYS = [
     commonTitle: 'Severe Period Pain, Menstrual Cramps & PCOS Support',
     subtitle: 'Dysmenorrhea Spasms, Cycle Irregularity & Pelvic Fullness',
     relief: 'Cycle Stabilization across 2 Cycles',
-    image: getAssetUrl('wellness_holistic.jpg'),
+    image: getAssetUrl('zen_treatment.jpg'),
     commonSummary: 'Natural period pain relief that calms severe menstrual cramps, soothes pelvic pain, and balances hormones to relieve PCOS symptoms.',
     searchKeywords: [
       'Period Pain Relief',

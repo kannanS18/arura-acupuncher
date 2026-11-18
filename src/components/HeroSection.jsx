@@ -18,21 +18,21 @@ const MERIDIAN_PRESETS = [
     id: 'migraine',
     condition: 'Migraines & Frequent Headaches',
     frequency: '0.22 Hz Cranial Calm',
-    image: getAssetUrl('acupuncture_session.jpg'),
+    image: getAssetUrl('acu_hegu.jpg'),
     focus: 'Reduces headache frequency & temple pain by calming the trigeminovascular sensory loop.'
   },
   {
     id: 'burnout',
     condition: 'Stress Burnout & Anxiety',
     frequency: '0.10 Hz Parasympathetic',
-    image: getAssetUrl('zen_treatment.jpg'),
+    image: getAssetUrl('counselling_sanctuary.jpg'),
     focus: 'Soothes racing thoughts & chest tightness by activating parasympathetic vagal recovery.'
   },
   {
     id: 'nerve',
     condition: 'Sciatica & Chronic Nerve Pain',
     frequency: '0.18 Hz Neural Reset',
-    image: getAssetUrl('clinic_interior.jpg'),
+    image: getAssetUrl('acu_treatment1.jpg'),
     focus: 'Eliminates sharp shooting leg pain by un-clamping the sciatic nerve sheath.'
   }
 ];

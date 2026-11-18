@@ -100,7 +100,7 @@ export default function CounsellingPage({ onOpenBooking }) {
           },
           icon: <Lock className="h-4 w-4 text-emerald-600 shrink-0" />
         }}
-        backgroundImage={getAssetUrl('clinic_interior.jpg')}
+        backgroundImage={getAssetUrl('counselling_sanctuary.jpg')}
         floatingBadge={{
           title: "100% Strict Clinical Privacy",
           subtitle: "Virugambakkam Private Room · ₹1,800 / 50 Mins"

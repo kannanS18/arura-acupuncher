@@ -32,7 +32,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       ],
       quote: "“We listen before we touch. The pulse reveals tensions long before physical symptoms appear.”",
       icon: HeartPulse,
-      image: getAssetUrl('clinic_interior.jpg'),
+      image: getAssetUrl('counselling_sanctuary.jpg'),
       imageCaption: "Private Sanctuary Consultation Suite · Chinmaya Nagar, Ramalinga Nagar, Chennai",
       authenticClinicalData: {
         title: "Classical Radial Artery Diagnostics",
