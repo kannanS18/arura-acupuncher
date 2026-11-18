@@ -103,7 +103,7 @@ const PATHWAYS = [
     commonTitle: 'Anxiety, Chronic Stress & Somatic Chest Tightness',
     subtitle: 'Racing Thoughts, Panic Surges & Executive Work Burnout',
     relief: 'Immediate Parasympathetic Calm',
-    image: getAssetUrl('zen_treatment.jpg'),
+    image: getAssetUrl('counselling_sanctuary.jpg'),
     commonSummary: 'Provides holistic anxiety relief for stress burnout, soothing chest tightness and panic surges through deep vagus nerve calm.',
     searchKeywords: [
       'Anxiety Relief',
@@ -181,7 +181,7 @@ const PATHWAYS = [
     commonTitle: 'Severe Period Pain, Menstrual Cramps & PCOS Support',
     subtitle: 'Dysmenorrhea Spasms, Cycle Irregularity & Pelvic Fullness',
     relief: 'Cycle Stabilization across 2 Cycles',
-    image: getAssetUrl('zen_treatment.jpg'),
+    image: getAssetUrl('hero_acupuncture_sanctuary.jpg'),
     commonSummary: 'Natural period pain relief that calms severe menstrual cramps, soothes pelvic pain, and balances hormones to relieve PCOS symptoms.',
     searchKeywords: [
       'Period Pain Relief',

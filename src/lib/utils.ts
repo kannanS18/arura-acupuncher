@@ -76,7 +76,7 @@ export const cardData: TreatmentCardItem[] = [
     duration: "50 mins",
     fee: "₹1,800",
     feeNum: 1800,
-    image: "zen_treatment.jpg",
+    image: "counselling_sanctuary.jpg",
     badge: "Private Therapy Room",
     features: [
       "Evidence-Based CBT & REBT Protocols",
@@ -95,7 +95,7 @@ export const cardData: TreatmentCardItem[] = [
     duration: "75 – 90 mins",
     fee: "₹2,400",
     feeNum: 2400,
-    image: "acu_treatment1.jpg",
+    image: "hero_acupuncture_sanctuary.jpg",
     badge: "Dual Multi-System Synergy",
     features: [
       "40 Min Focused Psychotherapy Dialogue",

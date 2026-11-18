@@ -85,7 +85,7 @@ export default function ClinicalIntakeManifesto({ onOpenBooking }) {
       ],
       quote: "“True resolution happens when physical release meets conscious emotional awareness.”",
       icon: Brain,
-      image: getAssetUrl('zen_treatment.jpg'),
+      image: getAssetUrl('counselling_sanctuary.jpg'),
       imageCaption: "Quiet Recovery Sanctuary · Parasympathetic Stabilization",
       authenticClinicalData: {
         title: "Cognitive & Somatic Blueprint",
